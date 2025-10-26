@@ -1,0 +1,56 @@
+[gd_scene load_steps=10 format=3 uid="uid://d15uiwk2diixs"]
+
+[ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
+[ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
+[ext_resource type="SpriteFrames" uid="uid://cpyd1m1lmtb7o" path="res://scenes/character/foxy_hat.tres" id="3_i0j1t"]
+[ext_resource type="SpriteFrames" uid="uid://de50f6k6l0j1d" path="res://scenes/character/foxy_hat_blade.tres" id="4_68dt2"]
+[ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
+[ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
+[ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
+[ext_resource type="Script" uid="uid://caxtbpdyga1ay" path="res://scenes/character/player/states/fall.gd" id="42_xcnuv"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oul6g"]
+radius = 15.0
+height = 40.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_puv7k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -17)
+shape = SubResource("CapsuleShape2D_oul6g")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1, -61)
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+position = Vector2(0, -13)
+sprite_frames = ExtResource("2_v051h")
+animation = &"defeat"
+
+[node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+visible = false
+sprite_frames = ExtResource("3_i0j1t")
+animation = &"defeat"
+
+[node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+visible = false
+sprite_frames = ExtResource("4_68dt2")
+animation = &"attack"
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("39_art4l")
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("40_fjxoa")
+
+[node name="Jump" type="Node" parent="States"]
+script = ExtResource("41_gswnw")
+
+[node name="Fall" type="Node" parent="States"]
+script = ExtResource("42_xcnuv")
