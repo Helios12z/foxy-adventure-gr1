@@ -6,6 +6,9 @@ func _enter() -> void:
 
 
 func _update(_delta: float) -> void:
+	#Control dash
+	if control_dash():
+		return
 	#Control moving
 	control_jump()
 	var is_moving: bool = control_moving()

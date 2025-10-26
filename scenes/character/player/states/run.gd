@@ -6,6 +6,9 @@ func _enter() -> void:
 	pass
 
 func _update(_delta: float):
+	#Control dash
+	if control_dash():
+		return
 	#Control jump
 	if control_jump():
 		return

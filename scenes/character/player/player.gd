@@ -5,6 +5,9 @@ extends BaseCharacter
 var is_invulnerable: bool = false
 @export var has_blade: bool = false
 @export var max_jump_count = 2
+@export var dash_speed: float = 800.0
+@export var dash_duration: float = 0.15
+@export var dash_ghost_interval: float = 0.03
 
 func _ready() -> void:
 	super._ready()

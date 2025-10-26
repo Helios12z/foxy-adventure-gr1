@@ -59,7 +59,6 @@ func turn_right() -> void:
 	_next_direction = 1
 
 func jump() -> void:
-	print("jump")
 	velocity.y = -jump_speed
 
 func stop_move() -> void:

@@ -21,12 +21,16 @@ func control_moving() -> bool:
 #Return true if jumping
 func control_jump() -> bool:
 	#If jump is pressed change to jump state and return true
-	print(obj.can_jump())
 	if Input.is_action_just_pressed("jump") and obj.can_jump():
-		print(obj.max_jump_count)
 		obj.jump()
 		obj.max_jump_count -= 1
 		change_state(fsm.states.jump)
+		return true
+	return false
+
+func control_dash() -> bool:
+	if Input.is_action_just_pressed("dash"):
+		change_state(fsm.states.dash)
 		return true
 	return false
 
