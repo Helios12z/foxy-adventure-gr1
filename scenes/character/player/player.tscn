@@ -74,6 +74,7 @@ script = ExtResource("10_in2if")
 script = ExtResource("11_m5h5h")
 
 [node name="HurtArea2D" type="Area2D" parent="."]
+collision_layer = 5
 script = ExtResource("10_68dt2")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
