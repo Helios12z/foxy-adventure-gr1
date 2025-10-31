@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=4 uid="uid://t6cymr4annqj"]
+
+[ext_resource type="Script" uid="uid://dld7o3j0igwm7" path="res://scenes/enemies/enemy_test_scene.gd" id="1_mkubj"]
+[ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_ejmpy"]
+[ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_ejmpy"]
+[ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab.tscn" id="4_sxkfg"]
+
+[node name="EnemyTestScene" type="Node"]
+script = ExtResource("1_mkubj")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="World"]
+tile_map_data = PackedByteArray("AAD/////AAAPAAQAAAAAAP//AAABAAQAAAABAP//AAABAAQAAAACAP//AAABAAQAAAADAP//AAABAAQAAAAEAP//AAABAAQAAAAFAP//AAABAAQAAAAGAP//AAABAAQAAAAHAP//AAABAAQAAAAIAP//AAABAAQAAAAJAP//AAABAAQAAAAKAP//AAABAAQAAAALAP//AAABAAQAAAAMAP//AAABAAQAAAANAP//AAABAAQAAAAOAP//AAABAAQAAAAPAP//AAABAAQAAAAQAP//AAABAAQAAAARAP//AAABAAQAAAASAP//AAABAAQAAAATAP//AAABAAQAAAAUAP//AAABAAQAAAAVAP//AAABAAQAAAAWAP//AAABAAQAAAAXAP//AAABAAQAAAAYAP//AAAQAAQAAAD///7/AAAEAAEAAAD///3/AAAEAAEAAAD///z/AAAEAAEAAAD///v/AAAEAAEAAAD///r/AAAEAAEAAAD///n/AAAEAAEAAAD///j/AAAEAAEAAAD///f/AAAEAAEAAAD///b/AAAEAAEAAAD///X/AAAEAAAAAAAYAP7/AAAEAAEAAAAYAP3/AAAEAAEAAAAYAPz/AAAEAAEAAAAYAPv/AAAEAAEAAAAYAPr/AAAEAAEAAAAYAPn/AAAEAAEAAAAYAPj/AAAEAAEAAAAYAPf/AAAEAAEAAAAYAPb/AAAEAAEAAAAYAPX/AAAEAAAAAAALAPv/AAAAAAQAAAAMAPv/AAABAAQAAAANAPv/AAABAAQAAAAOAPv/AAABAAQAAAAPAPv/AAABAAQAAAAQAPv/AAABAAQAAAARAPv/AAACAAQAAAA=")
+tile_set = ExtResource("2_ejmpy")
+
+[node name="Player" parent="." instance=ExtResource("3_ejmpy")]
+position = Vector2(187, -50)
+
+[node name="Crab" parent="." instance=ExtResource("4_sxkfg")]
+position = Vector2(415, -176)

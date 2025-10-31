@@ -10,6 +10,8 @@ var down_ray_cast: RayCast2D;
 var detect_player_area: Area2D;
 var found_player: Player = null
 
+var knockback_direction: Vector2
+
 func _ready() -> void:
 	_init_ray_cast()
 	_init_detect_player_area()

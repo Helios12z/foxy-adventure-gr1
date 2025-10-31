@@ -1,9 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=15 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
 [ext_resource type="SpriteFrames" uid="uid://cpyd1m1lmtb7o" path="res://scenes/character/foxy_hat.tres" id="3_i0j1t"]
 [ext_resource type="SpriteFrames" uid="uid://de50f6k6l0j1d" path="res://scenes/character/foxy_hat_blade.tres" id="4_68dt2"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="10_68dt2"]
+[ext_resource type="Script" uid="uid://cxkb34oxplk7s" path="res://scenes/character/player/hurt.gd" id="10_in2if"]
+[ext_resource type="Script" uid="uid://fowo3c4ajsr7" path="res://scenes/character/player/dead.gd" id="11_m5h5h"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
 [ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
@@ -13,6 +16,9 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oul6g"]
 radius = 15.0
 height = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_in2if"]
+radius = 12.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -32,7 +38,7 @@ position = Vector2(0, 2)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
-animation = &"defeat"
+animation = &"dead"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
@@ -60,3 +66,18 @@ script = ExtResource("42_xcnuv")
 
 [node name="Dash" type="Node" parent="States"]
 script = ExtResource("43_dash")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("10_in2if")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("11_m5h5h")
+
+[node name="HurtArea2D" type="Area2D" parent="."]
+script = ExtResource("10_68dt2")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea2D"]
+position = Vector2(-1, -9)
+shape = SubResource("CircleShape2D_in2if")
+debug_color = Color(0.904049, 0.267522, 0.390759, 0.42)

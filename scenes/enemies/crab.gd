@@ -1,17 +1,25 @@
-extends CharacterBody2D
+extends EnemyCharacter
+@onready var hurt_area = $Direction/HurtArea2D
 
-@export var speed: float = 60.0
-var direction := Vector2.RIGHT
+func _ready() -> void:
+	super._ready()
+	fsm = FSM.new(self, $States, $States/Walk)
+	health = 10
+	hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
-@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
 
-func _physics_process(delta):
-	velocity = direction * speed
-	move_and_slide()
+func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
+	# Đảm bảo là Vector2 và chuẩn hoá
+	var dir = _direction if _direction is Vector2 else Vector2.ZERO
+	knockback_direction = dir.normalized() if dir.length() > 0.0001 else Vector2.ZERO
 
-	# Animation
-	if velocity.x != 0:
-		anim.play("walk")
-		anim.flip_h = velocity.x < 0
+	fsm.current_state.take_damage(knockback_direction, _damage)
+	print("hurt")
+	print(health)
+
+	if health <= 0:
+		fsm.change_state(fsm.states.dead)
 	else:
-		anim.play("idle")
+		fsm.change_state(fsm.states.hurt)

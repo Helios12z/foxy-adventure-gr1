@@ -15,6 +15,7 @@ func _ready() -> void:
 	if has_blade:
 		collected_blade()
 	GameManager.player = self
+	$HurtArea2D.hurt.connect(_on_hurt_area_2d_hurt)
 
 func can_attack() -> bool:
 	return has_blade
