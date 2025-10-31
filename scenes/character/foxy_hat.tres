@@ -28,7 +28,7 @@ animations = [{
 "texture": ExtResource("3_j5kqd")
 }],
 "loop": false,
-"name": &"defeat",
+"name": &"dead",
 "speed": 5.0
 }, {
 "frames": [{
@@ -42,7 +42,7 @@ animations = [{
 "texture": ExtResource("6_h7mi5")
 }],
 "loop": false,
-"name": &"hit",
+"name": &"hurt",
 "speed": 5.0
 }, {
 "frames": [{
