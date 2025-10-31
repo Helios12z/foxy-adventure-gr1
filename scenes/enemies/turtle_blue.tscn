@@ -70,7 +70,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_ibday"]
 radius = 18.0278
 
-[node name="Turtle" type="StaticBody2D"]
+[node name="Turtle" type="CharacterBody2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_p3vdv")

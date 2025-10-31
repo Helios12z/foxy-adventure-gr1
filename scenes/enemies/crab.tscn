@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://tew7lh8j1um5"]
+[gd_scene load_steps=10 format=3 uid="uid://tew7lh8j1um5"]
 
+[ext_resource type="Script" uid="uid://ihhgbr3vhbea" path="res://scenes/enemies/crab.gd" id="1_jgbqf"]
 [ext_resource type="Texture2D" uid="uid://ctrcbbe4a8dm" path="res://asset/enemy/crab/crab_hit_01.png" id="1_jwctj"]
 [ext_resource type="Texture2D" uid="uid://hy22m0nck85p" path="res://asset/enemy/crab/crab_hit_02.png" id="2_jgbqf"]
 [ext_resource type="Texture2D" uid="uid://d3dswkeayxgri" path="res://asset/enemy/crab/crab_01.png" id="3_0mleb"]
@@ -41,7 +42,10 @@ animations = [{
 radius = 20.0
 height = 40.0
 
-[node name="Crab" type="StaticBody2D"]
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_0mleb"]
+
+[node name="Crab" type="CharacterBody2D"]
+script = ExtResource("1_jgbqf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_86med")
@@ -50,5 +54,16 @@ autoplay = "walk"
 frame_progress = 0.785979
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4, -1)
+position = Vector2(-1, -1)
 shape = SubResource("CapsuleShape2D_8ukmd")
+
+[node name="BTPlayer" type="BTPlayer" parent="."]
+blackboard_plan = SubResource("BlackboardPlan_0mleb")
+
+[node name="Left" type="RayCast2D" parent="."]
+position = Vector2(-21, 0)
+target_position = Vector2(-18, 0)
+
+[node name="Right" type="RayCast2D" parent="."]
+position = Vector2(18, 0)
+target_position = Vector2(16, 0)

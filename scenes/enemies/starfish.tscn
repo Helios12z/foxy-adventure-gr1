@@ -103,7 +103,7 @@ animations = [{
 radius = 17.0
 height = 34.0
 
-[node name="Starfish" type="StaticBody2D"]
+[node name="Starfish" type="CharacterBody2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ogm1e")
