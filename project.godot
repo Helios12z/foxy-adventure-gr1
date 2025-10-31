@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 GameManager="*res://scripts/autoload/game_manager.gd"
 SaveSystem="*res://scripts/autoload/save_system.gd"
 
+[display]
+
+window/size/mode=2
+window/stretch/mode="viewport"
+
 [dotnet]
 
 project/assembly_name="FoxyAdventureGR1"

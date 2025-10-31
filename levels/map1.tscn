@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=4 uid="uid://da86yifsbp52"]
+[gd_scene load_steps=7 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_k3ymo"]
 [ext_resource type="Texture2D" uid="uid://ck8762h1hy2cf" path="res://asset/island/background/additional_water.png" id="3_44ejs"]
 [ext_resource type="Texture2D" uid="uid://bqde0l4at7gv8" path="res://asset/island/background/bg_image.png" id="4_rwkv0"]
+[ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="6_44ejs"]
 
 [node name="Stage" type="Node2D"]
 script = ExtResource("1_vf8qv")
@@ -33,3 +34,6 @@ tile_set = ExtResource("2_k3ymo")
 [node name="Npcs" type="Node2D" parent="."]
 
 [node name="Enemies" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("6_44ejs")]
+position = Vector2(-127, -10)
