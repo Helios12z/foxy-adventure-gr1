@@ -23,9 +23,11 @@ position = Vector2(0, -17)
 shape = SubResource("CapsuleShape2D_oul6g")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1, -61)
+position = Vector2(1, -60.615)
+zoom = Vector2(1.695, 1.695)
 
 [node name="Direction" type="Node2D" parent="."]
+position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 position = Vector2(0, -13)
