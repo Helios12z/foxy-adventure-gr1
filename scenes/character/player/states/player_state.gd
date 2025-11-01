@@ -34,6 +34,16 @@ func control_dash() -> bool:
 		return true
 	return false
 
+# Detect double-tap left/right to enter Run state
+func control_run() -> bool:
+	var dir_run: int = obj.check_run_double_tap()
+	if dir_run != 0 and obj.is_on_floor():
+		obj.change_direction(dir_run)
+		obj.velocity.x = obj.get_run_speed() * dir_run
+		change_state(fsm.states.run)
+		return true
+	return false
+
 func take_damage(damage: int = 1) -> void:
 	#Player take damage
 	obj.take_damage(damage)

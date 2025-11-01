@@ -9,6 +9,29 @@ var is_invulnerable: bool = false
 @export var dash_duration: float = 0.15
 @export var dash_ghost_interval: float = 0.03
 
+@export var run_speed_multiplier: float = 1.35
+@export var run_double_tap_window_ms: int = 250
+var _last_left_press_ms: int = -100000
+var _last_right_press_ms: int = -100000
+
+func get_run_speed() -> float:
+	return movement_speed * run_speed_multiplier
+
+func check_run_double_tap() -> int:
+	var now_ms: int = Time.get_ticks_msec()
+	var run_dir: int = 0
+	# Detect double-tap left
+	if Input.is_action_just_pressed("left"):
+		if now_ms - _last_left_press_ms <= run_double_tap_window_ms:
+			run_dir = -1
+		_last_left_press_ms = now_ms
+	# Detect double-tap right
+	if Input.is_action_just_pressed("right"):
+		if now_ms - _last_right_press_ms <= run_double_tap_window_ms:
+			run_dir = 1
+		_last_right_press_ms = now_ms
+	return run_dir
+
 
 func _ready() -> void:
 	super._ready()

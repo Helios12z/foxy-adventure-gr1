@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=18 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
 [ext_resource type="Script" uid="uid://caxtbpdyga1ay" path="res://scenes/character/player/states/fall.gd" id="42_xcnuv"]
 [ext_resource type="Script" uid="uid://cnsjlj1g4yk6v" path="res://scenes/character/player/states/dash.gd" id="43_dash"]
+[ext_resource type="Script" uid="uid://d02atll0hy5s3" path="res://scenes/character/player/states/run_fast.gd" id="44_runfast"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lcjji"]
 
@@ -22,6 +23,8 @@ shader = ExtResource("5_dash_shader")
 shader_parameter/warp = 0.0
 shader_parameter/dir = 1.0
 shader_parameter/squash = 0.0
+shader_parameter/lean = 0.0
+shader_parameter/lean_cutoff = 0.58
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -48,7 +51,7 @@ animation = &"fall"
 visible = false
 material = SubResource("ShaderMaterial_dash")
 sprite_frames = ExtResource("3_i0j1t")
-animation = &"fall"
+animation = &"climb"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
@@ -84,6 +87,9 @@ script = ExtResource("42_xcnuv")
 
 [node name="Dash" type="Node" parent="States"]
 script = ExtResource("43_dash")
+
+[node name="Run" type="Node" parent="States"]
+script = ExtResource("44_runfast")
 
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("10_in2if")

@@ -6,6 +6,10 @@ uniform float warp : hint_range(0.0, 1.0) = 0.0;
 uniform float dir = 1.0;
 // Squash/stretch factor (0.0 = none, 1.0 = strong)
 uniform float squash : hint_range(0.0, 1.0) = 0.0;
+// Forward-lean factor for RUN (0.0 = off, 1.0 = strong)
+uniform float lean : hint_range(0.0, 1.0) = 0.0;
+// Cutoff along UV.y; only pixels above this are leaned (upper body)
+uniform float lean_cutoff : hint_range(0.0, 1.0) = 0.58;
 
 void vertex() {
     // Basic squash and stretch to imply speed
@@ -17,11 +21,22 @@ void vertex() {
     // Directional curvature: bend along Y to create forward warp
     float y = UV.y;
     float curve = sin(y * 3.14159265) * warp; // peak in middle
-    VERTEX.x += dir * curve * 8.0; // push forward
+    // Push forward relative to local sprite; world flip handled by node scale
+    VERTEX.x += curve * 8.0;
 
     // Slight skew toward facing direction for motion feel
-    float skew = (0.5 - y) * warp * dir * 6.0;
+    float skew = (0.5 - y) * warp * 6.0;
     VERTEX.x += skew;
+
+    // Forward-lean upper body only (keep legs grounded)
+    if (lean > 0.001 && y <= lean_cutoff) {
+        // Strength increases toward the top
+        float amt = (lean_cutoff - y) / max(lean_cutoff, 0.0001);
+        // Push upper body forward and slightly down
+        // Push upper body forward in local space (node flip will mirror for left)
+        VERTEX.x += amt * lean * 8.0;
+        VERTEX.y += -amt * lean * 2.0;
+    }
 }
 
 void fragment() {

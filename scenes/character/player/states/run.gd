@@ -6,6 +6,9 @@ func _enter() -> void:
 	pass
 
 func _update(_delta: float):
+	# Detect run double-tap while walking
+	if control_run():
+		return
 	#Control dash
 	if control_dash():
 		return
