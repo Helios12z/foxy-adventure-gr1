@@ -32,9 +32,6 @@ func launch(_owner: Node, _origin: Vector2, _target: Vector2) -> void:
 	velocity = dir * speed
 	_face_by_dir(dir) 
 
-	if owner_crab and owner_crab.has_method("on_claw_launched"):
-		owner_crab.on_claw_launched(origin)
-
 func _physics_process(delta: float) -> void:
 	if going_out:
 		traveled += speed * delta
@@ -44,8 +41,6 @@ func _physics_process(delta: float) -> void:
 			_face_by_dir(dir)
 	else:
 		if global_position.distance_to(origin) <= return_stop_radius:
-			if owner_crab and owner_crab.has_method("on_claw_returned"):
-				owner_crab.on_claw_returned()
 			emit_signal("returned")
 			queue_free()
 			return

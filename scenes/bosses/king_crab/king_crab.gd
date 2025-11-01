@@ -14,8 +14,8 @@ extends BaseCharacter
 @export var roll_brake: float = 5000
 
 @export var stop_distance: float = 180.0
-@export var attack1_range: float = 4000
-@export var attack2_range: float = 1000
+@export var attack1_range: float = 1000
+@export var attack2_range: float = 800
 @export var roll_max_time: float = 3.5
 
 @export var bullet_scene: PackedScene
@@ -229,6 +229,7 @@ func _on_bullet_returned() -> void:
 	claw_busy = false
 	claw_returned = true
 	current_bullet = null
+	toggle_next_attack()
 
 func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 	_take_damage_from_dir(_direction, _damage)
@@ -240,6 +241,7 @@ func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
 
 func toggle_next_attack():
 	next_attack_is_claw = not next_attack_is_claw
+	print(next_attack_is_claw)
 
 func check_changed_direction() -> void:
 	if _next_direction != direction:
@@ -248,23 +250,3 @@ func check_changed_direction() -> void:
 			$Direction.scale.x = -1
 		if direction == -1:
 			$Direction.scale.x = 1
-			
-func face_toward_player()->void:
-	if found_player == null:
-		return
-
-	var px := found_player.global_position.x
-	var dx := px - global_position.x
-	var dist := absf(dx)
-
-	if dist > stop_distance:
-		var dir_x: float
-		if dx == 0.0:
-			dir_x = direction
-		else:
-			dir_x = sign(dx)  
-
-		if dir_x > 0.0 and direction != 1:
-			change_direction(1)
-		elif dir_x < 0.0 and direction != -1:
-			change_direction(-1)

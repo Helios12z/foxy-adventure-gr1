@@ -185,7 +185,7 @@ height = 98.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_syons"]
 radius = 23.0
-height = 92.0
+height = 94.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
 radius = 20.0
@@ -203,7 +203,7 @@ position = Vector2(0, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"idle_atk"
+animation = &"walk"
 autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
