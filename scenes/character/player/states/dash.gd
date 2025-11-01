@@ -11,12 +11,26 @@ func _enter() -> void:
 	timer = obj.dash_duration
 	# Flatten vertical movement for a clean dash
 	obj.velocity.y = 0
+	# Enable dash warp shader effect
+	var mat: Material = null
+	if obj.animated_sprite != null:
+		mat = obj.animated_sprite.material
+	if mat is ShaderMaterial:
+		mat.set_shader_parameter("warp", 1.8)
+		mat.set_shader_parameter("squash", 0.9)
+		mat.set_shader_parameter("dir", float(obj.direction))
 	# Spawn an immediate afterimage at dash start
 	_spawn_afterimage()
 
 func _update(delta: float) -> void:
 	# Apply fast horizontal motion in facing direction
 	obj.velocity.x = obj.dash_speed * obj.direction
+	# Keep shader direction in sync while dashing
+	var mat: Material = null
+	if obj.animated_sprite != null:
+		mat = obj.animated_sprite.material
+	if mat is ShaderMaterial:
+		mat.set_shader_parameter("dir", float(obj.direction))
 	_elapsed += delta
 	if _elapsed - _last_ghost >= obj.dash_ghost_interval:
 		_spawn_afterimage()
@@ -29,6 +43,13 @@ func _update(delta: float) -> void:
 func _exit() -> void:
 	# Ensure velocity resets when exiting dash
 	obj.velocity.x = 0
+	# Disable dash warp shader effect
+	var mat: Material = null
+	if obj.animated_sprite != null:
+		mat = obj.animated_sprite.material
+	if mat is ShaderMaterial:
+		mat.set_shader_parameter("warp", 0.0)
+		mat.set_shader_parameter("squash", 0.0)
 
 func _spawn_afterimage() -> void:
 	var dir_node: Node2D = obj.get_node("Direction")
