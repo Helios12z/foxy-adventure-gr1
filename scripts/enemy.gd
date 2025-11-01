@@ -4,6 +4,7 @@ extends BaseCharacter
 
 # Raycast check wall and fall
 var front_ray_cast: RayCast2D;
+var back_ray_cast: RayCast2D;
 var down_ray_cast: RayCast2D;
 
 # detect player area
@@ -26,6 +27,8 @@ func _init_ray_cast():
 		front_ray_cast = $Direction/FrontRayCast2D
 	if has_node("Direction/DownRayCast2D"):
 		down_ray_cast = $Direction/DownRayCast2D
+	if has_node("Direction/BackRayCast2D"):
+		back_ray_cast = $Direction/BackRayCast2D
 
 
 #init detect player area
