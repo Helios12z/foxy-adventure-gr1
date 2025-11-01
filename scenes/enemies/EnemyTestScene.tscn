@@ -24,3 +24,6 @@ movement_speed = 60.0
 
 [node name="Spike" parent="." instance=ExtResource("5_6dj5k")]
 position = Vector2(592, -49)
+
+[node name="Spike2" parent="." instance=ExtResource("5_6dj5k")]
+position = Vector2(675, -47)

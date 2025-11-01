@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="1_yi430"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sm0o0"]
-size = Vector2(36, 14)
+size = Vector2(29, 12)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fpo1o"]
 size = Vector2(29, 12)
@@ -17,7 +17,7 @@ collision_mask = 3
 texture = ExtResource("1_sm0o0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 9)
+position = Vector2(-0.5, 10)
 shape = SubResource("RectangleShape2D_sm0o0")
 
 [node name="HitArea2D" type="Area2D" parent="."]
