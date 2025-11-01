@@ -8,7 +8,7 @@ var is_invulnerable: bool = false
 @export var dash_speed: float = 800.0
 @export var dash_duration: float = 0.15
 @export var dash_ghost_interval: float = 0.03
-signal spike_collision(enable: bool)
+
 
 func _ready() -> void:
 	super._ready()
@@ -69,7 +69,7 @@ func start_invulnerability(duration: float = 2.0) -> void:
 	if inv_cooldown_timer and inv_cooldown_timer.time_left > 0:
 		return  # đang inv, không reset
 	is_invulnerable = true
-	spike_collision.emit(true)
+	set_collision_mask_value(6,true)
 	set_collision_layer_value(2,false)
 	_start_blink_effect()
 	if inv_cooldown_timer == null:
@@ -83,8 +83,9 @@ func start_invulnerability(duration: float = 2.0) -> void:
 func _on_invulnerable_timeout() -> void:
 
 	is_invulnerable = false
-	spike_collision.emit(false)
 	set_collision_layer_value(2,true)
+	set_collision_mask_value(6,false)
+	$Direction/AnimatedSprite2D.visible = true  # đảm bảo hiện lại
 	# Ensure we only restore visibility on the currently active sprite
 	if animated_sprite:
 		animated_sprite.visible = true
