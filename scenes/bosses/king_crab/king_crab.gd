@@ -248,3 +248,23 @@ func check_changed_direction() -> void:
 			$Direction.scale.x = -1
 		if direction == -1:
 			$Direction.scale.x = 1
+			
+func face_toward_player()->void:
+	if found_player == null:
+		return
+
+	var px := found_player.global_position.x
+	var dx := px - global_position.x
+	var dist := absf(dx)
+
+	if dist > stop_distance:
+		var dir_x: float
+		if dx == 0.0:
+			dir_x = direction
+		else:
+			dir_x = sign(dx)  
+
+		if dir_x > 0.0 and direction != 1:
+			change_direction(1)
+		elif dir_x < 0.0 and direction != -1:
+			change_direction(-1)
