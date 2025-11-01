@@ -1,0 +1,181 @@
+[gd_scene load_steps=23 format=3 uid="uid://dmngvbkuj5adl"]
+
+[ext_resource type="Script" uid="uid://bmiuidbc22fru" path="res://scenes/enemies/starfish/starfish.gd" id="1_r5ogx"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_wmhok"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_s8cle"]
+[ext_resource type="Texture2D" uid="uid://d355p6q01qfbd" path="res://asset/enemy/starfish/starfish_atk_01.png" id="4_t00wx"]
+[ext_resource type="Texture2D" uid="uid://pt00h0kyaa6n" path="res://asset/enemy/starfish/starfish_atk_02.png" id="5_db23i"]
+[ext_resource type="Texture2D" uid="uid://c47t2sk1fm2f" path="res://asset/enemy/starfish/starfish_atk_03.png" id="6_grvog"]
+[ext_resource type="Texture2D" uid="uid://x1tdhnmj8w1t" path="res://asset/enemy/starfish/starfish_atk_04.png" id="7_p0qcm"]
+[ext_resource type="Texture2D" uid="uid://di0l1oo5pri6v" path="res://asset/enemy/starfish/starfish_atk_05.png" id="8_7a4dr"]
+[ext_resource type="Texture2D" uid="uid://d0xlxvm8okahv" path="res://asset/enemy/starfish/starfish_atk_06.png" id="9_04onw"]
+[ext_resource type="Texture2D" uid="uid://dvglcsib2viyh" path="res://asset/enemy/starfish/starfish_hit_01.png" id="10_xwfen"]
+[ext_resource type="Texture2D" uid="uid://c1wkpc0cghhm" path="res://asset/enemy/starfish/starfish_hit_02.png" id="11_ovnnu"]
+[ext_resource type="Texture2D" uid="uid://61uc0t0r5il1" path="res://asset/enemy/starfish/starfish_01.png" id="12_prmsh"]
+[ext_resource type="Texture2D" uid="uid://c6bv0wnp7rcrp" path="res://asset/enemy/starfish/starfish_02.png" id="13_0shsf"]
+[ext_resource type="Texture2D" uid="uid://ddty2ho1bvtsq" path="res://asset/enemy/starfish/starfish_03.png" id="14_w635i"]
+[ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/walk.gd" id="15_4hbbl"]
+[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_gmc80"]
+[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_l27mi"]
+[ext_resource type="Script" uid="uid://055ybebvgq2r" path="res://scenes/enemies/starfish/attack.gd" id="18_wmhok"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
+size = Vector2(20, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8vh65"]
+radius = 16.0312
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tvsr8"]
+radius = 16.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ogm1e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_t00wx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_db23i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_grvog")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_p0qcm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_7a4dr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_04onw")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_04onw")
+}],
+"loop": true,
+"name": &"end_roll",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_xwfen")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_ovnnu")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_db23i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_grvog")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_p0qcm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_7a4dr")
+}],
+"loop": true,
+"name": &"roll_atk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_t00wx")
+}],
+"loop": true,
+"name": &"start_roll",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_prmsh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_0shsf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_prmsh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_w635i")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="Starfish" type="CharacterBody2D"]
+script = ExtResource("1_r5ogx")
+movement_speed = 100.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 15)
+shape = SubResource("RectangleShape2D_t2fbi")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
+target_position = Vector2(37, 0)
+
+[node name="DownRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(15, 0)
+target_position = Vector2(0, 28)
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+script = ExtResource("2_wmhok")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(-2, 0)
+shape = SubResource("CircleShape2D_8vh65")
+debug_color = Color(0.901445, 0.278962, 0.357004, 0.42)
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("3_s8cle")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(-2, 0)
+shape = SubResource("CircleShape2D_tvsr8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+sprite_frames = SubResource("SpriteFrames_ogm1e")
+animation = &"attack"
+autoplay = "walk"
+
+[node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
+modulate = Color(0.685657, 0.170201, 0.197746, 1)
+target_position = Vector2(104, 0)
+collision_mask = 2
+
+[node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
+modulate = Color(0.219501, 0.219501, 0.219501, 1)
+target_position = Vector2(-85, 0)
+collision_mask = 2
+
+[node name="States" type="Node" parent="."]
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("15_4hbbl")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("16_gmc80")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("17_l27mi")
+
+[node name="Attack" type="Node" parent="States"]
+script = ExtResource("18_wmhok")

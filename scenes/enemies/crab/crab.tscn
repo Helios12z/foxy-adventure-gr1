@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://tew7lh8j1um5"]
 
-[ext_resource type="Script" path="res://scenes/enemies/crab.gd" id="1_jgbqf"]
+[ext_resource type="Script" uid="uid://ihhgbr3vhbea" path="res://scenes/enemies/crab/crab.gd" id="1_jgbqf"]
 [ext_resource type="Texture2D" uid="uid://ctrcbbe4a8dm" path="res://asset/enemy/crab/crab_hit_01.png" id="1_jwctj"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_0mleb"]
 [ext_resource type="Texture2D" uid="uid://hy22m0nck85p" path="res://asset/enemy/crab/crab_hit_02.png" id="2_jgbqf"]
@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://bmgnhlh503ls" path="res://asset/enemy/crab/crab_02.png" id="4_qokaa"]
 [ext_resource type="Texture2D" uid="uid://d2g1sv81fi7w4" path="res://asset/enemy/crab/crab_03.png" id="5_3jqcw"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="8_qokaa"]
-[ext_resource type="Script" path="res://scenes/enemies/Walk.gd" id="9_3jqcw"]
-[ext_resource type="Script" path="res://scenes/enemies/hurt.gd" id="10_86med"]
-[ext_resource type="Script" path="res://scenes/enemies/dead.gd" id="11_8ukmd"]
+[ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/walk.gd" id="9_tgm84"]
+[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="10_86med"]
+[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="11_8ukmd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qokaa"]
 size = Vector2(16, 0)
@@ -86,6 +86,8 @@ autoplay = "walk"
 frame_progress = 0.785979
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 8
+collision_mask = 0
 script = ExtResource("8_qokaa")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
@@ -97,7 +99,7 @@ debug_color = Color(0.0942014, 0.623105, 0.514201, 0.42)
 [node name="States" type="Node" parent="."]
 
 [node name="Walk" type="Node" parent="States"]
-script = ExtResource("9_3jqcw")
+script = ExtResource("9_tgm84")
 
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("10_86med")

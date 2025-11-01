@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b74g3p16tl83v"]
+
+[ext_resource type="Script" uid="uid://cebwlouwv3jmo" path="res://scenes/character/player/dead_fade_layer.gd" id="1_vurkw"]
+[ext_resource type="Texture2D" uid="uid://bnejags6mu51h" path="res://scenes/character/pngtree-white-circle-background-png-image_2975665.jpg" id="2_glu83"]
+
+[node name="DeadFadeLayer" type="CanvasLayer"]
+script = ExtResource("1_vurkw")
+
+[node name="BG" type="ColorRect" parent="."]
+offset_left = -339.0
+offset_top = -252.0
+offset_right = 342.0
+offset_bottom = 134.0
+color = Color(0, 0, 0, 0)
+
+[node name="Mask" type="TextureRect" parent="."]
+offset_left = -159.0
+offset_top = -168.0
+offset_right = 3.0
+offset_bottom = -2.0
+scale = Vector2(2, 2)
+texture = ExtResource("2_glu83")
+expand_mode = 1
