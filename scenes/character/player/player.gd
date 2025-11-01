@@ -34,7 +34,8 @@ func collected_blade() -> void:
 
 func save_state() -> Dictionary:
 	return {
-		"position": [global_position.x, global_position.y]
+		"position": [global_position.x, global_position.y],
+		"has_blade": has_blade
 	}
 
 func load_state(data: Dictionary) -> void:
@@ -42,6 +43,10 @@ func load_state(data: Dictionary) -> void:
 	if data.has("position"):
 		var pos_array = data["position"]
 		global_position = Vector2(pos_array[0], pos_array[1])
+	if data.has("has_blade"):
+		has_blade = data["has_blade"]
+		if has_blade:
+			collected_blade()
 			
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	if !is_invulnerable: 
@@ -55,8 +60,8 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	else: 
 		fsm.change_state(fsm.states.immutablebackbounce)
 
-var inv_cooldown_timer: Timer = null
 var blink_timer: Timer = null
+var inv_cooldown_timer: Timer = null
 
 func start_invulnerability(duration: float = 2.0) -> void:
 	if inv_cooldown_timer and inv_cooldown_timer.time_left > 0:
@@ -73,7 +78,9 @@ func start_invulnerability(duration: float = 2.0) -> void:
 
 func _on_invulnerable_timeout() -> void:
 	is_invulnerable = false
-	$Direction/AnimatedSprite2D.visible = true  # đảm bảo hiện lại
+	if animated_sprite:
+		animated_sprite.visible = true
+		animated_sprite.modulate.a = 1.0
 	if blink_timer:
 		blink_timer.stop()
 
@@ -86,8 +93,9 @@ func _start_blink_effect() -> void:
 	blink_timer.start()
 
 func _on_blink_timer_timeout() -> void:
-	var sprite = $Direction/AnimatedSprite2D
-	if sprite.modulate.a == 1.0:
-		sprite.modulate.a = 0.4  # giảm alpha để nhấp nháy
+	if animated_sprite == null:
+		return
+	if animated_sprite.modulate.a == 1.0:
+		animated_sprite.modulate.a = 0.4  # giảm alpha để nhấp nháy
 	else:
-		sprite.modulate.a = 1.0  # phục hồi alpha
+		animated_sprite.modulate.a = 1.0  # phục hồi alpha
