@@ -36,6 +36,7 @@ void fragment() {
         out_a *= fade;
     }
 
-    // Do NOT multiply by CanvasItem COLOR to avoid unintended darkening
-    COLOR = vec4(base.rgb, out_a);
+    // Respect CanvasItem modulate alpha (blink/invulnerability) without darkening RGB
+    float mod_a = COLOR.a; // incoming CanvasItem COLOR contains modulate
+    COLOR = vec4(base.rgb, out_a * mod_a);
 }
