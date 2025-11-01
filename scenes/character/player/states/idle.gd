@@ -4,6 +4,8 @@ extends PlayerState
 
 func _enter() -> void:
 	obj.change_animation("idle")
+	if fsm.previous_state == fsm.states.hurt:
+		obj.start_invulnerability()
 
 func _update(_delta: float) -> void:
 	#Control dash
