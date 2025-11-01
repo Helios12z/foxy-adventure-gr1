@@ -1,4 +1,3 @@
-# HurtState.gd
 extends EnemyState
 
 @export var hurt_timer: float = 0.5
