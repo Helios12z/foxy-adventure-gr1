@@ -1,22 +1,63 @@
 extends EnemyState
 
+var roll_dir: float = 1.0
 var target_x: float
+var roll_time: float = 0.0
+var roll_speed: float = 0.0
+
+var braking := false          
+const EPS := 8.0              
 
 func _enter() -> void:
 	obj.change_animation("atk2_roll")
-	# ưu tiên lăn về phía player; nếu không có, lăn tới mép
-	var player = (obj.has_method("get_target") and obj.get_target()) if obj.has_method("get_target") else null
-	if player:
-		target_x = clamp(player.global_position.x, obj.arena_min_x, obj.arena_max_x)
-		obj.control_face_towards_x(target_x)
+
+	if obj.found_player:
+		roll_dir = sign(obj.found_player.global_position.x - obj.global_position.x)
+	elif obj.velocity.x != 0.0:
+		roll_dir = sign(obj.velocity.x)
 	else:
-		target_x = obj.roll_target_x()
+		roll_dir = 1.0
+	if roll_dir == 0.0: roll_dir = 1.0
+
+	roll_speed = obj.movement_speed * obj.roll_speed_mult
+
+	roll_time = 0.0
+	braking = false
+
+	if obj.hit_area_2d:
+		obj.hit_area_2d.set_deferred("monitoring", true)
+		var shape = obj.hit_area_2d.get_node_or_null("CollisionShape2D")
+		if shape:
+			shape.set_deferred("disabled", false)
+
+		if not obj.hit_area_2d.area_entered.is_connected(_on_roll_hit_area):
+			obj.hit_area_2d.area_entered.connect(_on_roll_hit_area)
 
 func _update(d: float) -> void:
-	if obj.control_move_towards_x(target_x, obj.move_speed, d, false):
-		change_state(fsm.states.atk2_stop)
-		return
-	var at_left  = obj.global_position.x <= obj.arena_min_x + 0.5
-	var at_right = obj.global_position.x >= obj.arena_max_x - 0.5
-	if at_left or at_right:
-		change_state(fsm.states.atk2_stop)
+	roll_time += d
+
+	if not braking:
+		# lăn nhanh
+		obj.velocity.x = roll_dir * roll_speed
+
+		if obj.found_player:
+			var side_now = sign(obj.found_player.global_position.x - obj.global_position.x)
+			if side_now != 0.0 and side_now != roll_dir:
+				braking = true
+
+		var near_target := absf(obj.global_position.x - target_x) <= 12.0
+		if obj.is_touch_wall() or near_target:
+			braking = true
+
+		if roll_time >= obj.roll_max_time:
+			braking = true
+	else:
+		obj.velocity.x = move_toward(obj.velocity.x, 0.0, obj.roll_brake * d)
+		if absf(obj.velocity.x) <= EPS:
+			obj.velocity.x = 0.0
+			change_state(fsm.states.atk2_stop)
+
+func _on_roll_hit_area(a: Area2D) -> void:
+	print("roll hit player (area)")
+	obj.velocity.x = 0.0
+	change_state(fsm.states.atk2_stop)

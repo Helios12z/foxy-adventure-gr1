@@ -2,8 +2,11 @@ extends EnemyState
 
 func _enter() -> void:
 	obj.change_animation("atk2_stop")
-	timer = obj.fatigue_after_atk2 # 2.0s
+	print("enter atk2 stop")
+	obj.velocity.x=0.0
+	timer=1.25
 
-func _update(d: float) -> void:
-	if update_timer(d):
+func _update(delta: float) -> void:
+	timer-=delta
+	if timer<=0.0: 
 		change_state(fsm.states.walk)

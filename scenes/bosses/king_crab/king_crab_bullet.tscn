@@ -5,6 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://bdb8y33vmt2hr" path="res://asset/King_Crab/King_Crab_32.png" id="2_gy15o"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_gy15o"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7rp6u"]
+radius = 17.0
+height = 46.0
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_7r4pa"]
 animations = [{
 "frames": [{
@@ -19,37 +23,34 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7rp6u"]
-radius = 17.0
-height = 46.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7r4pa"]
 radius = 17.0
 height = 46.0
 
 [node name="KingCrabBullet" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 3
 script = ExtResource("1_7r4pa")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_7r4pa")
-autoplay = "default"
-frame_progress = 0.597221
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4, -2)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_7rp6u")
 
-[node name="HitArea2D" type="Area2D" parent="."]
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+sprite_frames = SubResource("SpriteFrames_7r4pa")
+autoplay = "default"
+frame_progress = 0.597221
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
 collision_layer = 8
 collision_mask = 4
 script = ExtResource("3_gy15o")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
 position = Vector2(-4, -2)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_7r4pa")

@@ -4,5 +4,6 @@ func _enter() -> void:
 	obj.change_animation("idle_atk")
 
 func _update(delta: float) -> void:
-	if obj.control_claw_out_and_back(delta):
+	# bullet đã phát "returned" → obj.claw_returned = true
+	if obj.claw_returned:
 		change_state(fsm.states.atk1_recover)

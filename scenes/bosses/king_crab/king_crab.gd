@@ -1,187 +1,250 @@
-extends EnemyCharacter
+extends BaseCharacter
 
-@export var move_speed: float = 350.0
-@export var attack_range: float = 700.0
-@export var arena_min_x: float = -9999.0
-@export var arena_max_x: float = 9999.0
-@export var fatigue_after_atk2: float = 2.0
-@export var claw_scene: PackedScene
-@export var roll_speed: float = 280.0   # dùng bởi control_roll()
+@export var max_hp_sheet: int = 500
+@export var sight: float = 100.0
+@export var spike_damage: int = 50
+@export var movement_range: float = 200.0
+@export var approach_speed: float = 50.0
+@export var search_speed: float = 50.0
+@export var jump_speed_sheet: float = 320.0
+@export var gravity_sheet: float = 700.0
+@export var attack_speed: float = 50.0
+@export var attack_damage_sheet: int = 50
+@export var roll_speed_mult: float = 5.5
+@export var roll_brake: float = 5000
 
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@export var stop_distance: float = 180.0
+@export var attack1_range: float = 4000
+@export var attack2_range: float = 1000
+@export var roll_max_time: float = 3.5
 
-# --- Luân phiên skill ---
-var next_attack_is_claw: bool = true  # Walk.gd dùng tên này
+@export var bullet_scene: PackedScene
 
-# --- Trạng thái “càng rời” ---
-var has_claw: bool = true
-var current_claw: Node2D = null
-var claw_origin: Vector2 = Vector2.ZERO
-var claw_target: Vector2 = Vector2.ZERO
-var claw_phase_out: bool = true   # true: đang bay ra; false: bay về
+# avoid wall/fall
+var front_ray_cast: RayCast2D
+var back_ray_cast: RayCast2D
+var down_ray_cast: RayCast2D
+
+# detect player
+var detect_front_ray_cast: RayCast2D
+var detect_back_ray_cast: RayCast2D
+var detect_up_ray_cast: RayCast2D
+var detect_down_ray_cast: RayCast2D
+
+var found_player: Player = null
+var _last_visible: bool = false
+var detect_player_enable: bool = true
+
+var next_attack_is_claw: bool = true
+var claw_busy := false
+var claw_returned := false
+var current_bullet: Node = null
+
+var last_seen_player_x: float = 0.0
+var has_last_seen: bool = false
+var queued_bullet_dir_x: float = 1.0
+
+var knockback_direction: Vector2
+
+@onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 
 func _ready() -> void:
-	# Base init (raycasts, detect area, hurt area)
+	_init_ray_casts()
+	_init_hurt_area()
 	super._ready()
 
-	# Đồng bộ tốc độ cho control_walk()
-	movement_speed = move_speed
-
-	# Bật vùng phát hiện player (để found_player != null khi vào phạm vi)
-	enable_check_player_in_sight()
-
-	# Khởi tạo FSM với state đầu là Walk
+	movement_speed = approach_speed
+	direction=-1
+	_next_direction=-1
 	fsm = FSM.new(self, $States, $States/Walk)
 
 func _physics_process(delta: float) -> void:
-	# Base physics
-	super._physics_process(delta)
-
-	# Cập nhật FSM mỗi frame (QUAN TRỌNG)
 	if fsm != null:
 		fsm._update(delta)
+	_update_movement(delta)
+	_check_changed_animation()
+	check_changed_direction()
+	check_player_visibility()
 
-	# Không cho vượt biên đấu trường
-	clamp_to_arena()
+func _init_ray_casts() -> void:
+	if has_node("Direction/FrontRayCast2D"):
+		front_ray_cast = $Direction/FrontRayCast2D
+		front_ray_cast.enabled = true
+		front_ray_cast.exclude_parent = true
+	if has_node("Direction/BackRayCast2D"):
+		back_ray_cast = $Direction/BackRayCast2D
+		back_ray_cast.enabled = true
+		back_ray_cast.exclude_parent = true
+	if has_node("Direction/DownRayCast2D"):
+		down_ray_cast = $Direction/DownRayCast2D
+		down_ray_cast.enabled = true
+		down_ray_cast.exclude_parent = true
 
-# ===== Helpers / API được state gọi (không xoay sprite) =====
+	if has_node("Direction/DetectFrontRayCast2D"):
+		detect_front_ray_cast = $Direction/DetectFrontRayCast2D
+		detect_front_ray_cast.enabled = true
+		detect_front_ray_cast.exclude_parent = true
+	if has_node("Direction/DetectBackRayCast2D"):
+		detect_back_ray_cast = $Direction/DetectBackRayCast2D
+		detect_back_ray_cast.enabled = true
+		detect_back_ray_cast.exclude_parent = true
+	if has_node("Direction/DetectUpRayCast2D"):
+		detect_up_ray_cast = $Direction/DetectUpRayCast2D
+		detect_up_ray_cast.enabled = true
+		detect_up_ray_cast.exclude_parent = true
+	if has_node("Direction/DetectDownRayCast2D"):
+		detect_down_ray_cast = $Direction/DetectDownRayCast2D
+		detect_down_ray_cast.enabled = true
+		detect_down_ray_cast.exclude_parent = true
 
-func clamp_to_arena() -> void:
-	global_position.x = clamp(global_position.x, arena_min_x, arena_max_x)
+func _init_hurt_area() -> void:
+	if has_node("Direction/HurtArea2D"):
+		var hurt_area = $Direction/HurtArea2D
+		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
+
+# ---------------------- Environment checks ----------------------
+func is_touch_wall() -> bool:
+	return front_ray_cast != null and front_ray_cast.is_colliding()
+
+func is_can_fall() -> bool:
+	return down_ray_cast != null and not down_ray_cast.is_colliding()
+
+func _blocked_ahead() -> bool:
+	return is_touch_wall() or is_can_fall()
+
+func _ray_hits_player(ray: RayCast2D) -> Player:
+	if ray == null:
+		return null
+	ray.force_raycast_update()
+	if ray.is_colliding():
+		var col := ray.get_collider()
+		if col is Player:
+			return col
+	return null
+
+func check_player_visibility() -> void:
+	if not detect_player_enable:
+		return
+
+	var seen_player: Player = null
+	if seen_player == null: seen_player = _ray_hits_player(detect_front_ray_cast)
+	if seen_player == null: seen_player = _ray_hits_player(detect_back_ray_cast)
+	if seen_player == null: seen_player = _ray_hits_player(detect_up_ray_cast)
+	if seen_player == null: seen_player = _ray_hits_player(detect_down_ray_cast)
+
+	if seen_player:
+		found_player = seen_player
+		_last_visible = true
+		last_seen_player_x = seen_player.global_position.x
+		has_last_seen = true
+	else:
+		_last_visible = false
+		found_player = null
+
+func enable_check_player_in_sight() -> void:
+	detect_player_enable = true
+
+func disable_check_player_in_sight() -> void:
+	if _last_visible:
+		_last_visible = false
+		found_player = null
+	detect_player_enable = false
+
+func _distance_to_player_x() -> float:
+	if found_player == null: return INF
+	return absf(found_player.global_position.x - global_position.x)
 
 func can_attack1() -> bool:
-	# ATK1 = bắn càng: có player và trong tầm
-	if found_player == null:
-		return false
-	var dist: float = absf(found_player.global_position.x - global_position.x)
-	return has_claw and (dist <= attack_range * 0.9)
+	if found_player == null or claw_busy: return false
+	return _distance_to_player_x() <= attack1_range
 
 func can_attack2() -> bool:
-	# ATK2 = lăn: chỉ cần thấy player
-	return found_player != null
+	if found_player == null: return false
+	return _distance_to_player_x() <= attack2_range
 
-# Hooks cho “càng” (gọi từ script claw/bullet)
-func on_claw_launched(origin: Vector2) -> void:
-	has_claw = false
-	claw_phase_out = true
-	claw_origin = origin
+func update_chase_motion() -> bool:
+	if found_player == null:
+		return false
 
-func on_claw_returned() -> void:
-	has_claw = true
-	current_claw = null
-	claw_phase_out = false
+	var px := found_player.global_position.x
+	var dx := px - global_position.x
+	var dist := absf(dx)
 
-# Khi nhìn thấy player → quay đầu bằng hệ Direction trong BaseCharacter
-func _on_player_in_sight(player_pos: Vector2) -> void:
-	var need_dir: int = 1
-	if player_pos.x < global_position.x:
-		need_dir = -1
-	if need_dir != direction:
-		change_direction(need_dir)
-		_check_changed_direction()
-
-# ================= KingCrab-only controls (NO sprite flip) =================
-
-# Tiến tới một toạ độ X: di chuyển theo physics (velocity + move_and_slide)
-func control_move_towards_x(target_x: float, speed: float, delta: float, snap: bool = true) -> bool:
-	var dir_to_target: int = 1
-	if target_x < global_position.x:
-		dir_to_target = -1
-
-	if dir_to_target != direction:
-		change_direction(dir_to_target)
-		_check_changed_direction()
-
-	velocity.x = direction * speed
-	move_and_slide()
-
-	# clamp biên
-	if global_position.x < arena_min_x:
-		global_position.x = arena_min_x
-	if global_position.x > arena_max_x:
-		global_position.x = arena_max_x
-
-	var reached: bool = false
-	if direction > 0 and global_position.x >= target_x:
-		reached = true
-	elif direction < 0 and global_position.x <= target_x:
-		reached = true
-
-	if reached and snap:
-		global_position.x = target_x
-
-	return reached
-
-# Quay đầu nhìn về một toạ độ X (dùng Direction)
-func control_face_towards_x(x: float) -> void:
-	var need_dir: int = 1
-	if x < global_position.x:
-		need_dir = -1
-	if need_dir != direction:
-		change_direction(need_dir)
-		_check_changed_direction()
-
-# Spawn càng (node bullet) ra world
-func control_spawn_claw(spawn_pos: Vector2) -> Node2D:
-	var ps: PackedScene = claw_scene
-	if ps == null:
-		ps = load("res://scenes/bosses/king_crab/king_crab_bullet.tscn")
-
-	var claw: Node2D = ps.instantiate()
-	claw.global_position = spawn_pos
-
-	var root := get_tree().current_scene
-	if root == null:
-		add_child(claw)
-	else:
-		root.add_child(claw)
-
-	return claw
-
-# Điều khiển càng bay ra → bay về. Trả true khi đã về và thu hồi xong
-func control_claw_out_and_back(delta: float) -> bool:
-	if current_claw == null:
-		return true
-	if not is_instance_valid(current_claw):
-		return true
-
-	var speed: float = move_speed
-	var target: Vector2 = claw_target
-	if not claw_phase_out:
-		target = claw_origin
-
-	var claw := current_claw as Node2D
-	var to_target: Vector2 = target - claw.global_position
-	var step_len: float = speed * delta
-
-	if to_target.length() <= step_len:
-		claw.global_position = target
-		if claw_phase_out:
-			claw_phase_out = false
+	if dist > stop_distance:
+		var dir_x: float
+		if dx == 0.0:
+			dir_x = direction
 		else:
-			claw.queue_free()
-			current_claw = null
-			return true
+			dir_x = sign(dx)  
+
+		velocity.x = dir_x * movement_speed
+
+		if dir_x > 0.0 and direction != 1:
+			print("chase direction", direction)
+			change_direction(1)
+		elif dir_x < 0.0 and direction != -1:
+			print("chase direction", direction)
+			change_direction(-1)
+
+		return false
 	else:
-		var dir_vec: Vector2 = to_target.normalized()
-		claw.global_position += dir_vec * step_len
-
-	return false
-
-# Lăn theo direction hiện tại, chạm biên trả true
-func control_roll(delta: float, to_left_limit: float, to_right_limit: float) -> bool:
-	velocity.x = direction * roll_speed
-	move_and_slide()
-
-	var x := global_position.x
-	if direction < 0 and x <= to_left_limit:
+		velocity.x = 0.0
 		return true
-	if direction > 0 and x >= to_right_limit:
-		return true
-	return false
 
-# Chọn biên dựa theo direction hiện tại
-func roll_target_x() -> float:
-	if direction > 0:
-		return arena_max_x
-	return arena_min_x
+func _search_move() -> void:
+	if _blocked_ahead():
+		change_direction(-direction)
+	velocity.x = direction * search_speed
+	print(direction)
+
+func control_move() -> bool:
+	if found_player == null:
+		_search_move()
+
+	var ready := update_chase_motion()
+
+	return ready
+
+func spawn_bullet_with_dir(dir_x: float) -> void:
+	if bullet_scene == null or claw_busy: return
+	var bullet = bullet_scene.instantiate()
+	if not (bullet and bullet.has_method("launch")): return
+
+	get_tree().current_scene.add_child(bullet)
+	claw_busy = true
+	claw_returned = false
+	current_bullet = bullet
+
+	var origin := global_position
+	var target := origin + Vector2(dir_x * attack1_range, 0.0)
+
+	if bullet.has_signal("returned"):
+		bullet.connect("returned", Callable(self, "_on_bullet_returned"))
+	if "spike_damage" in bullet:
+		bullet.spike_damage = spike_damage
+
+	bullet.launch(self, origin, target)
+
+func _on_bullet_returned() -> void:
+	claw_busy = false
+	claw_returned = true
+	current_bullet = null
+
+func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
+	_take_damage_from_dir(_direction, _damage)
+
+func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
+	knockback_direction = _damage_dir.normalized()
+	if fsm and fsm.current_state:
+		fsm.current_state.take_damage(_damage_dir, _damage)
+
+func toggle_next_attack():
+	next_attack_is_claw = not next_attack_is_claw
+
+func check_changed_direction() -> void:
+	if _next_direction != direction:
+		direction = _next_direction
+		if direction == 1:
+			$Direction.scale.x = -1
+		if direction == -1:
+			$Direction.scale.x = 1
