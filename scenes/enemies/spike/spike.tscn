@@ -12,12 +12,12 @@ collision_layer = 8
 collision_mask = 3
 script = ExtResource("1_fpo1o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-8, 10)
-shape = SubResource("RectangleShape2D_sm0o0")
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_sm0o0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 10)
+shape = SubResource("RectangleShape2D_sm0o0")
 
 [node name="HitArea2D" type="Area2D" parent="."]
 collision_layer = 8
@@ -28,3 +28,5 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 position = Vector2(-1, 10)
 shape = SubResource("RectangleShape2D_sm0o0")
+
+[connection signal="area_entered" from="HitArea2D" to="." method="_on_hit_area_2d_area_entered"]

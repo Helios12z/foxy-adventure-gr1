@@ -15,8 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://c6bv0wnp7rcrp" path="res://asset/enemy/starfish/starfish_02.png" id="13_0shsf"]
 [ext_resource type="Texture2D" uid="uid://ddty2ho1bvtsq" path="res://asset/enemy/starfish/starfish_03.png" id="14_w635i"]
 [ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/Walk.gd" id="15_4hbbl"]
-[ext_resource type="Script" path="res://scenes/enemies/dead.gd" id="16_gmc80"]
-[ext_resource type="Script" path="res://scenes/enemies/hurt.gd" id="17_l27mi"]
+[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_gmc80"]
+[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_l27mi"]
 [ext_resource type="Script" uid="uid://055ybebvgq2r" path="res://scenes/enemies/starfish/attack.gd" id="18_wmhok"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]

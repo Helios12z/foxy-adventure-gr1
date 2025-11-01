@@ -5,7 +5,7 @@ func _enter_tree() -> void:
 	GameManager.current_stage = self
 	
 func _ready() -> void:
-	#$Player.spike_collision.connect(_set_spike_collision)
+	$Player.spike_collision.connect(_set_spike_collision)
 	if not GameManager.respawn_at_portal():
 		GameManager.respawn_at_checkpoint()
 
