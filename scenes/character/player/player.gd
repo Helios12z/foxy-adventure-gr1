@@ -9,13 +9,13 @@ var is_invulnerable: bool = false
 @export var dash_duration: float = 0.15
 @export var dash_ghost_interval: float = 0.03
 
+
 func _ready() -> void:
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Idle)
 	if has_blade:
 		collected_blade()
 	GameManager.player = self
-	$HurtArea2D.hurt.connect(_on_hurt_area_2d_hurt)
 
 func can_attack() -> bool:
 	return has_blade
@@ -24,6 +24,10 @@ func can_jump() -> bool:
 	if max_jump_count > 0:
 		return true
 	return false
+
+func set_detect_and_hurt_collsion(enable: bool):
+	$Direction/HurtArea2D/CollisionShape2D.disabled = not enable
+	set_collision_layer_value(2,enable)
 
 func reset_jump_count() -> void:
 	max_jump_count = 2
@@ -34,7 +38,8 @@ func collected_blade() -> void:
 
 func save_state() -> Dictionary:
 	return {
-		"position": [global_position.x, global_position.y]
+		"position": [global_position.x, global_position.y],
+		"has_blade": has_blade
 	}
 
 func load_state(data: Dictionary) -> void:
@@ -42,26 +47,30 @@ func load_state(data: Dictionary) -> void:
 	if data.has("position"):
 		var pos_array = data["position"]
 		global_position = Vector2(pos_array[0], pos_array[1])
+	if data.has("has_blade"):
+		has_blade = data["has_blade"]
+		if has_blade:
+			collected_blade()
 			
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	if !is_invulnerable: 
 		fsm.current_state.take_damage(_damage)
-		print("hurt")
-		print(health)
 		if(health <= 0):
 			fsm.change_state(fsm.states.dead)
 		else: 
 			fsm.change_state(fsm.states.hurt)
-	else: 
-		fsm.change_state(fsm.states.immutablebackbounce)
+	#else: 
+		#fsm.change_state(fsm.states.immutablebackbounce)
 
-var inv_cooldown_timer: Timer = null
 var blink_timer: Timer = null
+var inv_cooldown_timer: Timer = null
 
 func start_invulnerability(duration: float = 2.0) -> void:
 	if inv_cooldown_timer and inv_cooldown_timer.time_left > 0:
 		return  # đang inv, không reset
 	is_invulnerable = true
+	set_collision_mask_value(6,true)
+	set_collision_layer_value(2,false)
 	_start_blink_effect()
 	if inv_cooldown_timer == null:
 		inv_cooldown_timer = Timer.new()
@@ -72,8 +81,15 @@ func start_invulnerability(duration: float = 2.0) -> void:
 	inv_cooldown_timer.start()
 
 func _on_invulnerable_timeout() -> void:
+
 	is_invulnerable = false
+	set_collision_layer_value(2,true)
+	set_collision_mask_value(6,false)
 	$Direction/AnimatedSprite2D.visible = true  # đảm bảo hiện lại
+	# Ensure we only restore visibility on the currently active sprite
+	if animated_sprite:
+		animated_sprite.visible = true
+		animated_sprite.modulate.a = 1.0
 	if blink_timer:
 		blink_timer.stop()
 
@@ -86,8 +102,9 @@ func _start_blink_effect() -> void:
 	blink_timer.start()
 
 func _on_blink_timer_timeout() -> void:
-	var sprite = $Direction/AnimatedSprite2D
-	if sprite.modulate.a == 1.0:
-		sprite.modulate.a = 0.4  # giảm alpha để nhấp nháy
+	if animated_sprite == null:
+		return
+	if animated_sprite.modulate.a == 1.0:
+		animated_sprite.modulate.a = 0.4  # giảm alpha để nhấp nháy
 	else:
-		sprite.modulate.a = 1.0  # phục hồi alpha
+		animated_sprite.modulate.a = 1.0  # phục hồi alpha

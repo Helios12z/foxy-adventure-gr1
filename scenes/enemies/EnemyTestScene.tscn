@@ -4,7 +4,7 @@
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_ejmpy"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_ejmpy"]
 [ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="4_sxkfg"]
-[ext_resource type="PackedScene" uid="uid://dmngvbkuj5adl" path="res://scenes/enemies/starfish/starfish.tscn" id="5_6dj5k"]
+[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://scenes/enemies/spike/spike.tscn" id="5_6dj5k"]
 
 [node name="EnemyTestScene" type="Node"]
 script = ExtResource("1_mkubj")
@@ -19,9 +19,11 @@ tile_set = ExtResource("2_ejmpy")
 position = Vector2(395, -46)
 
 [node name="Crab" parent="." instance=ExtResource("4_sxkfg")]
-position = Vector2(376, -173)
+position = Vector2(419, -172)
 movement_speed = 60.0
 
-[node name="Starfish" parent="." instance=ExtResource("5_6dj5k")]
-position = Vector2(98, -50)
-movement_speed = 60.0
+[node name="Spike" parent="." instance=ExtResource("5_6dj5k")]
+position = Vector2(592, -49)
+
+[node name="Spike2" parent="." instance=ExtResource("5_6dj5k")]
+position = Vector2(675, -47)
