@@ -16,8 +16,6 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	knockback_direction = dir.normalized() if dir.length() > 0.0001 else Vector2.ZERO
 
 	fsm.current_state.take_damage(knockback_direction, _damage)
-	print("hurt")
-	print(health)
 
 	if health <= 0:
 		fsm.change_state(fsm.states.dead)

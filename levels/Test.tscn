@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bri23m3c1apja"]
+[gd_scene load_steps=10 format=3 uid="uid://bri23m3c1apja"]
 
 [ext_resource type="Script" uid="uid://btaxxiktfmkyr" path="res://levels/stage.gd" id="1_1f3o5"]
 [ext_resource type="Texture2D" uid="uid://ib863is7bc7" path="res://icon.svg" id="2_ok4yu"]
 [ext_resource type="PackedScene" uid="uid://c8iyq6ukbtgdh" path="res://levels/objects/palm_tree_1.tscn" id="3_kh2fj"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="5_4qglm"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="6_pupqp"]
+[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://scenes/enemies/spike/spike.tscn" id="6_yqpgv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ok4yu"]
 
@@ -89,3 +90,6 @@ position = Vector2(603, 229)
 
 [node name="Player" parent="." instance=ExtResource("5_4qglm")]
 position = Vector2(70, 143)
+
+[node name="Spike" parent="." instance=ExtResource("6_yqpgv")]
+position = Vector2(718, 228)

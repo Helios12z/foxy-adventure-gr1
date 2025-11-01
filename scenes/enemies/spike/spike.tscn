@@ -1,22 +1,30 @@
-[gd_scene load_steps=4 format=3 uid="uid://30ih00wu8oui"]
+[gd_scene load_steps=5 format=3 uid="uid://30ih00wu8oui"]
 
+[ext_resource type="Script" uid="uid://b6fuj25kfvmmx" path="res://scenes/enemies/spike/spike.gd" id="1_fpo1o"]
 [ext_resource type="Texture2D" uid="uid://u305lqtw3asd" path="res://asset/enemy/spike/spikes.png" id="1_sm0o0"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="1_yi430"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sm0o0"]
-size = Vector2(24, 7)
+size = Vector2(30, 12)
 
-[node name="Spike" type="Node2D"]
+[node name="Spike" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_fpo1o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8, 10)
+shape = SubResource("RectangleShape2D_sm0o0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_sm0o0")
 
 [node name="HitArea2D" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 4
 script = ExtResource("1_yi430")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
-position = Vector2(-1, 12.5)
+position = Vector2(-1, 10)
 shape = SubResource("RectangleShape2D_sm0o0")
