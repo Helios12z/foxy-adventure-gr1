@@ -13,6 +13,7 @@ var health: int = max_health
 
 
 var jump_speed: float = 320.0
+var wall_slide_speed: float = 100.0
 var fsm: FSM = null
 var current_animation = null
 var animated_sprite: AnimatedSprite2D = null
@@ -112,3 +113,16 @@ func _check_changed_direction() -> void:
 # On changed direction
 func _on_changed_direction() -> void:
 	pass
+	
+# Wall detection methods for wall climbing
+func is_on_left_wall() -> bool:
+	return is_on_wall_only() and get_wall_normal().x > 0
+
+func is_on_right_wall() -> bool:
+	return is_on_wall_only() and get_wall_normal().x < 0
+
+func can_wall_slide() -> bool:
+	return is_on_wall_only() and not is_on_floor() and velocity.y > 0
+
+func wall_slide(delta: float) -> void:
+	velocity.y = min(velocity.y, wall_slide_speed)
