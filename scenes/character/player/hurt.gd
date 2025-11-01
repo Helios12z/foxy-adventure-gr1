@@ -8,6 +8,7 @@ func _enter() -> void:
 	obj.change_animation("hurt")
 	#obj.can_control = false  # vô hiệu hóa input trong lúc hurt
 	# Hướng hất văng dựa vào direction (ngược chiều đang nhìn)
+	obj.set_detect_and_hurt_collsion(false)
 	var dir = -obj.direction
 	obj.velocity.x = knockback_force.x * dir
 	obj.velocity.y = knockback_force.y  # Hất lên
@@ -26,6 +27,7 @@ func _update(delta: float) -> void:
 		_recover_from_hurt()
 
 func _exit() -> void:
+	obj.set_detect_and_hurt_collsion(true)
 	#obj.can_control = true  # bật lại điều khiển khi thoát hurt
 	pass
 

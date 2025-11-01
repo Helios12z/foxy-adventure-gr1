@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://bmgnhlh503ls" path="res://asset/enemy/crab/crab_02.png" id="4_qokaa"]
 [ext_resource type="Texture2D" uid="uid://d2g1sv81fi7w4" path="res://asset/enemy/crab/crab_03.png" id="5_3jqcw"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="8_qokaa"]
-[ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/walk.gd" id="9_tgm84"]
-[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="10_86med"]
-[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="11_8ukmd"]
+[ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/Walk.gd" id="9_tgm84"]
+[ext_resource type="Script" path="res://scenes/enemies/hurt.gd" id="10_86med"]
+[ext_resource type="Script" path="res://scenes/enemies/dead.gd" id="11_8ukmd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qokaa"]
 size = Vector2(16, 0)
@@ -71,6 +71,8 @@ position = Vector2(21, 0)
 target_position = Vector2(0, 22)
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("2_0mleb")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
@@ -86,7 +88,7 @@ autoplay = "walk"
 frame_progress = 0.785979
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
-collision_layer = 8
+collision_layer = 16
 collision_mask = 0
 script = ExtResource("8_qokaa")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
@@ -103,7 +105,6 @@ script = ExtResource("9_tgm84")
 
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("10_86med")
-metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
 
 [node name="Dead" type="Node" parent="States"]
 script = ExtResource("11_8ukmd")

@@ -14,9 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://61uc0t0r5il1" path="res://asset/enemy/starfish/starfish_01.png" id="12_prmsh"]
 [ext_resource type="Texture2D" uid="uid://c6bv0wnp7rcrp" path="res://asset/enemy/starfish/starfish_02.png" id="13_0shsf"]
 [ext_resource type="Texture2D" uid="uid://ddty2ho1bvtsq" path="res://asset/enemy/starfish/starfish_03.png" id="14_w635i"]
-[ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/walk.gd" id="15_4hbbl"]
-[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_gmc80"]
-[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_l27mi"]
+[ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/Walk.gd" id="15_4hbbl"]
+[ext_resource type="Script" path="res://scenes/enemies/dead.gd" id="16_gmc80"]
+[ext_resource type="Script" path="res://scenes/enemies/hurt.gd" id="17_l27mi"]
 [ext_resource type="Script" uid="uid://055ybebvgq2r" path="res://scenes/enemies/starfish/attack.gd" id="18_wmhok"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
@@ -116,6 +116,7 @@ animations = [{
 }]
 
 [node name="Starfish" type="CharacterBody2D"]
+collision_layer = 8
 script = ExtResource("1_r5ogx")
 movement_speed = 100.0
 
@@ -133,6 +134,8 @@ position = Vector2(15, 0)
 target_position = Vector2(0, 28)
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("2_wmhok")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
@@ -142,7 +145,7 @@ shape = SubResource("CircleShape2D_8vh65")
 debug_color = Color(0.901445, 0.278962, 0.357004, 0.42)
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
-collision_layer = 8
+collision_layer = 16
 collision_mask = 0
 script = ExtResource("3_s8cle")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
