@@ -43,6 +43,7 @@ animation = &"hurt"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
+position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
 animation = &"dead"
 
