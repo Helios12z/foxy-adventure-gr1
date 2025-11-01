@@ -81,11 +81,15 @@ func start_invulnerability(duration: float = 2.0) -> void:
 	inv_cooldown_timer.start()
 
 func _on_invulnerable_timeout() -> void:
-	
+
 	is_invulnerable = false
 	set_collision_layer_value(2,true)
 	set_collision_mask_value(6,false)
 	$Direction/AnimatedSprite2D.visible = true  # đảm bảo hiện lại
+	# Ensure we only restore visibility on the currently active sprite
+	if animated_sprite:
+		animated_sprite.visible = true
+		animated_sprite.modulate.a = 1.0
 	if blink_timer:
 		blink_timer.stop()
 
