@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://dkgk8r62llx4p"]
+
+[ext_resource type="Texture2D" uid="uid://b8r2k78gro5s6" path="res://asset/foxy/foxy/fox_hat/fox_climb.png" id="1_olppa"]
+
+[resource]
+atlas = ExtResource("1_olppa")
+region = Rect2(-2, 0, 0, 0)

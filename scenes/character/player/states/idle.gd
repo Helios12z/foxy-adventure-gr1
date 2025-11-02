@@ -11,7 +11,10 @@ func _update(_delta: float) -> void:
 	#Control dash
 	if control_dash():
 		return
-	#Control jump
+	#Control run by double-tap
+	if control_run():
+		return
+
 	control_jump()
 	#Control moving
 	control_moving(_delta)

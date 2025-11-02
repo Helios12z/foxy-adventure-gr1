@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=18 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -8,11 +8,13 @@
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="10_68dt2"]
 [ext_resource type="Script" uid="uid://cxkb34oxplk7s" path="res://scenes/character/player/hurt.gd" id="10_in2if"]
 [ext_resource type="Script" uid="uid://fowo3c4ajsr7" path="res://scenes/character/player/dead.gd" id="11_m5h5h"]
+[ext_resource type="Script" uid="uid://dugosv23vlsd1" path="res://scenes/character/player/climb.gd" id="14_yuskr"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
 [ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
 [ext_resource type="Script" uid="uid://caxtbpdyga1ay" path="res://scenes/character/player/states/fall.gd" id="42_xcnuv"]
 [ext_resource type="Script" uid="uid://cnsjlj1g4yk6v" path="res://scenes/character/player/states/dash.gd" id="43_dash"]
+[ext_resource type="Script" uid="uid://d02atll0hy5s3" path="res://scenes/character/player/states/run_fast.gd" id="44_runfast"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lcjji"]
 
@@ -21,6 +23,8 @@ shader = ExtResource("5_dash_shader")
 shader_parameter/warp = 0.0
 shader_parameter/dir = 1.0
 shader_parameter/squash = 0.0
+shader_parameter/lean = 0.0
+shader_parameter/lean_cutoff = 0.58
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -41,20 +45,20 @@ position = Vector2(0, 2)
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
-animation = &"dead"
+animation = &"fall"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
 material = SubResource("ShaderMaterial_dash")
 sprite_frames = ExtResource("3_i0j1t")
-animation = &"hurt"
+animation = &"climb"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
-animation = &"dead"
+animation = &"climb"
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
 self_modulate = Color(1, 0.407843, 0.266667, 1)
@@ -84,10 +88,16 @@ script = ExtResource("42_xcnuv")
 [node name="Dash" type="Node" parent="States"]
 script = ExtResource("43_dash")
 
+[node name="Run" type="Node" parent="States"]
+script = ExtResource("44_runfast")
+
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("10_in2if")
 
 [node name="Dead" type="Node" parent="States"]
 script = ExtResource("11_m5h5h")
+
+[node name="Climb" type="Node" parent="States"]
+script = ExtResource("14_yuskr")
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]

@@ -1,11 +1,13 @@
-[gd_resource type="SpriteFrames" load_steps=17 format=3 uid="uid://de50f6k6l0j1d"]
+[gd_resource type="SpriteFrames" load_steps=19 format=3 uid="uid://de50f6k6l0j1d"]
 
 [ext_resource type="Texture2D" uid="uid://f0k2ocqkmcc2" path="res://asset/foxy/foxy/fox_hat_blade/fox_jump_atk_1.png" id="1_8tu21"]
 [ext_resource type="Texture2D" uid="uid://c8k8kn11ppnjp" path="res://asset/foxy/foxy/fox_hat_blade/fox_jump_atk_2.png" id="2_7856g"]
 [ext_resource type="Texture2D" uid="uid://cp2ag6s67gj73" path="res://asset/foxy/foxy/fox_hat_blade/fox_defeat_1.png" id="3_e1uk1"]
+[ext_resource type="Texture2D" uid="uid://dkgk8r62llx4p" path="res://asset/foxy/foxy/fox_hat/fox_climb.tres" id="3_ijt6p"]
 [ext_resource type="Texture2D" uid="uid://cx3p62gjf57ep" path="res://asset/foxy/foxy/fox_hat_blade/fox_defeat_2.png" id="4_ijt6p"]
 [ext_resource type="Texture2D" uid="uid://blvo22k8hckk0" path="res://asset/foxy/foxy/fox_hat_blade/fox_defeat_3.png" id="5_r6iq2"]
 [ext_resource type="Texture2D" uid="uid://bh18dgm068hhf" path="res://asset/foxy/foxy/fox_hat_blade/fox_hit_1.png" id="6_ixiac"]
+[ext_resource type="Texture2D" uid="uid://8uxe583mhq85" path="res://asset/foxy/foxy/fox_hat_blade/fox_fall_1.png" id="7_e1uk1"]
 [ext_resource type="Texture2D" uid="uid://gg8v11cck4hu" path="res://asset/foxy/foxy/fox_hat_blade/fox_hit_2.png" id="7_xtbvj"]
 [ext_resource type="Texture2D" uid="uid://cbfcke2rlqmtw" path="res://asset/foxy/foxy/fox_hat_blade/fox_hit_3.png" id="8_0tqi8"]
 [ext_resource type="Texture2D" uid="uid://cv1omqfyyi3aj" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_1.png" id="9_4vt26"]
@@ -32,6 +34,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("3_ijt6p")
+}],
+"loop": true,
+"name": &"climb",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("3_e1uk1")
 }, {
 "duration": 1.0,
@@ -42,6 +52,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_e1uk1")
+}],
+"loop": true,
+"name": &"fall",
 "speed": 5.0
 }, {
 "frames": [{

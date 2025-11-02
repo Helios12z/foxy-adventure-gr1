@@ -24,6 +24,7 @@ extends StaticBody2D
 
 var blinking: bool = false
 var blink_elapsed: float = 0.0
+var cycling: bool = false
 
 # Bobbing state
 var base_y: float
@@ -45,7 +46,7 @@ func _ready() -> void:
 	base_sprite_scale = sprite.scale
 	if detect_area != null:
 		detect_area.body_entered.connect(_on_detect_area_body_entered)
-	await _cycle()
+	# Không tự động vòng lặp; chờ người chơi kích hoạt
 
 func _process(delta: float) -> void:
 	if blinking and sprite:
@@ -64,46 +65,44 @@ func _process(delta: float) -> void:
 	current_offset += offset_vel * delta
 	position.y = base_y + current_offset
 
-func _cycle() -> void:
-	while true:
-		# Hiển thị ổn định
-		if sprite:
-			sprite.modulate.a = 1.0
-		if collider:
-			collider.disabled = false
-		visible = true
-		blinking = false
-		blink_elapsed = 0.0
-		await get_tree().create_timer(visible_duration).timeout
+func _run_cycle() -> void:
+	if cycling:
+		return
+	cycling = true
+	# Bắt đầu nhấp nháy trong một khoảng thời gian
+	blinking = true
+	blink_elapsed = 0.0
+	await get_tree().create_timer(blink_duration).timeout
 
-		# Nhấp nháy mượt mà trong một khoảng thời gian
-		blinking = true
-		await get_tree().create_timer(blink_duration).timeout
+	# Mờ dần rồi biến mất
+	blinking = false
+	if sprite:
+		var t_out := create_tween()
+		t_out.tween_property(sprite, "modulate:a", 0.0, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		await t_out.finished
+	if collider:
+		collider.disabled = true
+	visible = false
 
-		# Mờ dần rồi biến mất
-		blinking = false
-		if sprite:
-			var t_out := create_tween()
-			t_out.tween_property(sprite, "modulate:a", 0.0, 0.35).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-			await t_out.finished
-		if collider:
-			collider.disabled = true
-		visible = false
+	# Ẩn trong một khoảng thời gian rồi xuất hiện trở lại
+	await get_tree().create_timer(hidden_duration).timeout
 
-		# Ẩn trong một khoảng thời gian rồi xuất hiện trở lại
-		await get_tree().create_timer(hidden_duration).timeout
-
-		# Xuất hiện trở lại với mờ dần vào
-		visible = true
-		if sprite:
-			sprite.modulate.a = 0.0
-			var t_in := create_tween()
-			t_in.tween_property(sprite, "modulate:a", 1.0, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-			await t_in.finished
+	# Xuất hiện trở lại với mờ dần vào và reset trạng thái
+	visible = true
+	if sprite:
+		sprite.modulate.a = 0.0
+		var t_in := create_tween()
+		t_in.tween_property(sprite, "modulate:a", 1.0, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		await t_in.finished
+	if collider:
+		collider.disabled = false
+	cycling = false
 
 func _on_detect_area_body_entered(body: Node) -> void:
 	if body is Player:
 		_play_spring_deform()
+		# Khi người chơi đứng lên mây mới kích hoạt chu kỳ nhấp nháy/biến mất
+		_run_cycle()
 
 func _play_spring_deform() -> void:
 	if deform_tween != null and deform_tween.is_running():
