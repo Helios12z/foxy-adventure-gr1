@@ -8,8 +8,13 @@ func control_moving(delta) -> bool:
 	var dir: float = Input.get_action_strength("right") - Input.get_action_strength("left")
 	var is_moving: bool = abs(dir) > 0.1
 	
-	dir = sign(dir)
-	obj.change_direction(dir) 
+	# Chỉ cập nhật hướng khi có input; tránh đặt direction = 0 khi idle
+	if is_moving:
+		dir = sign(dir)
+		obj.change_direction(dir)
+	else:
+		# Giữ nguyên hướng hiện tại để các state (ví dụ dash) dùng được
+		dir = obj.direction
 	var target_speed = dir * obj. movement_speed
 	var current_deccel = obj.deccel if obj.is_on_floor() else obj.air_deccel
 	
