@@ -2,7 +2,7 @@ extends Path2D
 
 @onready var path_follow: PathFollow2D = $PathFollow2D
 var _is_moving: bool = false
-@export var move_duration: float = 2.0
+@export var move_duration: float = 1.0
 
 func _on_interactive_area_2d_interacted() -> void:
 	if _is_moving:
