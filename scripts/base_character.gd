@@ -21,6 +21,7 @@ var animated_sprite: AnimatedSprite2D = null
 var _next_animation = null
 var _next_direction: int = 1
 var _next_animated_sprite: AnimatedSprite2D = null
+var ignore_gravity: bool = false
 
 func _ready() -> void:
 	health=max_health
@@ -39,7 +40,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _update_movement(delta: float) -> void:
-	velocity.y += gravity * delta
+	if not ignore_gravity:
+		velocity.y += gravity * delta
 	move_and_slide()
 	pass
 
@@ -84,6 +86,9 @@ func get_animation_name() -> String:
 
 func set_animated_sprite(new_animated_sprite: AnimatedSprite2D) -> void:
 	_next_animated_sprite = new_animated_sprite
+
+func set_ignore_gravity(enable: bool) -> void:
+	ignore_gravity = enable
 
 # Check if the animation or animated sprite has changed and play the new animation
 func _check_changed_animation() -> void:

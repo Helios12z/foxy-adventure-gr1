@@ -11,6 +11,7 @@ func _enter() -> void:
 	timer = obj.dash_duration
 	# Flatten vertical movement for a clean dash
 	obj.velocity.y = 0
+	obj.set_ignore_gravity(true)
 	# Enable dash warp shader effect
 	var mat: Material = null
 	if obj.animated_sprite != null:
@@ -43,6 +44,7 @@ func _update(delta: float) -> void:
 func _exit() -> void:
 	# Ensure velocity resets when exiting dash
 	obj.velocity.x = 0
+	obj.set_ignore_gravity(false)
 	# Disable dash warp shader effect
 	var mat: Material = null
 	if obj.animated_sprite != null:
