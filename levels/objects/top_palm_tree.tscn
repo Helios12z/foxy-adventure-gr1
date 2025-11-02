@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://s1gon0ayad2w"]
 
-[ext_resource type="Texture2D" uid="uid://getm5kr68qwe" path="res://assets/island/front_palm_trees/front_palm_tree_top_01.png" id="1_ctdi6"]
-[ext_resource type="Texture2D" uid="uid://07ilhsckqwm6" path="res://assets/island/front_palm_trees/front_palm_tree_top_02.png" id="2_62u2g"]
-[ext_resource type="Texture2D" uid="uid://dwpeqvei7c2tc" path="res://assets/island/front_palm_trees/front_palm_tree_top_03.png" id="3_y8qc2"]
-[ext_resource type="Texture2D" uid="uid://beay0xcyyoar6" path="res://assets/island/front_palm_trees/front_palm_tree_top_04.png" id="4_y6mys"]
+[ext_resource type="Texture2D" uid="uid://getm5kr68qwe" path="res://asset/island/front_palm_trees/front_palm_tree_top_01.png" id="1_ctdi6"]
+[ext_resource type="Texture2D" uid="uid://07ilhsckqwm6" path="res://asset/island/front_palm_trees/front_palm_tree_top_02.png" id="2_62u2g"]
+[ext_resource type="Texture2D" uid="uid://dwpeqvei7c2tc" path="res://asset/island/front_palm_trees/front_palm_tree_top_03.png" id="3_y8qc2"]
+[ext_resource type="Texture2D" uid="uid://beay0xcyyoar6" path="res://asset/island/front_palm_trees/front_palm_tree_top_04.png" id="4_y6mys"]
 
 [sub_resource type="GDScript" id="GDScript_yoyrk"]
 script/source = "extends StaticBody2D

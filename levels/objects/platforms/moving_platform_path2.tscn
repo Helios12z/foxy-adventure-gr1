@@ -6,12 +6,12 @@
 
 [sub_resource type="Curve2D" id="Curve2D_pre6l"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 582, 185, 0, 0, 0, 0, 972, 185)
+"points": PackedVector2Array(0, 0, 0, 0, 582, 185, 0, 0, 0, 0, 973, 185)
 }
 point_count = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bue25"]
-size = Vector2(84, 14)
+size = Vector2(85, 15)
 
 [node name="Path2D" type="Path2D"]
 curve = SubResource("Curve2D_pre6l")
@@ -39,7 +39,7 @@ collision_mask = 2
 script = ExtResource("3_ia2d")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D/InteractiveArea2D"]
-position = Vector2(1, -14)
+position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_bue25")
 
 [connection signal="interacted" from="PathFollow2D/AnimatableBody2D/InteractiveArea2D" to="." method="_on_interactive_area_2d_interacted"]
