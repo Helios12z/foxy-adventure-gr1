@@ -9,7 +9,7 @@ extends CharacterBody2D
 
 @export var attack_damage: int = 1
 @export var max_health: int = 3
-var health: int = max_health
+var health: int 
 
 
 var jump_speed: float = 320.0
@@ -23,6 +23,7 @@ var _next_direction: int = 1
 var _next_animated_sprite: AnimatedSprite2D = null
 
 func _ready() -> void:
+	health=max_health
 	set_animated_sprite($Direction/AnimatedSprite2D)
 
 func _physics_process(delta: float) -> void:

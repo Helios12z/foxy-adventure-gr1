@@ -41,6 +41,11 @@ func _ready() -> void:
 	if has_blade:
 		collected_blade()
 	GameManager.player = self
+	
+func _physics_process(delta: float) -> void:
+	super._physics_process(delta)
+	if is_on_wall() or is_on_floor():
+		reset_jump_count()
 
 func can_attack() -> bool:
 	return has_blade

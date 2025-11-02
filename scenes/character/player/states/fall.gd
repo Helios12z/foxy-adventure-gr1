@@ -20,10 +20,7 @@ func _update(_delta: float) -> void:
 		if (obj.is_on_left_wall() and input_dir < 0) or (obj.is_on_right_wall() and input_dir > 0):
 			change_state(fsm.states.climb)
 			return
-			
-	#If on floor change to idle if not moving and not jumping
-	if obj.is_on_floor():
-		obj.reset_jump_count()
+
 	if obj.is_on_floor() and not is_moving:
 		change_state(fsm.states.idle)
 	
