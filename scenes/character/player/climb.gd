@@ -13,7 +13,7 @@ func _update(delta: float) -> void:
 		return  # Exit early if wall jump was performed
 	
 	# Control horizontal movement
-	control_moving()
+	control_moving(delta)
 	
 	if obj.is_on_left_wall():
 		obj.velocity.x = -50  # Ép vào tường trái
@@ -29,7 +29,7 @@ func _update(delta: float) -> void:
 	if obj.is_on_floor():
 		# Reset jump count when landing from wall slide/climb
 		obj.reset_jump_count()
-		if control_moving():
+		if control_moving(delta):
 			change_state(fsm.states.walk)
 		else:
 			change_state(fsm.states.idle)
