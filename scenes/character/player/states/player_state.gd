@@ -11,11 +11,10 @@ func control_moving(delta) -> bool:
 	dir = sign(dir)
 	obj.change_direction(dir) 
 	var target_speed = dir * obj. movement_speed
-	var current_accel = obj.accel if obj.is_on_floor() else obj.air_accel
 	var current_deccel = obj.deccel if obj.is_on_floor() else obj.air_deccel
 	
 	if is_moving:
-		obj.velocity.x = move_toward(obj.velocity.x, target_speed, current_accel * delta)
+		obj.velocity.x = target_speed
 		if obj.is_on_floor():
 			change_state(fsm.states.walk)
 		return true
