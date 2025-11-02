@@ -11,7 +11,7 @@ func _update(_delta: float):
 		return
 	#Control moving
 	control_jump()
-	control_moving()
+	control_moving(_delta)
 	#If velocity.y is greater than 0 change to fall
 	if obj.velocity.y > 0:
 		change_state(fsm.states.fall)

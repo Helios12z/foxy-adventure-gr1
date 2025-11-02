@@ -3,18 +3,26 @@ extends FSMState
 
 #Control moving and changing state to run
 #Return true if moving
-func control_moving() -> bool:
+#Add friction and acceleration effects
+func control_moving(delta) -> bool:
 	var dir: float = Input.get_action_strength("right") - Input.get_action_strength("left")
 	var is_moving: bool = abs(dir) > 0.1
+	
+	dir = sign(dir)
+	obj.change_direction(dir) 
+	var target_speed = dir * obj. movement_speed
+	var current_accel = obj.accel if obj.is_on_floor() else obj.air_accel
+	var current_deccel = obj.deccel if obj.is_on_floor() else obj.air_deccel
+	
 	if is_moving:
-		dir = sign(dir)
-		obj.change_direction(dir)
-		obj.velocity.x = obj.movement_speed * dir
+		obj.velocity.x = move_toward(obj.velocity.x, target_speed, current_accel * delta)
 		if obj.is_on_floor():
 			change_state(fsm.states.walk)
 		return true
 	else:
-		obj.velocity.x = 0
+		obj.velocity.x = move_toward(obj.velocity.x, 0, current_deccel * delta)
+		if obj.is_on_floor() and obj.velocity.x == 0:
+			change_state(fsm.states.idle)
 	return false
 
 #Control jumping

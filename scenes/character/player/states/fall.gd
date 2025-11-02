@@ -11,7 +11,7 @@ func _update(_delta: float) -> void:
 		return
 	#Control moving
 	control_jump()
-	var is_moving: bool = control_moving()
+	var is_moving: bool = control_moving(_delta)
 	#If on floor change to idle if not moving and not jumping
 	if obj.is_on_floor():
 		obj.reset_jump_count()
