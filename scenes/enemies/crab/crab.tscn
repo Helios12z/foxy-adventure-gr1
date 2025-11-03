@@ -22,6 +22,14 @@ size = Vector2(41, 20)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_jgbqf")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("1_jwctj")
 }, {
 "duration": 1.0,
@@ -83,9 +91,8 @@ debug_color = Color(0.929265, 0.225519, 0.365746, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_86med")
-animation = &"walk"
+animation = &"dead"
 autoplay = "walk"
-frame_progress = 0.785979
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
 collision_layer = 16

@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://b3p7vbuplc7xo"]
+
+[ext_resource type="Texture2D" uid="uid://cnkco4s60d6j5" path="res://asset/enemy/pelican/pelican_bullet.png" id="1_0sgbg"]
+[ext_resource type="Script" uid="uid://ql3yt4dlud7w" path="res://scenes/enemies/pelican/peligan_bullet.gd" id="1_h7rb4"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_7gcl5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kfu4w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5c6wj"]
+
+[node name="PeliganBullet" type="RigidBody2D"]
+collision_layer = 8
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_h7rb4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_0sgbg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_kfu4w")
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 5
+script = ExtResource("3_7gcl5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+shape = SubResource("CircleShape2D_5c6wj")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="hitted" from="HitArea2D" to="." method="_on_hit_area_2d_hitted"]
