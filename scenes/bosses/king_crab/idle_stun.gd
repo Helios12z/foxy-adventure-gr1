@@ -2,7 +2,7 @@ extends EnemyState
 
 func _enter() -> void:
 	obj.change_animation("idle_stun")
-	timer = 1.0
+	timer = 2.25
 
 func _update(d: float) -> void:
 	if update_timer(d):
