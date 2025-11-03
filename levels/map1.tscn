@@ -165,7 +165,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_imecc"]
-size = Vector2(12590, 240)
+size = Vector2(12590, 1610)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a7slf"]
 size = Vector2(20, 596)
@@ -179,6 +179,20 @@ scale = Vector2(1.5, 1.5)
 
 [node name="Player" parent="." instance=ExtResource("6_44ejs")]
 position = Vector2(-196, 48)
+has_blade = false
+max_jump_count = 2
+deccel = 800
+air_deccel = 100
+dash_speed = 800.0
+dash_duration = 0.15
+dash_ghost_interval = 0.03
+dash_chain_max = 2
+dash_chain_cooldown = 0.6
+run_double_tap_window_ms = 250
+gravity = 700.0
+direction = 1
+attack_damage = 1
+max_health = 3
 
 [node name="Npcs" type="Node2D" parent="."]
 
@@ -487,13 +501,13 @@ position = Vector2(9885, -77)
 
 [node name="HitArea2D" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 2
 script = ExtResource("43_a7slf")
 damage = 999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
-position = Vector2(5497, 341)
+position = Vector2(5497, 1026)
 shape = SubResource("RectangleShape2D_imecc")
 
 [node name="Bullets" type="Node2D" parent="."]
@@ -515,3 +529,14 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PeliganLimitation2"]
 position = Vector2(0, -228)
 shape = SubResource("RectangleShape2D_a7slf")
+
+[node name="HitArea2D2" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+script = ExtResource("43_a7slf")
+damage = 999
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D2"]
+position = Vector2(5497, 1026)
+shape = SubResource("RectangleShape2D_imecc")

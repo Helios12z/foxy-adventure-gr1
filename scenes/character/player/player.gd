@@ -180,3 +180,11 @@ func _on_blink_timer_timeout() -> void:
 		animated_sprite.modulate.a = 0.4  # giảm alpha để nhấp nháy
 	else:
 		animated_sprite.modulate.a = 1.0  # phục hồi alpha
+
+
+func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
+	fsm.current_state.take_damage(damage)
+	if(health <= 0):
+		fsm.change_state(fsm.states.dead)
+	else: 
+		fsm.change_state(fsm.states.hurt)
