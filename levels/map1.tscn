@@ -323,13 +323,13 @@ texture = ExtResource("4_rwkv0")
 centered = false
 
 [node name="WaterSprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
-position = Vector2(23.0001, 246.018)
-scale = Vector2(24.125, 7.375)
+position = Vector2(23.0001, 740.009)
+scale = Vector2(24.125, 38.2494)
 texture = ExtResource("3_44ejs")
 
 [node name="WaterSprite2D2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
-position = Vector2(1562, 245.77)
-scale = Vector2(24.125, 7.375)
+position = Vector2(1562, 737.885)
+scale = Vector2(24.125, 38.1322)
 texture = ExtResource("3_44ejs")
 
 [node name="WaterWave1" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
