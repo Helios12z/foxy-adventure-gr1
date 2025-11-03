@@ -119,6 +119,7 @@ dialogic_default_action={
 2d_physics/layer_6="spike"
 2d_physics/layer_7="crystal_mauler"
 2d_physics/layer_8="crystal_mauler_interaction"
+2d_physics/layer_9="peligan_limitation"
 
 [rendering]
 

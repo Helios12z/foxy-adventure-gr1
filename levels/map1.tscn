@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=4 uid="uid://65dl3olpohwm"]
+[gd_scene load_steps=52 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="4_36gkw"]
 [ext_resource type="Texture2D" uid="uid://bqde0l4at7gv8" path="res://asset/island/background/bg_image.png" id="4_rwkv0"]
 [ext_resource type="PackedScene" uid="uid://dmngvbkuj5adl" path="res://scenes/enemies/crab/starfish.tscn" id="5_88mrp"]
-[ext_resource type="PackedScene" uid="uid://cwss8lnopdq2i" path="res://scenes/enemies/pelican/pelican.tscn" id="6_1h871"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="6_44ejs"]
 [ext_resource type="Script" uid="uid://bdc58gv7lyc30" path="res://levels/parallax_layer_cloud.gd" id="7_6s483"]
+[ext_resource type="PackedScene" uid="uid://bbmftido5vkbj" path="res://scenes/enemies/pelican/peligan.tscn" id="7_a7slf"]
 [ext_resource type="Texture2D" uid="uid://dekyi7oa4n0sg" path="res://asset/island/background/water_reflect_big_01.png" id="7_gldnb"]
 [ext_resource type="Texture2D" uid="uid://m5yds3bm8pou" path="res://asset/island/background/big_clouds.png" id="7_rwkv0"]
 [ext_resource type="Texture2D" uid="uid://b6dilwf04d4be" path="res://asset/island/background/water_reflect_big_02.png" id="8_kvxy7"]
@@ -37,7 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://crbk21cr2x0g0" path="res://asset/island/back_palm_trees/back_palm_tree_left_02.png" id="30_amqpg"]
 [ext_resource type="Texture2D" uid="uid://5dkaa2a7hhs2" path="res://asset/island/back_palm_trees/back_palm_tree_left_03.png" id="31_vkxmu"]
 [ext_resource type="Texture2D" uid="uid://c6o3jd3irav67" path="res://asset/island/back_palm_trees/back_palm_tree_left_04.png" id="32_avipa"]
-[ext_resource type="PackedScene" uid="uid://btv1jfpk0tixd" path="res://scenes/enemies/mushroom/mushroom.tscn" id="35_666l6"]
+[ext_resource type="PackedScene" uid="uid://t6vtn81e7w6p" path="res://scenes/enemies/mushroom/mushroom.tscn" id="35_666l6"]
 [ext_resource type="PackedScene" uid="uid://oplmtt8e4gwb" path="res://scenes/character/npcs/crystal-mauler.tscn" id="40_vkxmu"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="41_6lioj"]
 [ext_resource type="PackedScene" uid="uid://b64dtt1sqigic" path="res://levels/objects/platforms/cloud_platform_01.tscn" id="41_avipa"]
@@ -167,8 +167,10 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_imecc"]
 size = Vector2(12590, 240)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a7slf"]
+size = Vector2(20, 596)
+
 [node name="Stage" type="Node2D"]
-position = Vector2(74, -60)
 script = ExtResource("1_vf8qv")
 
 [node name="Crystal-mauler" parent="." instance=ExtResource("40_vkxmu")]
@@ -209,8 +211,8 @@ position = Vector2(3497, 54)
 [node name="Starfish3" parent="Enemies" instance=ExtResource("5_88mrp")]
 position = Vector2(4934, 54)
 
-[node name="Pelican" parent="Enemies" instance=ExtResource("6_1h871")]
-position = Vector2(3083, -353)
+[node name="Peligan" parent="Enemies" instance=ExtResource("7_a7slf")]
+position = Vector2(971, -280)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(111, 5)
@@ -493,3 +495,23 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 position = Vector2(5497, 341)
 shape = SubResource("RectangleShape2D_imecc")
+
+[node name="Bullets" type="Node2D" parent="."]
+
+[node name="PeliganLimitation1" type="StaticBody2D" parent="."]
+position = Vector2(741, 0)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PeliganLimitation1"]
+position = Vector2(0, -228)
+shape = SubResource("RectangleShape2D_a7slf")
+
+[node name="PeliganLimitation2" type="StaticBody2D" parent="."]
+position = Vector2(1222, -2)
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PeliganLimitation2"]
+position = Vector2(0, -228)
+shape = SubResource("RectangleShape2D_a7slf")
