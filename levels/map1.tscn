@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=4 uid="uid://65dl3olpohwm"]
+[gd_scene load_steps=51 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
@@ -42,6 +42,7 @@
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="41_6lioj"]
 [ext_resource type="PackedScene" uid="uid://b64dtt1sqigic" path="res://levels/objects/platforms/cloud_platform_01.tscn" id="41_avipa"]
 [ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="42_6lioj"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="43_a7slf"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -162,6 +163,9 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_imecc"]
+size = Vector2(12590, 240)
 
 [node name="Stage" type="Node2D"]
 position = Vector2(74, -60)
@@ -478,3 +482,14 @@ position = Vector2(9309, -13)
 
 [node name="CloudPlatform11" parent="." instance=ExtResource("41_avipa")]
 position = Vector2(9885, -77)
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("43_a7slf")
+damage = 999
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(5497, 341)
+shape = SubResource("RectangleShape2D_imecc")
