@@ -126,8 +126,12 @@ func _on_invulnerable_timeout() -> void:
 	is_invulnerable = false
 	set_collision_layer_value(2,true)
 	set_collision_mask_value(6,false)
-	$Direction/AnimatedSprite2D.visible = true  # đảm bảo hiện lại
-	# Ensure we only restore visibility on the currently active sprite
+	# Chỉ hiển thị sprite đang hoạt động; ẩn các sprite còn lại
+	var dir := get_node("Direction")
+	if dir:
+		for child in dir.get_children():
+			if child is AnimatedSprite2D:
+				child.visible = false
 	if animated_sprite:
 		animated_sprite.visible = true
 		animated_sprite.modulate.a = 1.0
