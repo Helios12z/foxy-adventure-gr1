@@ -48,6 +48,9 @@ func _update(d: float) -> void:
 		var near_target := absf(obj.global_position.x - target_x) <= 12.0
 		if obj.is_touch_wall() or near_target:
 			braking = true
+			
+		if obj.is_can_fall(): 
+			braking = true 
 
 		if roll_time >= obj.roll_max_time:
 			braking = true
