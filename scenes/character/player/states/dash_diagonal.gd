@@ -77,6 +77,9 @@ func _spawn_afterimage() -> void:
 	if dir_node == null or source == null:
 		return
 	var container := Node2D.new()
+	# Add first and mark top-level so it stays in world space
+	obj.get_parent().add_child(container)
+	container.set_as_top_level(true)
 	container.global_position = dir_node.global_position - Vector2(4 * obj.direction, 14)
 	container.scale = dir_node.scale
 	var ghost := AnimatedSprite2D.new()
@@ -86,7 +89,6 @@ func _spawn_afterimage() -> void:
 	ghost.stop()
 	ghost.modulate = Color(1, 1, 1, 0.6)
 	container.add_child(ghost)
-	obj.get_parent().add_child(container)
 	var tw := container.create_tween()
 	tw.tween_property(ghost, "modulate:a", 0.0, 0.2)
 	tw.tween_callback(Callable(container, "queue_free"))

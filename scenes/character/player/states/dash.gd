@@ -60,6 +60,9 @@ func _spawn_afterimage() -> void:
 		return
 	# Container sits in world space to avoid following the player
 	var container := Node2D.new()
+	# Add to scene first, then set as toplevel to avoid inheriting parent transforms
+	obj.get_parent().add_child(container)
+	container.set_as_top_level(true)
 	container.global_position = dir_node.global_position - Vector2(4 * obj.direction, 14)
 	container.scale = dir_node.scale
 	# Duplicate current sprite frame as an afterimage
@@ -70,7 +73,6 @@ func _spawn_afterimage() -> void:
 	ghost.stop()
 	ghost.modulate = Color(1, 1, 1, 0.6)
 	container.add_child(ghost)
-	obj.get_parent().add_child(container)
 	# Fade out quickly, then free
 	var tw := container.create_tween()
 	tw.tween_property(ghost, "modulate:a", 0.0, 0.2)
