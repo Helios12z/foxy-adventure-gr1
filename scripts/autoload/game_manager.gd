@@ -110,3 +110,9 @@ func clear_checkpoint_data() -> void:
 	checkpoint_data.clear()
 	SaveSystem.delete_save_file()
 	print("All checkpoint data cleared")
+	
+func collect_blade() -> void:
+	if player:
+		player.collected_blade()
+		Dialogic.VAR.set("HasBlade", true)
+		print("Player has collected the blade!")

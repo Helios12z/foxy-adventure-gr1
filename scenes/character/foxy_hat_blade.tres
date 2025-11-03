@@ -100,6 +100,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("1_8tu21")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_7856g")
+}],
+"loop": true,
+"name": &"jump_attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("13_tcobl")
 }, {
 "duration": 1.0,

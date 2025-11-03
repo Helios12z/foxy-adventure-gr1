@@ -15,6 +15,8 @@ func _update(_delta: float):
 	#Control jump
 	if control_jump():
 		return
+	if control_attack():
+		return
 	#Control moving and if not moving change to idle
 	if not control_moving(_delta):
 		change_state(fsm.states.idle)

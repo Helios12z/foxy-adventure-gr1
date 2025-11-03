@@ -11,6 +11,7 @@ func _update(_delta: float) -> void:
 		return
 	#Control moving
 	control_jump()
+	control_attack()
 	var is_moving: bool = control_moving(_delta)
 	
 	# Check for wall climbing

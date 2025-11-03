@@ -1,0 +1,13 @@
+if {HasBlade} == true:
+	crystal_mauler: Bạn đã có kiếm rồi
+	[end_timeline]
+else:
+	crystal_mauler: Chào Foxy, bạn đang đi săn à? Tôi tìm thấy một thanh kiếm bị bỏ quên, nhưng tôi không thể dùng nó.
+	crystal_mauler: Bạn có muốn nhận nó không?
+	- Nhận kiếm
+		do GameManager.collect_blade()
+		crystal_mauler: Tuyệt vời! Hy vọng nó sẽ giúp ích cho bạn.
+		[end_timeline]
+	- Không cần đâu
+		crystal_mauler: Ồ, vậy thì tôi sẽ giữ nó ở đây. Hãy cẩn thận nhé!
+		[end_timeline]

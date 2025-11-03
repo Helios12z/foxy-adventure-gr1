@@ -18,6 +18,7 @@ func _update(_delta: float):
 	#Control moving
 	control_jump()
 	control_moving(_delta)
+	control_attack()
 	
 	# Update wall jump timer
 	if wall_jump_timer > 0:

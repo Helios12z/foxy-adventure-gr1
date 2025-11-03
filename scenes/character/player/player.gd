@@ -38,6 +38,7 @@ func check_run_double_tap() -> int:
 func _ready() -> void:
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Idle)
+	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",true)
 	if has_blade:
 		collected_blade()
 	GameManager.player = self
@@ -58,6 +59,9 @@ func can_jump() -> bool:
 func set_detect_and_hurt_collsion(enable: bool):
 	$Direction/HurtArea2D/CollisionShape2D.disabled = not enable
 	set_collision_layer_value(2,enable)
+
+func set_hit_collision(enabled):
+	$Direction/HitArea2D/CollisionShape2D.disabled = not enabled
 
 func reset_jump_count() -> void:
 	max_jump_count = 2

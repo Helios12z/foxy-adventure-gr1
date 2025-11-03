@@ -65,3 +65,16 @@ func take_damage(damage: int = 1) -> void:
 		change_state(fsm.states.dead)
 	else:
 		change_state(fsm.states.hurt)
+		
+func control_attack() -> bool:
+	if obj.can_attack():
+		if Input.is_action_just_pressed("attack"):
+			change_state(fsm.states.attack)
+			return true
+		#if Input.is_action_just_pressed("fly_blade"):
+			#change_state(fsm.states.flyblade)
+			#return true
+		#if Input.is_action_just_pressed("throw_blade"):
+			#change_state(fsm.states.throwblade)
+			#return true
+	return false

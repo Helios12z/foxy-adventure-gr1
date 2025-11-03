@@ -165,6 +165,10 @@ animations = [{
 position = Vector2(74, -60)
 script = ExtResource("1_vf8qv")
 
+[node name="Crystal-mauler" parent="." instance=ExtResource("40_vkxmu")]
+position = Vector2(540, -186)
+scale = Vector2(1.5, 1.5)
+
 [node name="Player" parent="." instance=ExtResource("6_44ejs")]
 position = Vector2(-127, -10)
 
@@ -395,7 +399,3 @@ scale = Vector2(-1.49551, 1.05882)
 
 [node name="KingCrab" parent="." instance=ExtResource("39_vkxmu")]
 position = Vector2(7762, 51)
-
-[node name="Crystal-mauler" parent="." instance=ExtResource("40_vkxmu")]
-position = Vector2(540, -186)
-scale = Vector2(1.5, 1.5)

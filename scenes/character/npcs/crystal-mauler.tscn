@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://oplmtt8e4gwb"]
+[gd_scene load_steps=14 format=3 uid="uid://oplmtt8e4gwb"]
 
 [ext_resource type="Texture2D" uid="uid://d03yieukyyauy" path="res://asset/npcs/idle_1.png" id="1_2dhrp"]
+[ext_resource type="Script" uid="uid://dkaw15lh0hb5j" path="res://scenes/character/npcs/crystal_mauler.gd" id="1_flrhr"]
 [ext_resource type="Texture2D" uid="uid://dnkr2afk7iv48" path="res://asset/npcs/idle_2.png" id="2_ohkf6"]
 [ext_resource type="Texture2D" uid="uid://drtxqwblxb0y5" path="res://asset/npcs/idle_3.png" id="3_flrhr"]
 [ext_resource type="Texture2D" uid="uid://phku3kcwqgi6" path="res://asset/npcs/idle_4.png" id="4_ii0sg"]
@@ -8,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b63dxy25ofpan" path="res://asset/npcs/idle_6.png" id="6_tky3o"]
 [ext_resource type="Texture2D" uid="uid://duk0m5bqakc36" path="res://asset/npcs/idle_7.png" id="7_07jum"]
 [ext_resource type="Texture2D" uid="uid://bo3hnb2j0ue1b" path="res://asset/npcs/idle_8.png" id="8_a8lsb"]
+[ext_resource type="Script" uid="uid://n4lx7r4yxqp0" path="res://scripts/interactive_area_2d.gd" id="9_ohkf6"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_f0gsv"]
 animations = [{
@@ -45,14 +47,31 @@ animations = [{
 radius = 13.0
 height = 42.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_flrhr"]
+size = Vector2(73, 48)
+
 [node name="Crystal-mauler" type="CharacterBody2D"]
+collision_layer = 64
+script = ExtResource("1_flrhr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -64)
 sprite_frames = SubResource("SpriteFrames_f0gsv")
 autoplay = "default"
-frame_progress = 0.68808
+frame_progress = 0.428593
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, -21)
 shape = SubResource("CapsuleShape2D_pbnil")
+
+[node name="InteractiveArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9_ohkf6")
+metadata/_custom_type_script = "uid://n4lx7r4yxqp0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractiveArea2D"]
+position = Vector2(0.5, -24)
+shape = SubResource("RectangleShape2D_flrhr")
+
+[connection signal="interacted" from="InteractiveArea2D" to="." method="_on_interactive_area_2d_interacted"]
