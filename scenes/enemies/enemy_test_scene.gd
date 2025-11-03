@@ -5,5 +5,6 @@ func _enter_tree() -> void:
 	GameManager.current_stage = self
 	
 func _ready() -> void:
-	if not GameManager.respawn_at_portal():
-		GameManager.respawn_at_checkpoint()
+	#if not GameManager.respawn_at_portal():
+		#GameManager.respawn_at_checkpoint()
+	pass

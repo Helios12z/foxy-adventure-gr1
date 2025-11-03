@@ -112,12 +112,10 @@ func clear_checkpoint_data() -> void:
 	print("All checkpoint data cleared")
 	
 func collect_blade() -> void:
-	if player == null:
-		return
-	# Grant blade immediately
-	player.collected_blade()
-	# Update only has_blade field in current checkpoint (create init if missing)
-	update_current_checkpoint_player_state({"has_blade": true}, true)
+	if player:
+		player.collected_blade()
+		Dialogic.VAR.set("HasBlade", true)
+		#update_current_checkpoint_player_state({"has_blade": true}, true)
 
 func ensure_initial_checkpoint() -> void:
 	# Create or adopt an initial checkpoint with starting position

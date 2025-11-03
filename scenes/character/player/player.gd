@@ -92,6 +92,7 @@ func load_state(data: Dictionary) -> void:
 		global_position = Vector2(pos_array[0], pos_array[1])
 	if data.has("has_blade"):
 		has_blade = data["has_blade"]
+		Dialogic.VAR.set("HasBlade",has_blade)
 		if has_blade:
 			collected_blade()
 			
@@ -180,3 +181,11 @@ func _on_blink_timer_timeout() -> void:
 		animated_sprite.modulate.a = 0.4  # giảm alpha để nhấp nháy
 	else:
 		animated_sprite.modulate.a = 1.0  # phục hồi alpha
+
+
+func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
+	fsm.current_state.take_damage(damage)
+	if(health <= 0):
+		fsm.change_state(fsm.states.dead)
+	else: 
+		fsm.change_state(fsm.states.hurt)

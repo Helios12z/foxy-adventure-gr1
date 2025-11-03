@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=23 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -32,6 +32,9 @@ shader_parameter/lean_cutoff = 0.58
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfavw"]
 size = Vector2(25, 33)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4wjd"]
+size = Vector2(30, 43)
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 10
 collision_layer = 2
@@ -44,7 +47,7 @@ position = Vector2(0, -12)
 shape = SubResource("CapsuleShape2D_lcjji")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -141)
+position = Vector2(-1, -101)
 zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
 
@@ -55,7 +58,7 @@ position = Vector2(0, 2)
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
-animation = &"climb"
+animation = &"dead"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
@@ -90,6 +93,17 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
 position = Vector2(12.5, -15.5)
 shape = SubResource("RectangleShape2D_gfavw")
+
+[node name="FallHurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("10_68dt2")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/FallHurtArea2D"]
+position = Vector2(-1, -13.5)
+shape = SubResource("RectangleShape2D_t4wjd")
+debug_color = Color(0.0608557, 0.0185072, 0.0127914, 0.42)
 
 [node name="States" type="Node" parent="."]
 
@@ -127,3 +141,4 @@ script = ExtResource("14_yuskr")
 script = ExtResource("18_qnn1i")
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
+[connection signal="hurt" from="Direction/FallHurtArea2D" to="." method="_on_fall_hurt_area_2d_hurt"]
