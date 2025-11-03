@@ -16,6 +16,7 @@ size = Vector2(85, 15)
 [node name="Path2D" type="Path2D"]
 curve = SubResource("Curve2D_pre6l")
 script = ExtResource("2_mpp2")
+move_duration = 2.0
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
 position = Vector2(582, 185)
