@@ -256,18 +256,3 @@ func check_changed_direction() -> void:
 			$Direction.scale.x = -1
 		if direction == -1:
 			$Direction.scale.x = 1
-			
-#func always_see_player_when_attack()->bool:
-	#if found_player == null:
-		#return false  
-#
-	#var dx := found_player.global_position.x - global_position.x
-	#var desired: int 
-	#if dx>=0.0: desired=1 
-	#else: desired=-1 
-#
-	#var changed := desired != direction
-	#if changed: 
-		#change_direction(desired)
-		#
-	#return changed 
