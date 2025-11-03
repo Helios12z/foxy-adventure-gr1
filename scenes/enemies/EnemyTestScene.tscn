@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://ccjclk3f7u170"]
+[gd_scene load_steps=10 format=4 uid="uid://ccjclk3f7u170"]
 
 [ext_resource type="Script" uid="uid://dld7o3j0igwm7" path="res://scenes/enemies/enemy_test_scene.gd" id="1_mkubj"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_ejmpy"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://oplmtt8e4gwb" path="res://scenes/character/npcs/crystal-mauler.tscn" id="6_wl40g"]
 [ext_resource type="PackedScene" uid="uid://bbmftido5vkbj" path="res://scenes/enemies/pelican/peligan.tscn" id="7_62jtg"]
 [ext_resource type="PackedScene" uid="uid://t6vtn81e7w6p" path="res://scenes/enemies/mushroom/mushroom.tscn" id="7_x0uj1"]
+[ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="9_836ia"]
 
 [node name="EnemyTestScene" type="Node"]
 script = ExtResource("1_mkubj")
@@ -36,7 +37,7 @@ position = Vector2(675, -47)
 position = Vector2(55, -32)
 
 [node name="mushroom" parent="." instance=ExtResource("7_x0uj1")]
-position = Vector2(238, -50)
+position = Vector2(-23, 42)
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -44,3 +45,6 @@ position = Vector2(238, -50)
 position = Vector2(144, -217)
 
 [node name="Bullets" type="Node2D" parent="."]
+
+[node name="KingCrab" parent="." instance=ExtResource("9_836ia")]
+position = Vector2(467, -51)
