@@ -22,7 +22,13 @@ func _update(delta: float) -> void:
 	
 	# Wall sliding logic
 	if obj.can_wall_slide():
-		obj.wall_slide(delta)
+		# Giảm tốc trượt 50% nếu đang giữ hướng về phía tường
+		var input_dir := Input.get_axis("left", "right")
+		var pressing_into_wall := (obj.is_on_left_wall() and input_dir < 0) or (obj.is_on_right_wall() and input_dir > 0)
+		if pressing_into_wall:
+			obj.velocity.y = min(obj.velocity.y, obj.wall_slide_speed * 0.5)
+		else:
+			obj.wall_slide(delta)
 	
 	# Transition conditions
 	# If player is on floor, go to idle or run

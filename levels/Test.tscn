@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c8iyq6ukbtgdh" path="res://levels/objects/palm_tree_1.tscn" id="3_kh2fj"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="5_4qglm"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="6_pupqp"]
-[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://scenes/enemies/spike/spike.tscn" id="6_yqpgv"]
+[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://asset/enemy/mushroom/spike.tscn" id="6_yqpgv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ok4yu"]
 

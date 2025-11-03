@@ -5,9 +5,7 @@ extends BaseCharacter
 var is_invulnerable: bool = false
 @export var has_blade: bool = false
 @export var max_jump_count = 2
-@export var accel = 1000        # gia tốc khi ở trên đất
-@export var air_accel = 600    # gia tốc khi ở trên không (nhỏ hơn)
-@export var deccel = 400       # ma sát khi ở trên đất
+@export var deccel = 800     # ma sát khi ở trên đất
 @export var air_deccel = 100   # ma sát khi ở trên không
 @export var dash_speed: float = 800.0
 @export var dash_duration: float = 0.15

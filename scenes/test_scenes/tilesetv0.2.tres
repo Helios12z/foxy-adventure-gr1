@@ -1,8 +1,11 @@
-[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://d3c8dnj104u5w"]
+[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://d3c8dnj104u5w"]
 
 [ext_resource type="Texture2D" uid="uid://v2dtejovry7r" path="res://asset/island/terrain/terrain_32x32.png" id="1_uwm3g"]
 [ext_resource type="PackedScene" uid="uid://b64dtt1sqigic" path="res://levels/objects/platforms/cloud_platform_01.tscn" id="2_em3jw"]
-[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://scenes/enemies/spike/spike.tscn" id="3_ybmpq"]
+[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://asset/enemy/mushroom/spike.tscn" id="3_eudup"]
+[ext_resource type="PackedScene" uid="uid://c8iyq6ukbtgdh" path="res://levels/objects/palm_tree_1.tscn" id="4_ybmpq"]
+[ext_resource type="PackedScene" uid="uid://bghk1nocyicg" path="res://levels/objects/palm_tree_2.tscn" id="5_eudup"]
+[ext_resource type="PackedScene" uid="uid://kgiks45x5kpk" path="res://levels/objects/palm_tree_3.tscn" id="6_xp6v3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5kmfq"]
 texture = ExtResource("1_uwm3g")
@@ -746,7 +749,12 @@ texture_region_size = Vector2i(32, 32)
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ge83f"]
 scenes/1/scene = ExtResource("2_em3jw")
-scenes/2/scene = ExtResource("3_ybmpq")
+scenes/2/scene = ExtResource("3_eudup")
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ikfa2"]
+scenes/1/scene = ExtResource("4_ybmpq")
+scenes/2/scene = ExtResource("5_eudup")
+scenes/3/scene = ExtResource("6_xp6v3")
 
 [resource]
 tile_size = Vector2i(32, 32)
@@ -756,3 +764,4 @@ terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.0668831, 0.43508, 0.471526, 1)
 sources/0 = SubResource("TileSetAtlasSource_5kmfq")
 sources/1 = SubResource("TileSetScenesCollectionSource_ge83f")
+sources/2 = SubResource("TileSetScenesCollectionSource_ikfa2")

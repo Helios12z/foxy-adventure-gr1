@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=19 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://caxtbpdyga1ay" path="res://scenes/character/player/states/fall.gd" id="42_xcnuv"]
 [ext_resource type="Script" uid="uid://cnsjlj1g4yk6v" path="res://scenes/character/player/states/dash.gd" id="43_dash"]
 [ext_resource type="Script" uid="uid://d02atll0hy5s3" path="res://scenes/character/player/states/run_fast.gd" id="44_runfast"]
+[ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lcjji"]
 
@@ -29,14 +30,17 @@ shader_parameter/lean_cutoff = 0.58
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_puv7k")
+run_speed_multiplier = 2.1
+movement_speed = 120.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -12)
 shape = SubResource("CapsuleShape2D_lcjji")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1, -45)
-zoom = Vector2(2.5, 2.5)
+position = Vector2(0, -141)
+zoom = Vector2(1.4, 1.4)
+position_smoothing_enabled = true
 
 [node name="Direction" type="Node2D" parent="."]
 position = Vector2(0, 2)
@@ -87,6 +91,9 @@ script = ExtResource("42_xcnuv")
 
 [node name="Dash" type="Node" parent="States"]
 script = ExtResource("43_dash")
+
+[node name="DashDiagonal" type="Node" parent="States"]
+script = ExtResource("45_dashdiag")
 
 [node name="Run" type="Node" parent="States"]
 script = ExtResource("44_runfast")

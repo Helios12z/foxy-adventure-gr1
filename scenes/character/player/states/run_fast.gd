@@ -21,8 +21,9 @@ func _update(delta: float) -> void:
 	# Allow dash to override
 	if control_dash():
 		return
-	# Jump stays available
-	if control_jump():
+	# Nhấn Jump trong run_fast sẽ dash chéo lên theo hướng hiện tại
+	if Input.is_action_just_pressed("jump"):
+		change_state(fsm.states.dashdiagonal)
 		return
 
 	# Maintain run motion while holding direction
