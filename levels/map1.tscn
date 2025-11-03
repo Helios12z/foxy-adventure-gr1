@@ -294,87 +294,87 @@ texture = ExtResource("12_mt70a")
 [node name="ParallaxLayerTree" type="ParallaxLayer" parent="ParallaxBackground"]
 
 [node name="Tree1" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(181, 45)
+position = Vector2(256, -14)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree12" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(5622, 45)
+position = Vector2(5696, -15)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree11" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(5910, 45)
+position = Vector2(5985, -16)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree10" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(2995, -146)
+position = Vector2(3069, -208)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree4" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(1652, -113)
+position = Vector2(1725, -175)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree5" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(2072, 47)
+position = Vector2(2144, -15)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree3" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(915, -113)
+position = Vector2(988, -174)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree2" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(389, -150)
+position = Vector2(455, -210)
 sprite_frames = SubResource("SpriteFrames_a7slf")
 autoplay = "default"
 
 [node name="Tree8" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(1481, -333)
+position = Vector2(1552, -398)
 sprite_frames = SubResource("SpriteFrames_a7slf")
 autoplay = "default"
 
 [node name="Tree6" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(1270, -331)
+position = Vector2(1343, -390)
 sprite_frames = SubResource("SpriteFrames_imecc")
 flip_h = true
 
 [node name="Tree9" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(4405, -257)
+position = Vector2(4480, -307)
 sprite_frames = SubResource("SpriteFrames_imecc")
 flip_h = true
 
 [node name="Tree7" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(1758, -320)
+position = Vector2(1830, -379)
 sprite_frames = SubResource("SpriteFrames_imecc")
 flip_h = true
 
 [node name="Tree13" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(5427, -275)
+position = Vector2(5498, -334)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree14" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(3604, -308)
+position = Vector2(3677, -365)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree15" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(3507, -146)
+position = Vector2(3579, -207)
 sprite_frames = SubResource("SpriteFrames_6lioj")
 autoplay = "default"
 
 [node name="Tree16" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(2956, -304)
+position = Vector2(3026, -363)
 sprite_frames = SubResource("SpriteFrames_a7slf")
 autoplay = "default"
 
 [node name="Tree17" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerTree"]
-position = Vector2(3263, -279)
+position = Vector2(3337, -338)
 sprite_frames = SubResource("SpriteFrames_a7slf")
 autoplay = "default"
 
