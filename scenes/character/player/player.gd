@@ -92,6 +92,7 @@ func load_state(data: Dictionary) -> void:
 		global_position = Vector2(pos_array[0], pos_array[1])
 	if data.has("has_blade"):
 		has_blade = data["has_blade"]
+		Dialogic.VAR.set("HasBlade", has_blade)
 		if has_blade:
 			collected_blade()
 			

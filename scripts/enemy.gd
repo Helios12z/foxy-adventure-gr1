@@ -86,4 +86,4 @@ func _take_damage_from_dir(_damage_dir: Vector2, _damage: float):
 	fsm.current_state.take_damage(_damage_dir, _damage)
 	
 func set_hit_collision(enabled):
-	$Direction/HitArea2D/CollisionShape2D.disabled = not enabled
+	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",not enabled)

@@ -39,22 +39,8 @@ size = Vector2(30, 43)
 z_index = 10
 collision_layer = 2
 script = ExtResource("1_puv7k")
-has_blade = null
-max_jump_count = null
-deccel = null
-air_deccel = null
-dash_speed = null
-dash_duration = null
-dash_ghost_interval = null
-dash_chain_max = null
-dash_chain_cooldown = null
 run_speed_multiplier = 2.1
-run_double_tap_window_ms = null
 movement_speed = 120.0
-gravity = null
-direction = null
-attack_damage = null
-max_health = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -12)

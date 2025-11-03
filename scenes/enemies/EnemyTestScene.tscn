@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://ccjclk3f7u170"]
+[gd_scene load_steps=9 format=4 uid="uid://ccjclk3f7u170"]
 
 [ext_resource type="Script" uid="uid://dld7o3j0igwm7" path="res://scenes/enemies/enemy_test_scene.gd" id="1_mkubj"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_ejmpy"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://oplmtt8e4gwb" path="res://scenes/character/npcs/crystal-mauler.tscn" id="6_wl40g"]
 [ext_resource type="PackedScene" uid="uid://bbmftido5vkbj" path="res://scenes/enemies/pelican/peligan.tscn" id="7_62jtg"]
 [ext_resource type="PackedScene" uid="uid://t6vtn81e7w6p" path="res://scenes/enemies/mushroom/mushroom.tscn" id="7_x0uj1"]
-[ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="9_836ia"]
 
 [node name="EnemyTestScene" type="Node"]
 script = ExtResource("1_mkubj")
@@ -21,10 +20,23 @@ tile_set = ExtResource("2_ejmpy")
 
 [node name="Player" parent="." instance=ExtResource("3_ejmpy")]
 position = Vector2(378, -71)
+has_blade = false
+max_jump_count = 2
+deccel = 800
+air_deccel = 100
+dash_speed = 800.0
+dash_duration = 0.15
+dash_ghost_interval = 0.03
+dash_chain_max = 2
+dash_chain_cooldown = 0.6
+run_double_tap_window_ms = 250
+gravity = 700.0
+direction = 1
+attack_damage = 1
 max_health = 20
 
 [node name="Crab" parent="." instance=ExtResource("4_sxkfg")]
-position = Vector2(419, -172)
+position = Vector2(265, -45)
 movement_speed = 60.0
 
 [node name="Spike" parent="." instance=ExtResource("5_6dj5k")]
@@ -45,6 +57,3 @@ position = Vector2(-23, 42)
 position = Vector2(144, -217)
 
 [node name="Bullets" type="Node2D" parent="."]
-
-[node name="KingCrab" parent="." instance=ExtResource("9_836ia")]
-position = Vector2(467, -51)
