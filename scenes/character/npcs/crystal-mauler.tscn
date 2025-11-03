@@ -1,0 +1,58 @@
+[gd_scene load_steps=11 format=3 uid="uid://oplmtt8e4gwb"]
+
+[ext_resource type="Texture2D" uid="uid://d03yieukyyauy" path="res://asset/npcs/idle_1.png" id="1_2dhrp"]
+[ext_resource type="Texture2D" uid="uid://dnkr2afk7iv48" path="res://asset/npcs/idle_2.png" id="2_ohkf6"]
+[ext_resource type="Texture2D" uid="uid://drtxqwblxb0y5" path="res://asset/npcs/idle_3.png" id="3_flrhr"]
+[ext_resource type="Texture2D" uid="uid://phku3kcwqgi6" path="res://asset/npcs/idle_4.png" id="4_ii0sg"]
+[ext_resource type="Texture2D" uid="uid://c835dh8unwkll" path="res://asset/npcs/idle_5.png" id="5_m75se"]
+[ext_resource type="Texture2D" uid="uid://b63dxy25ofpan" path="res://asset/npcs/idle_6.png" id="6_tky3o"]
+[ext_resource type="Texture2D" uid="uid://duk0m5bqakc36" path="res://asset/npcs/idle_7.png" id="7_07jum"]
+[ext_resource type="Texture2D" uid="uid://bo3hnb2j0ue1b" path="res://asset/npcs/idle_8.png" id="8_a8lsb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f0gsv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_2dhrp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ohkf6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_flrhr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ii0sg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_m75se")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_tky3o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_07jum")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_a8lsb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbnil"]
+radius = 13.0
+height = 42.0
+
+[node name="Crystal-mauler" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -64)
+sprite_frames = SubResource("SpriteFrames_f0gsv")
+autoplay = "default"
+frame_progress = 0.68808
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -21)
+shape = SubResource("CapsuleShape2D_pbnil")
