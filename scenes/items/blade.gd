@@ -7,5 +7,5 @@ func _ready() -> void:
 
 func _on_pickup_body_entered(body: Node) -> void:
 	if body is Player:
-		body.collected_blade()
+		GameManager.collect_blade()
 		queue_free()

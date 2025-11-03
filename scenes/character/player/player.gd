@@ -46,9 +46,11 @@ func _ready() -> void:
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Idle)
 	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",true)
+	GameManager.player = self
 	if has_blade:
 		collected_blade()
-	GameManager.player = self
+	# Always ensure an initial checkpoint exists at game start
+	GameManager.ensure_initial_checkpoint()
 	
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)

@@ -6,7 +6,7 @@ var target_portal_name: String = ""
 var current_checkpoint_id: String = ""
 var checkpoint_data: Dictionary = {}
 
-var current_stage = ""
+var current_stage: Node = null
 var player: Player = null
 
 func _ready() -> void:
@@ -112,7 +112,45 @@ func clear_checkpoint_data() -> void:
 	print("All checkpoint data cleared")
 	
 func collect_blade() -> void:
-	if player:
-		player.collected_blade()
-		Dialogic.VAR.set("HasBlade", true)
-		print("Player has collected the blade!")
+	if player == null:
+		return
+	# Grant blade immediately
+	player.collected_blade()
+	# Update only has_blade field in current checkpoint (create init if missing)
+	update_current_checkpoint_player_state({"has_blade": true}, true)
+
+func ensure_initial_checkpoint() -> void:
+	# Create or adopt an initial checkpoint with starting position
+	if player == null or current_stage == null:
+		return
+	if current_checkpoint_id.is_empty():
+		if checkpoint_data.has("init"):
+			current_checkpoint_id = "init"
+			return
+		var init_state: Dictionary = player.save_state()
+		checkpoint_data["init"] = {
+			"player_state": init_state,
+			"stage_path": current_stage.scene_file_path
+		}
+		current_checkpoint_id = "init"
+		save_checkpoint_data()
+
+func update_current_checkpoint_player_state(updates: Dictionary, create_if_missing: bool = true) -> void:
+	# Merge selective player state fields into the current checkpoint.
+	# Does not alter the saved position unless provided in updates.
+	if player == null or current_stage == null:
+		return
+	if current_checkpoint_id.is_empty():
+		if create_if_missing:
+			ensure_initial_checkpoint()
+		else:
+			return
+	var chk_id: String = current_checkpoint_id
+	var checkpoint_info: Dictionary = checkpoint_data.get(chk_id, {})
+	var player_state: Dictionary = checkpoint_info.get("player_state", {})
+	for key in updates.keys():
+		player_state[key] = updates[key]
+	checkpoint_info["player_state"] = player_state
+	checkpoint_info["stage_path"] = current_stage.scene_file_path
+	checkpoint_data[chk_id] = checkpoint_info
+	save_checkpoint_data()

@@ -33,6 +33,7 @@ shader_parameter/lean_cutoff = 0.58
 size = Vector2(25, 33)
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 10
 collision_layer = 2
 script = ExtResource("1_puv7k")
 run_speed_multiplier = 2.1

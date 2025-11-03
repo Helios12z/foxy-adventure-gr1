@@ -86,6 +86,12 @@ func get_animation_name() -> String:
 
 func set_animated_sprite(new_animated_sprite: AnimatedSprite2D) -> void:
 	_next_animated_sprite = new_animated_sprite
+	# Immediately ensure only the selected sprite is visible to avoid overlap
+	if has_node("Direction"):
+		var dir: Node = $Direction
+		for child in dir.get_children():
+			if child is AnimatedSprite2D:
+				child.visible = (child == new_animated_sprite)
 
 func set_ignore_gravity(enable: bool) -> void:
 	ignore_gravity = enable
