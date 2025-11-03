@@ -15,6 +15,7 @@ func _enter() -> void:
 	obj.set_ignore_gravity(true)
 	obj.velocity.x = obj.dash_speed * obj.direction
 	obj.velocity.y = -obj.dash_speed * dash_vertical_ratio
+	obj.register_dash_started()
 
 	# Áp dụng shader dash chéo
 	_prev_material = null
@@ -61,6 +62,7 @@ func _exit() -> void:
 	# Bật lại gravity, xoá hiệu ứng
 	obj.set_ignore_gravity(false)
 	obj.velocity.y = 0
+	obj.register_dash_finished()
 	var mat: Material = null
 	if obj.animated_sprite != null:
 		mat = obj.animated_sprite.material

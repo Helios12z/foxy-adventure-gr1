@@ -22,7 +22,7 @@ func _update(delta: float) -> void:
 	if control_dash():
 		return
 	# Nhấn Jump trong run_fast sẽ dash chéo lên theo hướng hiện tại
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("jump") and obj.can_dash():
 		change_state(fsm.states.dashdiagonal)
 		return
 

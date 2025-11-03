@@ -11,6 +11,13 @@ var is_invulnerable: bool = false
 @export var dash_duration: float = 0.15
 @export var dash_ghost_interval: float = 0.03
 
+# Dash chain limit & cooldown
+@export var dash_chain_max: int = 2
+@export var dash_chain_cooldown: float = 0.6
+var dash_chain_count: int = 0
+var dash_on_cooldown: bool = false
+var dash_cooldown_timer: Timer = null
+
 @export var run_speed_multiplier: float = 1.35
 @export var run_double_tap_window_ms: int = 250
 var _last_left_press_ms: int = -100000
@@ -126,6 +133,31 @@ func _on_invulnerable_timeout() -> void:
 		animated_sprite.modulate.a = 1.0
 	if blink_timer:
 		blink_timer.stop()
+
+# Dash gating helpers
+func can_dash() -> bool:
+	return (not dash_on_cooldown) and (dash_chain_count < dash_chain_max)
+
+func register_dash_started() -> void:
+	dash_chain_count += 1
+
+func register_dash_finished() -> void:
+	if dash_chain_count >= dash_chain_max and not dash_on_cooldown:
+		start_dash_cooldown()
+
+func start_dash_cooldown() -> void:
+	dash_on_cooldown = true
+	if dash_cooldown_timer == null:
+		dash_cooldown_timer = Timer.new()
+		dash_cooldown_timer.one_shot = true
+		dash_cooldown_timer.timeout.connect(_on_dash_cooldown_timeout)
+		add_child(dash_cooldown_timer)
+	dash_cooldown_timer.wait_time = dash_chain_cooldown
+	dash_cooldown_timer.start()
+
+func _on_dash_cooldown_timeout() -> void:
+	dash_on_cooldown = false
+	dash_chain_count = 0
 
 func _start_blink_effect() -> void:
 	if blink_timer == null:
