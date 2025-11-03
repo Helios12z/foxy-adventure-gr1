@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://65dl3olpohwm"]
+[gd_scene load_steps=49 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
@@ -40,6 +40,7 @@
 [ext_resource type="PackedScene" uid="uid://btv1jfpk0tixd" path="res://scenes/enemies/mushroom/mushroom.tscn" id="35_666l6"]
 [ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="39_vkxmu"]
 [ext_resource type="PackedScene" uid="uid://oplmtt8e4gwb" path="res://scenes/character/npcs/crystal-mauler.tscn" id="40_vkxmu"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="41_avipa"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -160,6 +161,9 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6lioj"]
+size = Vector2(19377, 126)
 
 [node name="Stage" type="Node2D"]
 position = Vector2(74, -60)
@@ -399,3 +403,14 @@ scale = Vector2(-1.49551, 1.05882)
 
 [node name="KingCrab" parent="." instance=ExtResource("39_vkxmu")]
 position = Vector2(7762, 51)
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("41_avipa")
+damage = 999
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(6276.5, 250)
+shape = SubResource("RectangleShape2D_6lioj")
