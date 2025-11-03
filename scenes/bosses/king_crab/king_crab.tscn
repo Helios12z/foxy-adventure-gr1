@@ -256,6 +256,9 @@ rotation = -1.5708
 shape = SubResource("CapsuleShape2D_syons")
 debug_color = Color(0.675313, 0.505945, 0.0399859, 0.42)
 
+[node name="ShootPoint" type="Marker2D" parent="Direction"]
+position = Vector2(-30, 0)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-3, -2)
 rotation = -1.5708

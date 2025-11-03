@@ -47,6 +47,7 @@ var queued_bullet_dir_x: float = 1.0
 var knockback_direction: Vector2
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
+@onready var shoot_point: Marker2D = $Direction/ShootPoint
 
 func _ready() -> void:
 	_init_ray_casts()
@@ -102,7 +103,6 @@ func _init_hurt_area() -> void:
 		var hurt_area = $Direction/HurtArea2D
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
-# ---------------------- Environment checks ----------------------
 func is_touch_wall() -> bool:
 	return front_ray_cast != null and front_ray_cast.is_colliding()
 
@@ -209,14 +209,20 @@ func spawn_bullet_with_dir(dir_x: float) -> void:
 	if bullet_scene == null or claw_busy: return
 	var bullet = bullet_scene.instantiate()
 	if not (bullet and bullet.has_method("launch")): return
-
 	get_tree().current_scene.add_child(bullet)
+
 	claw_busy = true
 	claw_returned = false
 	current_bullet = bullet
 
-	var origin := global_position
-	var target := origin + Vector2(dir_x * attack1_range, 0.0)
+	var origin: Vector2
+	var face: float 
+	
+	if is_instance_valid(shoot_point): origin=shoot_point.global_position 
+	if dir_x!=0.0: face=sign(dir_x)
+	else: dir_x=sign($"Direction".scale.x)
+	if face == 0: face = 1
+	var target := origin + Vector2(face * attack1_range, 0.0)
 
 	if bullet.has_signal("returned"):
 		bullet.connect("returned", Callable(self, "_on_bullet_returned"))
@@ -250,3 +256,18 @@ func check_changed_direction() -> void:
 			$Direction.scale.x = -1
 		if direction == -1:
 			$Direction.scale.x = 1
+			
+#func always_see_player_when_attack()->bool:
+	#if found_player == null:
+		#return false  
+#
+	#var dx := found_player.global_position.x - global_position.x
+	#var desired: int 
+	#if dx>=0.0: desired=1 
+	#else: desired=-1 
+#
+	#var changed := desired != direction
+	#if changed: 
+		#change_direction(desired)
+		#
+	#return changed 
