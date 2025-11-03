@@ -1,7 +1,7 @@
 extends EnemyState
 
 func _enter() -> void:
-	obj.set_physics_process(false)
+	obj.velocity.x=0
 	timer = 1.0
 
 func _update(d: float) -> void:

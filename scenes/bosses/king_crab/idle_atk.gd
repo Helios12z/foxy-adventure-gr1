@@ -6,4 +6,4 @@ func _enter() -> void:
 func _update(delta: float) -> void:
 	# bullet đã phát "returned" → obj.claw_returned = true
 	if obj.claw_returned:
-		change_state(fsm.states.atk1_recover)
+		change_state(fsm.states.idle_stun)
