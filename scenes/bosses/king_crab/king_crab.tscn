@@ -207,8 +207,10 @@ position = Vector2(0, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"walk"
+animation = &"atk1_fire"
 autoplay = "walk"
+frame = 3
+frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
