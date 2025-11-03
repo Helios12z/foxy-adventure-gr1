@@ -1,15 +1,13 @@
 extends BaseCharacter
 
-@export var max_hp_sheet: int = 500
-@export var sight: float = 100.0
+@export var king_crab_max_health: float = 500
 @export var spike_damage: int = 50
-@export var movement_range: float = 200.0
 @export var approach_speed: float = 50.0
 @export var search_speed: float = 50.0
-@export var jump_speed_sheet: float = 320.0
-@export var gravity_sheet: float = 700.0
+@export var king_crab_jump_speed: float = 320.0
+@export var king_crab_gravity: float = 700.0
 @export var attack_speed: float = 50.0
-@export var attack_damage_sheet: int = 50
+@export var king_crab_attack_damage: int = 50
 @export var roll_speed_mult: float = 5.5
 @export var roll_brake: float = 5000
 
@@ -52,11 +50,16 @@ var knockback_direction: Vector2
 func _ready() -> void:
 	_init_ray_casts()
 	_init_hurt_area()
-	super._ready()
 
 	movement_speed = approach_speed
+	max_health=king_crab_max_health
+	gravity = king_crab_gravity
+	jump_speed = king_crab_jump_speed
+	attack_damage = king_crab_attack_damage
 	direction=-1
 	_next_direction=-1
+	
+	super._ready()
 	fsm = FSM.new(self, $States, $States/Walk)
 
 func _physics_process(delta: float) -> void:
