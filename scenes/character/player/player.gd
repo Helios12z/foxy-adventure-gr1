@@ -52,6 +52,12 @@ func _ready() -> void:
 		collected_blade()
 	# Always ensure an initial checkpoint exists at game start
 	GameManager.ensure_initial_checkpoint()
+	# Configure camera soft bottom limit from current stage
+	if has_node("Camera2D"):
+		var cam: Node = $Camera2D
+		var stage = GameManager.current_stage
+		if stage != null and cam.has_method("set_soft_bottom_limit") and stage.has_method("get_camera_bottom_limit_y"):
+			cam.set_soft_bottom_limit(stage.get_camera_bottom_limit_y())
 	
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)

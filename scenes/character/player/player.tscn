@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=28 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dugosv23vlsd1" path="res://scenes/character/player/climb.gd" id="14_yuskr"]
 [ext_resource type="Script" uid="uid://b3l6e30n7sx3p" path="res://scenes/character/player/attack.gd" id="18_qnn1i"]
 [ext_resource type="Script" uid="uid://bwe7irvywtcdf" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
+[ext_resource type="Script" uid="uid://t4rt3tqet0ea" path="res://scenes/character/player/camera_follow.gd" id="21_camfollow"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
 [ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
@@ -69,9 +70,12 @@ shape = SubResource("CircleShape2D_b1yw4")
 disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-1, -101)
+position = Vector2(-1, -34)
+offset = Vector2(0, 100)
 zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
+script = ExtResource("21_camfollow")
+overshoot_px = 60.0
 
 [node name="Direction" type="Node2D" parent="."]
 position = Vector2(0, 2)
