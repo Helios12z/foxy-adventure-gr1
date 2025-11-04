@@ -44,6 +44,7 @@ func check_run_double_tap() -> int:
 
 func _ready() -> void:
 	super._ready()
+	
 	fsm = FSM.new(self, $States, $States/Idle)
 	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",true)
 	GameManager.player = self

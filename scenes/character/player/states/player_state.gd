@@ -40,6 +40,18 @@ func control_jump() -> bool:
 		return true
 	return false
 
+## Control hover: require a fresh jump press in air when no jumps left
+func control_hover() -> bool:
+	# Activate hover only when:
+	# - Jump receives a NEW press (not held from last jump)
+	# - No jumps left
+	# - In the air and not on a wall
+	if Input.is_action_just_pressed("jump") and not obj.can_jump() and not obj.is_on_floor():
+		if not obj.is_on_wall():
+			change_state(fsm.states.hover)
+			return true
+	return false
+
 func control_dash() -> bool:
 	if Input.is_action_just_pressed("dash") and obj.can_dash():
 		change_state(fsm.states.dash)

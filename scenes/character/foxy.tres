@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=17 format=3 uid="uid://dh2f6po3rm0p7"]
+[gd_resource type="SpriteFrames" load_steps=18 format=3 uid="uid://dh2f6po3rm0p7"]
 
 [ext_resource type="Texture2D" uid="uid://dkv1jgifrkt8q" path="res://asset/foxy/foxy/fox/fox_defeat_1.png" id="1_tfxr7"]
 [ext_resource type="Texture2D" uid="uid://b8r2k78gro5s6" path="res://asset/foxy/foxy/fox_hat/fox_climb.png" id="1_vfsd3"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bm3tvt3bcu45u" path="res://asset/foxy/foxy/fox/fox_fall_1.png" id="5_4fc3p"]
 [ext_resource type="Texture2D" uid="uid://cpnrjocfgv50m" path="res://asset/foxy/foxy/fox/fox_hit_2.png" id="5_xmjh0"]
 [ext_resource type="Texture2D" uid="uid://bij01i1v7nb15" path="res://asset/foxy/foxy/fox/fox_hit_3.png" id="6_nqd2l"]
+[ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="6_rvlm7"]
 [ext_resource type="Texture2D" uid="uid://cwgjo8l0lmemi" path="res://asset/foxy/foxy/fox/fox_idle_1.png" id="7_lrc1a"]
 [ext_resource type="Texture2D" uid="uid://cdiupfoo5xr6u" path="res://asset/foxy/foxy/fox/fox_idle_2.png" id="8_evsfk"]
 [ext_resource type="Texture2D" uid="uid://bunb4hruykt3x" path="res://asset/foxy/foxy/fox/fox_jump_1.png" id="9_338vx"]
@@ -47,6 +48,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_rvlm7")
+}],
+"loop": true,
+"name": &"hover",
 "speed": 5.0
 }, {
 "frames": [{
