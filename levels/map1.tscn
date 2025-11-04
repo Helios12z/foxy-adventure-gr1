@@ -170,7 +170,8 @@ size = Vector2(12590, 1610)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a7slf"]
 size = Vector2(20, 596)
 
-[node name="Stage" type="Node2D"]
+[node name="Map1" type="Node2D"]
+position = Vector2(1, 0)
 script = ExtResource("1_vf8qv")
 
 [node name="Crystal-mauler" parent="." instance=ExtResource("40_vkxmu")]
