@@ -84,20 +84,20 @@ position = Vector2(0, 2)
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
-animation = &"hover"
+animation = &"walk"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
 material = SubResource("ShaderMaterial_dash")
 sprite_frames = ExtResource("3_i0j1t")
-animation = &"dead"
+animation = &"walk"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
-animation = &"climb"
+animation = &"jump"
 
 [node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 scale = Vector2(0.07, 0.07)
