@@ -1,11 +1,14 @@
-[gd_scene load_steps=5 format=4 uid="uid://f3dxm7cfj6j4"]
+[gd_scene load_steps=6 format=4 uid="uid://dq7eu5p47t8gv"]
 
+[ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
 [ext_resource type="Texture2D" uid="uid://7e4tmseq4hhm" path="res://asset/forest/background/Layer_0002_7.png" id="2_gpada"]
 [ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="3_gpada"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_hrn5s"]
 
 [node name="Map2" type="Node2D"]
+script = ExtResource("1_68p3w")
+camera_bottom_limit_y = -200.0
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
