@@ -1,8 +1,8 @@
 extends EnemyState
 
 func _enter() -> void:
-	if obj.sprite: obj.sprite.play("hurt")
-	timer = 0.2
+	obj.change_animation("hurt")
+	timer = 0.5
 
 func _update(d: float) -> void:
 	if obj.health <= 0: 

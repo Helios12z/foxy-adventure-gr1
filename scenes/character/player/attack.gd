@@ -3,7 +3,6 @@ extends PlayerState
 func _enter():
 	var anim_name = "attack" if obj.is_on_floor() else "jump_attack"
 	obj.change_animation(anim_name)
-	print(anim_name)
 	obj.velocity.x = 0
 	obj.set_hit_collision(true)
 

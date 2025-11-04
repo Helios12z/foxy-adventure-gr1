@@ -9,9 +9,10 @@ signal created(product)
 func create(_product_packed_scene := product_packed_scene) -> Node2D:
 	var product: Node2D = _product_packed_scene.instantiate()
 	product.global_position = global_position
-	
-	var container = find_parent("Stage").find_child(target_container_name)
+	var a = find_parent("Enemies").get_parent()
+	var container = find_parent("Enemies").get_parent().find_child(target_container_name)
 	container.add_child(product)
 	
 	created.emit(product)
 	return product
+	

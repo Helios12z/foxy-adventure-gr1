@@ -44,6 +44,10 @@
 [ext_resource type="Script" uid="uid://c1ljp0jlkqoq3" path="res://scenes/bosses/king_crab/atk_1_fire.gd" id="37_w03xm"]
 [ext_resource type="Script" uid="uid://ch4iveo3byb15" path="res://scenes/bosses/king_crab/atk_1_recover.gd" id="38_qsf77"]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
+radius = 20.0
+height = 78.0
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_lkrv3"]
 animations = [{
 "frames": [{
@@ -179,49 +183,43 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3obn1"]
-radius = 20.0
-height = 98.0
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_syons"]
 radius = 23.0
 height = 94.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
-radius = 20.0
-height = 86.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3obn1"]
+radius = 21.0
+height = 98.0
 
 [node name="KingCrab" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 3
 script = ExtResource("1_3obn1")
 bullet_scene = ExtResource("2_vlw8a")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, -2)
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_6162a")
 
 [node name="Direction" type="Node2D" parent="."]
 position = Vector2(0, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"walk"
+animation = &"atk1_fire"
 autoplay = "walk"
+frame = 3
+frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(0, 10)
 target_position = Vector2(-400, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(0, 10)
 target_position = Vector2(400, 0)
-collision_mask = 2
-
-[node name="DetectDownRayCast2D" type="RayCast2D" parent="Direction"]
-position = Vector2(-21, 0)
-target_position = Vector2(0, 200)
-collision_mask = 2
-
-[node name="DetectUpRayCast2D" type="RayCast2D" parent="Direction"]
-position = Vector2(-21, 0)
-target_position = Vector2(0, -200)
 collision_mask = 2
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -231,9 +229,22 @@ target_position = Vector2(-55, 0)
 [node name="DownRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.0646965, 0.0646965, 0.0646965, 1)
 position = Vector2(-21, 0)
+target_position = Vector2(0, 100)
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("30_3obn1")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(-2, 5)
+rotation = -1.5708
+shape = SubResource("CapsuleShape2D_syons")
+debug_color = Color(0.675313, 0.505945, 0.0399859, 0.42)
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
-collision_layer = 8
+collision_layer = 0
 collision_mask = 4
 script = ExtResource("29_n7tu5")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
@@ -244,25 +255,8 @@ rotation = -1.5708
 shape = SubResource("CapsuleShape2D_3obn1")
 debug_color = Color(0.614439, 0.40928, 0.889592, 0.42)
 
-[node name="HurtArea2D" type="Area2D" parent="Direction"]
-collision_layer = 16
-collision_mask = 2
-script = ExtResource("30_3obn1")
-metadata/_custom_type_script = "uid://b5vlq5e21dx67"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
-position = Vector2(-2, 5)
-rotation = -1.5708
-shape = SubResource("CapsuleShape2D_syons")
-debug_color = Color(0.675313, 0.505945, 0.0399859, 0.42)
-
 [node name="ShootPoint" type="Marker2D" parent="Direction"]
 position = Vector2(-30, 0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-3, -2)
-rotation = -1.5708
-shape = SubResource("CapsuleShape2D_6162a")
 
 [node name="States" type="Node" parent="."]
 

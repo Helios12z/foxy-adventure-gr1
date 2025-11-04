@@ -1,0 +1,125 @@
+[gd_scene load_steps=18 format=3 uid="uid://bbmftido5vkbj"]
+
+[ext_resource type="Script" uid="uid://baep3xl4edww0" path="res://scenes/enemies/pelican/peligan.gd" id="1_jmrmf"]
+[ext_resource type="Texture2D" uid="uid://f76ybo7id6gs" path="res://asset/enemy/pelican/pelican_atk_01.png" id="2_1vgc5"]
+[ext_resource type="Texture2D" uid="uid://7ytnhmca0flh" path="res://asset/enemy/pelican/pelican_atk_02.png" id="3_ixl1t"]
+[ext_resource type="Texture2D" uid="uid://c0p31wsi60oyt" path="res://asset/enemy/pelican/pelican_atk_03.png" id="4_5uk3q"]
+[ext_resource type="Texture2D" uid="uid://dwclgx41hbga5" path="res://asset/enemy/pelican/pelican_01.png" id="5_b5w71"]
+[ext_resource type="Texture2D" uid="uid://4ekjxay5igpw" path="res://asset/enemy/pelican/pelican_02.png" id="6_4lk40"]
+[ext_resource type="Texture2D" uid="uid://b07a616etrw13" path="res://asset/enemy/pelican/pelican_03.png" id="7_waa5h"]
+[ext_resource type="Texture2D" uid="uid://xscq1r5j2o1c" path="res://asset/enemy/pelican/pelican_04.png" id="8_63057"]
+[ext_resource type="Script" uid="uid://d0kfi7wfsxg3o" path="res://scripts/node2d_factory.gd" id="9_15hgq"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="10_1fiqj"]
+[ext_resource type="PackedScene" uid="uid://b3p7vbuplc7xo" path="res://scenes/enemies/pelican/peligan_bullet.tscn" id="10_1vgc5"]
+[ext_resource type="Script" uid="uid://d1q2vfnr8m1c3" path="res://scenes/enemies/pelican/fly.gd" id="11_b067t"]
+[ext_resource type="Script" uid="uid://6cbqtc0j7bdd" path="res://scenes/enemies/pelican/attackPeligan.gd" id="12_curot"]
+[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="13_0br3b"]
+[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="14_a63ki"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vomf5"]
+radius = 24.0
+height = 48.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_okto5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_1vgc5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ixl1t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5uk3q")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_5uk3q")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_b5w71")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4lk40")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_waa5h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_63057")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ixl1t")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}]
+
+[node name="Peligan" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 256
+script = ExtResource("1_jmrmf")
+gravity = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, -3)
+scale = Vector2(0.947399, 0.679999)
+shape = SubResource("CapsuleShape2D_vomf5")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+sprite_frames = SubResource("SpriteFrames_okto5")
+animation = &"dead"
+autoplay = "fly"
+
+[node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
+target_position = Vector2(30, 0)
+collision_mask = 256
+
+[node name="BulletFactory" type="Marker2D" parent="Direction"]
+position = Vector2(14, 0)
+script = ExtResource("9_15hgq")
+product_packed_scene = ExtResource("10_1vgc5")
+target_container_name = &"Bullets"
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("10_1fiqj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(-3, -3)
+scale = Vector2(0.947399, 0.679999)
+shape = SubResource("CapsuleShape2D_vomf5")
+
+[node name="States" type="Node" parent="."]
+
+[node name="Fly" type="Node" parent="States"]
+script = ExtResource("11_b067t")
+
+[node name="Attack" type="Node" parent="States"]
+script = ExtResource("12_curot")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("13_0br3b")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("14_a63ki")
+
+[connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]

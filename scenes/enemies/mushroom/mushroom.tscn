@@ -1,14 +1,34 @@
-[gd_scene load_steps=9 format=3 uid="uid://btv1jfpk0tixd"]
+[gd_scene load_steps=17 format=3 uid="uid://t6vtn81e7w6p"]
 
+[ext_resource type="Script" uid="uid://b28hy20cwec04" path="res://scenes/enemies/mushroom/mushroom.gd" id="1_7aunm"]
 [ext_resource type="Texture2D" uid="uid://chyfjme5rvhit" path="res://asset/enemy/mushroom/mushroom_hit_01.png" id="1_70lkm"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_3dip8"]
 [ext_resource type="Texture2D" uid="uid://5wmxsncpgtkc" path="res://asset/enemy/mushroom/mushroom_hit_02.png" id="2_v0rkr"]
 [ext_resource type="Texture2D" uid="uid://duaf04eh1sonf" path="res://asset/enemy/mushroom/mushroom_hit_03.png" id="3_tde2d"]
 [ext_resource type="Texture2D" uid="uid://c747emsmdrr2v" path="res://asset/enemy/mushroom/mushroom_01.png" id="4_525w4"]
 [ext_resource type="Texture2D" uid="uid://di5ed7uk6wu6m" path="res://asset/enemy/mushroom/mushroom_02.png" id="5_0kdgg"]
 [ext_resource type="Texture2D" uid="uid://bqw51faouikn" path="res://asset/enemy/mushroom/mushroom_03.png" id="6_bpm4c"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="8_iuaad"]
+[ext_resource type="Script" uid="uid://btjb1u1sh5j0r" path="res://scenes/enemies/Walk.gd" id="9_5qgwy"]
+[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="10_3dip8"]
+[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="11_io5uk"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_jqul3"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qokaa"]
+size = Vector2(16, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3jqcw"]
+size = Vector2(41, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_86med"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_v0rkr")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_70lkm")
@@ -32,25 +52,66 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("6_bpm4c")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_0kdgg")
 }],
 "loop": true,
 "name": &"walk",
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3tgey"]
-radius = 15.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_86med"]
+size = Vector2(42, 25)
 
-[node name="Mushroom" type="CharacterBody2D"]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_jqul3")
-animation = &"walk"
-autoplay = "walk"
+[node name="mushroom" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_7aunm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(2, 0)
-shape = SubResource("CapsuleShape2D_3tgey")
+position = Vector2(-2, 13)
+shape = SubResource("RectangleShape2D_qokaa")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
+target_position = Vector2(37, 0)
+
+[node name="DownRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(21, 0)
+target_position = Vector2(0, 22)
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_3dip8")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_3jqcw")
+debug_color = Color(0.929265, 0.225519, 0.365746, 0.42)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+sprite_frames = SubResource("SpriteFrames_86med")
+animation = &"dead"
+autoplay = "walk"
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("8_iuaad")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(-1, 0.5)
+shape = SubResource("RectangleShape2D_86med")
+debug_color = Color(0.0942014, 0.623105, 0.514201, 0.42)
+
+[node name="States" type="Node" parent="."]
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("9_5qgwy")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("10_3dip8")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("11_io5uk")
