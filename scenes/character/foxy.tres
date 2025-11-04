@@ -1,28 +1,28 @@
 [gd_resource type="SpriteFrames" load_steps=18 format=3 uid="uid://dh2f6po3rm0p7"]
 
-[ext_resource type="Texture2D" uid="uid://d277hbbefwsmh" path="res://asset/foxy/foxy/fox/fox_climb1.png" id="1_4fc3p"]
-[ext_resource type="Texture2D" uid="uid://dkv1jgifrkt8q" path="res://asset/foxy/foxy/fox/fox_defeat_1.png" id="1_tfxr7"]
-[ext_resource type="Texture2D" uid="uid://dc2m3jf8uguyu" path="res://asset/foxy/foxy/fox/fox_defeat_2.png" id="2_vfsd3"]
-[ext_resource type="Texture2D" uid="uid://cm35jxqst3tye" path="res://asset/foxy/foxy/fox/fox_defeat_3.png" id="3_4fc3p"]
-[ext_resource type="Texture2D" uid="uid://bcpoenc50cm6f" path="res://asset/foxy/foxy/fox/fox_hit_1.png" id="4_rvlm7"]
-[ext_resource type="Texture2D" uid="uid://bm3tvt3bcu45u" path="res://asset/foxy/foxy/fox/fox_fall_1.png" id="5_4fc3p"]
-[ext_resource type="Texture2D" uid="uid://cpnrjocfgv50m" path="res://asset/foxy/foxy/fox/fox_hit_2.png" id="5_xmjh0"]
-[ext_resource type="Texture2D" uid="uid://bij01i1v7nb15" path="res://asset/foxy/foxy/fox/fox_hit_3.png" id="6_nqd2l"]
+[ext_resource type="Texture2D" uid="uid://b8r2k78gro5s6" path="res://asset/foxy/foxy/fox_hat/fox_climb.png" id="1_rvlm7"]
+[ext_resource type="Texture2D" uid="uid://m4di78taixns" path="res://asset/foxy/foxy/fox_hat/fox_defeat_1.png" id="2_xmjh0"]
+[ext_resource type="Texture2D" uid="uid://b6jgthsrynctr" path="res://asset/foxy/foxy/fox_hat/fox_defeat_2.png" id="3_nqd2l"]
+[ext_resource type="Texture2D" uid="uid://fii540ugfj5n" path="res://asset/foxy/foxy/fox_hat/fox_defeat_3.png" id="4_lrc1a"]
+[ext_resource type="Texture2D" uid="uid://l11ugr45l17y" path="res://asset/foxy/foxy/fox_hat/fox_fall_1.png" id="5_evsfk"]
 [ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="6_rvlm7"]
-[ext_resource type="Texture2D" uid="uid://cwgjo8l0lmemi" path="res://asset/foxy/foxy/fox/fox_idle_1.png" id="7_lrc1a"]
-[ext_resource type="Texture2D" uid="uid://cdiupfoo5xr6u" path="res://asset/foxy/foxy/fox/fox_idle_2.png" id="8_evsfk"]
-[ext_resource type="Texture2D" uid="uid://bunb4hruykt3x" path="res://asset/foxy/foxy/fox/fox_jump_1.png" id="9_338vx"]
-[ext_resource type="Texture2D" uid="uid://dowo3wvh7rdu1" path="res://asset/foxy/foxy/fox/fox_jump_2.png" id="10_nakkr"]
-[ext_resource type="Texture2D" uid="uid://ddf11anrulx6e" path="res://asset/foxy/foxy/fox/fox_walk_1.png" id="11_qlnx3"]
-[ext_resource type="Texture2D" uid="uid://bsfb723jv8ohi" path="res://asset/foxy/foxy/fox/fox_walk_2.png" id="12_4qvgp"]
-[ext_resource type="Texture2D" uid="uid://bj3ls24dmb1u0" path="res://asset/foxy/foxy/fox/fox_walk_3.png" id="13_6s4o3"]
-[ext_resource type="Texture2D" uid="uid://c7b68c2t2m054" path="res://asset/foxy/foxy/fox/fox_walk_4.png" id="14_ckh64"]
+[ext_resource type="Texture2D" uid="uid://yom7r0j05to2" path="res://asset/foxy/foxy/fox_hat/fox_hit_1.png" id="7_338vx"]
+[ext_resource type="Texture2D" uid="uid://ck8edmupc3gra" path="res://asset/foxy/foxy/fox_hat/fox_hit_2.png" id="8_nakkr"]
+[ext_resource type="Texture2D" uid="uid://bqh3qhrimo17x" path="res://asset/foxy/foxy/fox_hat/fox_hit_3.png" id="9_qlnx3"]
+[ext_resource type="Texture2D" uid="uid://b2iyrbygs0b7c" path="res://asset/foxy/foxy/fox_hat/fox_idle_1.png" id="10_4qvgp"]
+[ext_resource type="Texture2D" uid="uid://c8uke6n7xj17g" path="res://asset/foxy/foxy/fox_hat/fox_idle_2.png" id="11_6s4o3"]
+[ext_resource type="Texture2D" uid="uid://b7ko4rnci3koo" path="res://asset/foxy/foxy/fox_hat/fox_jump_1.png" id="12_ckh64"]
+[ext_resource type="Texture2D" uid="uid://6gko14qsmmw4" path="res://asset/foxy/foxy/fox_hat/fox_jump_2.png" id="13_tv3gn"]
+[ext_resource type="Texture2D" uid="uid://cseha0dkj5lfj" path="res://asset/foxy/foxy/fox_hat/fox_walk_1.png" id="14_6cblp"]
+[ext_resource type="Texture2D" uid="uid://3g5hdrfwcd2c" path="res://asset/foxy/foxy/fox_hat/fox_walk_2.png" id="15_4d7a2"]
+[ext_resource type="Texture2D" uid="uid://cg0s41812vukj" path="res://asset/foxy/foxy/fox_hat/fox_walk_3.png" id="16_s5khn"]
+[ext_resource type="Texture2D" uid="uid://8u26ji11yaua" path="res://asset/foxy/foxy/fox_hat/fox_walk_4.png" id="17_2ucpl"]
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_4fc3p")
+"texture": ExtResource("1_rvlm7")
 }],
 "loop": true,
 "name": &"climb",
@@ -30,13 +30,13 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_tfxr7")
+"texture": ExtResource("2_xmjh0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_vfsd3")
+"texture": ExtResource("3_nqd2l")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_4fc3p")
+"texture": ExtResource("4_lrc1a")
 }],
 "loop": false,
 "name": &"dead",
@@ -44,7 +44,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_4fc3p")
+"texture": ExtResource("5_evsfk")
 }],
 "loop": true,
 "name": &"fall",
@@ -60,13 +60,13 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_rvlm7")
+"texture": ExtResource("7_338vx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_xmjh0")
+"texture": ExtResource("8_nakkr")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_nqd2l")
+"texture": ExtResource("9_qlnx3")
 }],
 "loop": false,
 "name": &"hurt",
@@ -74,10 +74,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("7_lrc1a")
+"texture": ExtResource("10_4qvgp")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_evsfk")
+"texture": ExtResource("11_6s4o3")
 }],
 "loop": true,
 "name": &"idle",
@@ -85,10 +85,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("9_338vx")
+"texture": ExtResource("12_ckh64")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_nakkr")
+"texture": ExtResource("13_tv3gn")
 }],
 "loop": false,
 "name": &"jump",
@@ -96,16 +96,16 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("11_qlnx3")
+"texture": ExtResource("14_6cblp")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_4qvgp")
+"texture": ExtResource("15_4d7a2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_6s4o3")
+"texture": ExtResource("16_s5khn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_ckh64")
+"texture": ExtResource("17_2ucpl")
 }],
 "loop": true,
 "name": &"walk",
