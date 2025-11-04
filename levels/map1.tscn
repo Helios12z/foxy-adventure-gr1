@@ -170,7 +170,8 @@ size = Vector2(12590, 1610)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a7slf"]
 size = Vector2(20, 596)
 
-[node name="Stage" type="Node2D"]
+[node name="Map1" type="Node2D"]
+position = Vector2(1, 0)
 script = ExtResource("1_vf8qv")
 
 [node name="Crystal-mauler" parent="." instance=ExtResource("40_vkxmu")]
@@ -179,20 +180,6 @@ scale = Vector2(1.5, 1.5)
 
 [node name="Player" parent="." instance=ExtResource("6_44ejs")]
 position = Vector2(-196, 48)
-has_blade = false
-max_jump_count = 2
-deccel = 800
-air_deccel = 100
-dash_speed = 800.0
-dash_duration = 0.15
-dash_ghost_interval = 0.03
-dash_chain_max = 2
-dash_chain_cooldown = 0.6
-run_double_tap_window_ms = 250
-gravity = 700.0
-direction = 1
-attack_damage = 1
-max_health = 3
 
 [node name="Npcs" type="Node2D" parent="."]
 
