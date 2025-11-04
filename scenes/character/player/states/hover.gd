@@ -13,9 +13,9 @@ var lead_tilt_deg: float = 8.0
 var inflate_time: float = 0.20
 var settle_time: float = 0.14
 var deflate_time: float = 0.18
-var inflate_target_scale: float = 2.0
-var inflate_overshoot_scale: float = 2.25
-var deflate_undershoot_scale: float = 0.80
+var inflate_target_scale: float = 1.6
+var inflate_overshoot_scale: float = 1.81
+var deflate_undershoot_scale: float = 0.65
 
 var _tween: Tween = null
 var _base_sprite_pos: Vector2 = Vector2.ZERO
