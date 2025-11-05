@@ -4,6 +4,7 @@ extends BaseCharacter
 ## Player character class that handles movement, combat, and state management
 var is_invulnerable: bool = false
 @export var has_blade: bool = false
+@export var has_fire_gem: bool = false
 @export var max_jump_count = 2
 @export var deccel = 800     # ma sát khi ở trên đất
 @export var air_deccel = 100   # ma sát khi ở trên không
@@ -50,6 +51,8 @@ func _ready() -> void:
 	GameManager.player = self
 	if has_blade:
 		collected_blade()
+	if has_fire_gem:
+		collected_fire_gem()
 	# Always ensure an initial checkpoint exists at game start
 	GameManager.ensure_initial_checkpoint()
 	# Configure camera soft bottom limit from current stage
@@ -86,10 +89,14 @@ func collected_blade() -> void:
 	has_blade = true
 	set_animated_sprite($Direction/BladeAnimatedSprite2D)
 
+func collected_fire_gem() -> void:
+	has_fire_gem = true
+
 func save_state() -> Dictionary:
 	return {
 		"position": [global_position.x, global_position.y],
-		"has_blade": has_blade
+		"has_blade": has_blade,
+		"has_fire_gem": has_fire_gem
 	}
 
 func load_state(data: Dictionary) -> void:
@@ -102,6 +109,10 @@ func load_state(data: Dictionary) -> void:
 		Dialogic.VAR.set("HasBlade",has_blade)
 		if has_blade:
 			collected_blade()
+	if data.has("has_fire_gem"):
+		has_fire_gem = data["has_fire_gem"]
+		if has_fire_gem:
+			collected_fire_gem()
 			
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	if !is_invulnerable: 

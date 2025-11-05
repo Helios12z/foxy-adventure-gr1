@@ -115,7 +115,12 @@ func collect_blade() -> void:
 	if player:
 		player.collected_blade()
 		Dialogic.VAR.set("HasBlade", true)
-		#update_current_checkpoint_player_state({"has_blade": true}, true)
+		update_current_checkpoint_player_state({"has_blade": true}, true)
+
+func collect_fire_gem() -> void:
+	if player:
+		player.collected_fire_gem()
+		update_current_checkpoint_player_state({"has_fire_gem": true}, true)
 
 func ensure_initial_checkpoint() -> void:
 	# Create or adopt an initial checkpoint with starting position

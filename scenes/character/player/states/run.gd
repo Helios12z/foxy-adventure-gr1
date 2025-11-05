@@ -6,6 +6,9 @@ func _enter() -> void:
 	pass
 
 func _update(_delta: float):
+	#Toggle Susanoo spirit
+	if control_susanoo():
+		return
 	# Detect run double-tap while walking
 	if control_run():
 		return
