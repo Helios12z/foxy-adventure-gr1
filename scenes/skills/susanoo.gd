@@ -22,7 +22,6 @@ var _bob_phase: float = 0.0
 
 var _sprite: AnimatedSprite2D = null
 var _hit: HitArea2D = null
-
 func _ready() -> void:
 	player = (get_parent() as Player)
 	# Nếu đặt vị trí sẵn trong Editor cho SusanooSpirit, dùng nó làm offset

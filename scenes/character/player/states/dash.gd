@@ -74,6 +74,8 @@ func _spawn_afterimage() -> void:
 	ghost.frame = source.frame
 	ghost.stop()
 	ghost.modulate = Color(1, 1, 1, 0.6)
+	# Không cho afterimage bị ảnh hưởng bởi Light2D
+	ghost.light_mask = 2
 	container.add_child(ghost)
 	# Fade out quickly, then free
 	var tw := container.create_tween()

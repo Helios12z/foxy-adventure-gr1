@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://uxvlxjmaii0m"]
+[gd_scene load_steps=14 format=3 uid="uid://uxvlxjmaii0m"]
 
 [ext_resource type="Script" uid="uid://civfpeiuu20qd" path="res://scenes/skills/susanoo.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bl8rvl3u24da" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_01.png" id="2_2issw"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://0osggacvavdk" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_02.png" id="7_b5821"]
 [ext_resource type="Texture2D" uid="uid://cmve6acyv07qp" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_03.png" id="8_w6ga2"]
 [ext_resource type="Texture2D" uid="uid://pslk5e8sjfhx" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_04.tres" id="9_g6cjf"]
+[ext_resource type="PackedScene" uid="uid://b5bu5nk05qwvp" path="res://scenes/effects/flicker_light_2d.tscn" id="10_flicker"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7fdps"]
 animations = [{
@@ -56,6 +57,7 @@ script = ExtResource("1_script")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 modulate = Color(1, 1, 0.921569, 0.576471)
+light_mask = 2
 position = Vector2(-5, -10)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_7fdps")
@@ -71,3 +73,6 @@ script = ExtResource("3_hit_script")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 position = Vector2(68.5, -91.5)
 shape = SubResource("RectShape_SusanooHit")
+
+[node name="FlickerLight2D" parent="." instance=ExtResource("10_flicker")]
+z_index = 10

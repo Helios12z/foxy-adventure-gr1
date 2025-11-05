@@ -82,6 +82,7 @@ overshoot_px = 60.0
 position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
@@ -89,18 +90,21 @@ animation = &"walk"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 sprite_frames = ExtResource("3_i0j1t")
 animation = &"walk"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
 animation = &"jump"
 
 [node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+light_mask = 2
 scale = Vector2(0.07, 0.07)
 sprite_frames = SubResource("SpriteFrames_gfavw")
 animation = &"hover"
