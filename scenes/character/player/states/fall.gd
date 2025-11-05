@@ -8,6 +8,9 @@ func _update(_delta: float) -> void:
 	#Control dash
 	if control_dash():
 		return
+	#Toggle Susanoo spirit
+	if control_susanoo():
+		return
 	#Control hover (giữ jump trên không, hết lượt nhảy)
 	if control_hover():
 		return

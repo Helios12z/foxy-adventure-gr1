@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://difwx11ltyefg"]
+
+[ext_resource type="Texture2D" uid="uid://cfw8bhhjp2nmb" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_04.png" id="1_v41fg"]
+
+[resource]
+atlas = ExtResource("1_v41fg")
+region = Rect2(-36, -20, 0, 0)

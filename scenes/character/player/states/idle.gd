@@ -11,6 +11,9 @@ func _update(_delta: float) -> void:
 	#Control dash
 	if control_dash():
 		return
+	#Toggle Susanoo spirit
+	if control_susanoo():
+		return
 	#Control run by double-tap
 	if control_run():
 		return

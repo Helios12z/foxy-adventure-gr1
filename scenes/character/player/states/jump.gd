@@ -15,6 +15,9 @@ func _update(_delta: float):
 	#Control dash
 	if control_dash():
 		return
+	#Toggle Susanoo spirit
+	if control_susanoo():
+		return
 	#Control hover (giữ jump khi đang ở trên không và không thể nhảy thêm)
 	if control_hover():
 		return

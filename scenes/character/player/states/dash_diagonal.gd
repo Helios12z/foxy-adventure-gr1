@@ -90,6 +90,8 @@ func _spawn_afterimage() -> void:
 	ghost.frame = source.frame
 	ghost.stop()
 	ghost.modulate = Color(1, 1, 1, 0.6)
+	# Không cho afterimage bị ảnh hưởng bởi Light2D
+	ghost.light_mask = 2
 	container.add_child(ghost)
 	var tw := container.create_tween()
 	tw.tween_property(ghost, "modulate:a", 0.0, 0.2)

@@ -18,6 +18,9 @@ func _enter() -> void:
 			mat.set_shader_parameter("dir", float(obj.direction))
 
 func _update(delta: float) -> void:
+	#Toggle Susanoo spirit
+	if control_susanoo():
+		return
 	# Allow dash to override
 	if control_dash():
 		return

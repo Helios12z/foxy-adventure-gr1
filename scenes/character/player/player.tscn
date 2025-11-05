@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=29 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://cnsjlj1g4yk6v" path="res://scenes/character/player/states/dash.gd" id="43_dash"]
 [ext_resource type="Script" uid="uid://d02atll0hy5s3" path="res://scenes/character/player/states/run_fast.gd" id="44_runfast"]
 [ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
+[ext_resource type="Script" uid="uid://bdb4rp0xqby5i" path="res://scenes/character/player/states/susanoo.gd" id="46_susanoo"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lcjji"]
 
@@ -81,6 +82,7 @@ overshoot_px = 60.0
 position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
@@ -88,18 +90,21 @@ animation = &"walk"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 sprite_frames = ExtResource("3_i0j1t")
 animation = &"walk"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
 animation = &"jump"
 
 [node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+light_mask = 2
 scale = Vector2(0.07, 0.07)
 sprite_frames = SubResource("SpriteFrames_gfavw")
 animation = &"hover"
@@ -185,6 +190,9 @@ script = ExtResource("18_qnn1i")
 
 [node name="Hover" type="Node" parent="States"]
 script = ExtResource("20_gfavw")
+
+[node name="Susanoo" type="Node" parent="States"]
+script = ExtResource("46_susanoo")
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
