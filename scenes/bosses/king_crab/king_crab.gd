@@ -183,10 +183,8 @@ func update_chase_motion() -> bool:
 		velocity.x = dir_x * movement_speed
 
 		if dir_x > 0.0 and direction != 1:
-			print("chase direction", direction)
 			change_direction(1)
 		elif dir_x < 0.0 and direction != -1:
-			print("chase direction", direction)
 			change_direction(-1)
 
 		return false
@@ -198,7 +196,6 @@ func _search_move() -> void:
 	if _blocked_ahead():
 		change_direction(-direction)
 	velocity.x = direction * search_speed
-	print(direction)
 
 func control_move() -> bool:
 	if found_player == null:
@@ -250,7 +247,6 @@ func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
 
 func toggle_next_attack():
 	next_attack_is_claw = not next_attack_is_claw
-	print(next_attack_is_claw)
 
 func check_changed_direction() -> void:
 	if _next_direction != direction:

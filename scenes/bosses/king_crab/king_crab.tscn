@@ -185,11 +185,11 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_syons"]
 radius = 23.0
-height = 94.0
+height = 96.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3obn1"]
 radius = 21.0
-height = 98.0
+height = 86.0
 
 [node name="KingCrab" type="CharacterBody2D"]
 collision_layer = 8
@@ -207,10 +207,8 @@ position = Vector2(0, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"atk1_fire"
+animation = &"walk"
 autoplay = "walk"
-frame = 3
-frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
@@ -238,7 +236,7 @@ script = ExtResource("30_3obn1")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
-position = Vector2(-2, 5)
+position = Vector2(-3, 5)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_syons")
 debug_color = Color(0.675313, 0.505945, 0.0399859, 0.42)
