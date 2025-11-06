@@ -11,7 +11,7 @@ extends BaseCharacter
 @export var roll_speed_mult: float = 5.5
 @export var roll_brake: float = 5000
 
-@export var stop_distance: float = 180.0
+@export var stop_distance: float = 500
 @export var attack1_range: float = 1000
 @export var attack2_range: float = 800
 @export var roll_max_time: float = 3.5
@@ -34,15 +34,13 @@ var _last_visible: bool = false
 var detect_player_enable: bool = true
 
 var next_attack_is_claw: bool = true
-var claw_busy := false
-var claw_returned := false
+var claw_busy = false
+var claw_returned = false
 var current_bullet: Node = null
 
 var last_seen_player_x: float = 0.0
 var has_last_seen: bool = false
 var queued_bullet_dir_x: float = 1.0
-
-var knockback_direction: Vector2
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
@@ -62,7 +60,7 @@ func _ready() -> void:
 	_next_direction=-1
 	
 	super._ready()
-	fsm = FSM.new(self, $States, $States/Walk)
+	fsm = FSM.new(self, $States, $States/Idle)
 	
 func _disable_attack_effect() -> void:
 	attack_effect.visible = false
@@ -183,33 +181,6 @@ func can_attack2() -> bool:
 	if found_player == null: return false
 	return _distance_to_player_x() <= attack2_range
 
-func update_chase_motion() -> bool:
-	if found_player == null:
-		return false
-
-	var px := found_player.global_position.x
-	var dx := px - global_position.x
-	var dist := absf(dx)
-
-	if dist > stop_distance:
-		var dir_x: float
-		if dx == 0.0:
-			dir_x = direction
-		else:
-			dir_x = sign(dx)  
-
-		velocity.x = dir_x * movement_speed
-
-		if dir_x > 0.0 and direction != 1:
-			change_direction(1)
-		elif dir_x < 0.0 and direction != -1:
-			change_direction(-1)
-
-		return false
-	else:
-		velocity.x = 0.0
-		return true
-
 func _search_move() -> void:
 	if _blocked_ahead():
 		change_direction(-direction)
@@ -218,10 +189,10 @@ func _search_move() -> void:
 func control_move() -> bool:
 	if found_player == null:
 		_search_move()
+		return false 
 
-	var ready := update_chase_motion()
-
-	return ready
+	velocity.x = 0.0
+	return true
 
 func spawn_bullet_with_dir(dir_x: float) -> void:
 	if bullet_scene == null or claw_busy: return
@@ -259,9 +230,10 @@ func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 	_take_damage_from_dir(_direction, _damage)
 
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
-	knockback_direction = _damage_dir.normalized()
-	if fsm and fsm.current_state:
-		fsm.current_state.take_damage(_damage_dir, _damage)
+	velocity.x = _damage_dir.x * 100
+	take_damage(_damage)
+	if fsm.current_state==fsm.states.walk or fsm.current_state==fsm.states.idle or fsm.current_state==fsm.states.idle_stun or fsm.current_state==fsm.states.atk2_stop or fsm.current_state==fsm.states.atk2_roll: 
+		fsm.change_state(fsm.states.hurt)
 
 func toggle_next_attack():
 	next_attack_is_claw = not next_attack_is_claw

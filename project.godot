@@ -42,7 +42,7 @@ layout/default_style="res://dialog/custom/dialogic_style.tres"
 
 [display]
 
-window/size/mode=3
+window/size/mode=2
 window/stretch/mode="canvas_items"
 
 [dotnet]

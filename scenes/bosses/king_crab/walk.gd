@@ -16,7 +16,6 @@ func _update(delta: float) -> void:
 	else: desired=-1 
 	if desired != obj.direction:
 		obj.change_direction(desired)
-		obj.check_changed_direction()
 	obj.queued_bullet_dir_x = float(desired)
 
 	var can1 = obj.can_attack1()

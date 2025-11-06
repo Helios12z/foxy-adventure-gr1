@@ -18,5 +18,5 @@ func _enter() -> void:
 
 func _update(d: float) -> void:
 	if update_timer(d):
-		obj.attack_effect.visible=false
+		obj._disable_attack_effect()
 		change_state(fsm.states.atk1_fire)

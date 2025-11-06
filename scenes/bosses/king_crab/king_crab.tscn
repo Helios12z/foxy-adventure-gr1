@@ -313,12 +313,12 @@ frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
-target_position = Vector2(-400, 0)
+target_position = Vector2(-1000, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
-target_position = Vector2(400, 0)
+target_position = Vector2(1000, 0)
 collision_mask = 2
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -355,7 +355,7 @@ shape = SubResource("CapsuleShape2D_3obn1")
 debug_color = Color(0.614439, 0.40928, 0.889592, 0.42)
 
 [node name="ShootPoint" type="Marker2D" parent="Direction"]
-position = Vector2(-30, 0)
+position = Vector2(-44, 3)
 
 [node name="States" type="Node" parent="."]
 
