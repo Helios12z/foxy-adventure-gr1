@@ -4,4 +4,5 @@ func _enter()->void:
 	obj.change_animation("atk_1")
 	
 func _update(delta: float)->void:
-	pass 
+	await obj.do_skill1()
+	change_state(fsm.states.idle)

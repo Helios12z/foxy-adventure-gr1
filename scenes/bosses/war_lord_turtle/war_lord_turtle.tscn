@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=33 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://bltjlnwdafpdy" path="res://scenes/bosses/war_lord_turtle/atk_1.gd" id="25_4ut7l"]
 [ext_resource type="Script" uid="uid://dohwiudsn2vhs" path="res://scenes/bosses/war_lord_turtle/atk_2.gd" id="26_xwhea"]
 [ext_resource type="Script" uid="uid://cekjxrlbyelf7" path="res://scenes/bosses/war_lord_turtle/hurt.gd" id="27_6vi0x"]
+[ext_resource type="Script" uid="uid://b80m708ypmrvy" path="res://scenes/bosses/war_lord_turtle/fatigue.gd" id="28_6x4je"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
@@ -138,6 +139,18 @@ size = Vector2(57, 65)
 [node name="WarLordTurtle" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_lsjki")
+spike_damage = null
+attack_speed = null
+attack_damage_boss = null
+bomb_move_speed = null
+fatigue_seconds_after_skill2 = null
+missile_targets_root = null
+missile_target_names = null
+movement_speed = null
+gravity = null
+direction = null
+attack_damage = null
+max_health = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.5, 0.5)
@@ -198,3 +211,6 @@ script = ExtResource("26_xwhea")
 
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("27_6vi0x")
+
+[node name="Fatigue" type="Node" parent="States"]
+script = ExtResource("28_6x4je")

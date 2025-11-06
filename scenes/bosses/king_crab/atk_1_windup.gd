@@ -1,7 +1,6 @@
 extends EnemyState
 
 func _enter() -> void:
-	print("enter atk1 windup")
 	obj.change_animation("atk1_windup")
 	var dir_x := 1.0
 	if obj.found_player:
@@ -14,8 +13,10 @@ func _enter() -> void:
 	if dir_x == 0.0: dir_x = -obj.direction
 	obj.queued_bullet_dir_x = dir_x
 
-	timer = 0.2
+	timer = 0.75
+	obj.play_attack_windup_effect(timer)
 
 func _update(d: float) -> void:
 	if update_timer(d):
+		obj.attack_effect.visible=false
 		change_state(fsm.states.atk1_fire)

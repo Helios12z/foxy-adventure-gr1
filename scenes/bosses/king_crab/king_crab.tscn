@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=62 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c4n3w70g7r0tu" path="res://asset/King_Crab/King_Crab_14.png" id="2_ysjm8"]
 [ext_resource type="Texture2D" uid="uid://b6xoilua06cql" path="res://asset/King_Crab/King_Crab_18.png" id="3_5nm00"]
 [ext_resource type="Texture2D" uid="uid://008wd36dvtc7" path="res://asset/King_Crab/King_Crab_15.png" id="3_e4chs"]
+[ext_resource type="Texture2D" uid="uid://bfn8jhlmklgu1" path="res://asset/effects/effect1.png" id="3_wwxs8"]
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
@@ -31,6 +32,8 @@
 [ext_resource type="Texture2D" uid="uid://bdmth88m8mgxj" path="res://asset/King_Crab/King_Crab_13.png" id="18_ipm0x"]
 [ext_resource type="Texture2D" uid="uid://bbb6e816gwfiq" path="res://asset/King_Crab/King_Crab_29.png" id="19_4qkfu"]
 [ext_resource type="Texture2D" uid="uid://b74bb6orpxina" path="res://asset/King_Crab/King_Crab_30.png" id="20_34k3w"]
+[ext_resource type="Texture2D" uid="uid://bq2iumuglvcf4" path="res://asset/King_Crab/King_Crab_33.png" id="23_8qnyq"]
+[ext_resource type="Texture2D" uid="uid://b8r5h015hlyfw" path="res://asset/King_Crab/King_Crab_34.png" id="24_wwxs8"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="29_n7tu5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="30_3obn1"]
 [ext_resource type="Script" uid="uid://d3ovudg8sgn0n" path="res://scenes/bosses/king_crab/idle_atk.gd" id="33_34k3w"]
@@ -43,10 +46,82 @@
 [ext_resource type="Script" uid="uid://dl1tx1vsiwf8t" path="res://scenes/bosses/king_crab/dead.gd" id="37_ipm0x"]
 [ext_resource type="Script" uid="uid://c1ljp0jlkqoq3" path="res://scenes/bosses/king_crab/atk_1_fire.gd" id="37_w03xm"]
 [ext_resource type="Script" uid="uid://ch4iveo3byb15" path="res://scenes/bosses/king_crab/atk_1_recover.gd" id="38_qsf77"]
+[ext_resource type="Script" uid="uid://der2awvc2asnc" path="res://scenes/bosses/king_crab/idle.gd" id="46_pnc4w"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
 radius = 20.0
 height = 78.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnc4w"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(0, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lj3l2"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(64, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nw15n"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(128, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jg2x"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(192, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u25ey"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(256, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_322rn"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(320, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_txknd"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(384, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kpch"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(448, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hy45"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(512, 320, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i2k7a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnc4w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lj3l2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nw15n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5jg2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u25ey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_322rn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_txknd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kpch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hy45")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_lkrv3"]
 animations = [{
@@ -139,6 +214,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("8_dg743")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8qnyq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_wwxs8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8qnyq")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_51n07")
 }, {
 "duration": 1.0,
@@ -205,10 +297,19 @@ shape = SubResource("CapsuleShape2D_6162a")
 [node name="Direction" type="Node2D" parent="."]
 position = Vector2(0, -10)
 
+[node name="AttackEffect" type="AnimatedSprite2D" parent="Direction"]
+position = Vector2(-60, 0)
+sprite_frames = SubResource("SpriteFrames_i2k7a")
+autoplay = "default"
+frame = 8
+frame_progress = 1.0
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"walk"
+animation = &"atk1_windup"
 autoplay = "walk"
+frame = 1
+frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
@@ -287,3 +388,6 @@ script = ExtResource("36_cgg3e")
 
 [node name="Dead" type="Node" parent="States"]
 script = ExtResource("37_ipm0x")
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("46_pnc4w")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgj8e3f6gthar"]
+
+[ext_resource type="Texture2D" uid="uid://dupilqo02nyge" path="res://asset/war_lord_bullet/bullet_rocket.png" id="1_o28nm"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_8owtx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o28nm"]
+size = Vector2(14, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8owtx"]
+atlas = ExtResource("1_o28nm")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r0gyu"]
+size = Vector2(14, 24)
+
+[node name="Rocket" type="RigidBody2D"]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_o28nm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_8owtx")
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_8owtx")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+shape = SubResource("RectangleShape2D_r0gyu")
+debug_color = Color(0.293772, 0.512209, 0.954907, 0.42)

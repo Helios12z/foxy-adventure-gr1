@@ -46,10 +46,12 @@ var knockback_direction: Vector2
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
+@onready var attack_effect: AnimatedSprite2D = $Direction/AttackEffect
 
 func _ready() -> void:
 	_init_ray_casts()
 	_init_hurt_area()
+	_disable_attack_effect()
 
 	movement_speed = approach_speed
 	max_health=king_crab_max_health
@@ -61,7 +63,23 @@ func _ready() -> void:
 	
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Walk)
+	
+func _disable_attack_effect() -> void:
+	attack_effect.visible = false
+	attack_effect.stop()
+	attack_effect.frame = 0
+	attack_effect.speed_scale = 1.0
+	
+func play_attack_windup_effect(duration: float) -> void:
+	attack_effect.visible = true
+	attack_effect.play("default")
+	attack_effect.frame = 0
 
+	var frames := attack_effect.sprite_frames.get_frame_count("default")
+	var fps = max(attack_effect.sprite_frames.get_animation_speed("default"), 0.001)
+	var base_duration = frames / fps                   
+	attack_effect.speed_scale = base_duration / duration
+	
 func _physics_process(delta: float) -> void:
 	if fsm != null:
 		fsm._update(delta)
