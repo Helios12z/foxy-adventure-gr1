@@ -117,21 +117,21 @@ position = Vector2(0, -92)
 [node name="Trail" type="GPUParticles2D" parent="FX"]
 show_behind_parent = true
 amount = 6
-process_material = SubResource("ParticleProcessMaterial_gbya7")
 texture = ExtResource("5_dcbp6")
 lifetime = 0.4
 fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_gbya7")
 
 [node name="Death" type="GPUParticles2D" parent="FX"]
 emitting = false
 amount = 6
-process_material = SubResource("ParticleProcessMaterial_gilhy")
 texture = ExtResource("5_dcbp6")
 lifetime = 0.7
 one_shot = true
 explosiveness = 0.7
 fixed_fps = 60
 local_coords = true
+process_material = SubResource("ParticleProcessMaterial_gilhy")
 
 [node name="Root" type="Node2D" parent="."]
 
@@ -162,7 +162,7 @@ debug_color = Color(0.839216, 0.192157, 0.815686, 0.419608)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_cphpk")
+&"": SubResource("AnimationLibrary_cphpk")
 }
 autoplay = "default"
 

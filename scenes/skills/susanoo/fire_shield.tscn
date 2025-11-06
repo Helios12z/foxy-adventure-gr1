@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://da5vtpsak5f5i"]
+
+[ext_resource type="Texture2D" uid="uid://bwy7wwnx328fl" path="res://asset/foxy/foxy/fox_susanoo/fire_shield.png" id="1_tdurk"]
+[ext_resource type="Script" uid="uid://tqxa0q7sq85g" path="res://scenes/effects/flicker_light_2d.gd" id="2_4y25f"]
+
+[node name="FireShield" type="Node2D"]
+self_modulate = Color(1, 1, 1, 0.811765)
+z_index = 10
+position = Vector2(-1, -14)
+rotation = -0.0667142
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, 0)
+rotation = -0.0770956
+scale = Vector2(0.121, 0.17)
+texture = ExtResource("1_tdurk")
+
+[node name="FlickerLight2D" type="PointLight2D" parent="."]
+script = ExtResource("2_4y25f")
+metadata/_custom_type_script = "uid://tqxa0q7sq85g"
