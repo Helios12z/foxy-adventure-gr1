@@ -1,0 +1,378 @@
+[gd_scene load_steps=18 format=4 uid="uid://dq7eu5p47t8gv"]
+
+[ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
+[ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
+[ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="3_gpada"]
+[ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_hrn5s"]
+[ext_resource type="Texture2D" uid="uid://7e4tmseq4hhm" path="res://asset/forest/background/Layer_0002_7.png" id="4_wkgak"]
+[ext_resource type="Texture2D" uid="uid://dekb3jevm8pmg" path="res://asset/forest/background/ChatGPT Image 15_21_14 5 thg 11, 2025.png" id="6_wkgak"]
+[ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/items/fire_gem.tscn" id="7_nd2ra"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_nd2ra"]
+_limits = [0.0, 0.3, 0.0, 1.0]
+_data = [Vector2(0, 0.0114559), 0.0, 0.0, 0, 0, Vector2(0.174174, 0.258115), 0.0, 0.0, 0, 0, Vector2(0.528529, 0.3), 0.0, 0.0, 0, 0, Vector2(0.891892, 0.253461), 0.0, 0.0, 0, 0, Vector2(0.990991, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_aph5k"]
+curve = SubResource("Curve_nd2ra")
+
+[sub_resource type="Gradient" id="Gradient_x0kog"]
+colors = PackedColorArray(1, 1, 1, 0.0784314, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k2nfp"]
+gradient = SubResource("Gradient_x0kog")
+
+[sub_resource type="Curve" id="Curve_3aj2q"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.198198, 3), 0.0, 0.0, 0, 0, Vector2(0.498498, 3), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_qaift"]
+_limits = [0.0, 30.0, 0.0, 1.0]
+_data = [Vector2(0, 15.3401), 0.0, 0.0, 0, 0, Vector2(0.0840841, 24.1826), 0.0, 0.0, 0, 0, Vector2(0.252252, 30), 0.0, 0.0, 0, 0, Vector2(0.990991, 30), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_2peu5"]
+_limits = [0.0, 30.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.216216, 2.62768), 0.0, 0.0, 0, 0, Vector2(0.861862, 19.0632), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_x8knb"]
+curve_x = SubResource("Curve_3aj2q")
+curve_y = SubResource("Curve_qaift")
+curve_z = SubResource("Curve_2peu5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fe7x3"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -300, 0)
+emission_shape = 3
+emission_box_extents = Vector3(350, 1, 1)
+gravity = Vector3(0, 3000, 0)
+scale_min = 0.2
+scale_over_velocity_curve = SubResource("CurveXYZTexture_x8knb")
+color_initial_ramp = SubResource("GradientTexture1D_k2nfp")
+alpha_curve = SubResource("CurveTexture_aph5k")
+
+[node name="Map2" type="Node2D"]
+script = ExtResource("1_68p3w")
+camera_bottom_limit_y = -150.0
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+follow_viewport_enabled = true
+
+[node name="ParallaxLayerBG" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(1, -1)
+motion_scale = Vector2(0.001, 0.01)
+
+[node name="Sprite2D14" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(82, -259)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D15" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(1010, -259)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D16" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(1938, -258.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D17" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(2866, -258.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D18" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(3794, -259.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D19" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(4722, -259.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D20" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(5650, -259)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D21" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(6578, -259)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(82, 289)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(1010, 290)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(1938, 291.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D4" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(2866, 292.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D5" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(3794, 293.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D6" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(4722, 294.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D7" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(5650, 296)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D8" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(6578, 297)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D22" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(7506, -250)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D23" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(8434, -250)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D24" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(9362, -249.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D25" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(10290, -249.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D26" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(11218, -250.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D27" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(12146, -250.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D28" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(13074, -250)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D29" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(14002, -250)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D9" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(7506, 298)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D10" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(8434, 299)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D11" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(9362, 300.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D12" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(10290, 301.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D13" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(11218, 302.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D30" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(12146, 303.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D31" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(13074, 305)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D32" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(14002, 306)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D33" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(14930, -241)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D34" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(15858, -241)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D35" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(16786, -240.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D36" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(17714, -240.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D37" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(18642, -241.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D38" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(19570, -241.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D39" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(20498, -241)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D40" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(21426, -241)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D41" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(14930, 307)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D42" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(15858, 308)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D43" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(16786, 309.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D44" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(17714, 310.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D45" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(18642, 311.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D46" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(19570, 312.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D47" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(20498, 314)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D48" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(21426, 315)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D49" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(22354, -232)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D50" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(23282, -232)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D51" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(24210, -231.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D52" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(25138, -231.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D53" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(26066, -232.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D54" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(26994, -232.5)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D55" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(27922, -232)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D56" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(28850, -232)
+texture = ExtResource("1_ofl10")
+
+[node name="Sprite2D57" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(22354, 316)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D58" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(23282, 317)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D59" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(24210, 318.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D60" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(25138, 319.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D61" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(26066, 320.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D62" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(26994, 321.5)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D63" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(27922, 323)
+texture = ExtResource("4_wkgak")
+
+[node name="Sprite2D64" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(28850, 324)
+texture = ExtResource("4_wkgak")
+
+[node name="CanvasModulate2" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayerBG"]
+position = Vector2(-1, 1)
+color = Color(0.47451, 0.47451, 0.47451, 1)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+modulate = Color(0.47451, 0.47451, 0.47451, 1)
+tile_map_data = PackedByteArray("AABOAAQAAgABAAAAAABNAAQAAgABAAAAAABMAAQAAgABAAAAAABLAAQAAgABAAAAAABKAAQAAgABAAAAAABJAAQAAgABAAAAAABIAAQAAgABAAAAAABHAAQAAgABAAAAAABGAAQAAgABAAAAAABFAAQAAgABAAAAAABEAAQAAgABAAAAAABDAAQAAgABAAAAAABCAAQAAgABAAAAAABBAAQAAgABAAAAAABAAAQAAgABAAAAAAA/AAQAAgABAAAAAAA+AAQAAgABAAAAAAAmAAQAAgABAAAAAAAlAAQAAgABAAAAAAAkAAQAAgABAAAAAAAjAAQAAgABAAAAAAAiAAQAAgABAAAAAAA9AAQAAgABAAAAAAA8AAQAAgABAAAAAAA7AAQAAgABAAAAAAA6AAQAAgABAAAAAAA5AAQAAgABAAAAAAA4AAQAAgABAAAAAAA3AAQAAgABAAAAAAA2AAQAAgABAAAAAAA1AAQAAgABAAAAAAA0AAQAAgABAAAAAAAzAAQAAgABAAAAAAAyAAQAAgABAAAAAAAxAAQAAgABAAAAAAAwAAQAAgABAAAAAAAvAAQAAgABAAAAAAAuAAQAAgABAAAAAAAtAAQAAgABAAAAAAAsAAQAAgABAAAAAAArAAQAAgABAAAAAAAqAAQAAgABAAAAAAApAAQAAgABAAAAAAAoAAQAAgABAAAAAAAnAAQAAgABAAAAAAAhAAQAAgABAAAAAAAgAAQAAgABAAAAAAAfAAQAAgABAAAAAAAeAAQAAgABAAAAAAAdAAQAAgABAAAAAAAcAAQAAgABAAAAAAAAAAQAAgAAAAAAAAABAAQAAgABAAAAAAACAAQAAgABAAAAAAADAAQAAgABAAAAAAAEAAQAAgABAAAAAAAFAAQAAgABAAAAAAAGAAQAAgABAAAAAAAHAAQAAgABAAAAAAAIAAQAAgABAAAAAAAJAAQAAgABAAAAAAAKAAQAAgABAAAAAAALAAQAAgABAAAAAAAMAAQAAgABAAAAAAANAAQAAgABAAAAAAAOAAQAAgABAAAAAAAPAAQAAgABAAAAAAAQAAQAAgABAAAAAAARAAQAAgABAAAAAAASAAQAAgABAAAAAAATAAQAAgABAAAAAAAUAAQAAgABAAAAAAAVAAQAAgABAAAAAAAWAAQAAgABAAAAAAAXAAQAAgABAAAAAAAYAAQAAgABAAAAAAAZAAQAAgABAAAAAAAaAAQAAgABAAAAAAAbAAQAAgABAAAAAAAAAAUAAgAAAAEAAAABAAUAAgABAAEAAAACAAUAAgABAAEAAAADAAUAAgABAAEAAAAEAAUAAgABAAEAAAAFAAUAAgABAAEAAAAHAAUAAgABAAEAAAAGAAUAAgABAAEAAAAJAAUAAgABAAEAAAAIAAUAAgABAAEAAAAKAAUAAgABAAEAAAAMAAUAAgABAAEAAAALAAUAAgABAAEAAAANAAUAAgABAAEAAAAOAAUAAgABAAEAAAAPAAUAAgABAAEAAAAUAAUAAgABAAEAAAAVAAUAAgABAAEAAAAXAAUAAgABAAEAAAAWAAUAAgABAAEAAAAYAAUAAgABAAEAAAAZAAUAAgABAAEAAAAaAAUAAgABAAEAAAAbAAUAAgABAAEAAAAQAAUAAgABAAEAAAARAAUAAgABAAEAAAASAAUAAgABAAEAAAATAAUAAgABAAEAAAAcAAUAAgABAAEAAAAdAAUAAgABAAEAAAAeAAUAAgABAAEAAAAfAAUAAgABAAEAAAAgAAUAAgABAAEAAAAhAAUAAgABAAEAAAAiAAUAAgABAAEAAAAjAAUAAgABAAEAAAAkAAUAAgABAAEAAAAlAAUAAgABAAEAAAAmAAUAAgABAAEAAAAnAAUAAgABAAEAAAAoAAUAAgABAAEAAAApAAUAAgABAAEAAAAqAAUAAgABAAEAAAArAAUAAgABAAEAAAAsAAUAAgABAAEAAAAtAAUAAgABAAEAAAAuAAUAAgABAAEAAAAwAAUAAgABAAEAAAAvAAUAAgABAAEAAAAxAAUAAgABAAEAAAAyAAUAAgABAAEAAAAzAAUAAgABAAEAAAA0AAUAAgABAAEAAAA1AAUAAgABAAEAAAA2AAUAAgABAAEAAAA4AAUAAgABAAEAAAA3AAUAAgABAAEAAAA5AAUAAgABAAEAAAA6AAUAAgABAAEAAAA7AAUAAgABAAEAAAA8AAUAAgABAAEAAAA9AAUAAgABAAEAAAA+AAUAAgABAAEAAAA/AAUAAgABAAEAAABAAAUAAgABAAEAAABBAAUAAgABAAEAAABCAAUAAgABAAEAAABDAAUAAgABAAEAAABEAAUAAgABAAEAAABFAAUAAgABAAEAAABGAAUAAgABAAEAAABHAAUAAgABAAEAAABIAAUAAgABAAEAAABJAAUAAgABAAEAAABKAAUAAgABAAEAAABLAAUAAgABAAEAAABMAAUAAgABAAEAAABNAAUAAgABAAEAAABOAAUAAgABAAEAAABPAAQAAgABAAAAAABQAAQAAgABAAAAAABRAAQAAgABAAAAAABSAAQAAgABAAAAAABTAAQAAgABAAAAAABUAAQAAgABAAAAAABWAAQAAgABAAAAAABVAAQAAgABAAAAAABXAAQAAgABAAAAAABYAAQAAgABAAAAAABZAAQAAgABAAAAAABbAAQAAgABAAAAAABaAAQAAgABAAAAAABcAAQAAgABAAAAAABdAAQAAgABAAAAAABeAAQAAgABAAAAAABfAAQAAgABAAAAAABgAAQAAgABAAAAAABhAAQAAgABAAAAAABiAAQAAgABAAAAAABjAAQAAgABAAAAAABkAAQAAgABAAAAAABlAAQAAgABAAAAAABmAAQAAgABAAAAAABnAAQAAgABAAAAAABoAAQAAgABAAAAAABpAAQAAgABAAAAAABqAAQAAgABAAAAAABrAAQAAgABAAAAAABsAAQAAgABAAAAAABtAAQAAgABAAAAAABtAAUAAgABAAEAAABsAAUAAgABAAEAAABrAAUAAgABAAEAAABqAAUAAgABAAEAAABpAAUAAgABAAEAAABoAAUAAgABAAEAAABnAAUAAgABAAEAAABmAAUAAgABAAEAAABlAAUAAgABAAEAAABjAAUAAgABAAEAAABkAAUAAgABAAEAAABiAAUAAgABAAEAAABhAAUAAgABAAEAAABgAAUAAgABAAEAAABfAAUAAgABAAEAAABeAAUAAgABAAEAAABdAAUAAgABAAEAAABcAAUAAgABAAEAAABbAAUAAgABAAEAAABaAAUAAgABAAEAAABYAAUAAgABAAEAAABZAAUAAgABAAEAAABXAAUAAgABAAEAAABWAAUAAgABAAEAAABVAAUAAgABAAEAAABUAAUAAgABAAEAAABSAAUAAgABAAEAAABTAAUAAgABAAEAAABRAAUAAgABAAEAAABQAAUAAgABAAEAAABPAAUAAgABAAEAAABuAAQAAgABAAAAAABvAAQAAgABAAAAAABwAAQAAgABAAAAAAByAAQAAgABAAAAAABxAAQAAgABAAAAAABzAAQAAgABAAAAAAB0AAQAAgABAAAAAAB1AAQAAgABAAAAAAB2AAQAAgABAAAAAAB3AAQAAgABAAAAAAB4AAQAAgABAAAAAAB5AAQAAgABAAAAAAB6AAQAAgABAAAAAAB7AAQAAgABAAAAAAB8AAQAAgABAAAAAAB9AAQAAgABAAAAAAB+AAQAAgABAAAAAAB/AAQAAgABAAAAAACAAAQAAgABAAAAAACBAAQAAgABAAAAAACCAAQAAgABAAAAAACDAAQAAgABAAAAAACEAAQAAgACAAAAAACDAAUAAgABAAEAAACCAAUAAgABAAEAAACBAAUAAgABAAEAAACAAAUAAgABAAEAAAB/AAUAAgABAAEAAAB+AAUAAgABAAEAAAB9AAUAAgABAAEAAAB8AAUAAgABAAEAAAB7AAUAAgABAAEAAAB6AAUAAgABAAEAAAB5AAUAAgABAAEAAAB4AAUAAgABAAEAAAB3AAUAAgABAAEAAAB2AAUAAgABAAEAAAB1AAUAAgABAAEAAAB0AAUAAgABAAEAAABzAAUAAgABAAEAAAByAAUAAgABAAEAAABuAAUAAgABAAEAAABvAAUAAgABAAEAAABwAAUAAgABAAEAAABxAAUAAgABAAEAAACEAAUAAgACAAEAAAAAAAYAAgAAAAEAAAAAAAcAAgAAAAIAAAABAAcAAgABAAIAAAACAAcAAgABAAIAAAADAAYAAgABAAEAAAAEAAYAAgABAAEAAAAFAAYAAgABAAEAAAAGAAYAAgABAAEAAAAHAAYAAgABAAEAAAAIAAYAAgABAAEAAAAJAAYAAgABAAEAAAAKAAYAAgABAAEAAAACAAYAAgABAAEAAAABAAYAAgABAAEAAAAFAAcAAgABAAIAAAAGAAcAAgABAAIAAAAHAAcAAgABAAIAAAAEAAcAAgABAAIAAAADAAcAAgABAAIAAAAIAAcAAgABAAIAAAAJAAcAAgABAAIAAAAKAAcAAgABAAIAAAALAAcAAgABAAIAAAAMAAcAAgABAAIAAAANAAcAAgABAAIAAAAOAAcAAgABAAIAAAALAAYAAgABAAEAAAAMAAYAAgABAAEAAAANAAYAAgABAAEAAAAOAAYAAgABAAEAAAAPAAYAAgABAAEAAAAQAAYAAgABAAEAAAATAAYAAgABAAEAAAASAAYAAgABAAEAAAARAAYAAgABAAEAAAAUAAYAAgABAAEAAAAVAAYAAgABAAEAAAAWAAYAAgABAAEAAAAXAAYAAgABAAEAAAASAAcAAgABAAIAAAARAAcAAgABAAIAAAAQAAcAAgABAAIAAAAPAAcAAgABAAIAAAAUAAcAAgABAAIAAAATAAcAAgABAAIAAAAVAAcAAgABAAIAAAAWAAcAAgABAAIAAAAXAAcAAgABAAIAAAAYAAYAAgABAAEAAAAZAAYAAgABAAEAAAAaAAYAAgABAAEAAAAcAAYAAgABAAEAAAAbAAYAAgABAAEAAAAeAAYAAgABAAEAAAAdAAYAAgABAAEAAAAfAAYAAgABAAEAAAAgAAYAAgABAAEAAAAhAAYAAgABAAEAAAAiAAYAAgABAAEAAAAeAAcAAgABAAIAAAAdAAcAAgABAAIAAAAcAAcAAgABAAIAAAAbAAcAAgABAAIAAAAaAAcAAgABAAIAAAAZAAcAAgABAAIAAAAYAAcAAgABAAIAAAAfAAcAAgABAAIAAAAgAAcAAgABAAIAAAAhAAcAAgABAAIAAAAiAAcAAgABAAIAAAAjAAcAAgABAAIAAAAjAAYAAgABAAEAAAAkAAYAAgABAAEAAAAlAAYAAgABAAEAAAAmAAYAAgABAAEAAAAnAAYAAgABAAEAAAAoAAYAAgABAAEAAAApAAYAAgABAAEAAAAqAAYAAgABAAEAAAArAAYAAgABAAEAAAAtAAcAAgABAAIAAAAsAAYAAgABAAEAAAAuAAcAAgABAAIAAAAvAAcAAgABAAIAAAAwAAcAAgABAAIAAAAxAAcAAgABAAIAAAAwAAYAAgABAAEAAAAvAAYAAgABAAEAAAAsAAcAAgABAAIAAAArAAcAAgABAAIAAAAqAAcAAgABAAIAAAApAAcAAgABAAIAAAAoAAcAAgABAAIAAAAnAAcAAgABAAIAAAAmAAcAAgABAAIAAAAlAAcAAgABAAIAAAAkAAcAAgABAAIAAAAtAAYAAgABAAEAAAAuAAYAAgABAAEAAAAxAAYAAgABAAEAAAAyAAYAAgABAAEAAAAzAAYAAgABAAEAAAA0AAYAAgABAAEAAAA1AAYAAgABAAEAAAA2AAYAAgABAAEAAAA3AAYAAgABAAEAAAA4AAYAAgABAAEAAAA5AAYAAgABAAEAAAA6AAYAAgABAAEAAAA7AAYAAgABAAEAAAA8AAYAAgABAAEAAAAyAAcAAgABAAIAAAAzAAcAAgABAAIAAAA0AAcAAgABAAIAAAA1AAcAAgABAAIAAAA3AAcAAgABAAIAAAA2AAcAAgABAAIAAAA5AAcAAgABAAIAAAA4AAcAAgABAAIAAAA6AAcAAgABAAIAAAA8AAcAAgABAAIAAAA7AAcAAgABAAIAAAA9AAcAAgABAAIAAAA+AAcAAgABAAIAAAA/AAcAAgABAAIAAAA/AAYAAgABAAEAAAA+AAYAAgABAAEAAAA9AAYAAgABAAEAAABAAAYAAgABAAEAAABBAAYAAgABAAEAAABCAAYAAgABAAEAAABDAAYAAgABAAEAAABEAAYAAgABAAEAAABFAAYAAgABAAEAAABGAAYAAgABAAEAAABHAAYAAgABAAEAAABIAAYAAgABAAEAAABJAAYAAgABAAEAAABKAAYAAgABAAEAAABKAAcAAgABAAIAAABJAAcAAgABAAIAAABIAAcAAgABAAIAAABHAAcAAgABAAIAAABGAAcAAgABAAIAAABFAAcAAgABAAIAAABEAAcAAgABAAIAAABDAAcAAgABAAIAAABCAAcAAgABAAIAAABBAAcAAgABAAIAAABAAAcAAgABAAIAAABLAAYAAgABAAEAAABMAAYAAgABAAEAAABNAAYAAgABAAEAAABOAAYAAgABAAEAAABPAAYAAgABAAEAAABQAAYAAgABAAEAAABSAAYAAgABAAEAAABRAAYAAgABAAEAAABYAAYAAgABAAEAAABXAAYAAgABAAEAAABWAAYAAgABAAEAAABVAAYAAgABAAEAAABUAAYAAgABAAEAAABTAAYAAgABAAEAAABZAAYAAgABAAEAAABaAAYAAgABAAEAAABcAAYAAgABAAEAAABbAAYAAgABAAEAAABdAAYAAgABAAEAAABfAAYAAgABAAEAAABeAAYAAgABAAEAAABhAAYAAgABAAEAAABgAAYAAgABAAEAAABiAAYAAgABAAEAAABjAAYAAgABAAEAAABmAAYAAgABAAEAAABlAAYAAgABAAEAAABkAAYAAgABAAEAAABnAAYAAgABAAEAAABoAAYAAgABAAEAAABoAAcAAgABAAIAAABpAAcAAgABAAIAAABqAAcAAgABAAIAAABrAAcAAgABAAIAAABsAAcAAgABAAIAAABtAAcAAgABAAIAAABuAAcAAgABAAIAAABvAAcAAgABAAIAAABwAAcAAgABAAIAAABxAAcAAgABAAIAAAByAAcAAgABAAIAAABzAAcAAgABAAIAAAB0AAcAAgABAAIAAAB2AAcAAgABAAIAAAB1AAcAAgABAAIAAAB3AAcAAgABAAIAAAB4AAcAAgABAAIAAAB5AAcAAgABAAIAAAB6AAcAAgABAAIAAAB7AAcAAgABAAIAAAB8AAcAAgABAAIAAAB9AAcAAgABAAIAAAB+AAcAAgABAAIAAAB/AAcAAgABAAIAAACAAAYAAgABAAEAAACBAAYAAgABAAEAAAB/AAYAAgABAAEAAAB+AAYAAgABAAEAAAB9AAYAAgABAAEAAAB7AAYAAgABAAEAAAB8AAYAAgABAAEAAAB5AAYAAgABAAEAAAB6AAYAAgABAAEAAAB3AAYAAgABAAEAAAB4AAYAAgABAAEAAAB2AAYAAgABAAEAAAB1AAYAAgABAAEAAAB0AAYAAgABAAEAAABxAAYAAgABAAEAAAByAAYAAgABAAEAAABzAAYAAgABAAEAAABwAAYAAgABAAEAAABvAAYAAgABAAEAAABuAAYAAgABAAEAAABtAAYAAgABAAEAAABsAAYAAgABAAEAAABqAAYAAgABAAEAAABrAAYAAgABAAEAAABpAAYAAgABAAEAAABLAAcAAgABAAIAAABMAAcAAgABAAIAAABNAAcAAgABAAIAAABPAAcAAgABAAIAAABOAAcAAgABAAIAAABQAAcAAgABAAIAAABRAAcAAgABAAIAAABSAAcAAgABAAIAAABTAAcAAgABAAIAAABUAAcAAgABAAIAAABVAAcAAgABAAIAAABWAAcAAgABAAIAAABXAAcAAgABAAIAAABYAAcAAgABAAIAAABZAAcAAgABAAIAAABbAAcAAgABAAIAAABaAAcAAgABAAIAAABcAAcAAgABAAIAAABdAAcAAgABAAIAAABeAAcAAgABAAIAAABfAAcAAgABAAIAAABhAAcAAgABAAIAAABgAAcAAgABAAIAAABiAAcAAgABAAIAAABjAAcAAgABAAIAAABkAAcAAgABAAIAAABlAAcAAgABAAIAAABmAAcAAgABAAIAAABnAAcAAgABAAIAAACAAAcAAgABAAIAAACBAAcAAgABAAIAAACCAAcAAgABAAIAAACDAAcAAgABAAIAAACEAAcAAgACAAIAAACEAAYAAgACAAEAAACDAAYAAgABAAEAAACCAAYAAgABAAEAAAAOAAIAAgAAAAQAAAAPAAIAAgABAAQAAAAQAAIAAgAQAAQAAAAQAAEAAgAEAAEAAAAQAAAAAgAPAAMAAAARAAAAAgABAAQAAAASAAAAAgABAAQAAAATAAAAAgABAAQAAAAUAAAAAgAQAAQAAAAUAP//AgAPAAMAAAAVAP//AgABAAQAAAAWAP//AgABAAQAAAAXAP//AgABAAQAAAAYAP//AgAQAAQAAAAYAP7/AgAEAAEAAAAYAP3/AgAPAAMAAAAZAP3/AgABAAQAAAAaAP3/AgABAAQAAAAbAP3/AgABAAQAAAAcAP3/AgACAAQAAAA=")
+tile_set = ExtResource("3_gpada")
+
+[node name="Player" parent="." instance=ExtResource("3_hrn5s")]
+position = Vector2(48, -5)
+
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+position = Vector2(1, -10)
+scale = Vector2(0.2, 0.2)
+color = Color(1, 1, 0.529412, 1)
+energy = 1.8
+texture = ExtResource("6_wkgak")
+
+[node name="FireGem" parent="." instance=ExtResource("7_nd2ra")]
+position = Vector2(276, 61)
+
+[node name="RainParticles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_wkgak")
+position = Vector2(142, -173)
+amount = 2000
+preprocess = 0.5
+visibility_rect = Rect2(-350, -200, 700, 400)
+process_material = SubResource("ParticleProcessMaterial_fe7x3")
+
+[node name="RainParticles2" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_wkgak")
+position = Vector2(837, -173)
+amount = 2000
+preprocess = 0.5
+visibility_rect = Rect2(-350, -200, 700, 400)
+process_material = SubResource("ParticleProcessMaterial_fe7x3")
+
+[node name="RainParticles3" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_wkgak")
+position = Vector2(1502, -185)
+amount = 2000
+preprocess = 0.5
+visibility_rect = Rect2(-350, -200, 700, 400)
+process_material = SubResource("ParticleProcessMaterial_fe7x3")
+
+[node name="RainParticles4" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_wkgak")
+position = Vector2(2197, -185)
+amount = 2000
+preprocess = 0.5
+visibility_rect = Rect2(-350, -200, 700, 400)
+process_material = SubResource("ParticleProcessMaterial_fe7x3")

@@ -4,16 +4,21 @@ func _enter() -> void:
 	#Change animation to fall
 	obj.change_animation("fall")
 
-
 func _update(_delta: float) -> void:
 	#Control dash
 	if control_dash():
+		return
+	#Toggle Susanoo spirit
+	if control_susanoo():
+		return
+	#Control hover (giữ jump trên không, hết lượt nhảy)
+	if control_hover():
 		return
 	#Control moving
 	control_jump()
 	control_attack()
 	var is_moving: bool = control_moving(_delta)
-	
+
 	# Check for wall climbing
 	if obj.can_wall_slide():
 		var input_dir = Input.get_axis("left", "right")

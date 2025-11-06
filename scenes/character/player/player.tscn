@@ -1,16 +1,19 @@
-[gd_scene load_steps=23 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=29 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
 [ext_resource type="SpriteFrames" uid="uid://cpyd1m1lmtb7o" path="res://scenes/character/foxy_hat.tres" id="3_i0j1t"]
 [ext_resource type="SpriteFrames" uid="uid://de50f6k6l0j1d" path="res://scenes/character/foxy_hat_blade.tres" id="4_68dt2"]
 [ext_resource type="Shader" uid="uid://cjpl0hseqana0" path="res://scenes/character/player/shaders/dash_warp.gdshader" id="5_dash_shader"]
+[ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="6_qnn1i"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="7_t4wjd"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="10_68dt2"]
 [ext_resource type="Script" uid="uid://cxkb34oxplk7s" path="res://scenes/character/player/hurt.gd" id="10_in2if"]
 [ext_resource type="Script" uid="uid://fowo3c4ajsr7" path="res://scenes/character/player/dead.gd" id="11_m5h5h"]
 [ext_resource type="Script" uid="uid://dugosv23vlsd1" path="res://scenes/character/player/climb.gd" id="14_yuskr"]
 [ext_resource type="Script" uid="uid://b3l6e30n7sx3p" path="res://scenes/character/player/attack.gd" id="18_qnn1i"]
+[ext_resource type="Script" uid="uid://bwe7irvywtcdf" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
+[ext_resource type="Script" uid="uid://t4rt3tqet0ea" path="res://scenes/character/player/camera_follow.gd" id="21_camfollow"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
 [ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
@@ -18,8 +21,12 @@
 [ext_resource type="Script" uid="uid://cnsjlj1g4yk6v" path="res://scenes/character/player/states/dash.gd" id="43_dash"]
 [ext_resource type="Script" uid="uid://d02atll0hy5s3" path="res://scenes/character/player/states/run_fast.gd" id="44_runfast"]
 [ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
+[ext_resource type="Script" uid="uid://bdb4rp0xqby5i" path="res://scenes/character/player/states/susanoo.gd" id="46_susanoo"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lcjji"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b1yw4"]
+radius = 32.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dash"]
 shader = ExtResource("5_dash_shader")
@@ -28,6 +35,17 @@ shader_parameter/dir = 1.0
 shader_parameter/squash = 0.0
 shader_parameter/lean = 0.0
 shader_parameter/lean_cutoff = 0.58
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gfavw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_qnn1i")
+}],
+"loop": true,
+"name": &"hover",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfavw"]
 size = Vector2(25, 33)
@@ -39,6 +57,7 @@ size = Vector2(30, 43)
 z_index = 10
 collision_layer = 2
 script = ExtResource("1_puv7k")
+dash_chain_cooldown = 1.0
 run_speed_multiplier = 2.1
 movement_speed = 120.0
 
@@ -46,32 +65,49 @@ movement_speed = 120.0
 position = Vector2(0, -12)
 shape = SubResource("CapsuleShape2D_lcjji")
 
+[node name="HoverCollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -6)
+shape = SubResource("CircleShape2D_b1yw4")
+disabled = true
+
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-1, -101)
-zoom = Vector2(1.5, 1.5)
+position = Vector2(0, -79)
+offset = Vector2(0, 100)
+zoom = Vector2(1.3, 1.3)
 position_smoothing_enabled = true
+script = ExtResource("21_camfollow")
+overshoot_px = 60.0
 
 [node name="Direction" type="Node2D" parent="."]
 position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
-animation = &"dead"
+animation = &"walk"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 sprite_frames = ExtResource("3_i0j1t")
-animation = &"climb"
+animation = &"walk"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
+light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
-animation = &"jump_attack"
+animation = &"jump"
+
+[node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+light_mask = 2
+scale = Vector2(0.07, 0.07)
+sprite_frames = SubResource("SpriteFrames_gfavw")
+animation = &"hover"
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
 self_modulate = Color(1, 0.407843, 0.266667, 1)
@@ -83,6 +119,18 @@ metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
 position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_lcjji")
+
+[node name="HoverHurtArea2D" type="Area2D" parent="Direction"]
+self_modulate = Color(1, 0.407843, 0.266667, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("10_68dt2")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HoverHurtArea2D"]
+position = Vector2(1, -9)
+shape = SubResource("CircleShape2D_b1yw4")
+disabled = true
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
 collision_layer = 0
@@ -140,5 +188,12 @@ script = ExtResource("14_yuskr")
 [node name="Attack" type="Node" parent="States"]
 script = ExtResource("18_qnn1i")
 
+[node name="Hover" type="Node" parent="States"]
+script = ExtResource("20_gfavw")
+
+[node name="Susanoo" type="Node" parent="States"]
+script = ExtResource("46_susanoo")
+
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
+[connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/FallHurtArea2D" to="." method="_on_fall_hurt_area_2d_hurt"]

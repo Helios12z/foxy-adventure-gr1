@@ -40,6 +40,18 @@ func control_jump() -> bool:
 		return true
 	return false
 
+## Control hover: require a fresh jump press in air when no jumps left
+func control_hover() -> bool:
+	# Activate hover only when:
+	# - Jump receives a NEW press (not held from last jump)
+	# - No jumps left
+	# - In the air and not on a wall
+	if Input.is_action_just_pressed("jump") and not obj.can_jump() and not obj.is_on_floor():
+		if not obj.is_on_wall():
+			change_state(fsm.states.hover)
+			return true
+	return false
+
 func control_dash() -> bool:
 	if Input.is_action_just_pressed("dash") and obj.can_dash():
 		change_state(fsm.states.dash)
@@ -77,4 +89,20 @@ func control_attack() -> bool:
 		#if Input.is_action_just_pressed("throw_blade"):
 			#change_state(fsm.states.throwblade)
 			#return true
+	return false
+
+func control_susanoo() -> bool:
+	# Toggle Susanoo spirit on/off via dedicated state
+	if Input.is_action_just_pressed("skill_susanoo"):
+		# Yêu cầu phải có fire gem mới được kích hoạt skill
+		if not obj.has_fire_gem:
+			return true
+		var existing := obj.get_node_or_null("SusanooSpirit")
+		# Nếu đã có spirit, bỏ qua lần nhấn này (không làm gì cả)
+		if existing != null:
+			return true
+		# Nếu chưa có, chuyển sang state susanoo để spawn
+		if fsm.states.has("susanoo"):
+			change_state(fsm.states.susanoo)
+			return true
 	return false

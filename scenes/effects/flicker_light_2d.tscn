@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5bu5nk05qwvp"]
+
+[ext_resource type="Script" uid="uid://tqxa0q7sq85g" path="res://scenes/effects/flicker_light_2d.gd" id="1"]
+
+[node name="FlickerLight2D" type="PointLight2D"]
+script = ExtResource("1")
