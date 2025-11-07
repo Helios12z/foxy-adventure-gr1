@@ -5,7 +5,6 @@ func _enter() -> void:
 	timer=0.25
 
 func _update(d: float)->void:
-	timer-=d 
-	if timer<=0: 
+	if update_timer(d):
 		obj.spawn_bullet_with_dir(obj.queued_bullet_dir_x)
 		change_state(fsm.states.idle_atk)

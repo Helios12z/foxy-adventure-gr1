@@ -4,6 +4,5 @@ func _enter() -> void:
 	obj.change_animation("atk1_recover")
 
 func _update(d: float) -> void:
-	timer -= d
-	if timer <= 0.0:
+	if update_timer(d):
 		change_state(fsm.states.walk)

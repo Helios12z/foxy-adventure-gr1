@@ -18,6 +18,12 @@ extends BaseCharacter
 
 @export var bullet_scene: PackedScene
 
+@export var teleport_proximity_seconds: float = 10.0     
+@export var teleport_proximity_distance: float = 5.0   
+
+var _proximity_time: float = 0.0
+var _proximity_enabled: bool = true
+
 # avoid wall/fall
 var front_ray_cast: RayCast2D
 var back_ray_cast: RayCast2D
@@ -50,11 +56,13 @@ var queued_roll_dir_x: float = 1.0
 @onready var attack_1_effect: AnimatedSprite2D = $Direction/Attack1Effect
 @onready var attack_2_effect: AnimatedSprite2D = $Direction/Attack2Effect
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
+@onready var teleport_effect: AnimatedSprite2D = $Direction/TeleportEffect
 
 func _ready() -> void:
 	_init_ray_casts()
 	_init_hurt_area()
 	_disable_attack_effect()
+	_disable_teleport_effect()
 
 	movement_speed = approach_speed
 	max_health=king_crab_max_health
@@ -98,6 +106,22 @@ func play_attack_windup_effect(type: int, duration: float) -> void:
 		var fps = max(attack_2_effect.sprite_frames.get_animation_speed("default"), 0.001)
 		var base_duration = frames / fps                   
 		attack_2_effect.speed_scale = base_duration / duration
+		
+func play_teleport_effect(duration: float)->void:
+	teleport_effect.visible = true 
+	teleport_effect.play("default")
+	teleport_effect.frame = 0
+	
+	var frames := teleport_effect.sprite_frames.get_frame_count("default")
+	var fps = max(teleport_effect.sprite_frames.get_animation_speed("default"), 0.001)
+	var base_duration = frames / fps                   
+	teleport_effect.speed_scale = base_duration / duration
+	
+func _disable_teleport_effect()->void:
+	teleport_effect.visible = false
+	teleport_effect.stop()
+	teleport_effect.frame = 0
+	teleport_effect.speed_scale = 1.0
 	
 func _physics_process(delta: float) -> void:
 	if fsm != null:
@@ -106,16 +130,13 @@ func _physics_process(delta: float) -> void:
 	_check_changed_animation()
 	check_changed_direction()
 	check_player_visibility()
+	_tick_proximity_teleport(delta)
 
 func _init_ray_casts() -> void:
 	if has_node("Direction/FrontRayCast2D"):
 		front_ray_cast = $Direction/FrontRayCast2D
 		front_ray_cast.enabled = true
 		front_ray_cast.exclude_parent = true
-	if has_node("Direction/BackRayCast2D"):
-		back_ray_cast = $Direction/BackRayCast2D
-		back_ray_cast.enabled = true
-		back_ray_cast.exclude_parent = true
 	if has_node("Direction/DownRayCast2D"):
 		down_ray_cast = $Direction/DownRayCast2D
 		down_ray_cast.enabled = true
@@ -129,14 +150,6 @@ func _init_ray_casts() -> void:
 		detect_back_ray_cast = $Direction/DetectBackRayCast2D
 		detect_back_ray_cast.enabled = true
 		detect_back_ray_cast.exclude_parent = true
-	if has_node("Direction/DetectUpRayCast2D"):
-		detect_up_ray_cast = $Direction/DetectUpRayCast2D
-		detect_up_ray_cast.enabled = true
-		detect_up_ray_cast.exclude_parent = true
-	if has_node("Direction/DetectDownRayCast2D"):
-		detect_down_ray_cast = $Direction/DetectDownRayCast2D
-		detect_down_ray_cast.enabled = true
-		detect_down_ray_cast.exclude_parent = true
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -285,3 +298,31 @@ func check_changed_direction() -> void:
 			$Direction.scale.x = -1
 		if direction == -1:
 			$Direction.scale.x = 1
+			
+func reset_proximity_timer() -> void:
+	_proximity_time = 0.0
+
+func _is_player_continuously_close() -> bool:
+	if found_player == null:
+		return false
+	return global_position.distance_to(found_player.global_position) <= teleport_proximity_distance
+
+func _tick_proximity_teleport(delta: float) -> void:
+	if not _proximity_enabled:
+		return
+		
+	var s = fsm.current_state
+	if s == fsm.states.teleport or s == fsm.states.dead:
+		_proximity_time = 0.0
+		return
+
+	if _is_player_continuously_close():
+		_proximity_time += delta
+	else:
+		if _proximity_time != 0.0:
+			_proximity_time = 0.0
+
+	if _proximity_time >= teleport_proximity_seconds:
+		_proximity_time = 0.0
+		if s != fsm.states.hurt and s != fsm.states.atk2_roll and s != fsm.states.dead:
+			fsm.change_state(fsm.states.teleport)
