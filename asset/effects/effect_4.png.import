@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7xtq27oem0j4"
-path="res://.godot/imported/king_crab_teleport.png-cf9bda04d5ba46fc9740a1d166d2d105.ctex"
+uid="uid://dj246euecxbul"
+path="res://.godot/imported/effect_4.png-022deb73a3c7522cdbd1f103c41646f8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/effects/king_crab_teleport.png"
-dest_files=["res://.godot/imported/king_crab_teleport.png-cf9bda04d5ba46fc9740a1d166d2d105.ctex"]
+source_file="res://asset/effects/effect_4.png"
+dest_files=["res://.godot/imported/effect_4.png-022deb73a3c7522cdbd1f103c41646f8.ctex"]
 
 [params]
 

@@ -12,6 +12,7 @@ tile_set = ExtResource("1_ku2ss")
 
 [node name="KingCrab" parent="." instance=ExtResource("2_5ce50")]
 position = Vector2(527, 485)
+player_path = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource("3_e6nad")]
 position = Vector2(70, 494)

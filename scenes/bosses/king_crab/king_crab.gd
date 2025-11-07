@@ -18,8 +18,9 @@ extends BaseCharacter
 
 @export var bullet_scene: PackedScene
 
-@export var teleport_proximity_seconds: float = 10.0     
-@export var teleport_proximity_distance: float = 5.0   
+@export var teleport_proximity_seconds: float = 5.0     
+@export var teleport_proximity_distance: float = 35.0 
+@export var player_path: NodePath   
 
 var _proximity_time: float = 0.0
 var _proximity_enabled: bool = true
@@ -32,12 +33,13 @@ var down_ray_cast: RayCast2D
 # detect player
 var detect_front_ray_cast: RayCast2D
 var detect_back_ray_cast: RayCast2D
-var detect_up_ray_cast: RayCast2D
-var detect_down_ray_cast: RayCast2D
 
 var found_player: Player = null
 var _last_visible: bool = false
 var detect_player_enable: bool = true
+
+var _player_fallback: Node2D = null
+var _player_search_cooldown: float = 0.0
 
 var next_attack_is_claw: bool = true
 var claw_busy = false
@@ -150,6 +152,10 @@ func _init_ray_casts() -> void:
 		detect_back_ray_cast = $Direction/DetectBackRayCast2D
 		detect_back_ray_cast.enabled = true
 		detect_back_ray_cast.exclude_parent = true
+		
+	if player_path!=NodePath("") and has_node(player_path):
+		var n = get_node(player_path)
+		if n is Node2D: _player_fallback = n  
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -182,8 +188,6 @@ func check_player_visibility() -> void:
 	var seen_player: Player = null
 	if seen_player == null: seen_player = _ray_hits_player(detect_front_ray_cast)
 	if seen_player == null: seen_player = _ray_hits_player(detect_back_ray_cast)
-	if seen_player == null: seen_player = _ray_hits_player(detect_up_ray_cast)
-	if seen_player == null: seen_player = _ray_hits_player(detect_down_ray_cast)
 
 	if seen_player:
 		found_player = seen_player
@@ -303,9 +307,9 @@ func reset_proximity_timer() -> void:
 	_proximity_time = 0.0
 
 func _is_player_continuously_close() -> bool:
-	if found_player == null:
-		return false
-	return global_position.distance_to(found_player.global_position) <= teleport_proximity_distance
+	if is_instance_valid(_player_fallback):
+		return global_position.distance_to(_player_fallback.global_position) <= teleport_proximity_distance
+	return false
 
 func _tick_proximity_teleport(delta: float) -> void:
 	if not _proximity_enabled:
@@ -324,5 +328,6 @@ func _tick_proximity_teleport(delta: float) -> void:
 
 	if _proximity_time >= teleport_proximity_seconds:
 		_proximity_time = 0.0
-		if s != fsm.states.hurt and s != fsm.states.atk2_roll and s != fsm.states.dead:
+		if s != fsm.states.hurt and s != fsm.states.atk2_roll and s != fsm.states.dead and s != fsm.states.idle_atk and s != fsm.states.hurt_with_one_claw:
+			_disable_attack_effect()
 			fsm.change_state(fsm.states.teleport)
