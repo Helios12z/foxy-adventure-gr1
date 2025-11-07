@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bidsp8dcv65u8"]
+
+[ext_resource type="Texture2D" uid="uid://dx1f7we3uir6g" path="res://asset/foxy/foxy/skill_room_paw/water_kirin.png" id="1_l6ic1"]
+[ext_resource type="Script" uid="uid://tqxa0q7sq85g" path="res://scenes/effects/flicker_light_2d.gd" id="2_ky22m"]
+
+[node name="WaterKirin" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.807843)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_l6ic1")
+
+[node name="FlickerLight2D" type="PointLight2D" parent="."]
+script = ExtResource("2_ky22m")
+metadata/_custom_type_script = "uid://tqxa0q7sq85g"

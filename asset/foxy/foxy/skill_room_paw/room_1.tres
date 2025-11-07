@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://bp25fwiw1wvmo"]
+
+[ext_resource type="Texture2D" uid="uid://d0247j8djwg5h" path="res://asset/foxy/foxy/skill_room_paw/room_1.png" id="1_1yf23"]
+
+[resource]
+atlas = ExtResource("1_1yf23")
+region = Rect2(0, 6, 0, 0)

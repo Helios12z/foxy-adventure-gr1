@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=31 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://d02atll0hy5s3" path="res://scenes/character/player/states/run_fast.gd" id="44_runfast"]
 [ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
 [ext_resource type="Script" uid="uid://bdb4rp0xqby5i" path="res://scenes/character/player/states/susanoo.gd" id="46_susanoo"]
+[ext_resource type="Script" uid="uid://dpwira2jef5n4" path="res://scenes/character/player/states/water_paw.gd" id="47_waterpaw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lcjji"]
 
@@ -50,6 +51,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfavw"]
 size = Vector2(25, 33)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_psaxl"]
+size = Vector2(91, 143)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4wjd"]
 size = Vector2(30, 43)
 
@@ -57,6 +61,8 @@ size = Vector2(30, 43)
 z_index = 10
 collision_layer = 2
 script = ExtResource("1_puv7k")
+has_water_paw_gem = true
+has_water_room_gem = true
 dash_chain_cooldown = 1.0
 run_speed_multiplier = 2.1
 movement_speed = 120.0
@@ -142,6 +148,16 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 position = Vector2(12.5, -15.5)
 shape = SubResource("RectangleShape2D_gfavw")
 
+[node name="PawHitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("7_t4wjd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/PawHitArea2D"]
+position = Vector2(57.5, -20.5)
+shape = SubResource("RectangleShape2D_psaxl")
+disabled = true
+
 [node name="FallHurtArea2D" type="Area2D" parent="Direction"]
 collision_layer = 128
 collision_mask = 0
@@ -193,6 +209,9 @@ script = ExtResource("20_gfavw")
 
 [node name="Susanoo" type="Node" parent="States"]
 script = ExtResource("46_susanoo")
+
+[node name="WaterPaw" type="Node" parent="States"]
+script = ExtResource("47_waterpaw")
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]

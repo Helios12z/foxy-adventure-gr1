@@ -54,7 +54,6 @@ rotation = 1.57886
 remote_path = NodePath("../AnimatableBody2D")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="PathFollow2D"]
-scale = Vector2(1, 1)
 
 [node name="RayCast2D" type="RayCast2D" parent="PathFollow2D/AnimatableBody2D"]
 target_position = Vector2(0, 24)

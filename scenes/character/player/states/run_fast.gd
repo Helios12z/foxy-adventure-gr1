@@ -21,6 +21,9 @@ func _update(delta: float) -> void:
 	#Toggle Susanoo spirit
 	if control_susanoo():
 		return
+	# Activate Water Paw
+	if control_water_paw():
+		return
 	# Allow dash to override
 	if control_dash():
 		return

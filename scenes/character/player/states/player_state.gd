@@ -35,7 +35,9 @@ func control_jump() -> bool:
 	#If jump is pressed change to jump state and return true
 	if Input.is_action_just_pressed("jump") and obj.can_jump():
 		obj.jump()
-		obj.max_jump_count -= 1
+		# Chỉ trừ lượt nhảy khi ngoài vùng an toàn
+		if not obj.invincible_zone:
+			obj.max_jump_count -= 1
 		change_state(fsm.states.jump)
 		return true
 	return false
@@ -104,5 +106,40 @@ func control_susanoo() -> bool:
 		# Nếu chưa có, chuyển sang state susanoo để spawn
 		if fsm.states.has("susanoo"):
 			change_state(fsm.states.susanoo)
+			return true
+	return false
+
+func control_water_paw() -> bool:
+	# Kích hoạt Water Paw: giữ phím xuống và nhấn phím số 1 hoặc attack
+	# Yêu cầu phải có water_paw_gem; tránh spawn trùng khi effect còn tồn tại
+	var down_held := Input.is_action_pressed("down")
+	var key1_pressed := Input.is_key_pressed(KEY_1)
+	var attack_just := Input.is_action_just_pressed("attack")
+	if down_held and (key1_pressed or attack_just):
+		if not obj.has_water_paw_gem:
+			return true
+		if obj.get_node_or_null("WaterPawEffect") != null:
+			return true
+		# FSM lưu key theo tên node to_lower() -> "WaterPaw" => "waterpaw"
+		if fsm.states.has("waterpaw"):
+			change_state(fsm.states.waterpaw)
+			return true
+	return false
+
+func control_room() -> bool:
+	# Kích hoạt Room khi nhấn phím "room" và đã có water_room_gem
+	if Input.is_action_just_pressed("room"):
+		if not obj.has_water_room_gem:
+			return true
+		# Tránh spawn trùng khi hiệu ứng còn tồn tại
+		if obj.get_node_or_null("RoomSkill") != null:
+			return true
+		var scene := load("res://scenes/skills/room_paw/room.tscn") as PackedScene
+		if scene:
+			var inst := scene.instantiate()
+			inst.name = "RoomSkill"
+			if inst is Node2D:
+				(inst as Node2D).global_position = obj.global_position
+			obj.add_child(inst)
 			return true
 	return false

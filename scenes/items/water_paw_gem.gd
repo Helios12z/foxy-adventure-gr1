@@ -18,5 +18,5 @@ func _process(delta: float) -> void:
 
 func _on_pickup_body_entered(body: Node) -> void:
 	if body is Player:
-		GameManager.collect_fire_gem()
+		GameManager.collect_water_paw_gem()
 		queue_free()
