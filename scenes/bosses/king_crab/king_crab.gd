@@ -42,9 +42,14 @@ var last_seen_player_x: float = 0.0
 var has_last_seen: bool = false
 var queued_bullet_dir_x: float = 1.0
 
+var _flash_tw: Tween
+var queued_roll_dir_x: float = 1.0
+
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
-@onready var attack_effect: AnimatedSprite2D = $Direction/AttackEffect
+@onready var attack_1_effect: AnimatedSprite2D = $Direction/Attack1Effect
+@onready var attack_2_effect: AnimatedSprite2D = $Direction/Attack2Effect
+@onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 
 func _ready() -> void:
 	_init_ray_casts()
@@ -63,20 +68,36 @@ func _ready() -> void:
 	fsm = FSM.new(self, $States, $States/Idle)
 	
 func _disable_attack_effect() -> void:
-	attack_effect.visible = false
-	attack_effect.stop()
-	attack_effect.frame = 0
-	attack_effect.speed_scale = 1.0
+	attack_1_effect.visible = false
+	attack_1_effect.stop()
+	attack_1_effect.frame = 0
+	attack_1_effect.speed_scale = 1.0
 	
-func play_attack_windup_effect(duration: float) -> void:
-	attack_effect.visible = true
-	attack_effect.play("default")
-	attack_effect.frame = 0
+	attack_2_effect.visible = false
+	attack_2_effect.stop()
+	attack_2_effect.frame = 0
+	attack_2_effect.speed_scale = 1.0
+	
+func play_attack_windup_effect(type: int, duration: float) -> void:
+	if type==1: 
+		attack_1_effect.visible = true
+		attack_1_effect.play("default")
+		attack_1_effect.frame = 0
 
-	var frames := attack_effect.sprite_frames.get_frame_count("default")
-	var fps = max(attack_effect.sprite_frames.get_animation_speed("default"), 0.001)
-	var base_duration = frames / fps                   
-	attack_effect.speed_scale = base_duration / duration
+		var frames := attack_1_effect.sprite_frames.get_frame_count("default")
+		var fps = max(attack_1_effect.sprite_frames.get_animation_speed("default"), 0.001)
+		var base_duration = frames / fps                   
+		attack_1_effect.speed_scale = base_duration / duration
+	
+	if type==2:
+		attack_2_effect.visible = true
+		attack_2_effect.play("default")
+		attack_2_effect.frame = 0
+		
+		var frames := attack_2_effect.sprite_frames.get_frame_count("default")
+		var fps = max(attack_2_effect.sprite_frames.get_animation_speed("default"), 0.001)
+		var base_duration = frames / fps                   
+		attack_2_effect.speed_scale = base_duration / duration
 	
 func _physics_process(delta: float) -> void:
 	if fsm != null:
@@ -230,10 +251,29 @@ func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 	_take_damage_from_dir(_direction, _damage)
 
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
-	velocity.x = _damage_dir.x * 100
 	take_damage(_damage)
 	if fsm.current_state==fsm.states.walk or fsm.current_state==fsm.states.idle or fsm.current_state==fsm.states.idle_stun or fsm.current_state==fsm.states.atk2_stop or fsm.current_state==fsm.states.atk2_roll: 
+		velocity.x = _damage_dir.x * 100
 		fsm.change_state(fsm.states.hurt)
+	elif fsm.current_state==fsm.states.idle_atk: 
+		fsm.change_state(fsm.states.hurt_with_one_claw)
+	else:
+		flash_hurt(0.25, 3)
+		if health <= 0: fsm.change_state(fsm.states.dead)
+		
+func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
+	var mat := animated_sprite_2d.material as ShaderMaterial
+	mat.set_shader_parameter("flash_color", color)
+	mat.set_shader_parameter("flash_amount", 0.0)
+
+	if is_instance_valid(_flash_tw):
+		_flash_tw.kill()
+
+	_flash_tw = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var step := duration / float(blinks * 2)
+	for i in blinks:
+		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 1.0, step)
+		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 0.0, step)
 
 func toggle_next_attack():
 	next_attack_is_claw = not next_attack_is_claw

@@ -14,7 +14,7 @@ func _enter() -> void:
 	obj.queued_bullet_dir_x = dir_x
 
 	timer = 0.75
-	obj.play_attack_windup_effect(timer)
+	obj.play_attack_windup_effect(1, timer)
 
 func _update(d: float) -> void:
 	if update_timer(d):

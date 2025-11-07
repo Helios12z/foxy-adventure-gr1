@@ -25,5 +25,5 @@ func _update(delta: float) -> void:
 		change_state(fsm.states.atk1_windup)
 		return
 	if (not obj.next_attack_is_claw) and can2:
-		change_state(fsm.states.atk2_roll)
+		change_state(fsm.states.atk2_windup)
 		return
