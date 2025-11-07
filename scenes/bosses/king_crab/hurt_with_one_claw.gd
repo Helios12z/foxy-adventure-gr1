@@ -1,8 +1,7 @@
 extends EnemyState
 
 func _enter() -> void:
-	obj.change_animation("hurt")
-	print("king crab health: ",obj.health)
+	obj.change_animation("hurt_with_one_claw")
 	timer = 0.5
 
 func _update(d: float) -> void:
@@ -10,4 +9,4 @@ func _update(d: float) -> void:
 		change_state(fsm.states.dead)
 		return
 	if update_timer(d):
-		change_state(fsm.states.walk)
+		change_state(fsm.states.idle_atk)

@@ -11,7 +11,7 @@ extends BaseCharacter
 @export var roll_speed_mult: float = 5.5
 @export var roll_brake: float = 5000
 
-@export var stop_distance: float = 180.0
+@export var stop_distance: float = 500
 @export var attack1_range: float = 1000
 @export var attack2_range: float = 800
 @export var roll_max_time: float = 3.5
@@ -34,22 +34,27 @@ var _last_visible: bool = false
 var detect_player_enable: bool = true
 
 var next_attack_is_claw: bool = true
-var claw_busy := false
-var claw_returned := false
+var claw_busy = false
+var claw_returned = false
 var current_bullet: Node = null
 
 var last_seen_player_x: float = 0.0
 var has_last_seen: bool = false
 var queued_bullet_dir_x: float = 1.0
 
-var knockback_direction: Vector2
+var _flash_tw: Tween
+var queued_roll_dir_x: float = 1.0
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
+@onready var attack_1_effect: AnimatedSprite2D = $Direction/Attack1Effect
+@onready var attack_2_effect: AnimatedSprite2D = $Direction/Attack2Effect
+@onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 
 func _ready() -> void:
 	_init_ray_casts()
 	_init_hurt_area()
+	_disable_attack_effect()
 
 	movement_speed = approach_speed
 	max_health=king_crab_max_health
@@ -60,8 +65,40 @@ func _ready() -> void:
 	_next_direction=-1
 	
 	super._ready()
-	fsm = FSM.new(self, $States, $States/Walk)
+	fsm = FSM.new(self, $States, $States/Idle)
+	
+func _disable_attack_effect() -> void:
+	attack_1_effect.visible = false
+	attack_1_effect.stop()
+	attack_1_effect.frame = 0
+	attack_1_effect.speed_scale = 1.0
+	
+	attack_2_effect.visible = false
+	attack_2_effect.stop()
+	attack_2_effect.frame = 0
+	attack_2_effect.speed_scale = 1.0
+	
+func play_attack_windup_effect(type: int, duration: float) -> void:
+	if type==1: 
+		attack_1_effect.visible = true
+		attack_1_effect.play("default")
+		attack_1_effect.frame = 0
 
+		var frames := attack_1_effect.sprite_frames.get_frame_count("default")
+		var fps = max(attack_1_effect.sprite_frames.get_animation_speed("default"), 0.001)
+		var base_duration = frames / fps                   
+		attack_1_effect.speed_scale = base_duration / duration
+	
+	if type==2:
+		attack_2_effect.visible = true
+		attack_2_effect.play("default")
+		attack_2_effect.frame = 0
+		
+		var frames := attack_2_effect.sprite_frames.get_frame_count("default")
+		var fps = max(attack_2_effect.sprite_frames.get_animation_speed("default"), 0.001)
+		var base_duration = frames / fps                   
+		attack_2_effect.speed_scale = base_duration / duration
+	
 func _physics_process(delta: float) -> void:
 	if fsm != null:
 		fsm._update(delta)
@@ -165,48 +202,18 @@ func can_attack2() -> bool:
 	if found_player == null: return false
 	return _distance_to_player_x() <= attack2_range
 
-func update_chase_motion() -> bool:
-	if found_player == null:
-		return false
-
-	var px := found_player.global_position.x
-	var dx := px - global_position.x
-	var dist := absf(dx)
-
-	if dist > stop_distance:
-		var dir_x: float
-		if dx == 0.0:
-			dir_x = direction
-		else:
-			dir_x = sign(dx)  
-
-		velocity.x = dir_x * movement_speed
-
-		if dir_x > 0.0 and direction != 1:
-			print("chase direction", direction)
-			change_direction(1)
-		elif dir_x < 0.0 and direction != -1:
-			print("chase direction", direction)
-			change_direction(-1)
-
-		return false
-	else:
-		velocity.x = 0.0
-		return true
-
 func _search_move() -> void:
 	if _blocked_ahead():
 		change_direction(-direction)
 	velocity.x = direction * search_speed
-	print(direction)
 
 func control_move() -> bool:
 	if found_player == null:
 		_search_move()
+		return false 
 
-	var ready := update_chase_motion()
-
-	return ready
+	velocity.x = 0.0
+	return true
 
 func spawn_bullet_with_dir(dir_x: float) -> void:
 	if bullet_scene == null or claw_busy: return
@@ -244,13 +251,32 @@ func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 	_take_damage_from_dir(_direction, _damage)
 
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
-	knockback_direction = _damage_dir.normalized()
-	if fsm and fsm.current_state:
-		fsm.current_state.take_damage(_damage_dir, _damage)
+	take_damage(_damage)
+	if fsm.current_state==fsm.states.walk or fsm.current_state==fsm.states.idle or fsm.current_state==fsm.states.idle_stun or fsm.current_state==fsm.states.atk2_stop or fsm.current_state==fsm.states.atk2_roll: 
+		velocity.x = _damage_dir.x * 100
+		fsm.change_state(fsm.states.hurt)
+	elif fsm.current_state==fsm.states.idle_atk: 
+		fsm.change_state(fsm.states.hurt_with_one_claw)
+	else:
+		flash_hurt(0.25, 3)
+		if health <= 0: fsm.change_state(fsm.states.dead)
+		
+func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
+	var mat := animated_sprite_2d.material as ShaderMaterial
+	mat.set_shader_parameter("flash_color", color)
+	mat.set_shader_parameter("flash_amount", 0.0)
+
+	if is_instance_valid(_flash_tw):
+		_flash_tw.kill()
+
+	_flash_tw = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var step := duration / float(blinks * 2)
+	for i in blinks:
+		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 1.0, step)
+		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 0.0, step)
 
 func toggle_next_attack():
 	next_attack_is_claw = not next_attack_is_claw
-	print(next_attack_is_claw)
 
 func check_changed_direction() -> void:
 	if _next_direction != direction:

@@ -11,13 +11,7 @@ const EPS := 8.0
 func _enter() -> void:
 	obj.change_animation("atk2_roll")
 
-	if obj.found_player:
-		roll_dir = sign(obj.found_player.global_position.x - obj.global_position.x)
-	elif obj.velocity.x != 0.0:
-		roll_dir = sign(obj.velocity.x)
-	else:
-		roll_dir = 1.0
-	if roll_dir == 0.0: roll_dir = 1.0
+	roll_dir = sign(obj.queued_roll_dir_x)
 
 	roll_speed = obj.movement_speed * obj.roll_speed_mult
 
@@ -61,6 +55,5 @@ func _update(d: float) -> void:
 			change_state(fsm.states.atk2_stop)
 
 func _on_roll_hit_area(a: Area2D) -> void:
-	print("roll hit player (area)")
 	obj.velocity.x = 0.0
 	change_state(fsm.states.atk2_stop)

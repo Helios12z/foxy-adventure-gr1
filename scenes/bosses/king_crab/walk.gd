@@ -16,7 +16,6 @@ func _update(delta: float) -> void:
 	else: desired=-1 
 	if desired != obj.direction:
 		obj.change_direction(desired)
-		obj.check_changed_direction()
 	obj.queued_bullet_dir_x = float(desired)
 
 	var can1 = obj.can_attack1()
@@ -26,5 +25,5 @@ func _update(delta: float) -> void:
 		change_state(fsm.states.atk1_windup)
 		return
 	if (not obj.next_attack_is_claw) and can2:
-		change_state(fsm.states.atk2_roll)
+		change_state(fsm.states.atk2_windup)
 		return

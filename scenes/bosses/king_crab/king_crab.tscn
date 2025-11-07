@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=83 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://c4n3w70g7r0tu" path="res://asset/King_Crab/King_Crab_14.png" id="2_ysjm8"]
 [ext_resource type="Texture2D" uid="uid://b6xoilua06cql" path="res://asset/King_Crab/King_Crab_18.png" id="3_5nm00"]
 [ext_resource type="Texture2D" uid="uid://008wd36dvtc7" path="res://asset/King_Crab/King_Crab_15.png" id="3_e4chs"]
+[ext_resource type="Texture2D" uid="uid://bfn8jhlmklgu1" path="res://asset/effects/effect_1.png" id="3_wwxs8"]
+[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/character/player/shaders/king_crab_hurt.gdshader" id="4_5jg2x"]
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
@@ -31,6 +33,11 @@
 [ext_resource type="Texture2D" uid="uid://bdmth88m8mgxj" path="res://asset/King_Crab/King_Crab_13.png" id="18_ipm0x"]
 [ext_resource type="Texture2D" uid="uid://bbb6e816gwfiq" path="res://asset/King_Crab/King_Crab_29.png" id="19_4qkfu"]
 [ext_resource type="Texture2D" uid="uid://b74bb6orpxina" path="res://asset/King_Crab/King_Crab_30.png" id="20_34k3w"]
+[ext_resource type="Texture2D" uid="uid://cto6sj3cjbmme" path="res://asset/King_Crab/King_Crab_37.png" id="22_322rn"]
+[ext_resource type="Texture2D" uid="uid://bq2iumuglvcf4" path="res://asset/King_Crab/King_Crab_33.png" id="23_8qnyq"]
+[ext_resource type="Texture2D" uid="uid://cndcbn3i4e7lk" path="res://asset/King_Crab/King_Crab_35.png" id="23_nw15n"]
+[ext_resource type="Texture2D" uid="uid://be0coa70valqw" path="res://asset/King_Crab/King_Crab_36.png" id="24_5jg2x"]
+[ext_resource type="Texture2D" uid="uid://b8r5h015hlyfw" path="res://asset/King_Crab/King_Crab_34.png" id="24_wwxs8"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="29_n7tu5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="30_3obn1"]
 [ext_resource type="Script" uid="uid://d3ovudg8sgn0n" path="res://scenes/bosses/king_crab/idle_atk.gd" id="33_34k3w"]
@@ -43,10 +50,19 @@
 [ext_resource type="Script" uid="uid://dl1tx1vsiwf8t" path="res://scenes/bosses/king_crab/dead.gd" id="37_ipm0x"]
 [ext_resource type="Script" uid="uid://c1ljp0jlkqoq3" path="res://scenes/bosses/king_crab/atk_1_fire.gd" id="37_w03xm"]
 [ext_resource type="Script" uid="uid://ch4iveo3byb15" path="res://scenes/bosses/king_crab/atk_1_recover.gd" id="38_qsf77"]
+[ext_resource type="Texture2D" uid="uid://djun3ty5qyhqq" path="res://asset/effects/effect_2.png" id="41_txknd"]
+[ext_resource type="Script" uid="uid://der2awvc2asnc" path="res://scenes/bosses/king_crab/idle.gd" id="46_pnc4w"]
+[ext_resource type="Script" uid="uid://crr4ftkqva7f0" path="res://scenes/bosses/king_crab/hurt_with_one_claw.gd" id="50_u25ey"]
+[ext_resource type="Script" uid="uid://bnqsa8ncoap3n" path="res://scenes/bosses/king_crab/atk_2_windup.gd" id="53_txknd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
 radius = 20.0
 height = 78.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u25ey"]
+shader = ExtResource("4_5jg2x")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 0.2, 0.2, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_lkrv3"]
 animations = [{
@@ -128,6 +144,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("22_322rn")
+}],
+"loop": false,
+"name": &"atk2_windup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("19_4qkfu")
 }, {
 "duration": 1.0,
@@ -135,6 +159,34 @@ animations = [{
 }],
 "loop": false,
 "name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_nw15n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_5jg2x")
+}],
+"loop": false,
+"name": &"hurt_with_one_claw",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_dg743")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8qnyq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_wwxs8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8qnyq")
+}],
+"loop": true,
+"name": &"idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -185,11 +237,174 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_syons"]
 radius = 23.0
-height = 94.0
+height = 96.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3obn1"]
 radius = 21.0
-height = 98.0
+height = 86.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnc4w"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(0, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lj3l2"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(64, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nw15n"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(128, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jg2x"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(192, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u25ey"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(256, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_322rn"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(320, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_txknd"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(384, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kpch"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(448, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hy45"]
+atlas = ExtResource("3_wwxs8")
+region = Rect2(512, 320, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i2k7a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnc4w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lj3l2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nw15n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5jg2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u25ey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_322rn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_txknd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kpch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hy45")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2k7a"]
+atlas = ExtResource("41_txknd")
+region = Rect2(0, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n67vr"]
+atlas = ExtResource("41_txknd")
+region = Rect2(64, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_skber"]
+atlas = ExtResource("41_txknd")
+region = Rect2(128, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1irg"]
+atlas = ExtResource("41_txknd")
+region = Rect2(192, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fpbby"]
+atlas = ExtResource("41_txknd")
+region = Rect2(256, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4gtma"]
+atlas = ExtResource("41_txknd")
+region = Rect2(320, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a37hx"]
+atlas = ExtResource("41_txknd")
+region = Rect2(384, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlp4h"]
+atlas = ExtResource("41_txknd")
+region = Rect2(448, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_imggn"]
+atlas = ExtResource("41_txknd")
+region = Rect2(512, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_53kxg"]
+atlas = ExtResource("41_txknd")
+region = Rect2(576, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7jqw2"]
+atlas = ExtResource("41_txknd")
+region = Rect2(640, 1088, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lyad"]
+atlas = ExtResource("41_txknd")
+region = Rect2(704, 1088, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vg8y4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i2k7a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n67vr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_skber")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1irg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fpbby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4gtma")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a37hx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hlp4h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_imggn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_53kxg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7jqw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lyad")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="KingCrab" type="CharacterBody2D"]
 collision_layer = 8
@@ -206,20 +421,19 @@ shape = SubResource("CapsuleShape2D_6162a")
 position = Vector2(0, -10)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
 animation = &"atk1_fire"
 autoplay = "walk"
-frame = 3
-frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
-target_position = Vector2(-400, 0)
+target_position = Vector2(-1000, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
-target_position = Vector2(400, 0)
+target_position = Vector2(1000, 0)
 collision_mask = 2
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -238,7 +452,7 @@ script = ExtResource("30_3obn1")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
-position = Vector2(-2, 5)
+position = Vector2(-3, 5)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_syons")
 debug_color = Color(0.675313, 0.505945, 0.0399859, 0.42)
@@ -256,7 +470,22 @@ shape = SubResource("CapsuleShape2D_3obn1")
 debug_color = Color(0.614439, 0.40928, 0.889592, 0.42)
 
 [node name="ShootPoint" type="Marker2D" parent="Direction"]
-position = Vector2(-30, 0)
+position = Vector2(-44, 3)
+
+[node name="Attack1Effect" type="AnimatedSprite2D" parent="Direction"]
+position = Vector2(-60, 0)
+sprite_frames = SubResource("SpriteFrames_i2k7a")
+autoplay = "default"
+frame = 8
+frame_progress = 1.0
+
+[node name="Attack2Effect" type="AnimatedSprite2D" parent="Direction"]
+position = Vector2(-0.638517, 0.928904)
+rotation = -1.5708
+scale = Vector2(1.41628, 2.49074)
+sprite_frames = SubResource("SpriteFrames_vg8y4")
+autoplay = "default"
+frame = 10
 
 [node name="States" type="Node" parent="."]
 
@@ -289,3 +518,12 @@ script = ExtResource("36_cgg3e")
 
 [node name="Dead" type="Node" parent="States"]
 script = ExtResource("37_ipm0x")
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("46_pnc4w")
+
+[node name="Hurt_With_One_Claw" type="Node" parent="States"]
+script = ExtResource("50_u25ey")
+
+[node name="Atk2_Windup" type="Node" parent="States"]
+script = ExtResource("53_txknd")

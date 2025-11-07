@@ -1,0 +1,216 @@
+[gd_scene load_steps=33 format=3 uid="uid://dqawcb458fxlf"]
+
+[ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
+[ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
+[ext_resource type="Texture2D" uid="uid://difq4hcwnikcs" path="res://asset/war_lord/war_lord_turtle2.png" id="2_lipi6"]
+[ext_resource type="Texture2D" uid="uid://c66q7vmjc2avd" path="res://asset/war_lord/war_lord_turtle3.png" id="3_bckbg"]
+[ext_resource type="Texture2D" uid="uid://cj6npy4dt0yva" path="res://asset/war_lord/war_lord_turtle4.png" id="4_lsjki"]
+[ext_resource type="Texture2D" uid="uid://b4tk88p3dgufr" path="res://asset/war_lord/war_lord_turtle5.png" id="5_i0mgt"]
+[ext_resource type="Texture2D" uid="uid://3wrkn0lnsh72" path="res://asset/war_lord/war_lord_turtle6.png" id="6_4ut7l"]
+[ext_resource type="Texture2D" uid="uid://bua3xf2o4f7xx" path="res://asset/war_lord/war_lord_turtle11.png" id="7_xwhea"]
+[ext_resource type="Texture2D" uid="uid://dvj78awilo0ng" path="res://asset/war_lord/war_lord_turtle12.png" id="8_6vi0x"]
+[ext_resource type="Texture2D" uid="uid://ba5h7am6qky5h" path="res://asset/war_lord/war_lord_turtle13.png" id="9_6x4je"]
+[ext_resource type="Texture2D" uid="uid://7c76aihswb45" path="res://asset/war_lord/war_lord_turtle14.png" id="10_td4te"]
+[ext_resource type="Texture2D" uid="uid://bwvaceiepbqp4" path="res://asset/war_lord/war_lord_turtle15.png" id="11_giamn"]
+[ext_resource type="Texture2D" uid="uid://c83oawvrsnyw6" path="res://asset/war_lord/war_lord_turtle16.png" id="12_ioqo5"]
+[ext_resource type="Texture2D" uid="uid://bnregom3whkjh" path="res://asset/war_lord/war_lord_turtle17.png" id="13_gx74n"]
+[ext_resource type="Texture2D" uid="uid://wmpdp6lj78vb" path="res://asset/war_lord/war_lord_turtle18.png" id="14_ye665"]
+[ext_resource type="Texture2D" uid="uid://ftsroilxomko" path="res://asset/war_lord/war_lord_turtle19.png" id="15_og2oc"]
+[ext_resource type="Texture2D" uid="uid://df2f3w73w3i2x" path="res://asset/war_lord/war_lord_turtle20.png" id="16_gpe5m"]
+[ext_resource type="Texture2D" uid="uid://bb8w53soojged" path="res://asset/war_lord/war_lord_turtle7.png" id="17_3t3e0"]
+[ext_resource type="Texture2D" uid="uid://dbqssqlvc2r5v" path="res://asset/war_lord/war_lord_turtle8.png" id="18_su8nf"]
+[ext_resource type="Texture2D" uid="uid://b1j6gkstlao88" path="res://asset/war_lord/war_lord_turtle9.png" id="19_evlw3"]
+[ext_resource type="Texture2D" uid="uid://cfffule4j1cl7" path="res://asset/war_lord/war_lord_turtle10.png" id="20_jhib8"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="21_bckbg"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="22_lsjki"]
+[ext_resource type="Script" uid="uid://bar572uc0iwdi" path="res://scenes/bosses/war_lord_turtle/idle.gd" id="24_i0mgt"]
+[ext_resource type="Script" uid="uid://bltjlnwdafpdy" path="res://scenes/bosses/war_lord_turtle/atk_1.gd" id="25_4ut7l"]
+[ext_resource type="Script" uid="uid://dohwiudsn2vhs" path="res://scenes/bosses/war_lord_turtle/atk_2.gd" id="26_xwhea"]
+[ext_resource type="Script" uid="uid://cekjxrlbyelf7" path="res://scenes/bosses/war_lord_turtle/hurt.gd" id="27_6vi0x"]
+[ext_resource type="Script" uid="uid://b80m708ypmrvy" path="res://scenes/bosses/war_lord_turtle/fatigue.gd" id="28_6x4je"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
+size = Vector2(59, 67)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g47qh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ufaww")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_lipi6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bckbg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_lsjki")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_i0mgt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4ut7l")
+}],
+"loop": false,
+"name": &"atk_1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_xwhea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_6vi0x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_6x4je")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_td4te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_giamn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ioqo5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_td4te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_giamn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_ioqo5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_gx74n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ye665")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_6vi0x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xwhea")
+}],
+"loop": false,
+"name": &"atk_2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_og2oc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_gpe5m")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_3t3e0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_su8nf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_evlw3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_jhib8")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0mgt"]
+size = Vector2(64, 67)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ut7l"]
+size = Vector2(57, 65)
+
+[node name="WarLordTurtle" type="CharacterBody2D"]
+collision_layer = 8
+script = ExtResource("1_lsjki")
+spike_damage = null
+attack_speed = null
+attack_damage_boss = null
+bomb_move_speed = null
+fatigue_seconds_after_skill2 = null
+missile_targets_root = null
+missile_target_names = null
+movement_speed = null
+gravity = null
+direction = null
+attack_damage = null
+max_health = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, 0.5)
+shape = SubResource("RectangleShape2D_k7whc")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+sprite_frames = SubResource("SpriteFrames_g47qh")
+animation = &"atk_2"
+autoplay = "idle"
+frame = 12
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("21_bckbg")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(1, 0.5)
+shape = SubResource("RectangleShape2D_i0mgt")
+debug_color = Color(0.803907, 0.228994, 0.857381, 0.42)
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("22_lsjki")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(1.5, 0.5)
+shape = SubResource("RectangleShape2D_4ut7l")
+debug_color = Color(0.636043, 0.52511, 0.112223, 0.42)
+
+[node name="Atk1ShootPoint1" type="Marker2D" parent="Direction"]
+position = Vector2(-6, -21)
+
+[node name="Atk1ShootPoint2" type="Marker2D" parent="Direction"]
+position = Vector2(-32, -16)
+
+[node name="Atk2ShootPoint1" type="Marker2D" parent="Direction"]
+position = Vector2(28, -31)
+
+[node name="Atk2ShootPoint2" type="Marker2D" parent="Direction"]
+position = Vector2(-29, -31)
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("24_i0mgt")
+
+[node name="Atk_1" type="Node" parent="States"]
+script = ExtResource("25_4ut7l")
+
+[node name="Atk_2" type="Node" parent="States"]
+script = ExtResource("26_xwhea")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("27_6vi0x")
+
+[node name="Fatigue" type="Node" parent="States"]
+script = ExtResource("28_6x4je")
