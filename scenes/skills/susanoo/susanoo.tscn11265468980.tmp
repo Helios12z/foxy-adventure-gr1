@@ -1,0 +1,126 @@
+[gd_scene load_steps=19 format=3 uid="uid://uxvlxjmaii0m"]
+
+[ext_resource type="Script" uid="uid://civfpeiuu20qd" path="res://scenes/skills/susanoo/susanoo.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bl8rvl3u24da" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_01.png" id="2_2issw"]
+[ext_resource type="Texture2D" uid="uid://c57cfmf2c61o3" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_combo2_1.png" id="2_qkify"]
+[ext_resource type="Texture2D" uid="uid://c0yo5aeekr7va" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_combo2_2.png" id="3_f3gts"]
+[ext_resource type="Texture2D" uid="uid://cwpw3hp0bqp03" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_02.png" id="3_qkify"]
+[ext_resource type="Texture2D" uid="uid://2o0kll086rtq" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_03.png" id="4_f3gts"]
+[ext_resource type="Texture2D" uid="uid://btvia52fypvri" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_combo2_3.png" id="4_nlyx3"]
+[ext_resource type="Texture2D" uid="uid://c6i5r0kddxdov" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_combo2_4.png" id="5_kn7a0"]
+[ext_resource type="Texture2D" uid="uid://difwx11ltyefg" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_attack_04.tres" id="5_nlyx3"]
+[ext_resource type="Texture2D" uid="uid://bbcb33f53dvyb" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_01.png" id="6_kn7a0"]
+[ext_resource type="Texture2D" uid="uid://0osggacvavdk" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_02.png" id="7_b5821"]
+[ext_resource type="Texture2D" uid="uid://cmve6acyv07qp" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_03.png" id="8_w6ga2"]
+[ext_resource type="Texture2D" uid="uid://pslk5e8sjfhx" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_04.tres" id="9_g6cjf"]
+[ext_resource type="PackedScene" uid="uid://b5bu5nk05qwvp" path="res://scenes/effects/flicker_light_2d.tscn" id="10_flicker"]
+[ext_resource type="Script" uid="uid://djc2seng61pag" path="res://scripts/skills/susanoo/hit_area_platform_fx.gd" id="11_hit_fx"]
+[ext_resource type="Script" uid="uid://xlqj4e7wfr2p" path="res://scripts/skills/susanoo/defense_hit_area_2d.gd" id="12_defense_fx"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7fdps"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2issw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_qkify")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f3gts")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nlyx3")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qkify")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_f3gts")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_nlyx3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_kn7a0")
+}],
+"loop": true,
+"name": &"attack2",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_kn7a0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_b5821")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_w6ga2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_g6cjf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_f3gts")
+}],
+"loop": true,
+"name": &"meteor",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uldvi"]
+size = Vector2(109, 106)
+
+[node name="SusanooSpirit" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(1, 1, 0.921569, 0.576471)
+light_mask = 2
+position = Vector2(-5, -10)
+scale = Vector2(0.55, 0.55)
+sprite_frames = SubResource("SpriteFrames_7fdps")
+animation = &"attack"
+autoplay = "attack"
+offset = Vector2(0, -162)
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 17
+script = ExtResource("11_hit_fx")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitArea2D"]
+position = Vector2(77, -91)
+polygon = PackedVector2Array(-60, -39, -113, -53, -164, -52, -200, -77, -178, -120, -143, -134, -80, -121, -25, -104, 11, -75, 52, -29, 57, 27, 57, 66, 49, 91, 29, 103, -20, 105, -73, 84, -57, 32, -47, -9)
+
+[node name="DefenseHitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 24
+script = ExtResource("12_defense_fx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DefenseHitArea2D"]
+position = Vector2(12.5, -42)
+shape = SubResource("RectangleShape2D_uldvi")
+
+[node name="HitArea2D2" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 17
+script = ExtResource("11_hit_fx")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitArea2D2"]
+position = Vector2(-45, 1)
+polygon = PackedVector2Array(-18, 4, -71, -42, -95, -101, -99, -172, -62, -211, -10, -226, 33, -212, 34, -172, 1, -154, -5, -122, 10, -92, 43, -65, 79, -87, 108, -86, 149, -72, 159, -30, 167, 17)
+
+[node name="FlickerLight2D" parent="." instance=ExtResource("10_flicker")]
+z_index = 10

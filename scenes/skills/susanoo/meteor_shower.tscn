@@ -1,0 +1,117 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5rkp516frrv1"]
+
+[ext_resource type="PackedScene" uid="uid://dvwm5amd6h3ao" path="res://scenes/skills/susanoo/fire_circle.tscn" id="1_qgobl"]
+[ext_resource type="PackedScene" uid="uid://qljrylvsqdhf" path="res://scenes/skills/susanoo/fire_ball.tscn" id="2_vpscj"]
+[ext_resource type="Script" uid="uid://75oosdfndfps" path="res://scripts/skills/susanoo/meteor_shower.gd" id="3_meteor"]
+
+[node name="MeteorShower" type="Node2D"]
+position = Vector2(-1, 299)
+script = ExtResource("3_meteor")
+circle_disappear_delay = 1.2
+max_skill_duration = 6.0
+
+[node name="FireCircle" parent="." instance=ExtResource("1_qgobl")]
+position = Vector2(11, -410)
+
+[node name="FireBalls" type="Node2D" parent="."]
+position = Vector2(2, 115)
+
+[node name="FireBall" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-127, -457)
+bob_damping = 0.12
+
+[node name="FireBall2" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-93, -410)
+bob_damping = 0.12
+
+[node name="FireBall3" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-90, -481)
+bob_damping = 0.12
+
+[node name="FireBall4" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-81, -444)
+bob_damping = 0.12
+
+[node name="FireBall5" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-139, -416)
+bob_damping = 0.12
+
+[node name="FireBall6" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-54, -421)
+bob_damping = 0.12
+
+[node name="FireBall7" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-19, -481)
+bob_damping = 0.12
+
+[node name="FireBall8" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-51, -471)
+bob_damping = 0.12
+
+[node name="FireBall9" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-12, -394)
+bob_damping = 0.12
+
+[node name="FireBall10" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(3, -439)
+bob_damping = 0.12
+
+[node name="FireBall11" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(39, -481)
+bob_damping = 0.12
+
+[node name="FireBall12" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(52, -433)
+bob_damping = 0.12
+
+[node name="FireBall13" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(30, -430)
+bob_damping = 0.12
+
+[node name="FireBall14" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(76, -478)
+bob_damping = 0.12
+
+[node name="FireBall15" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(106, -436)
+bob_damping = 0.12
+
+[node name="FireBall16" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(76, -418)
+bob_damping = 0.12
+
+[node name="FireBall17" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(114, -464)
+bob_damping = 0.12
+
+[node name="FireBall18" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(133, -392)
+bob_damping = 0.12
+
+[node name="FireBall19" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(18, -488)
+bob_damping = 0.12
+
+[node name="FireBall20" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-53, -491)
+bob_damping = 0.12
+
+[node name="FireBall21" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-31, -430)
+bob_damping = 0.12
+
+[node name="FireBall22" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(12, -447)
+bob_damping = 0.12
+
+[node name="FireBall23" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-100, -451)
+bob_damping = 0.12
+
+[node name="FireBall24" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(-40, -459)
+bob_damping = 0.12
+
+[node name="FireBall25" parent="FireBalls" instance=ExtResource("2_vpscj")]
+position = Vector2(77, -447)
+bob_damping = 0.12
