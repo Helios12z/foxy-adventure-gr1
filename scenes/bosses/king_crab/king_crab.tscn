@@ -423,7 +423,7 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"atk2_windup"
+animation = &"atk1_fire"
 autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -485,8 +485,7 @@ rotation = -1.5708
 scale = Vector2(1.41628, 2.49074)
 sprite_frames = SubResource("SpriteFrames_vg8y4")
 autoplay = "default"
-frame = 2
-frame_progress = 0.453178
+frame = 10
 
 [node name="States" type="Node" parent="."]
 
