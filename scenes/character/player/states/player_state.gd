@@ -35,7 +35,9 @@ func control_jump() -> bool:
 	#If jump is pressed change to jump state and return true
 	if Input.is_action_just_pressed("jump") and obj.can_jump():
 		obj.jump()
-		obj.max_jump_count -= 1
+		# Chỉ trừ lượt nhảy khi ngoài vùng an toàn
+		if not obj.invincible_zone:
+			obj.max_jump_count -= 1
 		change_state(fsm.states.jump)
 		return true
 	return false

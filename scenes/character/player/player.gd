@@ -4,6 +4,9 @@ extends BaseCharacter
 ## Player character class that handles movement, combat, and state management
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
+var _base_movement_speed: float = 0.0
+var _base_gravity: float = 0.0
+var _base_max_jump_count: int = 0
 @export var has_blade: bool = false
 @export var has_fire_gem: bool = false
 @export var has_water_paw_gem: bool = false
@@ -68,19 +71,36 @@ func _ready() -> void:
 		var stage = GameManager.current_stage
 		if stage != null and cam.has_method("set_soft_bottom_limit") and stage.has_method("get_camera_bottom_limit_y"):
 			cam.set_soft_bottom_limit(stage.get_camera_bottom_limit_y())
+
+	# Cache base stats for safe-zone modifications
+	_base_movement_speed = movement_speed
+	_base_gravity = gravity
+	_base_max_jump_count = max_jump_count
 	
 func _physics_process(delta: float) -> void:
+	# Apply safe-zone modifiers before physics so gravity uses updated value
+	_apply_safe_zone_mods()
 	super._physics_process(delta)
 	if is_on_wall() or is_on_floor():
 		reset_jump_count()
+
+func _apply_safe_zone_mods() -> void:
+	if invincible_zone:
+		# tốc độ moving x1.5
+		movement_speed = _base_movement_speed * 1.5
+		# trọng lực giảm 25%
+		gravity = _base_gravity * 0.75
+	else:
+		movement_speed = _base_movement_speed
+		gravity = _base_gravity
 
 func can_attack() -> bool:
 	return has_blade
 	
 func can_jump() -> bool:
-	if max_jump_count > 0:
+	if invincible_zone:
 		return true
-	return false
+	return max_jump_count > 0
 
 func set_detect_and_hurt_collsion(enable: bool):
 	$Direction/HurtArea2D/CollisionShape2D.disabled = not enable
