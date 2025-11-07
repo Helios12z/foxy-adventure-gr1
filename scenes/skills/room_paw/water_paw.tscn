@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxr1tfonyb0uk"]
+
+[ext_resource type="Texture2D" uid="uid://buwreoqvhar17" path="res://asset/foxy/foxy/skill_room_paw/water_paw (1).png" id="1_upyrk"]
+[ext_resource type="Script" uid="uid://tqxa0q7sq85g" path="res://scenes/effects/flicker_light_2d.gd" id="2_0doer"]
+[ext_resource type="Script" uid="uid://dn15kv3khkq54" path="res://scenes/skills/room_paw/water_paw.gd" id="3_script"]
+
+[node name="WaterPaw" type="Node2D"]
+script = ExtResource("3_script")
+lifetime = 0.2
+appear_time = 0.09
+fade_time = 0.15
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.768627)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_upyrk")
+
+[node name="FlickerLight2D" type="PointLight2D" parent="."]
+script = ExtResource("2_0doer")
+metadata/_custom_type_script = "uid://tqxa0q7sq85g"

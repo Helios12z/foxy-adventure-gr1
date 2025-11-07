@@ -9,6 +9,12 @@ func _update(_delta: float):
 	#Toggle Susanoo spirit
 	if control_susanoo():
 		return
+	# Room skill
+	if control_room():
+		return
+	# Activate Water Paw
+	if control_water_paw():
+		return
 	# Detect run double-tap while walking
 	if control_run():
 		return

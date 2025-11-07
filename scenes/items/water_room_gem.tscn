@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bx2xcf02m4m0r"]
+
+[ext_resource type="Texture2D" uid="uid://d0247j8djwg5h" path="res://asset/foxy/foxy/skill_room_paw/room_1.png" id="1_4g7nu"]
+[ext_resource type="Script" uid="uid://c21qh1cu6ob3l" path="res://scenes/items/water_room_gem.gd" id="2_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4g7nu"]
+radius = 13.0
+
+[node name="WaterRoomGem" type="Node2D"]
+script = ExtResource("2_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("1_4g7nu")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_4g7nu")

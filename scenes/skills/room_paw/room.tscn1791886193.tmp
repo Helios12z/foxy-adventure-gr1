@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://dw1fpakrytas"]
+
+[ext_resource type="Texture2D" uid="uid://bp25fwiw1wvmo" path="res://asset/foxy/foxy/skill_room_paw/room_1.tres" id="1_c0nfp"]
+[ext_resource type="Texture2D" uid="uid://bv0pmtwalsecj" path="res://asset/foxy/foxy/skill_room_paw/room_2.png" id="2_4hew7"]
+[ext_resource type="Script" uid="uid://tqxa0q7sq85g" path="res://scenes/effects/flicker_light_2d.gd" id="2_c0nfp"]
+[ext_resource type="Texture2D" uid="uid://blou6w1wgo81f" path="res://asset/foxy/foxy/skill_room_paw/room_3.png" id="3_4hew7"]
+[ext_resource type="Texture2D" uid="uid://dg683tr2ljg3a" path="res://asset/foxy/foxy/skill_room_paw/room_4.png" id="4_86q3d"]
+[ext_resource type="Texture2D" uid="uid://8r1w7dguekgr" path="res://asset/foxy/foxy/skill_room_paw/room_5.png" id="5_a4pj6"]
+[ext_resource type="Script" uid="uid://c056mho1any6v" path="res://scenes/skills/room_paw/room.gd" id="6_room_script"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4hew7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_c0nfp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_4hew7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4hew7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_86q3d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_a4pj6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a4pj6"]
+radius = 369.986
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g2ljb"]
+radius = 240.0
+
+[node name="Room" type="Node2D"]
+self_modulate = Color(1, 1, 1, 0.294118)
+scale = Vector2(0.025, 0.025)
+script = ExtResource("6_room_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.556863)
+z_index = 100
+position = Vector2(0, -1.99999)
+scale = Vector2(1, 0.866)
+sprite_frames = SubResource("SpriteFrames_4hew7")
+autoplay = "default"
+
+[node name="FlickerLight2D" type="PointLight2D" parent="."]
+script = ExtResource("2_c0nfp")
+metadata/_custom_type_script = "uid://tqxa0q7sq85g"
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_a4pj6")
+
+[node name="BulletDetectArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BulletDetectArea2D"]
+shape = SubResource("CircleShape2D_g2ljb")
+
+[node name="EnemyMarker2D" type="Marker2D" parent="."]
+position = Vector2(133.333, -66.6667)
+
+[node name="BulletMarker2D" type="Marker2D" parent="."]
+position = Vector2(-400, -160)

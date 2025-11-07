@@ -18,6 +18,12 @@ func _update(_delta: float):
 	#Toggle Susanoo spirit
 	if control_susanoo():
 		return
+	# Room skill
+	if control_room():
+		return
+	# Activate Water Paw
+	if control_water_paw():
+		return
 	#Control hover (giữ jump khi đang ở trên không và không thể nhảy thêm)
 	if control_hover():
 		return
