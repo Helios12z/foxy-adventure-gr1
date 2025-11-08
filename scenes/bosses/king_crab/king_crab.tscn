@@ -597,6 +597,9 @@ script = ExtResource("37_w03xm")
 [node name="Atk1_Recover" type="Node" parent="States"]
 script = ExtResource("38_qsf77")
 
+[node name="Atk2_Windup" type="Node" parent="States"]
+script = ExtResource("53_txknd")
+
 [node name="Atk2_Roll" type="Node" parent="States"]
 script = ExtResource("36_rk73w")
 
@@ -614,9 +617,6 @@ script = ExtResource("46_pnc4w")
 
 [node name="Hurt_With_One_Claw" type="Node" parent="States"]
 script = ExtResource("50_u25ey")
-
-[node name="Atk2_Windup" type="Node" parent="States"]
-script = ExtResource("53_txknd")
 
 [node name="Teleport" type="Node" parent="States"]
 script = ExtResource("55_0kpch")

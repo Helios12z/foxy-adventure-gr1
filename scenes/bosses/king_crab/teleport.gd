@@ -108,7 +108,7 @@ func _finish_teleport() -> void:
 	obj.animated_sprite_2d.modulate.a = 1.0
 	obj.reset_proximity_timer()
 	obj._disable_teleport_effect()
-	change_state(fsm.states.walk)
+	change_state(fsm.states.idle)
 
 func _exit() -> void:
 	obj.animated_sprite_2d.modulate.a = 1.0
