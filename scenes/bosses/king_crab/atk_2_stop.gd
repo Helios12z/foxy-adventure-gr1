@@ -10,3 +10,6 @@ func _update(delta: float) -> void:
 		if obj.in_phase2:
 			obj._chain_after_basic = true
 		change_state(fsm.states.walk)
+
+func _exit()->void:
+	if obj.in_phase2: obj._chain_after_basic = true

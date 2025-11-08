@@ -1,4 +1,4 @@
-[gd_scene load_steps=225 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=231 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -183,6 +183,7 @@
 [ext_resource type="Texture2D" uid="uid://ca4xvsooargvp" path="res://asset/effects/king_crab_fly_particle/1_57.png" id="163_px0aw"]
 [ext_resource type="Texture2D" uid="uid://p07wjid8b7u6" path="res://asset/effects/king_crab_fly_particle/1_58.png" id="164_vjei7"]
 [ext_resource type="Texture2D" uid="uid://bfvnmtb21plla" path="res://asset/effects/king_crab_fly_particle/1_59.png" id="165_n50no"]
+[ext_resource type="Texture2D" uid="uid://d0kst1pv442c5" path="res://asset/effects/electric_effect.png" id="167_gncue"]
 [ext_resource type="Script" uid="uid://dggrb3yqglexl" path="res://scenes/bosses/king_crab/atk_3_fly_and_hit.gd" id="184_0mt3f"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
@@ -1007,6 +1008,42 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_daqye"]
+atlas = ExtResource("167_gncue")
+region = Rect2(0, 0, 283, 220)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d8mst"]
+atlas = ExtResource("167_gncue")
+region = Rect2(283, 0, 283, 220)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pp861"]
+atlas = ExtResource("167_gncue")
+region = Rect2(0, 220, 283, 220)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h0v77"]
+atlas = ExtResource("167_gncue")
+region = Rect2(283, 220, 283, 220)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oa8bx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_daqye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d8mst")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pp861")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h0v77")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
 [node name="KingCrab" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_3obn1")
@@ -1025,8 +1062,10 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"atk3_fly_and_hit"
+animation = &"atk1_recover"
 autoplay = "walk"
+frame = 1
+frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
@@ -1096,8 +1135,6 @@ position = Vector2(-8, -7)
 scale = Vector2(1.81219, 1.39375)
 sprite_frames = SubResource("SpriteFrames_mksvu")
 autoplay = "default"
-frame = 8
-frame_progress = 1.0
 
 [node name="Attack3CastEffect" type="AnimatedSprite2D" parent="Direction"]
 visible = false
@@ -1115,6 +1152,15 @@ sprite_frames = SubResource("SpriteFrames_086fq")
 autoplay = "default"
 frame = 18
 frame_progress = 0.570065
+
+[node name="Attack3HoverEffect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
+position = Vector2(-3, 7)
+scale = Vector2(0.492049, 0.504545)
+sprite_frames = SubResource("SpriteFrames_oa8bx")
+autoplay = "default"
+frame = 3
+frame_progress = 0.249004
 
 [node name="States" type="Node" parent="."]
 

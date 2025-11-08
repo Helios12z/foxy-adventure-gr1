@@ -46,6 +46,7 @@ func _exit() -> void:
 func _finish_summon() -> void:
 	_end_summon_blink()
 	obj._disable_attack_effect()
+	obj._chain_after_basic=false
 	change_state(fsm.states.idle)
 
 func _begin_summon_blink(total: float, times := 6, color := Color(1, 0.8, 0.2, 1)) -> void:

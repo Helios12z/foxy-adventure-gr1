@@ -16,28 +16,25 @@ func _enter()->void:
 
 func _update(d: float)->void:
 	t += d
-	
+
 	obj.global_position.x = obj._atk3_liftoff_x
 
-	var target_y = obj._atk3_drop_target.y - obj.atk3_fly_height
+	_face_player()
 
+	var target_y = obj._atk3_drop_target.y - obj.atk3_fly_height
 	if not rise_done:
 		var dy = target_y - obj.global_position.y
 		var dist = abs(dy)
 		var dir = sign(dy)
 		var target_speed = obj.atk3_rise_speed * dir
-
 		if dist < obj.atk3_rise_decel_dist:
 			var k = clamp(dist / obj.atk3_rise_decel_dist, 0.15, 1.0)
 			target_speed *= k
-
 		if vy < target_speed:
 			vy = min(vy + obj.atk3_rise_accel * d, target_speed)
 		elif vy > target_speed:
 			vy = max(vy - obj.atk3_rise_accel * d, target_speed)
-
 		obj.global_position.y += vy * d
-
 		if abs(obj.global_position.y - target_y) <= 2.0:
 			obj.global_position.y = target_y
 			rise_done = true
@@ -46,3 +43,18 @@ func _update(d: float)->void:
 	if update_timer(d):
 		obj._disable_attack_effect()
 		change_state(fsm.states.atk3_fly_and_hit)
+
+func _face_player() -> void:
+	var target_x: float
+	var have := false
+	if obj.found_player != null:
+		target_x = obj.found_player.global_position.x
+		have = true
+	elif obj.has_last_seen:
+		target_x = obj.last_seen_player_x
+		have = true
+
+	if have:
+		var desired := 1 if (target_x - obj.global_position.x) > 0.0 else -1
+		if desired != obj.direction:
+			obj.change_direction(desired)  

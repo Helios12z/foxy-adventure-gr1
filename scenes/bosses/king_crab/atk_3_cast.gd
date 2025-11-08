@@ -2,7 +2,6 @@ extends EnemyState
 
 var blink_color_start: Color = Color8(255, 200, 64, 255)   
 var blink_times_windup := 6
-
 var _blink_tw: Tween
 
 func _enter()->void:
@@ -11,7 +10,6 @@ func _enter()->void:
 	_begin_cast_blink(timer, blink_times_windup, blink_color_start)
 	obj.play_attack_effect(3, timer)
 	obj._begin_fly_mode()
-	obj._proximity_enabled = false
 	obj._atk3_liftoff_x = obj.global_position.x
 
 func _update(d: float)->void:

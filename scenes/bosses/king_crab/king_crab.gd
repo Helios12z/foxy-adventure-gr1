@@ -19,9 +19,9 @@ extends BaseCharacter
 @export var minion_scene: PackedScene
 
 @export var teleport_proximity_seconds: float = 4.0     
-@export var teleport_proximity_distance: float = 300.0 
+@export var teleport_proximity_distance: float = 200.0 
 @export var player_path: NodePath   
-@export var teleport_damage_window_seconds: float = 4.0     
+@export var teleport_damage_window_seconds: float = 5.0     
 @export var teleport_combo_hits: int = 3            
 
 @export var phase2_threshold_ratio: float = 0.7     
@@ -37,9 +37,12 @@ extends BaseCharacter
 @export var chain_after_basic_prob: float = 0.5    
 @export var atk3_strafe_speed: float = 900.0
 
+@export var level_bounds: Rect2 = Rect2(-2000, -1200, 4000, 3000)
+@export var teleport_clearance_margin: float = 0.5
+@export var minion_clearance_margin: float = 0.5
+
 var _recent_damage_times: PackedFloat32Array = []           
 var _proximity_time: float = 0.0
-var _proximity_enabled: bool = true
 
 # avoid wall/fall
 var front_ray_cast: RayCast2D
@@ -85,6 +88,7 @@ var _feet_offset_y: float = 0.0
 @onready var attack_3_cast_effect: AnimatedSprite2D = $Direction/Attack3CastEffect
 @onready var attack_3_windup_effect: AnimatedSprite2D = $Direction/Attack3WindupEffect
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var attack_3_hover_effect: AnimatedSprite2D = $Direction/Attack3HoverEffect
 
 func _ready() -> void:
 	_init_ray_casts()
@@ -107,23 +111,23 @@ func _ready() -> void:
 func _disable_attack_effect() -> void:
 	attack_1_effect.visible = false
 	attack_1_effect.stop()
-	attack_1_effect.frame = 0
 	attack_1_effect.speed_scale = 1.0
 	
 	attack_2_effect.visible = false
 	attack_2_effect.stop()
-	attack_2_effect.frame = 0
 	attack_2_effect.speed_scale = 1.0
 	
 	attack_3_cast_effect.visible = false
 	attack_3_cast_effect.stop()
-	attack_3_cast_effect.frame = 0
 	attack_3_cast_effect.speed_scale = 1.0
 	
 	attack_3_windup_effect.visible = false 
 	attack_3_windup_effect.stop()
-	attack_3_windup_effect.frame = 0
 	attack_3_windup_effect.speed_scale = 1.0
+	
+	attack_3_hover_effect.visible = false 
+	attack_3_hover_effect.stop()
+	attack_3_hover_effect.speed_scale = 1.0
 	
 func play_attack_effect(type: int, duration: float) -> void:
 	if type==1: 
@@ -165,6 +169,16 @@ func play_attack_effect(type: int, duration: float) -> void:
 		var fps = max(attack_3_windup_effect.sprite_frames.get_animation_speed("default"), 0.001)
 		var base_duration = frames / fps                   
 		attack_3_windup_effect.speed_scale = base_duration / duration
+		
+	if type==5:
+		attack_3_hover_effect.visible = true 
+		attack_3_hover_effect.play("default")
+		attack_3_hover_effect.frame = 0 
+		
+		var frames := attack_3_hover_effect.sprite_frames.get_frame_count("default")
+		var fps = max(attack_3_hover_effect.sprite_frames.get_animation_speed("default"), 0.001)
+		var base_duration = frames / fps                   
+		attack_3_hover_effect.speed_scale = base_duration / duration
 		
 func play_teleport_effect(duration: float)->void:
 	teleport_effect.visible = true 
@@ -325,9 +339,9 @@ func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
 	_note_damage_hit()
 	
 	if not in_phase2 and health > 0 and health <= max_health * phase2_threshold_ratio:
-		in_phase2 = true
-		_disable_attack_effect()
-		if fsm and fsm.current_state != fsm.states.dead:
+		if fsm and fsm.current_state != fsm.states.dead and fsm.current_state != fsm.states.idle_atk and fsm.current_state != fsm.states.hurt_with_one_claw:
+			in_phase2 = true
+			_disable_attack_effect()
 			fsm.change_state(fsm.states.atk3_cast)
 		return
 	
@@ -372,28 +386,28 @@ func reset_proximity_timer() -> void:
 func _is_player_continuously_close() -> bool:
 	var near = false 
 	if is_instance_valid(_player_fallback):
-		near = global_position.distance_to(_player_fallback.global_position) <= teleport_proximity_distance
+		var dx := absf(global_position.x - _player_fallback.global_position.x)
+		near = dx <= teleport_proximity_distance
 	var combo = _took_consecutive_damage()
 	return near or combo
 
 func _tick_proximity_teleport(delta: float) -> void:
-	if not _proximity_enabled:
-		return
-		
 	var s = fsm.current_state
-	if s == fsm.states.teleport or s == fsm.states.dead or s == fsm.states.atk3_cast or s == fsm.states.atk3_windup or s == fsm.states.atk3_fly_and_hit:
+	
+	if s==fsm.states.atk1_windup or s==fsm.states.atk2_windup:
+		return 
+	
+	elif s == fsm.states.teleport or s == fsm.states.dead \
+	or s == fsm.states.atk3_cast or s == fsm.states.atk3_windup or s == fsm.states.atk3_fly_and_hit:
 		_proximity_time = 0.0
 		return
 
 	if _is_player_continuously_close():
 		_proximity_time += delta
-	else:
-		if _proximity_time != 0.0:
-			_proximity_time = 0.0
 
 	if _proximity_time >= teleport_proximity_seconds:
 		_proximity_time = 0.0
-		if s != fsm.states.hurt and s != fsm.states.atk2_roll and s != fsm.states.dead and s != fsm.states.idle_atk and s != fsm.states.hurt_with_one_claw:
+		if s != fsm.states.hurt and s != fsm.states.atk2_roll and s != fsm.states.dead and s != fsm.states.idle_atk and s != fsm.states.hurt_with_one_claw and s != fsm.states.atk1_windup and s != fsm.states.atk2_windup:
 			_disable_attack_effect()
 			fsm.change_state(fsm.states.teleport)
 			
@@ -409,27 +423,84 @@ func _ground_at(xy: Vector2, max_drop: float = 1000.0) -> Vector2:
 func spawn_minions() -> void:
 	if minion_scene == null:
 		return
+
 	var offsets := [-160.0, -80.0, 80.0, 160.0]
-	var parent_node: Node = get_tree().current_scene if get_tree().current_scene else get_parent()
+
+	var parent_node: Node = null
+	if get_tree().current_scene != null:
+		parent_node = get_tree().current_scene
+	else:
+		parent_node = get_parent()
+
 	for off in offsets:
-		var spawn_above := global_position + Vector2(off, -32.0)  
-		var ground_pos := _ground_at(spawn_above)
-		ground_pos.y -= 2.0
+		var dir_hint := 1
+		if off < 0.0:
+			dir_hint = -1
+
+		var target_x = global_position.x + off
+		target_x = clampf(target_x, level_bounds.position.x, level_bounds.position.x + level_bounds.size.x)
+
+		var safe_pos := _find_safe_ground_near_x(
+			target_x,
+			global_position.y - 300.0,
+			[0.0, 16.0, 32.0, 48.0, 64.0, 96.0],
+			dir_hint
+		)
+
 		var m := minion_scene.instantiate()
 		parent_node.add_child(m)
+
+		var m_shape: Shape2D = null
+		if m.has_node("CollisionShape2D"):
+			var cs := m.get_node("CollisionShape2D") as CollisionShape2D
+			if cs != null and cs.shape != null:
+				m_shape = cs.shape
+		if m_shape == null:
+			var proxy := RectangleShape2D.new()
+			proxy.size = Vector2(16, 20)
+			m_shape = proxy
+
+		var adjusted := safe_pos
+		var ok := _is_free_at(adjusted, m_shape, minion_clearance_margin)
+		if not ok:
+			var fixed := false
+			for dx in [8.0, -8.0, 16.0, -16.0, 24.0, -24.0]:
+				var p := _clamp_to_level(adjusted + Vector2(dx, 0))
+				if _is_free_at(p, m_shape, minion_clearance_margin):
+					adjusted = p
+					ok = true
+					fixed = true
+					break
+			if not fixed or not ok:
+				for dy in [-4.0, -8.0, -12.0]:
+					var p2 := _clamp_to_level(adjusted + Vector2(0, dy))
+					if _is_free_at(p2, m_shape, minion_clearance_margin):
+						adjusted = p2
+						ok = true
+						break
+
 		if m is Node2D:
-			m.global_position = ground_pos
-		var dir := -1 if off < 0.0 else 1
-		if "direction" in m:          
+			m.global_position = adjusted
+
+		var dir := 1
+		if off < 0.0:
+			dir = -1
+
+		if "direction" in m:
 			m.direction = dir
-		elif m.has_node("Direction"): 
+		elif m.has_node("Direction"):
 			var dnode := m.get_node("Direction")
 			if dnode is Node2D:
-				dnode.scale.x = 1 if dir == 1 else -1
-		var intro_total := 0.6
-		var intro_times := 6
-		var intro_color := Color8(255, 200, 64, 255) 
-		m.play_spawn_intro(intro_total, intro_times, intro_color)
+				if dir == 1:
+					dnode.scale.x = 1
+				else:
+					dnode.scale.x = -1
+
+		if "play_spawn_intro" in m:
+			var intro_total := 0.6
+			var intro_times := 6
+			var intro_color := Color8(255, 200, 64, 255)
+			m.play_spawn_intro(intro_total, intro_times, intro_color)
 			
 func _now_secs() -> float:
 	return Time.get_ticks_msec() / 1000.0
@@ -482,3 +553,69 @@ func _snap_to_ground() -> void:
 	var hit := space.intersect_ray(q)
 	if hit and hit.has("position"):
 		global_position.y = hit.position.y - _feet_offset_y
+	
+func _clamp_to_level(p: Vector2) -> Vector2:
+	var px := clampf(p.x, level_bounds.position.x, level_bounds.position.x + level_bounds.size.x)
+	var py := clampf(p.y, level_bounds.position.y, level_bounds.position.y + level_bounds.size.y)
+	return Vector2(px, py)
+
+func _safe_snap_ground(x: float, probe_top_y: float, max_drop: float = 1000.0) -> Vector2:
+	var from := Vector2(x, probe_top_y)
+	var gy := _ground_at(from, max_drop).y
+	return _clamp_to_level(Vector2(x, gy - _feet_offset_y))
+
+func _is_free_at(pos: Vector2, shape: Shape2D, margin: float = 0.0) -> bool:
+	var space := get_world_2d().direct_space_state
+	var params := PhysicsShapeQueryParameters2D.new()
+	params.shape = shape
+	params.transform = Transform2D(0.0, pos)
+	params.margin = margin
+	params.exclude = [self]
+	var results := space.intersect_shape(params, 1)
+	return results.is_empty()
+
+func _is_safe_ledge(pos: Vector2, dir: int, forward: float = 24.0, max_drop: float = 48.0) -> bool:
+	var here := _ground_at(Vector2(pos.x, pos.y - 200.0)).y
+	var ahead := _ground_at(Vector2(pos.x + dir * forward, pos.y - 200.0)).y
+	return abs(here - ahead) <= max_drop
+
+func _find_safe_ground_near_x(target_x: float, probe_top_y: float, try_radii := [0.0, 24.0, 48.0, 72.0, 96.0], dir_hint: int = 1) -> Vector2:
+	var shape := collision_shape_2d.shape
+	for r in try_radii:
+		for sgn in [1, -1]:
+			var x = target_x + sgn * r
+			x = clampf(x, level_bounds.position.x, level_bounds.position.x + level_bounds.size.x)
+			var pos := _safe_snap_ground(x, probe_top_y)
+			if _is_free_at(pos, shape, 0.5) and _is_safe_ledge(pos, dir_hint):
+				return pos
+	return _clamp_to_level(global_position)
+
+func _pick_safe_teleport_target(desired_x: float, probe_top_y: float) -> Vector2:
+	# Ưu tiên ngay desired_x, rồi nới sang hai bên theo bán kính tăng dần
+	var radii := [0.0, 32.0, 64.0, 96.0, 128.0, 160.0]
+	var dir_hint := 1
+	if found_player != null:
+		if (found_player.global_position.x - global_position.x) < 0.0:
+			dir_hint = -1
+	elif has_last_seen:
+		if (last_seen_player_x - global_position.x) < 0.0:
+			dir_hint = -1
+
+	var best := _find_safe_ground_near_x(desired_x, probe_top_y, radii, dir_hint)
+	# Kiểm tra thêm free collision ở vị trí chọn được
+	var shape := collision_shape_2d.shape
+	var ok := _is_free_at(best, shape, teleport_clearance_margin)
+	if ok:
+		return best
+
+	# Nếu vẫn dính, dịch nhỏ sang hai bên / nhích lên
+	for dx in [8.0, -8.0, 16.0, -16.0, 24.0, -24.0]:
+		var p := _clamp_to_level(best + Vector2(dx, 0))
+		if _is_free_at(p, shape, teleport_clearance_margin):
+			return p
+	for dy in [-4.0, -8.0, -12.0]:
+		var p2 := _clamp_to_level(best + Vector2(0, dy))
+		if _is_free_at(p2, shape, teleport_clearance_margin):
+			return p2
+
+	return _clamp_to_level(best)

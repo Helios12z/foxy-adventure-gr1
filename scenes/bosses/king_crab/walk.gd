@@ -10,7 +10,7 @@ func _update(delta: float) -> void:
 			change_state(fsm.states.summon_minion)
 		else:
 			change_state(fsm.states.atk3_cast)
-		return
+		return 
 
 	var ready = obj.control_move()
 	if not ready: return
@@ -18,7 +18,7 @@ func _update(delta: float) -> void:
 
 	var dx = obj.found_player.global_position.x - obj.global_position.x
 	var desired: int 
-	if dx>=0: desired = 1
+	if dx >= 0: desired = 1
 	else: desired = -1 
 	if desired != obj.direction:
 		obj.change_direction(desired)
