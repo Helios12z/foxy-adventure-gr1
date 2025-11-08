@@ -1,10 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://tew7lh8j1um5"]
+[gd_scene load_steps=29 format=3 uid="uid://tew7lh8j1um5"]
 
 [ext_resource type="Script" uid="uid://ihhgbr3vhbea" path="res://scenes/enemies/crab/crab.gd" id="1_jgbqf"]
 [ext_resource type="Texture2D" uid="uid://ctrcbbe4a8dm" path="res://asset/enemy/crab/crab_hit_01.png" id="1_jwctj"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_0mleb"]
 [ext_resource type="Texture2D" uid="uid://hy22m0nck85p" path="res://asset/enemy/crab/crab_hit_02.png" id="2_jgbqf"]
 [ext_resource type="Texture2D" uid="uid://d3dswkeayxgri" path="res://asset/enemy/crab/crab_01.png" id="3_0mleb"]
+[ext_resource type="Texture2D" uid="uid://dj246euecxbul" path="res://asset/effects/effect_4.png" id="3_0ud0h"]
+[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_novun"]
 [ext_resource type="Texture2D" uid="uid://bmgnhlh503ls" path="res://asset/enemy/crab/crab_02.png" id="4_qokaa"]
 [ext_resource type="Texture2D" uid="uid://d2g1sv81fi7w4" path="res://asset/enemy/crab/crab_03.png" id="5_3jqcw"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="8_qokaa"]
@@ -17,6 +19,82 @@ size = Vector2(16, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3jqcw"]
 size = Vector2(41, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_novun"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4mha"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(64, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xt4tk"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(128, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vx3or"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(192, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_esw2f"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(256, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w1mqj"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(320, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_psxsh"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(384, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wh0yl"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(448, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0t6by"]
+atlas = ExtResource("3_0ud0h")
+region = Rect2(512, 640, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gxgk2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_novun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4mha")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xt4tk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vx3or")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_esw2f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w1mqj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_psxsh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wh0yl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0t6by")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p4mha"]
+shader = ExtResource("4_novun")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 0.2, 0.2, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_86med"]
 animations = [{
@@ -89,10 +167,19 @@ position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_3jqcw")
 debug_color = Color(0.929265, 0.225519, 0.365746, 0.42)
 
+[node name="SummonEffect" type="AnimatedSprite2D" parent="Direction"]
+position = Vector2(2, 12)
+sprite_frames = SubResource("SpriteFrames_gxgk2")
+autoplay = "default"
+frame = 3
+frame_progress = 0.779898
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+material = SubResource("ShaderMaterial_p4mha")
 sprite_frames = SubResource("SpriteFrames_86med")
 animation = &"dead"
 autoplay = "walk"
+frame_progress = 1.0
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
 collision_layer = 16

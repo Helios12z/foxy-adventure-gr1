@@ -17,7 +17,7 @@ var teleport_blink_color_out: Color = Color8(87, 229, 255, 255)
 var teleport_blink_color_in:  Color = Color8(255, 255, 255, 255)
 
 func _enter() -> void:
-	obj.change_animation("teleport")
+	obj.change_animation("cast")
 	teleport_phase = 0
 	fade_timer = 0.0
 	obj.velocity.x = 0.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=98 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -6,8 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://c4n3w70g7r0tu" path="res://asset/King_Crab/King_Crab_14.png" id="2_ysjm8"]
 [ext_resource type="Texture2D" uid="uid://b6xoilua06cql" path="res://asset/King_Crab/King_Crab_18.png" id="3_5nm00"]
 [ext_resource type="Texture2D" uid="uid://008wd36dvtc7" path="res://asset/King_Crab/King_Crab_15.png" id="3_e4chs"]
+[ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="3_skber"]
 [ext_resource type="Texture2D" uid="uid://bfn8jhlmklgu1" path="res://asset/effects/effect_1.png" id="3_wwxs8"]
-[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/character/player/shaders/king_crab_blink.gdshader" id="4_5jg2x"]
+[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_5jg2x"]
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
@@ -57,6 +58,7 @@
 [ext_resource type="Script" uid="uid://crr4ftkqva7f0" path="res://scenes/bosses/king_crab/hurt_with_one_claw.gd" id="50_u25ey"]
 [ext_resource type="Script" uid="uid://bnqsa8ncoap3n" path="res://scenes/bosses/king_crab/atk_2_windup.gd" id="53_txknd"]
 [ext_resource type="Script" uid="uid://b1xex4kmalse5" path="res://scenes/bosses/king_crab/teleport.gd" id="55_0kpch"]
+[ext_resource type="Script" uid="uid://21ah0skx0qx6" path="res://scenes/bosses/king_crab/summon_minion.gd" id="58_n67vr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
 radius = 20.0
@@ -155,6 +157,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("35_i2k7a")
+}],
+"loop": false,
+"name": &"cast",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("19_4qkfu")
 }, {
 "duration": 1.0,
@@ -219,14 +229,6 @@ animations = [{
 "loop": true,
 "name": &"idle_stun",
 "speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("35_i2k7a")
-}],
-"loop": false,
-"name": &"teleport",
-"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -492,6 +494,7 @@ animations = [{
 collision_layer = 8
 script = ExtResource("1_3obn1")
 bullet_scene = ExtResource("2_vlw8a")
+minion_scene = ExtResource("3_skber")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -505,7 +508,7 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"teleport"
+animation = &"cast"
 autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -620,3 +623,6 @@ script = ExtResource("50_u25ey")
 
 [node name="Teleport" type="Node" parent="States"]
 script = ExtResource("55_0kpch")
+
+[node name="Summon_Minion" type="Node" parent="States"]
+script = ExtResource("58_n67vr")

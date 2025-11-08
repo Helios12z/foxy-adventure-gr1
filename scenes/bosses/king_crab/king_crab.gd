@@ -17,6 +17,7 @@ extends BaseCharacter
 @export var roll_max_time: float = 3.5
 
 @export var bullet_scene: PackedScene
+@export var minion_scene: PackedScene
 
 @export var teleport_proximity_seconds: float = 6.0     
 @export var teleport_proximity_distance: float = 200.0 
@@ -331,3 +332,43 @@ func _tick_proximity_teleport(delta: float) -> void:
 		if s != fsm.states.hurt and s != fsm.states.atk2_roll and s != fsm.states.dead and s != fsm.states.idle_atk and s != fsm.states.hurt_with_one_claw:
 			_disable_attack_effect()
 			fsm.change_state(fsm.states.teleport)
+			
+func _ground_at(xy: Vector2, max_drop: float = 1000.0) -> Vector2:
+	var space_state := get_world_2d().direct_space_state
+	var query := PhysicsRayQueryParameters2D.create(xy, xy + Vector2(0, max_drop))
+	query.exclude = [self]
+	var hit := space_state.intersect_ray(query)
+	if hit.has("position"):
+		return Vector2(xy.x, hit.position.y)
+	return xy
+
+func spawn_minions() -> void:
+	if minion_scene == null:
+		return
+
+	var offsets := [-160.0, -80.0, 80.0, 160.0]
+	var parent_node: Node = get_tree().current_scene if get_tree().current_scene else get_parent()
+
+	for off in offsets:
+		var spawn_above := global_position + Vector2(off, -32.0)  
+		var ground_pos := _ground_at(spawn_above)
+		ground_pos.y -= 2.0
+
+		var m := minion_scene.instantiate()
+		parent_node.add_child(m)
+		if m is Node2D:
+			m.global_position = ground_pos
+
+		var dir := -1 if off < 0.0 else 1
+		if "direction" in m:          
+			m.direction = dir
+		elif m.has_node("Direction"): 
+			var dnode := m.get_node("Direction")
+			if dnode is Node2D:
+				dnode.scale.x = 1 if dir == 1 else -1
+		var intro_total := 0.6
+		var intro_times := 6
+		var intro_color := Color8(255, 200, 64, 255) 
+
+		if m.has_method("play_spawn_intro"):
+			m.play_spawn_intro(intro_total, intro_times, intro_color)
