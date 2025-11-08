@@ -11,14 +11,20 @@ const SAFE_MAX := 400.0
 var pre_teleport_pause: float = 1.0
 var post_teleport_pause: float = 0.25
 
+var _blink_tw: Tween
+
+var teleport_blink_color_out: Color = Color8(87, 229, 255, 255)  
+var teleport_blink_color_in:  Color = Color8(255, 255, 255, 255)
+
 func _enter() -> void:
-	obj.change_animation("idle")
+	obj.change_animation("teleport")
 	teleport_phase = 0
 	fade_timer = 0.0
 	obj.velocity.x = 0.0
 
 	obj.animated_sprite_2d.modulate.a = 1.0
 	obj.play_teleport_effect(fade_duration)
+	_begin_claw_blink(fade_duration, 6, teleport_blink_color_out)
 
 func _update(d: float) -> void:
 	fade_timer += d
@@ -28,6 +34,7 @@ func _update(d: float) -> void:
 		obj.animated_sprite_2d.modulate.a = 1.0 - progress
 
 		if fade_timer >= fade_duration:
+			_end_claw_blink()   
 			obj._disable_teleport_effect()
 			teleport_phase = 1
 			fade_timer = 0.0
@@ -43,12 +50,14 @@ func _update(d: float) -> void:
 			teleport_phase = 3
 			fade_timer = 0.0
 			obj.play_teleport_effect(fade_duration)
+			_begin_claw_blink(fade_duration, 6, teleport_blink_color_in)
 
 	elif teleport_phase == 3:  # Fade in (xuất hiện)
 		var progress = min(fade_timer / fade_duration, 1.0)
 		obj.animated_sprite_2d.modulate.a = progress
 
 		if fade_timer >= fade_duration:
+			_end_claw_blink()   
 			_finish_teleport()
 
 
@@ -103,4 +112,28 @@ func _finish_teleport() -> void:
 
 func _exit() -> void:
 	obj.animated_sprite_2d.modulate.a = 1.0
+	_end_claw_blink()   
 	obj._disable_teleport_effect()
+	
+func _begin_claw_blink(total: float, times := 6, color := Color(1, 0, 0, 1)) -> void:
+	var mat := obj.animated_sprite_2d.material as ShaderMaterial
+	if mat == null:
+		return
+	mat.set_shader_parameter("flash_color", color)
+	mat.set_shader_parameter("flash_amount", 0.0)
+
+	if is_instance_valid(_blink_tw):
+		_blink_tw.kill()
+
+	_blink_tw = obj.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var step = max(total / float(times * 2), 0.01)
+	for i in times:
+		_blink_tw.tween_property(mat, "shader_parameter/flash_amount", 1.0, step)
+		_blink_tw.tween_property(mat, "shader_parameter/flash_amount", 0.0, step)
+
+func _end_claw_blink() -> void:
+	if is_instance_valid(_blink_tw):
+		_blink_tw.kill()
+	var mat := obj.animated_sprite_2d.material as ShaderMaterial
+	if mat:
+		mat.set_shader_parameter("flash_amount", 0.0)

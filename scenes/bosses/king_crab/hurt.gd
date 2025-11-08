@@ -2,7 +2,6 @@ extends EnemyState
 
 func _enter() -> void:
 	obj.change_animation("hurt")
-	print("king crab health: ",obj.health)
 	timer = 0.5
 
 func _update(d: float) -> void:

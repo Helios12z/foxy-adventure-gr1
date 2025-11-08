@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=96 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b6xoilua06cql" path="res://asset/King_Crab/King_Crab_18.png" id="3_5nm00"]
 [ext_resource type="Texture2D" uid="uid://008wd36dvtc7" path="res://asset/King_Crab/King_Crab_15.png" id="3_e4chs"]
 [ext_resource type="Texture2D" uid="uid://bfn8jhlmklgu1" path="res://asset/effects/effect_1.png" id="3_wwxs8"]
-[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/character/player/shaders/king_crab_hurt.gdshader" id="4_5jg2x"]
+[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/character/player/shaders/king_crab_blink.gdshader" id="4_5jg2x"]
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
@@ -43,6 +43,7 @@
 [ext_resource type="Script" uid="uid://d3ovudg8sgn0n" path="res://scenes/bosses/king_crab/idle_atk.gd" id="33_34k3w"]
 [ext_resource type="Script" uid="uid://en6o0uceyq4o" path="res://scenes/bosses/king_crab/walk.gd" id="33_bs65c"]
 [ext_resource type="Script" uid="uid://4otqwe78nvsq" path="res://scenes/bosses/king_crab/idle_stun.gd" id="34_ybokd"]
+[ext_resource type="Texture2D" uid="uid://bv78buj2d402j" path="res://asset/King_Crab/King_Crab_38.png" id="35_i2k7a"]
 [ext_resource type="Script" uid="uid://n6bt82hxgq1b" path="res://scenes/bosses/king_crab/hurt.gd" id="36_cgg3e"]
 [ext_resource type="Script" uid="uid://b0v3lrp26egvp" path="res://scenes/bosses/king_crab/atk_2_roll.gd" id="36_rk73w"]
 [ext_resource type="Script" uid="uid://x0tpe77ej6oq" path="res://scenes/bosses/king_crab/atk_1_windup.gd" id="36_tkfty"]
@@ -218,6 +219,14 @@ animations = [{
 "loop": true,
 "name": &"idle_stun",
 "speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_i2k7a")
+}],
+"loop": false,
+"name": &"teleport",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -496,9 +505,8 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"atk1_windup"
+animation = &"teleport"
 autoplay = "walk"
-frame = 1
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)

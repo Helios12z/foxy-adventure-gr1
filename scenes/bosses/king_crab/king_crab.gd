@@ -18,8 +18,8 @@ extends BaseCharacter
 
 @export var bullet_scene: PackedScene
 
-@export var teleport_proximity_seconds: float = 5.0     
-@export var teleport_proximity_distance: float = 35.0 
+@export var teleport_proximity_seconds: float = 6.0     
+@export var teleport_proximity_distance: float = 200.0 
 @export var player_path: NodePath   
 
 var _proximity_time: float = 0.0
