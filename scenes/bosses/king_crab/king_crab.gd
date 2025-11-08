@@ -328,7 +328,6 @@ func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
 		in_phase2 = true
 		_disable_attack_effect()
 		if fsm and fsm.current_state != fsm.states.dead:
-			print("into phase 2")
 			fsm.change_state(fsm.states.atk3_cast)
 		return
 	

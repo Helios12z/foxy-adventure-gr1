@@ -5,7 +5,6 @@ var rise_done := false
 var vy := 0.0
 
 func _enter()->void:
-	print("into atk3_windup")
 	obj.change_animation("atk3_windup")
 	timer = obj.atk3_windup_time
 	obj.play_attack_effect(4, timer)
