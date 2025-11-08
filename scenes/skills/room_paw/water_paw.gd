@@ -5,8 +5,10 @@ extends Node2D
 @export var paw_damage: int = 1
 @export var appear_time: float = 0.12
 @export var fade_time: float = 0.22
-@export var spawn_offset_x: float = 70.0
+@export var spawn_offset_x: float = 10.0
 @export var spawn_offset_y: float = -30.5
+@export var shove_distance: float = 60.0
+@export var shove_time: float = 0.18
 
 var player: Player = null
 var _paw_area: Area2D = null
@@ -61,6 +63,21 @@ func _ready() -> void:
 		_sprite.modulate = c
 		var tw := create_tween()
 		tw.tween_property(_sprite, "modulate:a", target_a, appear_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	# Visual forward shove (small distance, very strong feel) without changing knockback logic
+	var start_pos := global_position
+	var shove_pos := start_pos + Vector2(shove_distance * player.direction, 0)
+	var tw_shove := create_tween()
+	tw_shove.set_parallel(true)
+	# Fast position shove with Back easing for punchy feel
+	tw_shove.tween_property(self, "global_position", shove_pos, shove_time).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	# Slight squash via sprite scale to emphasize impact
+	if _sprite:
+		var base_scale := _sprite.scale
+		var impact_scale := Vector2(base_scale.x * 1.08, base_scale.y * 0.92)
+		var tw_scale := create_tween()
+		tw_scale.set_parallel(true)
+		tw_scale.tween_property(_sprite, "scale", impact_scale, shove_time * 0.6).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tw_scale.tween_property(_sprite, "scale", base_scale, shove_time * 0.7).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	# Lifetime cleanup
 	var t := Timer.new()
 	t.one_shot = true

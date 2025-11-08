@@ -23,6 +23,8 @@ extends Node2D
 @export var enemy_attract_speed: float = 320.0
 @export var lift_in_time: float = 0.28
 @export var enemy_marker_radius: float = 60.0
+@export var player_flicker_amplitude: float = 0.8 # biên độ nhấp nháy (0..1)
+@export var player_flicker_speed: float = 3.0     # tốc độ nhấp nháy (waves/sec)
 
 var player: Player = null
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -36,6 +38,9 @@ var captured_bullets: Array = []
 var bob_info := {} # body -> {base_pos:Vector2, phase:float}
 var state := "init" # init -> lifting -> moving -> holding -> ending
 var enemy_targets := {} # body -> Vector2
+var player_display_item: CanvasItem = null
+var player_display_modulate_saved: Color = Color(1,1,1,1)
+var player_flicker_phase: float = 0.0
 
 func _ready() -> void:
 	# find player
@@ -53,6 +58,11 @@ func _ready() -> void:
 
 	# heal 3 (không thay đổi hurt ở đây; sẽ gate theo Area2D)
 	player.health = min(player.max_health, player.health + 3)
+
+	# lấy node hiển thị của player để nhấp nháy mềm
+	player_display_item = _find_display_item(player)
+	if player_display_item:
+		player_display_modulate_saved = (player_display_item as CanvasItem).self_modulate
 
 	# fade in smoothly: from alpha 0 -> original self_modulate
 	var target_self_modulate: Color = Color(1,1,1,1)
@@ -107,11 +117,23 @@ func _process(delta: float) -> void:
 	if player and area:
 		var inside := area.overlaps_body(player)
 		player.invincible_zone = inside
+		# Hiệu ứng nhấp nháy nhẹ cho player khi ở trong vùng an toàn
+		if player_display_item:
+			if inside:
+				player_flicker_phase += delta * player_flicker_speed * TAU
+				var wave: float = 0.5 + 0.5 * sin(player_flicker_phase) # 0..1
+				var factor: float = lerpf(1.0 - player_flicker_amplitude, 1.0, wave) # nhẹ nhàng quanh 1.0
+				var c: Color = player_display_modulate_saved
+				c.a = clampf(player_display_modulate_saved.a * factor, 0.0, 1.0)
+				(player_display_item as CanvasItem).self_modulate = c
+			else:
+				# khôi phục khi ra khỏi vùng an toàn
+				(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
 	if state == "lifting":
 		# bob captured enemies
 		for e in captured_enemies:
 			if bob_info.has(e):
-				var info = bob_info[e]
+				var info: Dictionary = bob_info[e]
 				# Chỉ bob khi đã hoàn tất tween nâng
 				if info.has("active") and info.active:
 					info.phase += delta * bob_speed
@@ -196,6 +218,10 @@ func _cleanup() -> void:
 	# restore player damage reception
 	if player:
 		player.invincible_zone = false
+		# Khôi phục độ sáng ban đầu cho player nếu có áp dụng flicker
+		if player_display_item:
+			(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
+			player_flicker_phase = 0.0
 	queue_free()
 
 func _on_body_entered(body: Node) -> void:
@@ -233,7 +259,7 @@ func _prepare_enemy(enemy: Node) -> void:
 		# Dùng lambda trực tiếp cho tween_callback thay vì Callable(self, func())
 		tw.tween_callback(func():
 			if bob_info.has(enemy):
-				var info = bob_info[enemy]
+				var info: Dictionary = bob_info[enemy]
 				info.active = true
 				bob_info[enemy] = info
 		)
@@ -432,3 +458,7 @@ func _exit_tree() -> void:
 	# Failsafe: luôn khôi phục hurt collision cho player khi Room rời scene
 	if player:
 		player.invincible_zone = false
+		# Failsafe: khôi phục độ sáng nếu còn bị mờ
+		if player_display_item:
+			(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
+			player_flicker_phase = 0.0

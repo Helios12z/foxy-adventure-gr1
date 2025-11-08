@@ -61,6 +61,7 @@ size = Vector2(30, 43)
 z_index = 10
 collision_layer = 2
 script = ExtResource("1_puv7k")
+has_fire_gem = true
 has_water_paw_gem = true
 has_water_room_gem = true
 dash_chain_cooldown = 1.0
