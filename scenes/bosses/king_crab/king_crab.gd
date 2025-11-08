@@ -22,7 +22,10 @@ extends BaseCharacter
 @export var teleport_proximity_seconds: float = 6.0     
 @export var teleport_proximity_distance: float = 200.0 
 @export var player_path: NodePath   
+@export var teleport_damage_window_seconds: float = 4.0     
+@export var teleport_combo_hits: int = 3                    
 
+var _recent_damage_times: PackedFloat32Array = []           
 var _proximity_time: float = 0.0
 var _proximity_enabled: bool = true
 
@@ -60,6 +63,8 @@ var queued_roll_dir_x: float = 1.0
 @onready var attack_2_effect: AnimatedSprite2D = $Direction/Attack2Effect
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 @onready var teleport_effect: AnimatedSprite2D = $Direction/TeleportEffect
+@onready var attack_3_cast_effect: AnimatedSprite2D = $Direction/Attack3CastEffect
+@onready var attack_3_windup_effect: AnimatedSprite2D = $Direction/Attack3WindupEffect
 
 func _ready() -> void:
 	_init_ray_casts()
@@ -89,7 +94,17 @@ func _disable_attack_effect() -> void:
 	attack_2_effect.frame = 0
 	attack_2_effect.speed_scale = 1.0
 	
-func play_attack_windup_effect(type: int, duration: float) -> void:
+	attack_3_cast_effect.visible = false
+	attack_3_cast_effect.stop()
+	attack_3_cast_effect.frame = 0
+	attack_3_cast_effect.speed_scale = 1.0
+	
+	attack_3_windup_effect.visible = false 
+	attack_3_windup_effect.stop()
+	attack_3_windup_effect.frame = 0
+	attack_3_windup_effect.speed_scale = 1.0
+	
+func play_attack_effect(type: int, duration: float) -> void:
 	if type==1: 
 		attack_1_effect.visible = true
 		attack_1_effect.play("default")
@@ -109,6 +124,26 @@ func play_attack_windup_effect(type: int, duration: float) -> void:
 		var fps = max(attack_2_effect.sprite_frames.get_animation_speed("default"), 0.001)
 		var base_duration = frames / fps                   
 		attack_2_effect.speed_scale = base_duration / duration
+		
+	if type==3:
+		attack_3_cast_effect.visible = true 
+		attack_3_cast_effect.play("default")
+		attack_3_cast_effect.frame = 0 
+		
+		var frames := attack_3_cast_effect.sprite_frames.get_frame_count("default")
+		var fps = max(attack_3_cast_effect.sprite_frames.get_animation_speed("default"), 0.001)
+		var base_duration = frames / fps                   
+		attack_3_cast_effect.speed_scale = base_duration / duration
+		
+	if type==4:
+		attack_3_windup_effect.visible = true 
+		attack_3_windup_effect.play("default")
+		attack_3_windup_effect.frame = 0 
+		
+		var frames := attack_3_windup_effect.sprite_frames.get_frame_count("default")
+		var fps = max(attack_3_windup_effect.sprite_frames.get_animation_speed("default"), 0.001)
+		var base_duration = frames / fps                   
+		attack_3_windup_effect.speed_scale = base_duration / duration
 		
 func play_teleport_effect(duration: float)->void:
 	teleport_effect.visible = true 
@@ -199,15 +234,6 @@ func check_player_visibility() -> void:
 		_last_visible = false
 		found_player = null
 
-func enable_check_player_in_sight() -> void:
-	detect_player_enable = true
-
-func disable_check_player_in_sight() -> void:
-	if _last_visible:
-		_last_visible = false
-		found_player = null
-	detect_player_enable = false
-
 func _distance_to_player_x() -> float:
 	if found_player == null: return INF
 	return absf(found_player.global_position.x - global_position.x)
@@ -270,6 +296,7 @@ func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
 	take_damage(_damage)
+	_note_damage_hit()
 	if fsm.current_state==fsm.states.walk or fsm.current_state==fsm.states.idle or fsm.current_state==fsm.states.idle_stun or fsm.current_state==fsm.states.atk2_stop or fsm.current_state==fsm.states.atk2_roll: 
 		velocity.x = _damage_dir.x * 100
 		fsm.change_state(fsm.states.hurt)
@@ -306,11 +333,14 @@ func check_changed_direction() -> void:
 			
 func reset_proximity_timer() -> void:
 	_proximity_time = 0.0
+	_recent_damage_times.clear()
 
 func _is_player_continuously_close() -> bool:
+	var near = false 
 	if is_instance_valid(_player_fallback):
-		return global_position.distance_to(_player_fallback.global_position) <= teleport_proximity_distance
-	return false
+		near = global_position.distance_to(_player_fallback.global_position) <= teleport_proximity_distance
+	var combo = _took_consecutive_damage()
+	return near or combo
 
 func _tick_proximity_teleport(delta: float) -> void:
 	if not _proximity_enabled:
@@ -370,5 +400,21 @@ func spawn_minions() -> void:
 		var intro_times := 6
 		var intro_color := Color8(255, 200, 64, 255) 
 
-		if m.has_method("play_spawn_intro"):
-			m.play_spawn_intro(intro_total, intro_times, intro_color)
+		m.play_spawn_intro(intro_total, intro_times, intro_color)
+			
+func _now_secs() -> float:
+	return Time.get_ticks_msec() / 1000.0
+
+func _prune_damage_times(now_secs: float) -> void:
+	while _recent_damage_times.size() > 0 and now_secs - _recent_damage_times[0] > teleport_damage_window_seconds:
+		_recent_damage_times.remove_at(0)
+
+func _note_damage_hit() -> void:
+	var now := _now_secs()
+	_recent_damage_times.append(now)
+	_prune_damage_times(now)
+
+func _took_consecutive_damage() -> bool:
+	var now := _now_secs()
+	_prune_damage_times(now)
+	return _recent_damage_times.size() >= teleport_combo_hits
