@@ -1,4 +1,4 @@
-[gd_scene load_steps=223 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=225 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -37,6 +37,7 @@
 [ext_resource type="Texture2D" uid="uid://cto6sj3cjbmme" path="res://asset/King_Crab/King_Crab_37.png" id="22_322rn"]
 [ext_resource type="Texture2D" uid="uid://bq2iumuglvcf4" path="res://asset/King_Crab/King_Crab_33.png" id="23_8qnyq"]
 [ext_resource type="Texture2D" uid="uid://cyq4paxxo4ao5" path="res://asset/King_Crab/King_Crab_39.png" id="23_fpbby"]
+[ext_resource type="Texture2D" uid="uid://dkrsny6hr2iyq" path="res://asset/King_Crab/King_Crab_40.png" id="23_j53rh"]
 [ext_resource type="Texture2D" uid="uid://cndcbn3i4e7lk" path="res://asset/King_Crab/King_Crab_35.png" id="23_nw15n"]
 [ext_resource type="Texture2D" uid="uid://be0coa70valqw" path="res://asset/King_Crab/King_Crab_36.png" id="24_5jg2x"]
 [ext_resource type="Texture2D" uid="uid://b8r5h015hlyfw" path="res://asset/King_Crab/King_Crab_34.png" id="24_wwxs8"]
@@ -182,6 +183,7 @@
 [ext_resource type="Texture2D" uid="uid://ca4xvsooargvp" path="res://asset/effects/king_crab_fly_particle/1_57.png" id="163_px0aw"]
 [ext_resource type="Texture2D" uid="uid://p07wjid8b7u6" path="res://asset/effects/king_crab_fly_particle/1_58.png" id="164_vjei7"]
 [ext_resource type="Texture2D" uid="uid://bfvnmtb21plla" path="res://asset/effects/king_crab_fly_particle/1_59.png" id="165_n50no"]
+[ext_resource type="Script" uid="uid://dggrb3yqglexl" path="res://scenes/bosses/king_crab/atk_3_fly_and_hit.gd" id="184_0mt3f"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
 radius = 20.0
@@ -276,6 +278,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"atk2_windup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_j53rh")
+}],
+"loop": false,
+"name": &"atk3_fly_and_hit",
 "speed": 5.0
 }, {
 "frames": [{
@@ -1015,7 +1025,7 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"atk3_windup"
+animation = &"atk3_fly_and_hit"
 autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -1065,12 +1075,14 @@ debug_color = Color(0.614439, 0.40928, 0.889592, 0.42)
 position = Vector2(-44, 3)
 
 [node name="Attack1Effect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
 position = Vector2(-58, 4)
 scale = Vector2(0.90625, 1.34375)
 sprite_frames = SubResource("SpriteFrames_i2k7a")
 autoplay = "default"
 
 [node name="Attack2Effect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
 position = Vector2(-0.638517, 0.928904)
 rotation = -1.5708
 scale = Vector2(1.41628, 2.49074)
@@ -1079,6 +1091,7 @@ autoplay = "default"
 frame = 10
 
 [node name="TeleportEffect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
 position = Vector2(-8, -7)
 scale = Vector2(1.81219, 1.39375)
 sprite_frames = SubResource("SpriteFrames_mksvu")
@@ -1087,12 +1100,14 @@ frame = 8
 frame_progress = 1.0
 
 [node name="Attack3CastEffect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
 sprite_frames = SubResource("SpriteFrames_k5ltu")
 autoplay = "default"
 frame = 51
 frame_progress = 0.981275
 
 [node name="Attack3WindupEffect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
 position = Vector2(1, 30)
 rotation = 0.994838
 scale = Vector2(-1, -1)
@@ -1153,3 +1168,6 @@ script = ExtResource("61_4gtma")
 
 [node name="Atk3_Windup" type="Node" parent="States"]
 script = ExtResource("60_g1irg")
+
+[node name="Atk3_Fly_And_Hit" type="Node" parent="States"]
+script = ExtResource("184_0mt3f")

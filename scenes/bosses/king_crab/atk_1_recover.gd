@@ -5,4 +5,6 @@ func _enter() -> void:
 
 func _update(d: float) -> void:
 	if update_timer(d):
+		if obj.in_phase2:
+			obj._chain_after_basic = true
 		change_state(fsm.states.walk)

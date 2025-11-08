@@ -5,6 +5,5 @@ func _enter()->void:
 	timer=1.25
 
 func _update(delta: float)->void:
-	timer-=delta
-	if (timer<=0):
+	if update_timer(delta):
 		change_state(fsm.states.walk)

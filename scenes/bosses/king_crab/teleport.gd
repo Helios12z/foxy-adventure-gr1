@@ -30,6 +30,7 @@ func _update(d: float) -> void:
 	fade_timer += d
 
 	if teleport_phase == 0:  # Fade out
+		obj.disable_collision_while_teleporting()
 		var progress = min(fade_timer / fade_duration, 1.0)
 		obj.animated_sprite_2d.modulate.a = 1.0 - progress
 
@@ -53,6 +54,7 @@ func _update(d: float) -> void:
 			_begin_claw_blink(fade_duration, 6, teleport_blink_color_in)
 
 	elif teleport_phase == 3:  # Fade in (xuất hiện)
+		obj.enable_collision_after_teleporting()
 		var progress = min(fade_timer / fade_duration, 1.0)
 		obj.animated_sprite_2d.modulate.a = progress
 

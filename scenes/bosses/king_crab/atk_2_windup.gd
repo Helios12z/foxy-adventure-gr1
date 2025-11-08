@@ -7,7 +7,6 @@ func _enter() -> void:
 	obj.queued_roll_dir_x=obj.direction
 
 func _update(d: float) -> void:
-	timer-=d
-	if timer<=0:
+	if update_timer(d): 
 		obj._disable_attack_effect()
 		change_state(fsm.states.atk2_roll)

@@ -11,19 +11,31 @@ extends BaseCharacter
 @export var roll_speed_mult: float = 5.5
 @export var roll_brake: float = 5000
 
-@export var stop_distance: float = 500
-@export var attack1_range: float = 1000
-@export var attack2_range: float = 800
+@export var attack1_range: float = 350
+@export var attack2_range: float = 1000
 @export var roll_max_time: float = 3.5
 
 @export var bullet_scene: PackedScene
 @export var minion_scene: PackedScene
 
-@export var teleport_proximity_seconds: float = 6.0     
-@export var teleport_proximity_distance: float = 200.0 
+@export var teleport_proximity_seconds: float = 4.0     
+@export var teleport_proximity_distance: float = 300.0 
 @export var player_path: NodePath   
 @export var teleport_damage_window_seconds: float = 4.0     
-@export var teleport_combo_hits: int = 3                    
+@export var teleport_combo_hits: int = 3            
+
+@export var phase2_threshold_ratio: float = 0.7     
+@export var atk3_cast_time: float = 1.5
+@export var atk3_windup_time: float = 1.0
+@export var atk3_hover_time: float = 0.6
+@export var atk3_fly_height: float = 150.0         
+@export var atk3_rise_speed: float = 600.0
+@export var atk3_rise_accel: float = 2200.0    
+@export var atk3_rise_decel_dist: float = 80.0  
+@export var atk3_fall_speed: float = 1200.0
+@export var atk3_dash_speed: float = 1600.0 
+@export var chain_after_basic_prob: float = 0.5    
+@export var atk3_strafe_speed: float = 900.0
 
 var _recent_damage_times: PackedFloat32Array = []           
 var _proximity_time: float = 0.0
@@ -57,6 +69,13 @@ var queued_bullet_dir_x: float = 1.0
 var _flash_tw: Tween
 var queued_roll_dir_x: float = 1.0
 
+var in_phase2: bool = false
+var _chain_after_basic: bool = false
+var _atk3_drop_target := Vector2.ZERO
+var _saved_gravity: float = 0.0
+var _atk3_liftoff_x: float = 0.0
+var _feet_offset_y: float = 0.0
+
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
 @onready var attack_1_effect: AnimatedSprite2D = $Direction/Attack1Effect
@@ -65,12 +84,14 @@ var queued_roll_dir_x: float = 1.0
 @onready var teleport_effect: AnimatedSprite2D = $Direction/TeleportEffect
 @onready var attack_3_cast_effect: AnimatedSprite2D = $Direction/Attack3CastEffect
 @onready var attack_3_windup_effect: AnimatedSprite2D = $Direction/Attack3WindupEffect
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 func _ready() -> void:
 	_init_ray_casts()
 	_init_hurt_area()
 	_disable_attack_effect()
 	_disable_teleport_effect()
+	_feet_offset_y = _compute_feet_offset_y()
 
 	movement_speed = approach_speed
 	max_health=king_crab_max_health
@@ -197,6 +218,14 @@ func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
 		var hurt_area = $Direction/HurtArea2D
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
+		
+func _compute_feet_offset_y() -> float:
+	if collision_shape_2d == null or collision_shape_2d.shape == null:
+		return 0.0
+	var rect: Rect2 = collision_shape_2d.shape.get_rect()      
+	var bottom_local := Vector2(0, rect.position.y + rect.size.y)
+	var bottom_global := collision_shape_2d.to_global(bottom_local)
+	return bottom_global.y - global_position.y   
 
 func is_touch_wall() -> bool:
 	return front_ray_cast != null and front_ray_cast.is_colliding()
@@ -246,17 +275,14 @@ func can_attack2() -> bool:
 	if found_player == null: return false
 	return _distance_to_player_x() <= attack2_range
 
-func _search_move() -> void:
-	if _blocked_ahead():
-		change_direction(-direction)
-	velocity.x = direction * search_speed
-
 func control_move() -> bool:
-	if found_player == null:
-		_search_move()
+	if found_player == null or _distance_to_player_x()>attack1_range or _distance_to_player_x()>attack2_range:
+		if _blocked_ahead():
+			change_direction(-direction)
+		velocity.x = direction * search_speed
 		return false 
 
-	velocity.x = 0.0
+	velocity.x = 0
 	return true
 
 func spawn_bullet_with_dir(dir_x: float) -> void:
@@ -297,7 +323,16 @@ func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float) -> void:
 	take_damage(_damage)
 	_note_damage_hit()
-	if fsm.current_state==fsm.states.walk or fsm.current_state==fsm.states.idle or fsm.current_state==fsm.states.idle_stun or fsm.current_state==fsm.states.atk2_stop or fsm.current_state==fsm.states.atk2_roll: 
+	
+	if not in_phase2 and health > 0 and health <= max_health * phase2_threshold_ratio:
+		in_phase2 = true
+		_disable_attack_effect()
+		if fsm and fsm.current_state != fsm.states.dead:
+			print("into phase 2")
+			fsm.change_state(fsm.states.atk3_cast)
+		return
+	
+	if fsm.current_state==fsm.states.walk or fsm.current_state==fsm.states.idle or fsm.current_state==fsm.states.idle_stun or fsm.current_state==fsm.states.atk2_stop: 
 		velocity.x = _damage_dir.x * 100
 		fsm.change_state(fsm.states.hurt)
 	elif fsm.current_state==fsm.states.idle_atk: 
@@ -347,7 +382,7 @@ func _tick_proximity_teleport(delta: float) -> void:
 		return
 		
 	var s = fsm.current_state
-	if s == fsm.states.teleport or s == fsm.states.dead:
+	if s == fsm.states.teleport or s == fsm.states.dead or s == fsm.states.atk3_cast or s == fsm.states.atk3_windup or s == fsm.states.atk3_fly_and_hit:
 		_proximity_time = 0.0
 		return
 
@@ -375,20 +410,16 @@ func _ground_at(xy: Vector2, max_drop: float = 1000.0) -> Vector2:
 func spawn_minions() -> void:
 	if minion_scene == null:
 		return
-
 	var offsets := [-160.0, -80.0, 80.0, 160.0]
 	var parent_node: Node = get_tree().current_scene if get_tree().current_scene else get_parent()
-
 	for off in offsets:
 		var spawn_above := global_position + Vector2(off, -32.0)  
 		var ground_pos := _ground_at(spawn_above)
 		ground_pos.y -= 2.0
-
 		var m := minion_scene.instantiate()
 		parent_node.add_child(m)
 		if m is Node2D:
 			m.global_position = ground_pos
-
 		var dir := -1 if off < 0.0 else 1
 		if "direction" in m:          
 			m.direction = dir
@@ -399,7 +430,6 @@ func spawn_minions() -> void:
 		var intro_total := 0.6
 		var intro_times := 6
 		var intro_color := Color8(255, 200, 64, 255) 
-
 		m.play_spawn_intro(intro_total, intro_times, intro_color)
 			
 func _now_secs() -> float:
@@ -418,3 +448,38 @@ func _took_consecutive_damage() -> bool:
 	var now := _now_secs()
 	_prune_damage_times(now)
 	return _recent_damage_times.size() >= teleport_combo_hits
+	
+func _lock_drop_target_at_player() -> void:
+	if _player_fallback != null:
+		var px = _player_fallback.global_position.x
+		var gy = _ground_at(Vector2(px, global_position.y - 200.0)).y
+		_atk3_drop_target = Vector2(px, gy - _feet_offset_y)
+	else:
+		var gy = _ground_at(global_position).y
+		_atk3_drop_target = Vector2(global_position.x, gy - _feet_offset_y)
+
+func _begin_fly_mode() -> void:
+	_saved_gravity = gravity
+	gravity = 0.0
+	velocity = Vector2.ZERO
+
+func _end_fly_mode() -> void:
+	gravity = _saved_gravity
+	
+func disable_collision_while_teleporting()->void:
+	$Direction/HurtArea2D/CollisionShape2D.disabled=true 
+	$Direction/HitArea2D/CollisionShape2D.disabled=true 
+	
+func enable_collision_after_teleporting()->void:
+	$Direction/HurtArea2D/CollisionShape2D.disabled=false
+	$Direction/HitArea2D/CollisionShape2D.disabled=false
+	
+func _snap_to_ground() -> void:
+	var from := global_position
+	var to   := from + Vector2(0, 32)  
+	var space := get_world_2d().direct_space_state
+	var q := PhysicsRayQueryParameters2D.create(from, to)
+	q.exclude = [self]
+	var hit := space.intersect_ray(q)
+	if hit and hit.has("position"):
+		global_position.y = hit.position.y - _feet_offset_y
