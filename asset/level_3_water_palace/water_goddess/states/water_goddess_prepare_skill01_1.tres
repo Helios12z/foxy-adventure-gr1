@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://c3fbp8ph8c6m6"]
+
+[ext_resource type="Texture2D" uid="uid://c1j0valgeefho" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_1.png" id="1_njwfs"]
+
+[resource]
+atlas = ExtResource("1_njwfs")
+region = Rect2(-3, 0, 0, 0)
