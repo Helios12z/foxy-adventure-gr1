@@ -6,9 +6,10 @@ func _enter() -> void:
 	timer=1.25
 
 func _update(delta: float) -> void:
-	timer-=delta
-	if timer<=0.0: 
+	if update_timer(delta):  
+		if obj.in_phase2:
+			obj._chain_after_basic = true
 		change_state(fsm.states.walk)
-		
+
 func _exit()->void:
-	obj.toggle_next_attack()
+	if obj.in_phase2: obj._chain_after_basic = true

@@ -281,6 +281,7 @@ position = Vector2(9360, -297)
 
 [node name="KingCrab" parent="Enemies" instance=ExtResource("42_6lioj")]
 position = Vector2(11324, 52)
+player_path = NodePath("../../Player")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(112, 5)

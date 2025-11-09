@@ -55,5 +55,10 @@ func _update(d: float) -> void:
 			change_state(fsm.states.atk2_stop)
 
 func _on_roll_hit_area(a: Area2D) -> void:
+	if fsm.current_state!=fsm.states.atk2_roll:
+		return 
 	obj.velocity.x = 0.0
 	change_state(fsm.states.atk2_stop)
+	
+func _exit()->void:
+	obj.toggle_next_attack()
