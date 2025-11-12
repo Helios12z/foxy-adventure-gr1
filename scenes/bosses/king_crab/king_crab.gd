@@ -4,7 +4,6 @@ extends BaseCharacter
 @export var spike_damage: int = 50
 @export var approach_speed: float = 50.0
 @export var search_speed: float = 50.0
-@export var king_crab_jump_speed: float = 320.0
 @export var king_crab_gravity: float = 700.0
 @export var attack_speed: float = 50.0
 @export var king_crab_attack_damage: int = 50
@@ -89,6 +88,7 @@ var _feet_offset_y: float = 0.0
 @onready var attack_3_windup_effect: AnimatedSprite2D = $Direction/Attack3WindupEffect
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var attack_3_hover_effect: AnimatedSprite2D = $Direction/Attack3HoverEffect
+@onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 
 func _ready() -> void:
 	_init_ray_casts()
@@ -100,7 +100,6 @@ func _ready() -> void:
 	movement_speed = approach_speed
 	max_health=king_crab_max_health
 	gravity = king_crab_gravity
-	jump_speed = king_crab_jump_speed
 	attack_damage = king_crab_attack_damage
 	direction=-1
 	_next_direction=-1
@@ -591,7 +590,6 @@ func _find_safe_ground_near_x(target_x: float, probe_top_y: float, try_radii := 
 	return _clamp_to_level(global_position)
 
 func _pick_safe_teleport_target(desired_x: float, probe_top_y: float) -> Vector2:
-	# Ưu tiên ngay desired_x, rồi nới sang hai bên theo bán kính tăng dần
 	var radii := [0.0, 32.0, 64.0, 96.0, 128.0, 160.0]
 	var dir_hint := 1
 	if found_player != null:
@@ -602,13 +600,11 @@ func _pick_safe_teleport_target(desired_x: float, probe_top_y: float) -> Vector2
 			dir_hint = -1
 
 	var best := _find_safe_ground_near_x(desired_x, probe_top_y, radii, dir_hint)
-	# Kiểm tra thêm free collision ở vị trí chọn được
 	var shape := collision_shape_2d.shape
 	var ok := _is_free_at(best, shape, teleport_clearance_margin)
 	if ok:
 		return best
 
-	# Nếu vẫn dính, dịch nhỏ sang hai bên / nhích lên
 	for dx in [8.0, -8.0, 16.0, -16.0, 24.0, -24.0]:
 		var p := _clamp_to_level(best + Vector2(dx, 0))
 		if _is_free_at(p, shape, teleport_clearance_margin):

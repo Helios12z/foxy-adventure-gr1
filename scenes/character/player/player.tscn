@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://fowo3c4ajsr7" path="res://scenes/character/player/dead.gd" id="11_m5h5h"]
 [ext_resource type="Script" uid="uid://dugosv23vlsd1" path="res://scenes/character/player/climb.gd" id="14_yuskr"]
 [ext_resource type="Script" uid="uid://b3l6e30n7sx3p" path="res://scenes/character/player/attack.gd" id="18_qnn1i"]
-[ext_resource type="Script" uid="uid://bwe7irvywtcdf" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
+[ext_resource type="Script" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
 [ext_resource type="Script" uid="uid://t4rt3tqet0ea" path="res://scenes/character/player/camera_follow.gd" id="21_camfollow"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
@@ -57,7 +57,7 @@ size = Vector2(91, 143)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4wjd"]
 size = Vector2(30, 43)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 10
 collision_layer = 2
 script = ExtResource("1_puv7k")
@@ -76,7 +76,7 @@ position = Vector2(1, -6)
 shape = SubResource("CircleShape2D_b1yw4")
 disabled = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." groups=["Camera"]]
 position = Vector2(0, -79)
 offset = Vector2(0, 100)
 zoom = Vector2(1.3, 1.3)
