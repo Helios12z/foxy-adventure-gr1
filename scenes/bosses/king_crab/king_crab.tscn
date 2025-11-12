@@ -1062,10 +1062,8 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"atk1_recover"
+animation = &"hurt_with_one_claw"
 autoplay = "walk"
-frame = 1
-frame_progress = 1.0
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 10)
