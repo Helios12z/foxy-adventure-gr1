@@ -55,10 +55,10 @@ label_settings = SubResource("LabelSettings_rbs2k")
 
 [node name="Description" type="Label" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 113.0
-offset_top = 333.0
-offset_right = 369.0
-offset_bottom = 557.0
+offset_left = 67.0
+offset_top = 338.0
+offset_right = 464.0
+offset_bottom = 562.0
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("4_ysqa0")
 autowrap_mode = 2
@@ -88,10 +88,10 @@ loop = true
 
 [node name="KeysBox" type="HBoxContainer" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 433.0
-offset_top = 352.0
-offset_right = 473.0
-offset_bottom = 387.0
+offset_left = 495.0
+offset_top = 357.0
+offset_right = 535.0
+offset_bottom = 392.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 

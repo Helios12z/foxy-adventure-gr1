@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=4 uid="uid://65dl3olpohwm"]
+[gd_scene load_steps=55 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
@@ -44,6 +44,8 @@
 [ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="42_6lioj"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="43_a7slf"]
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="44_imecc"]
+[ext_resource type="PackedScene" uid="uid://dme30hj53kiyq" path="res://levels/tutorial/signpost.tscn" id="45_m12hn"]
+[ext_resource type="PackedScene" uid="uid://dr6cgamag4fva" path="res://levels/tutorial/signpost_details/tutorial_popup.tscn" id="46_ncpwn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -596,3 +598,30 @@ shape = SubResource("RectangleShape2D_imecc")
 
 [node name="Door" parent="." instance=ExtResource("44_imecc")]
 position = Vector2(-217, 68)
+
+[node name="ClimbTutorial" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(728, 28)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["When Foxy is on a wall, he can climb, and his falling speed is reduced during this state."])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/attack_tutorial.ogv"
+
+[node name="Area2D" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(4453, 30)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Press 'X' button to Dash"])
+popup_keys = Array[String](["X"])
+popup_video_path = "res://asset/videos/attack_tutorial.ogv"
+
+[node name="Area2D2" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(5499, 31)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Double press 'left' or 'right' to run faster."])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/attack_tutorial.ogv"
+
+[node name="Area2D3" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(7324, 30)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["When Foxy is out of jumps, holding Space activates a hover state that slows his fall."])
+popup_video_path = "res://asset/videos/attack_tutorial.ogv"

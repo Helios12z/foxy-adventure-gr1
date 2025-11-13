@@ -21,10 +21,12 @@ func _on_body_entered(body: Node) -> void:
             var popup = popup_scene.instantiate()
             _popup_instance = popup
             var ui = get_tree().current_scene.get_node_or_null("UI")
-            if ui:
-                ui.add_child(popup)
-            else:
-                add_child(popup)
+            if ui == null:
+                # Đảm bảo luôn có CanvasLayer UI để popup hiển thị đúng trên màn hình
+                ui = CanvasLayer.new()
+                ui.name = "UI"
+                get_tree().current_scene.add_child(ui)
+            ui.add_child(popup)
             # Truyền dữ liệu cấu hình trực tiếp từ Signpost sang Popup
             if "text_lines" in popup:
                 popup.text_lines = popup_text_lines
