@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dr1kwjksl4cp5"]
+
+[ext_resource type="Texture2D" uid="uid://cbx1mpiisrf3k" path="res://asset/tutorial/key.png" id="1_vqqwq"]
+[ext_resource type="FontFile" uid="uid://cta457en76vru" path="res://asset/fonts/PixelOperator8-Bold.ttf" id="2_mvhv7"]
+[ext_resource type="Script" uid="uid://m5v4hdmuqpux" path="res://levels/tutorial/keyboard_key.gd" id="3_script"]
+
+[node name="Node" type="Node2D"]
+script = ExtResource("3_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("1_vqqwq")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -8.0
+offset_top = -11.0
+offset_right = 8.0
+offset_bottom = 5.0
+theme_override_fonts/font = ExtResource("2_mvhv7")
+text = "A"

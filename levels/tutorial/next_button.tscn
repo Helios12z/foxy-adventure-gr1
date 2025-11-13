@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhgail0cewgi4"]
+
+[ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="1_1r54t"]
+[ext_resource type="Texture2D" uid="uid://dyitct72bmpf2" path="res://asset/tutorial/arrow.png" id="2_ho5fu"]
+
+[node name="NextButton" type="Node2D"]
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(92, 64)
+offset_right = 92.0
+offset_bottom = 64.0
+
+[node name="Background" type="NinePatchRect" parent="Button"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_right = 92.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_1r54t")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="Button"]
+position = Vector2(50, 31)
+rotation = 1.5708
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("2_ho5fu")

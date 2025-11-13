@@ -12,6 +12,11 @@ var found_player: Player = null
 
 var knockback_direction: Vector2
 
+# Scripted movement for tutorial
+var scripted_mode := false
+var target_pos: Vector2 = Vector2.ZERO
+@export var run_speed: float = 120.0
+
 func _ready() -> void:
 	_init_ray_cast()
 	_init_detect_player_area()
@@ -84,6 +89,33 @@ func _on_player_not_in_sight():
 
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float):
 	fsm.current_state.take_damage(_damage_dir, _damage)
-	
+
 func set_hurt_collision(enabled):
 	$Direction/HurtArea2D/CollisionShape2D.set_deferred("disabled",not enabled)
+
+func run_to(pos: Vector2) -> void:
+	scripted_mode = true
+	target_pos = pos
+	# disable player detection during scripted mode
+	disable_check_player_in_sight()
+
+func _physics_process(delta: float) -> void:
+	if scripted_mode:
+		var dir_sign: int = sign(target_pos.x - global_position.x)
+		velocity.x = dir_sign * run_speed
+		if dir_sign > 0:
+			change_direction(-1)
+		elif dir_sign < 0:
+			change_direction(1)
+		move_and_slide()
+		if global_position.distance_to(target_pos) < 8.0:
+			# Biến mất mượt khi tới marker
+			scripted_mode = false
+			velocity = Vector2.ZERO
+			var t := create_tween()
+			t.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			t.tween_property(self, "modulate:a", 0.0, 0.25)
+			t.finished.connect(Callable(self, "queue_free"))
+			return
+	# normal behavior
+	super._physics_process(delta)
