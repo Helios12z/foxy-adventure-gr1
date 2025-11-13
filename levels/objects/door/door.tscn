@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://dubb5b1vjmsxd"]
+[gd_scene load_steps=16 format=3 uid="uid://dubb5b1vjmsxd"]
 
-[ext_resource type="Texture2D" uid="uid://cah2bdbw1aq5m" path="res://assets/island/objects/door/closing.png" id="1_7l4jk"]
-[ext_resource type="Texture2D" uid="uid://bncd8pwarby7k" path="res://assets/island/objects/door/idle.png" id="2_8ymf3"]
-[ext_resource type="Texture2D" uid="uid://ca24523pyquga" path="res://assets/island/objects/door/opening.png" id="3_2wyd1"]
-[ext_resource type="Script" uid="uid://nvuabioddqmj" path="res://scripts/interactive_area_2d.gd" id="4_l7mgg"]
+[ext_resource type="Texture2D" uid="uid://cah2bdbw1aq5m" path="res://asset/island/objects/door/closing.png" id="1_7l4jk"]
+[ext_resource type="Script" uid="uid://bx0udvedxepth" path="res://levels/objects/door/door.gd" id="1_jobty"]
+[ext_resource type="Texture2D" uid="uid://bncd8pwarby7k" path="res://asset/island/objects/door/idle.png" id="2_8ymf3"]
+[ext_resource type="Texture2D" uid="uid://ca24523pyquga" path="res://asset/island/objects/door/opening.png" id="3_2wyd1"]
+[ext_resource type="Script" uid="uid://n4lx7r4yxqp0" path="res://scripts/interactive_area_2d.gd" id="4_l7mgg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mpm61"]
 atlas = ExtResource("1_7l4jk")
@@ -86,18 +87,20 @@ animations = [{
 size = Vector2(14, 32)
 
 [node name="Door" type="Node2D"]
+script = ExtResource("1_jobty")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -28)
 sprite_frames = SubResource("SpriteFrames_ffxa6")
-animation = &"opening"
+animation = &"idle"
 
 [node name="InteractiveArea2D" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("4_l7mgg")
-metadata/_custom_type_script = "uid://nvuabioddqmj"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractiveArea2D"]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_7l4jk")
+
+[connection signal="interacted" from="InteractiveArea2D" to="." method="_on_interactive_area_2d_interacted"]

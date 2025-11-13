@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=4 uid="uid://p1noemh0cl3y"]
+[gd_scene load_steps=50 format=4 uid="uid://p1noemh0cl3y"]
 
 [ext_resource type="Script" uid="uid://6708u6d7r8dy" path="res://levels/tutorial/map_0.gd" id="1_7hlcu"]
 [ext_resource type="PackedScene" uid="uid://oplmtt8e4gwb" path="res://scenes/character/npcs/crystal-mauler.tscn" id="2_7hlcu"]
@@ -41,6 +41,7 @@
 [ext_resource type="Script" uid="uid://clw8rars82ebp" path="res://levels/tutorial/enemy_spawner.gd" id="39_spawner"]
 [ext_resource type="Script" uid="uid://drheh2mmiw3id" path="res://levels/tutorial/tutorial_manager.gd" id="40_tutor"]
 [ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="41_lybv0"]
+[ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="42_vaqrb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -452,6 +453,14 @@ offset_bottom = -179.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "Press"
 
+[node name="Label5" type="Label" parent="."]
+offset_left = 1718.0
+offset_top = -67.0
+offset_right = 1788.0
+offset_bottom = -44.0
+theme_override_fonts/font = ExtResource("41_lybv0")
+text = "Press"
+
 [node name="Label4" type="Label" parent="."]
 offset_left = 1270.0
 offset_top = -209.0
@@ -459,6 +468,15 @@ offset_right = 1555.0
 offset_bottom = -174.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "to attack and destroy enemies's house"
+autowrap_mode = 2
+
+[node name="Label6" type="Label" parent="."]
+offset_left = 1860.0
+offset_top = -77.0
+offset_right = 2145.0
+offset_bottom = -42.0
+theme_override_fonts/font = ExtResource("41_lybv0")
+text = "to teleport to the next stage"
 autowrap_mode = 2
 
 [node name="Label2" type="Label" parent="."]
@@ -474,3 +492,12 @@ autowrap_mode = 2
 [node name="Node" parent="." instance=ExtResource("36_21dun")]
 position = Vector2(1235, -191)
 key_text = "C"
+
+[node name="Door" parent="." instance=ExtResource("42_vaqrb")]
+position = Vector2(1774, 70)
+target_stage = "uid://65dl3olpohwm"
+is_cross_scene = true
+
+[node name="Node2" parent="." instance=ExtResource("36_21dun")]
+position = Vector2(1824, -60)
+key_text = "F"

@@ -30,11 +30,51 @@ func call_from_dialogic(msg:String = ""):
 
 #respawn at portal or door
 func respawn_at_portal() -> bool:
-	if not target_portal_name.is_empty():
-		player.global_position = current_stage.find_child(target_portal_name).global_position
-		GameManager.target_portal_name = ""
-		true
+	if target_portal_name.is_empty():
+		return false
+	# Đảm bảo player hợp lệ sau khi đổi scene
+	if not is_instance_valid(player):
+		var p := get_tree().current_scene.find_child("Player", true, false)
+		if p is Player:
+			player = p as Player
+		else:
+			return false
+	# Xác định node portal/door theo tên hoặc đường dẫn
+	var portal: Node = null
+	if target_portal_name.find("/") != -1:
+		portal = current_stage.get_node_or_null(NodePath(target_portal_name))
+	else:
+		portal = current_stage.find_child(target_portal_name, true, false)
+	if portal is Node2D and is_instance_valid(player):
+		player.global_position = (portal as Node2D).global_position
+		target_portal_name = ""
+		_apply_checkpoint_inventory_only()
+		# Đồng bộ stage_path của checkpoint sang stage hiện tại để respawn sau chết không bị bỏ qua
+		update_current_checkpoint_player_state({}, true)
+		return true
 	return false
+
+func _apply_checkpoint_inventory_only() -> void:
+	if player == null:
+		return
+	if current_checkpoint_id.is_empty():
+		return
+	var checkpoint_info: Dictionary = checkpoint_data.get(current_checkpoint_id, {})
+	var data: Dictionary = checkpoint_info.get("player_state", {})
+	if data.is_empty():
+		return
+	# Chỉ áp dụng các trạng thái, không thay đổi vị trí
+	if data.has("has_blade"):
+		player.has_blade = data["has_blade"]
+		Dialogic.VAR.set("HasBlade", player.has_blade)
+		if player.has_blade:
+			player.collected_blade()
+	if data.has("has_fire_gem") and bool(data["has_fire_gem"]):
+		player.collected_fire_gem()
+	if data.has("has_water_paw_gem") and bool(data["has_water_paw_gem"]):
+		player.collected_water_paw_gem()
+	if data.has("has_water_room_gem") and bool(data["has_water_room_gem"]):
+		player.collected_water_room_gem()
 
 
 # Checkpoint system functions
