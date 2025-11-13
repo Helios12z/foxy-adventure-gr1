@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://fowo3c4ajsr7" path="res://scenes/character/player/dead.gd" id="11_m5h5h"]
 [ext_resource type="Script" uid="uid://dugosv23vlsd1" path="res://scenes/character/player/climb.gd" id="14_yuskr"]
 [ext_resource type="Script" uid="uid://b3l6e30n7sx3p" path="res://scenes/character/player/attack.gd" id="18_qnn1i"]
-[ext_resource type="Script" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
+[ext_resource type="Script" uid="uid://bwe7irvywtcdf" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
 [ext_resource type="Script" uid="uid://t4rt3tqet0ea" path="res://scenes/character/player/camera_follow.gd" id="21_camfollow"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
