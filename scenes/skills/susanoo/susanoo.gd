@@ -202,10 +202,8 @@ func _on_attack_timeout() -> void:
 	_set_hit_area_enabled(_hit2, false)
 	# Count attacks for combo-based clone spawning regardless of collision range
 	attack_count += 1
-	if level >= 3 and spawn_clone_on_combo and attack_count % 4 == 0:
-		_spawn_additional_susanoo()
-	# Level 4: every 9th attack triggers meteor shower
-	if level >= 4 and attack_count % 9 == 0:
+	# Level 3: every 9th attack triggers meteor shower
+	if level >= 3 and attack_count % 9 == 0:
 		_trigger_meteor_shower()
 
 func _on_hit_enable_timeout() -> void:
