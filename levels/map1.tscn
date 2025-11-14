@@ -597,7 +597,7 @@ position = Vector2(5497, 1026)
 shape = SubResource("RectangleShape2D_imecc")
 
 [node name="Door" parent="." instance=ExtResource("44_imecc")]
-position = Vector2(-217, 68)
+position = Vector2(-219, 69)
 
 [node name="ClimbTutorial" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(728, 28)
