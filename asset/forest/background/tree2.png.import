@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1cueiikw3c6o"
-path="res://.godot/imported/crystal_mauler.png-8d3248d717ffe7fd4cf641684b918e6b.ctex"
+uid="uid://5nbx21n1v745"
+path="res://.godot/imported/tree2.png-b7eeac685f9dc1358cf4d4073eee67bb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://dialog/character/crystal_mauler.png"
-dest_files=["res://.godot/imported/crystal_mauler.png-8d3248d717ffe7fd4cf641684b918e6b.ctex"]
+source_file="res://asset/forest/background/tree2.png"
+dest_files=["res://.godot/imported/tree2.png-b7eeac685f9dc1358cf4d4073eee67bb.ctex"]
 
 [params]
 
