@@ -4,8 +4,10 @@ extends MarginContainer
 @onready var sound_check_button: CheckButton = $NinePatchRect/SoundCheckButton
 
 func _ready():
+	# Đồng bộ trạng thái nút với AudioServer
 	sound_check_button.button_pressed = not AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX"))
 	music_check_button.button_pressed = not AudioServer.is_bus_mute(AudioServer.get_bus_index("Music"))
+
 	get_tree().paused = true
 
 func _exit_tree() -> void:
@@ -22,8 +24,7 @@ func hide_popup():
 		
 func _on_overlay_color_rect_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		hide_popup() # Replace with function body.
-
+		hide_popup()
 
 func _on_close_texture_button_pressed() -> void:
 	hide_popup()

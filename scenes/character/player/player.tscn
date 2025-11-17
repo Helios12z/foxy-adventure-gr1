@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=32 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://b3l6e30n7sx3p" path="res://scenes/character/player/attack.gd" id="18_qnn1i"]
 [ext_resource type="Script" uid="uid://bwe7irvywtcdf" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
 [ext_resource type="Script" uid="uid://t4rt3tqet0ea" path="res://scenes/character/player/camera_follow.gd" id="21_camfollow"]
+[ext_resource type="AudioStream" uid="uid://irnmtldt0n5y" path="res://asset/sounds/jump.mp3" id="24_45mu1"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
 [ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
@@ -213,6 +214,10 @@ script = ExtResource("46_susanoo")
 
 [node name="WaterPaw" type="Node" parent="States"]
 script = ExtResource("47_waterpaw")
+
+[node name="Jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("24_45mu1")
+bus = &"SFX"
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]

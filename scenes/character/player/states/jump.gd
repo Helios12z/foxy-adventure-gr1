@@ -6,6 +6,7 @@ var wall_jump_duration: float = 0.3  # 0.3 seconds to preserve wall jump momentu
 func _enter() -> void:
 	#Change animation to jump
 	obj.change_animation("jump")
+	obj.jump_sound.play()
 
 	# Check if this is a wall jump by looking at horizontal velocity
 	if abs(obj.velocity.x) > obj.movement_speed:
