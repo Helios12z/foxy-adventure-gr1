@@ -2,11 +2,8 @@ extends BaseCharacter
 
 @export var king_crab_max_health: float = 500
 @export var spike_damage: int = 50
-@export var approach_speed: float = 50.0
-@export var search_speed: float = 50.0
+@export var speed: float = 50.0
 @export var king_crab_gravity: float = 700.0
-@export var attack_speed: float = 50.0
-@export var king_crab_attack_damage: int = 50
 @export var roll_speed_mult: float = 5.5
 @export var roll_brake: float = 5000
 
@@ -36,16 +33,19 @@ extends BaseCharacter
 @export var chain_after_basic_prob: float = 0.5    
 @export var atk3_strafe_speed: float = 900.0
 
-@export var level_bounds: Rect2 = Rect2(-2000, -1200, 4000, 3000)
 @export var teleport_clearance_margin: float = 0.5
 @export var minion_clearance_margin: float = 0.5
+
+@export var bound_point_a: Node2D
+@export var bound_point_b: Node2D
+
+var level_bounds: Rect2 
 
 var _recent_damage_times: PackedFloat32Array = []           
 var _proximity_time: float = 0.0
 
 # avoid wall/fall
 var front_ray_cast: RayCast2D
-var back_ray_cast: RayCast2D
 var down_ray_cast: RayCast2D
 
 # detect player
@@ -57,7 +57,6 @@ var _last_visible: bool = false
 var detect_player_enable: bool = true
 
 var _player_fallback: Node2D = null
-var _player_search_cooldown: float = 0.0
 
 var next_attack_is_claw: bool = true
 var claw_busy = false
@@ -95,18 +94,19 @@ func _ready() -> void:
 	_init_hurt_area()
 	_disable_attack_effect()
 	_disable_teleport_effect()
+	_update_level_bounds_from_markers()
 	_feet_offset_y = _compute_feet_offset_y()
 
-	movement_speed = approach_speed
+	movement_speed = speed
 	max_health=king_crab_max_health
 	gravity = king_crab_gravity
-	attack_damage = king_crab_attack_damage
 	direction=-1
 	_next_direction=-1
 	
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Idle)
-	
+	$Direction/HitArea2D.damage = spike_damage
+
 func _disable_attack_effect() -> void:
 	attack_1_effect.visible = false
 	attack_1_effect.stop()
@@ -203,6 +203,9 @@ func _physics_process(delta: float) -> void:
 	check_changed_direction()
 	check_player_visibility()
 	_tick_proximity_teleport(delta)
+	
+	if level_bounds.size != Vector2.ZERO:
+		global_position = _clamp_to_level(global_position)
 
 func _init_ray_casts() -> void:
 	if has_node("Direction/FrontRayCast2D"):
@@ -292,7 +295,7 @@ func control_move() -> bool:
 	if found_player == null or _distance_to_player_x()>attack1_range or _distance_to_player_x()>attack2_range:
 		if _blocked_ahead():
 			change_direction(-direction)
-		velocity.x = direction * search_speed
+		velocity.x = direction * speed
 		return false 
 
 	velocity.x = 0
@@ -423,7 +426,8 @@ func spawn_minions() -> void:
 	if minion_scene == null:
 		return
 
-	var offsets := [-160.0, -80.0, 80.0, 160.0]
+	# Chỉ spawn 2 con, lệch trái/phải một chút quanh boss
+	var offsets := [-32.0, 32.0]
 
 	var parent_node: Node = null
 	if get_tree().current_scene != null:
@@ -437,49 +441,28 @@ func spawn_minions() -> void:
 			dir_hint = -1
 
 		var target_x = global_position.x + off
-		target_x = clampf(target_x, level_bounds.position.x, level_bounds.position.x + level_bounds.size.x)
 
-		var safe_pos := _find_safe_ground_near_x(
+		# Tôn trọng level_bounds nếu có
+		if level_bounds.size != Vector2.ZERO:
+			target_x = clampf(
+				target_x,
+				level_bounds.position.x,
+				level_bounds.position.x + level_bounds.size.x
+			)
+
+		# Lấy vị trí an toàn trên mặt đất quanh boss
+		var safe_pos := _safe_snap_ground(
 			target_x,
-			global_position.y - 300.0,
-			[0.0, 16.0, 32.0, 48.0, 64.0, 96.0],
-			dir_hint
+			global_position.y - 300.0
 		)
+
+		safe_pos.y -= 16.0   
 
 		var m := minion_scene.instantiate()
 		parent_node.add_child(m)
 
-		var m_shape: Shape2D = null
-		if m.has_node("CollisionShape2D"):
-			var cs := m.get_node("CollisionShape2D") as CollisionShape2D
-			if cs != null and cs.shape != null:
-				m_shape = cs.shape
-		if m_shape == null:
-			var proxy := RectangleShape2D.new()
-			proxy.size = Vector2(16, 20)
-			m_shape = proxy
-
-		var adjusted := safe_pos
-		var ok := _is_free_at(adjusted, m_shape, minion_clearance_margin)
-		if not ok:
-			var fixed := false
-			for dx in [8.0, -8.0, 16.0, -16.0, 24.0, -24.0]:
-				var p := _clamp_to_level(adjusted + Vector2(dx, 0))
-				if _is_free_at(p, m_shape, minion_clearance_margin):
-					adjusted = p
-					ok = true
-					fixed = true
-					break
-			if not fixed or not ok:
-				for dy in [-4.0, -8.0, -12.0]:
-					var p2 := _clamp_to_level(adjusted + Vector2(0, dy))
-					if _is_free_at(p2, m_shape, minion_clearance_margin):
-						adjusted = p2
-						ok = true
-						break
-
 		if m is Node2D:
-			m.global_position = adjusted
+			m.global_position = safe_pos
 
 		var dir := 1
 		if off < 0.0:
@@ -519,13 +502,16 @@ func _took_consecutive_damage() -> bool:
 	return _recent_damage_times.size() >= teleport_combo_hits
 	
 func _lock_drop_target_at_player() -> void:
-	if _player_fallback != null:
-		var px = _player_fallback.global_position.x
-		var gy = _ground_at(Vector2(px, global_position.y - 200.0)).y
-		_atk3_drop_target = Vector2(px, gy - _feet_offset_y)
+	var px: float
+	if is_instance_valid(_player_fallback):
+		px = _player_fallback.global_position.x
 	else:
-		var gy = _ground_at(global_position).y
-		_atk3_drop_target = Vector2(global_position.x, gy - _feet_offset_y)
+		px = global_position.x
+
+	var probe_top_y := global_position.y - 300.0
+	var ground_pos := _safe_snap_ground(px, probe_top_y)
+
+	_atk3_drop_target = ground_pos
 
 func _begin_fly_mode() -> void:
 	_saved_gravity = gravity
@@ -544,14 +530,8 @@ func enable_collision_after_teleporting()->void:
 	$Direction/HitArea2D/CollisionShape2D.disabled=false
 	
 func _snap_to_ground() -> void:
-	var from := global_position
-	var to   := from + Vector2(0, 32)  
-	var space := get_world_2d().direct_space_state
-	var q := PhysicsRayQueryParameters2D.create(from, to)
-	q.exclude = [self]
-	var hit := space.intersect_ray(q)
-	if hit and hit.has("position"):
-		global_position.y = hit.position.y - _feet_offset_y
+	var gy := _ground_at(global_position, 1000.0).y
+	global_position.y = gy - _feet_offset_y
 	
 func _clamp_to_level(p: Vector2) -> Vector2:
 	var px := clampf(p.x, level_bounds.position.x, level_bounds.position.x + level_bounds.size.x)
@@ -615,3 +595,23 @@ func _pick_safe_teleport_target(desired_x: float, probe_top_y: float) -> Vector2
 			return p2
 
 	return _clamp_to_level(best)
+	
+func _update_level_bounds_from_markers() -> void:
+	if bound_point_a == null or bound_point_b == null:
+		print("KingCrab: bound_point_a/b is null!")
+		return
+
+	var a := bound_point_a.global_position
+	var b := bound_point_b.global_position
+
+	var min_x = min(a.x, b.x)
+	var max_x = max(a.x, b.x)
+	var min_y = min(a.y, b.y)
+	var max_y = max(a.y, b.y)
+
+	level_bounds = Rect2(
+		min_x,
+		min_y,
+		max_x - min_x,
+		max_y - min_y
+	)
