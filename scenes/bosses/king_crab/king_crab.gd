@@ -46,7 +46,6 @@ var _proximity_time: float = 0.0
 
 # avoid wall/fall
 var front_ray_cast: RayCast2D
-var back_ray_cast: RayCast2D
 var down_ray_cast: RayCast2D
 
 # detect player
@@ -58,7 +57,6 @@ var _last_visible: bool = false
 var detect_player_enable: bool = true
 
 var _player_fallback: Node2D = null
-var _player_search_cooldown: float = 0.0
 
 var next_attack_is_claw: bool = true
 var claw_busy = false
@@ -504,13 +502,16 @@ func _took_consecutive_damage() -> bool:
 	return _recent_damage_times.size() >= teleport_combo_hits
 	
 func _lock_drop_target_at_player() -> void:
-	if _player_fallback != null:
-		var px = _player_fallback.global_position.x
-		var gy = _ground_at(Vector2(px, global_position.y - 200.0)).y
-		_atk3_drop_target = Vector2(px, gy - _feet_offset_y)
+	var px: float
+	if is_instance_valid(_player_fallback):
+		px = _player_fallback.global_position.x
 	else:
-		var gy = _ground_at(global_position).y
-		_atk3_drop_target = Vector2(global_position.x, gy - _feet_offset_y)
+		px = global_position.x
+
+	var probe_top_y := global_position.y - 300.0
+	var ground_pos := _safe_snap_ground(px, probe_top_y)
+
+	_atk3_drop_target = ground_pos
 
 func _begin_fly_mode() -> void:
 	_saved_gravity = gravity
@@ -529,14 +530,8 @@ func enable_collision_after_teleporting()->void:
 	$Direction/HitArea2D/CollisionShape2D.disabled=false
 	
 func _snap_to_ground() -> void:
-	var from := global_position
-	var to   := from + Vector2(0, 32)  
-	var space := get_world_2d().direct_space_state
-	var q := PhysicsRayQueryParameters2D.create(from, to)
-	q.exclude = [self]
-	var hit := space.intersect_ray(q)
-	if hit and hit.has("position"):
-		global_position.y = hit.position.y - _feet_offset_y
+	var gy := _ground_at(global_position, 1000.0).y
+	global_position.y = gy - _feet_offset_y
 	
 func _clamp_to_level(p: Vector2) -> Vector2:
 	var px := clampf(p.x, level_bounds.position.x, level_bounds.position.x + level_bounds.size.x)
@@ -620,5 +615,3 @@ func _update_level_bounds_from_markers() -> void:
 		max_x - min_x,
 		max_y - min_y
 	)
-
-	print("KingCrab level_bounds = ", level_bounds)
