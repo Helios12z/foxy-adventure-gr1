@@ -14,6 +14,11 @@ var blink_times_post := 4
 var _blink_tw: Tween
 
 func _enter() -> void:
+	if get_minion_count() >= 4:
+		obj._chain_after_basic = false
+		change_state(fsm.states.idle)
+		return
+	
 	phase = 0
 	t = 0.0
 	obj.velocity.x = 0.0

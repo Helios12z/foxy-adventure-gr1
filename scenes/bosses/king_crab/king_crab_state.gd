@@ -158,7 +158,6 @@ func spawn_minions() -> void:
 	if obj.minion_scene == null:
 		return
 
-	# Chỉ spawn 2 con, lệch trái/phải một chút quanh boss
 	var offsets := [-32.0, 32.0]
 
 	var parent_node: Node = null
@@ -192,6 +191,7 @@ func spawn_minions() -> void:
 
 		var m = obj.minion_scene.instantiate()
 		parent_node.add_child(m)
+		m.add_to_group("king_crab_minion")
 
 		if m is Node2D:
 			m.global_position = safe_pos
@@ -311,3 +311,6 @@ func _begin_fly_mode() -> void:
 
 func _end_fly_mode() -> void:
 	obj.gravity = obj._saved_gravity
+	
+func get_minion_count() -> int:
+	return obj.get_tree().get_nodes_in_group("king_crab_minion").size()
