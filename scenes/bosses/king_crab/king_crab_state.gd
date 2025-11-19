@@ -139,7 +139,7 @@ func spawn_bullet_with_dir(dir_x: float) -> void:
 	var target := origin + Vector2(face * obj.attack1_range, 0.0)
 
 	if bullet.has_signal("returned"):
-		bullet.connect("returned", Callable(self, "_on_bullet_returned"))
+		bullet.connect("returned", Callable(self, "on_bullet_returned"))
 	if "spike_damage" in bullet:
 		bullet.spike_damage = obj.spike_damage
 
@@ -148,7 +148,7 @@ func spawn_bullet_with_dir(dir_x: float) -> void:
 func toggle_next_attack():
 	obj.next_attack_is_claw = not obj.next_attack_is_claw
 	
-func _on_bullet_returned() -> void:
+func on_bullet_returned() -> void:
 	obj.claw_busy = false
 	obj.claw_returned = true
 	obj.current_bullet = null
@@ -182,7 +182,7 @@ func spawn_minions() -> void:
 			)
 
 		# Lấy vị trí an toàn trên mặt đất quanh boss
-		var safe_pos = _safe_snap_ground(
+		var safe_pos = safe_snap_ground(
 			target_x,
 			obj.global_position.y - 300.0
 		)
@@ -216,7 +216,7 @@ func spawn_minions() -> void:
 			var intro_color := Color8(255, 200, 64, 255)
 			m.play_spawn_intro(intro_total, intro_times, intro_color)
 			
-func _ground_at(xy: Vector2, max_drop: float = 1000.0) -> Vector2:
+func ground_at(xy: Vector2, max_drop: float = 1000.0) -> Vector2:
 	var space_state := obj.get_world_2d().direct_space_state
 	var query := PhysicsRayQueryParameters2D.create(xy, xy + Vector2(0, max_drop))
 	query.exclude = [self]
@@ -225,21 +225,21 @@ func _ground_at(xy: Vector2, max_drop: float = 1000.0) -> Vector2:
 		return Vector2(xy.x, hit.position.y)
 	return xy
 
-func _snap_to_ground() -> void:
-	var gy := _ground_at(obj.global_position, 1000.0).y
+func snap_to_ground() -> void:
+	var gy := ground_at(obj.global_position, 1000.0).y
 	obj.global_position.y = gy - obj._feet_offset_y
 
-func _safe_snap_ground(x: float, probe_top_y: float, max_drop: float = 1000.0) -> Vector2:
+func safe_snap_ground(x: float, probe_top_y: float, max_drop: float = 1000.0) -> Vector2:
 	var from := Vector2(x, probe_top_y)
-	var gy := _ground_at(from, max_drop).y
-	return _clamp_to_level(Vector2(x, gy - obj._feet_offset_y))
+	var gy := ground_at(from, max_drop).y
+	return clamp_to_level(Vector2(x, gy - obj._feet_offset_y))
 	
-func _clamp_to_level(p: Vector2) -> Vector2:
+func clamp_to_level(p: Vector2) -> Vector2:
 	var px := clampf(p.x, obj.level_bounds.position.x, obj.level_bounds.position.x + obj.level_bounds.size.x)
 	var py := clampf(p.y, obj.level_bounds.position.y, obj.level_bounds.position.y + obj.level_bounds.size.y)
 	return Vector2(px, py)
 	
-func _lock_drop_target_at_player() -> void:
+func lock_drop_target_at_player() -> void:
 	var px: float
 	if is_instance_valid(obj._player_fallback):
 		px = obj._player_fallback.global_position.x
@@ -247,27 +247,27 @@ func _lock_drop_target_at_player() -> void:
 		px = obj.global_position.x
 
 	var probe_top_y := obj.global_position.y - 300.0
-	var ground_pos := _safe_snap_ground(px, probe_top_y)
+	var ground_pos := safe_snap_ground(px, probe_top_y)
 
 	obj._atk3_drop_target = ground_pos
 	
-func _is_safe_ledge(pos: Vector2, dir: int, forward: float = 24.0, max_drop: float = 48.0) -> bool:
-	var here := _ground_at(Vector2(pos.x, pos.y - 200.0)).y
-	var ahead := _ground_at(Vector2(pos.x + dir * forward, pos.y - 200.0)).y
+func is_safe_ledge(pos: Vector2, dir: int, forward: float = 24.0, max_drop: float = 48.0) -> bool:
+	var here := ground_at(Vector2(pos.x, pos.y - 200.0)).y
+	var ahead := ground_at(Vector2(pos.x + dir * forward, pos.y - 200.0)).y
 	return abs(here - ahead) <= max_drop
 
-func _find_safe_ground_near_x(target_x: float, probe_top_y: float, try_radii := [0.0, 24.0, 48.0, 72.0, 96.0], dir_hint: int = 1) -> Vector2:
+func find_safe_ground_near_x(target_x: float, probe_top_y: float, try_radii := [0.0, 24.0, 48.0, 72.0, 96.0], dir_hint: int = 1) -> Vector2:
 	var shape = obj.collision_shape_2d.shape
 	for r in try_radii:
 		for sgn in [1, -1]:
 			var x = target_x + sgn * r
 			x = clampf(x, obj.level_bounds.position.x, obj.level_bounds.position.x + obj.level_bounds.size.x)
-			var pos := _safe_snap_ground(x, probe_top_y)
-			if _is_free_at(pos, shape, 0.5) and _is_safe_ledge(pos, dir_hint):
+			var pos := safe_snap_ground(x, probe_top_y)
+			if is_free_at(pos, shape, 0.5) and is_safe_ledge(pos, dir_hint):
 				return pos
-	return _clamp_to_level(obj.global_position)
+	return clamp_to_level(obj.global_position)
 	
-func _pick_safe_teleport_target(desired_x: float, probe_top_y: float) -> Vector2:
+func pick_safe_teleport_target(desired_x: float, probe_top_y: float) -> Vector2:
 	var radii := [0.0, 32.0, 64.0, 96.0, 128.0, 160.0]
 	var dir_hint := 1
 	if obj.found_player != null:
@@ -277,24 +277,24 @@ func _pick_safe_teleport_target(desired_x: float, probe_top_y: float) -> Vector2
 		if (obj.last_seen_player_x - obj.global_position.x) < 0.0:
 			dir_hint = -1
 
-	var best := _find_safe_ground_near_x(desired_x, probe_top_y, radii, dir_hint)
+	var best := find_safe_ground_near_x(desired_x, probe_top_y, radii, dir_hint)
 	var shape = obj.collision_shape_2d.shape
-	var ok := _is_free_at(best, shape, obj.teleport_clearance_margin)
+	var ok := is_free_at(best, shape, obj.teleport_clearance_margin)
 	if ok:
 		return best
 
 	for dx in [8.0, -8.0, 16.0, -16.0, 24.0, -24.0]:
-		var p := _clamp_to_level(best + Vector2(dx, 0))
-		if _is_free_at(p, shape, obj.teleport_clearance_margin):
+		var p := clamp_to_level(best + Vector2(dx, 0))
+		if is_free_at(p, shape, obj.teleport_clearance_margin):
 			return p
 	for dy in [-4.0, -8.0, -12.0]:
-		var p2 := _clamp_to_level(best + Vector2(0, dy))
-		if _is_free_at(p2, shape, obj.teleport_clearance_margin):
+		var p2 := clamp_to_level(best + Vector2(0, dy))
+		if is_free_at(p2, shape, obj.teleport_clearance_margin):
 			return p2
 
-	return _clamp_to_level(best)
+	return clamp_to_level(best)
 	
-func _is_free_at(pos: Vector2, shape: Shape2D, margin: float = 0.0) -> bool:
+func is_free_at(pos: Vector2, shape: Shape2D, margin: float = 0.0) -> bool:
 	var space := obj.get_world_2d().direct_space_state
 	var params := PhysicsShapeQueryParameters2D.new()
 	params.shape = shape
@@ -304,13 +304,27 @@ func _is_free_at(pos: Vector2, shape: Shape2D, margin: float = 0.0) -> bool:
 	var results := space.intersect_shape(params, 1)
 	return results.is_empty()
 	
-func _begin_fly_mode() -> void:
+func begin_fly_mode() -> void:
 	obj._saved_gravity = obj.gravity
 	obj.gravity = 0.0
 	obj.velocity = Vector2.ZERO
 
-func _end_fly_mode() -> void:
+func end_fly_mode() -> void:
 	obj.gravity = obj._saved_gravity
 	
 func get_minion_count() -> int:
 	return obj.get_tree().get_nodes_in_group("king_crab_minion").size()
+	
+func spawn_shockwave() -> void:
+	if obj.king_crab_shockwave_scene == null:
+		return
+
+	var explosion = obj.king_crab_shockwave_scene.instantiate()
+	get_parent().add_child(explosion)
+	explosion.global_position = obj.global_position
+	
+func move_hit_collision_at_idle_attack()->void:
+	obj.hit_collision_shape_2d.position.x += 11
+	
+func reset_hit_collision_position()->void:
+	obj.hit_collision_shape_2d.position.x = obj.hit_collision_default_pos.x

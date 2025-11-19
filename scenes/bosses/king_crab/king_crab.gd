@@ -39,6 +39,8 @@ extends BaseCharacter
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D
 
+@export var king_crab_shockwave_scene: PackedScene
+
 var level_bounds: Rect2 
 
 var _recent_damage_times: PackedFloat32Array = []           
@@ -77,6 +79,8 @@ var current_bullet: Node = null
 var queued_bullet_dir_x: float = 1.0
 var queued_roll_dir_x: float = 1.0
 
+var hit_collision_default_pos: Vector2
+
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
 @onready var attack_1_effect: AnimatedSprite2D = $Direction/Attack1Effect
@@ -106,7 +110,8 @@ func _ready() -> void:
 	
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Idle)
-	$Direction/HitArea2D.damage = spike_damage
+	hit_area_2d.damage = spike_damage
+	hit_collision_default_pos = hit_collision_shape_2d.position
 	
 func _physics_process(delta: float) -> void:
 	if fsm != null:

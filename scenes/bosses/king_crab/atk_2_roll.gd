@@ -38,9 +38,8 @@ func _update(d: float) -> void:
 			var side_now = sign(obj.found_player.global_position.x - obj.global_position.x)
 			if side_now != 0.0 and side_now != roll_dir:
 				braking = true
-
-		var near_target := absf(obj.global_position.x - target_x) <= 10.0
-		if obj.is_touch_wall() or near_target:
+				
+		if obj.is_touch_wall():
 			braking = true
 			
 		if obj.is_can_fall(): 

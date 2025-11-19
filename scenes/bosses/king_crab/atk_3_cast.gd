@@ -10,7 +10,7 @@ func _enter()->void:
 	timer = obj.atk3_cast_time
 	_begin_cast_blink(timer, blink_times_windup, blink_color_start)
 	play_attack_effect(3, timer)
-	_begin_fly_mode()
+	begin_fly_mode()
 	obj._atk3_liftoff_x = obj.global_position.x
 
 func _update(d: float)->void:

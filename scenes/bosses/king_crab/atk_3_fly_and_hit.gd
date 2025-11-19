@@ -41,12 +41,12 @@ func _update(d: float) -> void:
 			_face_player()
 
 			if not _target_locked and hover_timer <= _hover_total * (1.0 - _lock_ratio):
-				_lock_drop_target_at_player()
+				lock_drop_target_at_player()
 				_target_locked = true
 
 			if hover_timer <= 0.0:
 				if not _target_locked:
-					_lock_drop_target_at_player()
+					lock_drop_target_at_player()
 					_target_locked = true
 
 				disable_attack_effect()
@@ -77,8 +77,9 @@ func _update(d: float) -> void:
 			return
 
 func _do_impact() -> void:
-	_snap_to_ground()
-	_end_fly_mode()
+	snap_to_ground()
+	end_fly_mode()
+	spawn_shockwave()
 	obj._chain_after_basic = false
 	phase = IMPACT
 	

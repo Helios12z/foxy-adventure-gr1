@@ -11,7 +11,7 @@ func _enter()->void:
 	t = 0.0
 	rise_done = false
 	vy = 0.0
-	_begin_fly_mode()
+	begin_fly_mode()
 
 func _update(d: float)->void:
 	t += d
