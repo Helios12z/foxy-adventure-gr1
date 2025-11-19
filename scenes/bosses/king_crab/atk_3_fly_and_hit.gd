@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 enum { HOVER, DASH, IMPACT }
 var phase := HOVER
@@ -17,7 +17,7 @@ func _enter()->void:
 	obj.global_position = Vector2(start_x, hover_y)
 	phase = HOVER
 	hover_timer = obj.atk3_hover_time
-	obj.play_attack_effect(5, hover_timer)
+	play_attack_effect(5, hover_timer)
 	_begin_cast_blink(hover_timer, blink_times_windup, blink_color_start)
 
 func _update(d: float)->void:
@@ -26,7 +26,7 @@ func _update(d: float)->void:
 			obj.global_position = Vector2(start_x, hover_y)
 			hover_timer -= d
 			if hover_timer <= 0.0:
-				obj._disable_attack_effect()
+				disable_attack_effect()
 				_end_cast_blink()
 				phase = DASH
 
@@ -54,8 +54,8 @@ func _update(d: float)->void:
 			return
 
 func _do_impact() -> void:
-	obj._snap_to_ground() 
-	obj._end_fly_mode()
+	_snap_to_ground() 
+	_end_fly_mode()
 	obj._chain_after_basic = false
 	phase = IMPACT
 	

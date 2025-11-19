@@ -1,4 +1,5 @@
-extends EnemyState
+extends KingCrabState
+
 func _enter() -> void:
 	timer=0.5
 	obj.change_animation("atk1_recover")
