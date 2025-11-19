@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 var roll_dir: float = 1.0
 var target_x: float
@@ -38,9 +38,8 @@ func _update(d: float) -> void:
 			var side_now = sign(obj.found_player.global_position.x - obj.global_position.x)
 			if side_now != 0.0 and side_now != roll_dir:
 				braking = true
-
-		var near_target := absf(obj.global_position.x - target_x) <= 12.0
-		if obj.is_touch_wall() or near_target:
+				
+		if obj.is_touch_wall():
 			braking = true
 			
 		if obj.is_can_fall(): 
@@ -61,4 +60,4 @@ func _on_roll_hit_area(a: Area2D) -> void:
 	change_state(fsm.states.atk2_stop)
 	
 func _exit()->void:
-	obj.toggle_next_attack()
+	toggle_next_attack()

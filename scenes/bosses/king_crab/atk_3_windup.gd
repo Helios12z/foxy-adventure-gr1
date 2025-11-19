@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 var t := 0.0
 var rise_done := false
@@ -7,19 +7,16 @@ var vy := 0.0
 func _enter()->void:
 	obj.change_animation("atk3_windup")
 	timer = obj.atk3_windup_time
-	obj.play_attack_effect(4, timer)
-	obj._lock_drop_target_at_player()
+	play_attack_effect(4, timer)
 	t = 0.0
 	rise_done = false
 	vy = 0.0
-	obj._begin_fly_mode()
+	begin_fly_mode()
 
 func _update(d: float)->void:
 	t += d
 
 	obj.global_position.x = obj._atk3_liftoff_x
-
-	_face_player()
 
 	var target_y = obj._atk3_drop_target.y - obj.atk3_fly_height
 	if not rise_done:
@@ -41,20 +38,5 @@ func _update(d: float)->void:
 			vy = 0.0
 
 	if update_timer(d):
-		obj._disable_attack_effect()
+		disable_attack_effect()
 		change_state(fsm.states.atk3_fly_and_hit)
-
-func _face_player() -> void:
-	var target_x: float
-	var have := false
-	if obj.found_player != null:
-		target_x = obj.found_player.global_position.x
-		have = true
-	elif obj.has_last_seen:
-		target_x = obj.last_seen_player_x
-		have = true
-
-	if have:
-		var desired := 1 if (target_x - obj.global_position.x) > 0.0 else -1
-		if desired != obj.direction:
-			obj.change_direction(desired)  

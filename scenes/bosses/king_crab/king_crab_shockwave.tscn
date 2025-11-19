@@ -1,0 +1,98 @@
+[gd_scene load_steps=15 format=3 uid="uid://dhnpal80arkyc"]
+
+[ext_resource type="Texture2D" uid="uid://clex0alqgtj07" path="res://asset/effects/explosion_effect.png" id="1_e2ws3"]
+[ext_resource type="Script" uid="uid://cmaqyikgctvdb" path="res://scenes/bosses/king_crab/king_crab_shockwave.gd" id="1_lr5s0"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_hd1su"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot5xg"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(0, 0, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lr5s0"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(426, 0, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hd1su"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(852, 0, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qb37j"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(0, 273, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uly33"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(426, 273, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aojju"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(852, 273, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gmbn"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(0, 546, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jy2qy"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(426, 546, 426, 273)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjdx0"]
+atlas = ExtResource("1_e2ws3")
+region = Rect2(852, 546, 426, 273)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5ouv1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ot5xg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lr5s0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hd1su")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qb37j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uly33")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aojju")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gmbn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jy2qy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tjdx0")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qb37j"]
+
+[node name="KingCrabShockwave" type="Node2D"]
+script = ExtResource("1_lr5s0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(6, -16)
+scale = Vector2(0.364141, 0.383969)
+sprite_frames = SubResource("SpriteFrames_5ouv1")
+autoplay = "default"
+frame = 3
+frame_progress = 0.373966
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("3_hd1su")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+shape = SubResource("CircleShape2D_qb37j")

@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 func _enter() -> void:
 	obj.change_animation("walk")
@@ -12,7 +12,7 @@ func _update(delta: float) -> void:
 			change_state(fsm.states.atk3_cast)
 		return 
 
-	var ready = obj.control_move()
+	var ready = control_move()
 	if not ready: return
 	if obj.found_player == null: return
 
@@ -24,8 +24,8 @@ func _update(delta: float) -> void:
 		obj.change_direction(desired)
 	obj.queued_bullet_dir_x = float(desired)
 
-	var can1 = obj.can_attack1()
-	var can2 = obj.can_attack2()
+	var can1 = can_attack1()
+	var can2 = can_attack2()
 
 	if obj.next_attack_is_claw and can1:
 		change_state(fsm.states.atk1_windup)

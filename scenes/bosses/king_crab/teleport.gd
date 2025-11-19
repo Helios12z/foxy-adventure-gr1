@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 var teleport_phase := 0 
 var fade_timer := 0.0
@@ -17,26 +17,27 @@ var teleport_blink_color_out: Color = Color8(87, 229, 255, 255)
 var teleport_blink_color_in:  Color = Color8(255, 255, 255, 255)
 
 func _enter() -> void:
+	disable_attack_effect()
 	obj.change_animation("cast")
 	teleport_phase = 0
 	fade_timer = 0.0
 	obj.velocity.x = 0.0
 
 	obj.animated_sprite_2d.modulate.a = 1.0
-	obj.play_teleport_effect(fade_duration)
+	play_teleport_effect(fade_duration)
 	_begin_claw_blink(fade_duration, 6, teleport_blink_color_out)
 
 func _update(d: float) -> void:
 	fade_timer += d
 
 	if teleport_phase == 0:  # Fade out
-		obj.disable_collision_while_teleporting()
+		disable_collision_while_teleporting()
 		var progress = min(fade_timer / fade_duration, 1.0)
 		obj.animated_sprite_2d.modulate.a = 1.0 - progress
 
 		if fade_timer >= fade_duration:
 			_end_claw_blink()   
-			obj._disable_teleport_effect()
+			disable_teleport_effect()
 			teleport_phase = 1
 			fade_timer = 0.0
 
@@ -50,11 +51,11 @@ func _update(d: float) -> void:
 		if fade_timer >= post_teleport_pause:
 			teleport_phase = 3
 			fade_timer = 0.0
-			obj.play_teleport_effect(fade_duration)
+			play_teleport_effect(fade_duration)
 			_begin_claw_blink(fade_duration, 6, teleport_blink_color_in)
 
 	elif teleport_phase == 3:  # Fade in (xuất hiện)
-		obj.enable_collision_after_teleporting()
+		enable_collision_after_teleporting()
 		var progress = min(fade_timer / fade_duration, 1.0)
 		obj.animated_sprite_2d.modulate.a = progress
 
@@ -109,13 +110,13 @@ func _teleport_to_new_position() -> void:
 func _finish_teleport() -> void:
 	obj.animated_sprite_2d.modulate.a = 1.0
 	obj.reset_proximity_timer()
-	obj._disable_teleport_effect()
+	disable_teleport_effect()
 	change_state(fsm.states.idle)
 
 func _exit() -> void:
 	obj.animated_sprite_2d.modulate.a = 1.0
 	_end_claw_blink()   
-	obj._disable_teleport_effect()
+	disable_teleport_effect()
 	
 func _begin_claw_blink(total: float, times := 6, color := Color(1, 0, 0, 1)) -> void:
 	var mat := obj.animated_sprite_2d.material as ShaderMaterial

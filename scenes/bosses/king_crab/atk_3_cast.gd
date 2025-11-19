@@ -1,20 +1,21 @@
-extends EnemyState
+extends KingCrabState
 
 var blink_color_start: Color = Color8(255, 200, 64, 255)   
 var blink_times_windup := 6
 var _blink_tw: Tween
 
 func _enter()->void:
+	disable_attack_effect()
 	obj.change_animation("cast")
 	timer = obj.atk3_cast_time
 	_begin_cast_blink(timer, blink_times_windup, blink_color_start)
-	obj.play_attack_effect(3, timer)
-	obj._begin_fly_mode()
+	play_attack_effect(3, timer)
+	begin_fly_mode()
 	obj._atk3_liftoff_x = obj.global_position.x
 
 func _update(d: float)->void:
 	if update_timer(d):
-		obj._disable_attack_effect()
+		disable_attack_effect()
 		_end_cast_blink()
 		change_state(fsm.states.atk3_windup)
 		
