@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://yp0djju0lyfn"]
+[gd_scene load_steps=7 format=3 uid="uid://yp0djju0lyfn"]
 
 [ext_resource type="Texture2D" uid="uid://bvo1g8a0yatxt" path="res://asset/war_lord_bullet/bullet_cannon.png" id="1_1exh6"]
+[ext_resource type="Script" uid="uid://bbimexeml7i4q" path="res://scenes/bosses/war_lord_turtle/cannon.gd" id="1_gny6r"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_lmmwy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lmmwy"]
@@ -12,6 +13,7 @@ atlas = ExtResource("1_1exh6")
 
 [node name="Cannon" type="RigidBody2D"]
 collision_layer = 8
+script = ExtResource("1_gny6r")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_lmmwy")
