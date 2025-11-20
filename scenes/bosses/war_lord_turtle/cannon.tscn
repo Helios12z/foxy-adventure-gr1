@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://yp0djju0lyfn"]
+[gd_scene load_steps=10 format=3 uid="uid://yp0djju0lyfn"]
 
 [ext_resource type="Texture2D" uid="uid://bvo1g8a0yatxt" path="res://asset/war_lord_bullet/bullet_cannon.png" id="1_1exh6"]
 [ext_resource type="Script" uid="uid://bbimexeml7i4q" path="res://scenes/bosses/war_lord_turtle/cannon.gd" id="1_gny6r"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_lmmwy"]
+[ext_resource type="PackedScene" uid="uid://co7srot1rmaaa" path="res://scenes/bosses/war_lord_turtle/explosion.tscn" id="2_rctjp"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="4_y15lk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lmmwy"]
 atlas = ExtResource("1_1exh6")
@@ -11,9 +13,12 @@ atlas = ExtResource("1_1exh6")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lmmwy"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_rctjp"]
+
 [node name="Cannon" type="RigidBody2D"]
 collision_layer = 8
 script = ExtResource("1_gny6r")
+explosion = ExtResource("2_rctjp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_lmmwy")
@@ -30,3 +35,12 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 shape = SubResource("CircleShape2D_lmmwy")
 debug_color = Color(0.688512, 0.498395, 0.0472115, 0.42)
+
+[node name="HurtArea2D" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("4_y15lk")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea2D"]
+shape = SubResource("CircleShape2D_rctjp")

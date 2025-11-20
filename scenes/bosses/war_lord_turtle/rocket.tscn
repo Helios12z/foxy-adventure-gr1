@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgj8e3f6gthar"]
+[gd_scene load_steps=8 format=3 uid="uid://dgj8e3f6gthar"]
 
 [ext_resource type="Texture2D" uid="uid://dupilqo02nyge" path="res://asset/war_lord_bullet/bullet_rocket.png" id="1_o28nm"]
 [ext_resource type="Script" uid="uid://bsa7fhelsxp4p" path="res://scenes/bosses/war_lord_turtle/rocket.gd" id="1_r0gyu"]
+[ext_resource type="PackedScene" uid="uid://co7srot1rmaaa" path="res://scenes/bosses/war_lord_turtle/explosion.tscn" id="2_4v3rf"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_8owtx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o28nm"]
@@ -11,16 +12,18 @@ size = Vector2(14, 24)
 atlas = ExtResource("1_o28nm")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r0gyu"]
-size = Vector2(14, 24)
+size = Vector2(16, 30)
 
 [node name="Rocket" type="RigidBody2D"]
 collision_layer = 8
 script = ExtResource("1_r0gyu")
+explosion = ExtResource("2_4v3rf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_o28nm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.21429, 1.24074)
 texture = SubResource("AtlasTexture_8owtx")
 
 [node name="HitArea2D" type="Area2D" parent="."]

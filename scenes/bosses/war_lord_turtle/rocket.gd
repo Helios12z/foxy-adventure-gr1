@@ -1,19 +1,27 @@
 extends RigidBody2D
 
-@export var speed: float = 80.0
-@export var damage: int = 50
-@export var arc_height: float = 150.0  
+var speed: float        
+var damage: int 
+@export var arc_height: float = 150.0   
+@export var explosion: PackedScene
 
 var target: Vector2
-var _start_pos: Vector2
-var _peak_y: float
-var _phase: int = 0  
+
+var _p0: Vector2
+var _p1: Vector2
+var _p2: Vector2
+var _t: float = 0.0
+var _duration: float = 1.0
 var _exploding := false
+
+var _last_pos: Vector2
+var _current_rot: float = 0.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hit_area: Area2D = $HitArea2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var hit_collision_shape_2d: CollisionShape2D = $HitArea2D/CollisionShape2D
 
-# Cho boss gọi trực tiếp: m.init(target, speed, damage)
 func init(p_target: Vector2, p_speed: float, p_damage: int) -> void:
 	target = p_target
 	speed = p_speed
@@ -21,62 +29,79 @@ func init(p_target: Vector2, p_speed: float, p_damage: int) -> void:
 
 func _ready() -> void:
 	gravity_scale = 0.0
-	_start_pos = global_position
+	linear_velocity = Vector2.ZERO
+
+	_p0 = global_position
 
 	if target == Vector2.ZERO:
-		# Nếu chưa được set target thì bỏ
-		queue_free()
-		return
+		target = _p0 + Vector2(0, 200)
 
-	_peak_y = min(_start_pos.y, target.y) - arc_height
-	_phase = 1    # bắt đầu bay lên
+	_p2 = target
 
+	var mid := (_p0 + _p2) * 0.5
+	var peak_y = min(_p0.y, _p2.y) - arc_height
+	_p1 = Vector2(mid.x, peak_y)
+
+	var approx_len := _p0.distance_to(_p1) + _p1.distance_to(_p2)
+	_duration = max(0.25, approx_len / max(speed, 1.0))
+	_t = 0.0
+
+	_last_pos = global_position
+	_current_rot = 0.0
+
+	if sprite:
+		sprite.rotation = 0.0
+	if collision_shape_2d:
+		collision_shape_2d.rotation = 0.0
+	if hit_collision_shape_2d:
+		hit_collision_shape_2d.rotation = 0.0
 	if hit_area:
-		if hit_area.has_signal("body_entered"):
-			hit_area.body_entered.connect(_on_hit_body_entered)
-		if "damage" in hit_area:
-			hit_area.damage = damage
+		hit_area.damage = damage
+		hit_area.rotation = 0.0
+		if hit_area.has_signal("area_entered"):
+			hit_area.area_entered.connect(_on_hit_area_entered)
 
 func _physics_process(delta: float) -> void:
-	match _phase:
-		0:
-			# chưa hoạt động
-			linear_velocity = Vector2.ZERO
-		1:
-			# bay thẳng lên
-			linear_velocity = Vector2(0.0, -speed)
-			if global_position.y <= _peak_y:
-				_phase = 2
-				# tới đỉnh, nhảy x sang cột target
-				global_position.x = target.x
-		2:
-			# rơi thẳng xuống target
-			linear_velocity = Vector2(0.0, speed)
-			if global_position.y >= target.y:
-				explode()
-
-# ---------- Va chạm từ HitArea2D ----------
-
-func _on_hit_body_entered(body: Node) -> void:
 	if _exploding:
 		return
 
-	if body.is_in_group("player") and body.has_method("take_damage"):
-		body.take_damage(damage)
-	explode()
+	_t += delta / _duration
+	var t = clamp(_t, 0.0, 1.0)
+	var omt = 1.0 - t
 
-# ---------- Nổ ----------
+	var pos = omt * omt * _p0 + 2.0 * omt * t * _p1 + t * t * _p2
+
+	var dir = pos - _last_pos
+	global_position = pos
+
+	if dir.length() > 0.01:
+		var target_rot = dir.angle() + PI / 2.0  
+		_current_rot = lerp_angle(_current_rot, target_rot, 0.2)
+		rotation = _current_rot      
+
+	_last_pos = pos
+
+	if t >= 1.0:
+		explode()
+
+func _on_hit_area_entered(area: Area2D) -> void:
+	if _exploding:
+		return
+	explode()
 
 func explode() -> void:
 	if _exploding:
 		return
 	_exploding = true
 
-	# AoE thêm nếu muốn
-	if hit_area:
-		for body in hit_area.get_overlapping_bodies():
-			if body.is_in_group("player") and body.has_method("take_damage"):
-				body.take_damage(damage)
-
-	# TODO: chơi animation nổ nếu có
+	_spawn_explosion()
 	queue_free()
+
+func _spawn_explosion() -> void:
+	if explosion == null:
+		return
+
+	var ex = explosion.instantiate()
+	var parent := get_tree().current_scene if get_tree().current_scene != null else get_parent()
+	parent.add_child(ex)
+	ex.global_position = global_position
