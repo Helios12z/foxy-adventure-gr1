@@ -28,6 +28,7 @@ extends BaseCharacter
 var _missile_targets: Array[Node2D] = []
 
 var seen_player: bool = false 
+var _flash_tw: Tween
 
 func _ready() -> void:
 	movement_speed = 0.0
@@ -61,7 +62,33 @@ func _init_hurt_area() -> void:
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: float) -> void:
 	take_damage(damage)
-	fsm.change_state(fsm.states.hurt)
+
+	if health <= 0.0:
+		if fsm and fsm.current_state != fsm.states.dead:
+			fsm.change_state(fsm.states.dead)
+		return
+
+	if fsm.current_state!=fsm.states.idle:
+		flash_hurt(0.25, 3)
+	else:
+		fsm.change_state(fsm.states.hurt)
+
+func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
+	var mat := animated_sprite_2d.material as ShaderMaterial
+	if mat == null:
+		return
+
+	mat.set_shader_parameter("flash_color", color)
+	mat.set_shader_parameter("flash_amount", 0.0)
+
+	if is_instance_valid(_flash_tw):
+		_flash_tw.kill()
+
+	_flash_tw = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var step := duration / float(blinks * 2)
+	for i in blinks:
+		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 1.0, step)
+		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 0.0, step)
 
 func _get_player() -> Node2D:
 	return get_tree().get_first_node_in_group("Player") as Node2D

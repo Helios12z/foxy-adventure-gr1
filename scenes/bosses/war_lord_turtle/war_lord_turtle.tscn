@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=53 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c66q7vmjc2avd" path="res://asset/war_lord/war_lord_turtle3.png" id="3_bckbg"]
 [ext_resource type="PackedScene" uid="uid://dgj8e3f6gthar" path="res://scenes/bosses/war_lord_turtle/rocket.tscn" id="3_gx74n"]
 [ext_resource type="Texture2D" uid="uid://cj6npy4dt0yva" path="res://asset/war_lord/war_lord_turtle4.png" id="4_lsjki"]
+[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_ye665"]
 [ext_resource type="Texture2D" uid="uid://b4tk88p3dgufr" path="res://asset/war_lord/war_lord_turtle5.png" id="5_i0mgt"]
 [ext_resource type="Texture2D" uid="uid://3wrkn0lnsh72" path="res://asset/war_lord/war_lord_turtle6.png" id="6_4ut7l"]
 [ext_resource type="Texture2D" uid="uid://bua3xf2o4f7xx" path="res://asset/war_lord/war_lord_turtle11.png" id="7_xwhea"]
@@ -22,6 +23,8 @@
 [ext_resource type="Texture2D" uid="uid://bb8w53soojged" path="res://asset/war_lord/war_lord_turtle7.png" id="17_3t3e0"]
 [ext_resource type="Texture2D" uid="uid://dbqssqlvc2r5v" path="res://asset/war_lord/war_lord_turtle8.png" id="18_su8nf"]
 [ext_resource type="Texture2D" uid="uid://b1j6gkstlao88" path="res://asset/war_lord/war_lord_turtle9.png" id="19_evlw3"]
+[ext_resource type="Texture2D" uid="uid://bktwak3jgdscs" path="res://asset/war_lord/war_lord_turtle21.png" id="19_su8nf"]
+[ext_resource type="Texture2D" uid="uid://ljfo2vxat7h3" path="res://asset/war_lord/war_lord_turtle22.png" id="20_evlw3"]
 [ext_resource type="Texture2D" uid="uid://cfffule4j1cl7" path="res://asset/war_lord/war_lord_turtle10.png" id="20_jhib8"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="21_bckbg"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="22_lsjki"]
@@ -31,10 +34,17 @@
 [ext_resource type="Script" uid="uid://dohwiudsn2vhs" path="res://scenes/bosses/war_lord_turtle/atk_2.gd" id="26_xwhea"]
 [ext_resource type="Script" uid="uid://cekjxrlbyelf7" path="res://scenes/bosses/war_lord_turtle/hurt.gd" id="27_6vi0x"]
 [ext_resource type="Script" uid="uid://b80m708ypmrvy" path="res://scenes/bosses/war_lord_turtle/stun.gd" id="28_6x4je"]
+[ext_resource type="Texture2D" uid="uid://8ndqchwscou5" path="res://asset/war_lord/target_lock_effect.png" id="28_og2oc"]
 [ext_resource type="Script" uid="uid://j0tfb5mqggpk" path="res://scenes/bosses/war_lord_turtle/dead.gd" id="32_gx74n"]
+[ext_resource type="Script" uid="uid://d3fpcbkl548fs" path="res://scenes/bosses/war_lord_turtle/atk_3_windup.gd" id="37_jhib8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_og2oc"]
+shader = ExtResource("4_ye665")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 0.2, 0.2, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_giamn"]
 atlas = ExtResource("22_td4te")
@@ -123,6 +133,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("6_4ut7l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_su8nf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_4ut7l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_evlw3")
+}],
+"loop": true,
+"name": &"cast",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("15_og2oc")
 }, {
 "duration": 1.0,
@@ -173,6 +200,67 @@ size = Vector2(64, 67)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4ut7l"]
 size = Vector2(57, 65)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpe5m"]
+atlas = ExtResource("28_og2oc")
+region = Rect2(0, 0, 204, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3t3e0"]
+atlas = ExtResource("28_og2oc")
+region = Rect2(204, 0, 204, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_su8nf"]
+atlas = ExtResource("28_og2oc")
+region = Rect2(408, 0, 204, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_evlw3"]
+atlas = ExtResource("28_og2oc")
+region = Rect2(612, 0, 204, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jhib8"]
+atlas = ExtResource("28_og2oc")
+region = Rect2(816, 0, 204, 1024)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yptko"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gpe5m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3t3e0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_su8nf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_su8nf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3t3e0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3t3e0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_su8nf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_su8nf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3t3e0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_evlw3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jhib8")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="WarLordTurtle" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_lsjki")
@@ -186,10 +274,12 @@ shape = SubResource("RectangleShape2D_k7whc")
 [node name="Direction" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+material = SubResource("ShaderMaterial_og2oc")
 sprite_frames = SubResource("SpriteFrames_g47qh")
-animation = &"atk_2"
+animation = &"cast"
 autoplay = "idle"
-frame = 8
+frame = 2
+frame_progress = 0.59245545
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
 collision_layer = 16
@@ -225,6 +315,15 @@ position = Vector2(43, -56)
 [node name="Atk2ShootPoint2" type="Marker2D" parent="Direction"]
 position = Vector2(-41, -51)
 
+[node name="TargetLockEffect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
+position = Vector2(-6, 9)
+scale = Vector2(0.6519608, 0.5625)
+sprite_frames = SubResource("SpriteFrames_yptko")
+autoplay = "default"
+frame = 10
+frame_progress = 1.0
+
 [node name="States" type="Node" parent="."]
 
 [node name="Idle" type="Node" parent="States"]
@@ -244,3 +343,8 @@ script = ExtResource("28_6x4je")
 
 [node name="Dead" type="Node" parent="States"]
 script = ExtResource("32_gx74n")
+
+[node name="Atk_3_Windup" type="Node" parent="States"]
+script = ExtResource("37_jhib8")
+
+[node name="Atk_3" type="Node" parent="States"]
