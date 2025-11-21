@@ -11,9 +11,6 @@ extends BaseCharacter
 @export var bomb_scene: PackedScene
 @export var missile_scene: PackedScene
 
-@export var missile_targets_root: NodePath
-@export var missile_target_names: Array[StringName] = ["A", "B", "C", "D"]
-
 # điểm bắn bomb (skill 1)
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
 @onready var atk_1_shoot_point_2: Marker2D = $Direction/Atk1ShootPoint2
@@ -25,10 +22,20 @@ extends BaseCharacter
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 
-var _missile_targets: Array[Node2D] = []
+@export var phase2_threshold_ratio: float = 0.7
 
+@export var bound_point_a: Node2D
+@export var bound_point_b: Node2D
+
+@export var retaliate_damage_window_seconds: float = 6.0 #6 seconds
+@export var retaliate_combo_hits: int = 3  #3 hits
+
+var _missile_targets: Array[Node2D] = []
 var seen_player: bool = false 
 var _flash_tw: Tween
+var in_phase2: bool = false
+var _recent_damage_times: PackedFloat32Array = []
+var level_bounds: Rect2
 
 func _ready() -> void:
 	movement_speed = 0.0
@@ -41,9 +48,9 @@ func _ready() -> void:
 
 	if hit_area_2d:
 		hit_area_2d.damage = spike_damage
-		
-	_init_missile_targets()
+
 	_init_hurt_area()
+	_update_level_bounds_from_markers()
 
 	fsm = FSM.new(self, $States, $States/Idle)
 
@@ -62,15 +69,29 @@ func _init_hurt_area() -> void:
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: float) -> void:
 	take_damage(damage)
+	_note_damage_hit()
+	
+	if fsm.current_state != fsm.states.idle:
+		flash_hurt(0.25, 3)
 
 	if health <= 0.0:
 		if fsm and fsm.current_state != fsm.states.dead:
 			fsm.change_state(fsm.states.dead)
 		return
 
-	if fsm.current_state!=fsm.states.idle:
-		flash_hurt(0.25, 3)
-	else:
+	if not in_phase2 and health <= max_health * phase2_threshold_ratio:
+		in_phase2 = true
+		if fsm and fsm.current_state != fsm.states.dead:
+			fsm.change_state(fsm.states.atk3_windup)
+		return
+
+	if _took_consecutive_damage():
+		if not in_phase2 and fsm.current_state != fsm.states.atk_2 and fsm.current_state != fsm.states.dead:
+			fsm.change_state(fsm.states.atk_2)
+		_recent_damage_times.clear()
+		return 
+
+	if fsm.current_state == fsm.states.idle:
 		fsm.change_state(fsm.states.hurt)
 
 func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
@@ -90,6 +111,26 @@ func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -
 		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 1.0, step)
 		_flash_tw.tween_property(mat, "shader_parameter/flash_amount", 0.0, step)
 
+func _now_secs() -> float:
+	return Time.get_ticks_msec() / 1000.0
+
+
+func _prune_damage_times(now_secs: float) -> void:
+	while _recent_damage_times.size() > 0 and now_secs - _recent_damage_times[0] > retaliate_damage_window_seconds:
+		_recent_damage_times.remove_at(0)
+
+
+func _note_damage_hit() -> void:
+	var now := _now_secs()
+	_recent_damage_times.append(now)
+	_prune_damage_times(now)
+
+
+func _took_consecutive_damage() -> bool:
+	var now := _now_secs()
+	_prune_damage_times(now)
+	return _recent_damage_times.size() >= retaliate_combo_hits
+
 func _get_player() -> Node2D:
 	return get_tree().get_first_node_in_group("Player") as Node2D
 	
@@ -108,24 +149,23 @@ func _update_facing() -> void:
 func _detect_player()->void:
 	if seen_player: return
 	if _distance_to_player()<=500: seen_player = true 
-
-func _init_missile_targets() -> void:
-	_missile_targets.clear()
-
-	if missile_targets_root == NodePath(""):
+			
+func _update_level_bounds_from_markers() -> void:
+	if bound_point_a == null or bound_point_b == null:
+		level_bounds = Rect2()
 		return
 
-	if not has_node(missile_targets_root):
-		return
+	var a := bound_point_a.global_position
+	var b := bound_point_b.global_position
 
-	var root = get_node(missile_targets_root)
+	var min_x = min(a.x, b.x)
+	var max_x = max(a.x, b.x)
+	var min_y = min(a.y, b.y)
+	var max_y = max(a.y, b.y)
 
-	for name in missile_target_names:
-		var path := NodePath(str(name)) 
-
-		if root.has_node(path):
-			var n := root.get_node(path)
-			if n is Node2D:
-				_missile_targets.append(n)
-		else:
-			print("missile targets not found")
+	level_bounds = Rect2(
+		min_x,
+		min_y,
+		max_x - min_x,
+		max_y - min_y
+	)

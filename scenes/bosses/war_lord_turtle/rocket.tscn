@@ -16,6 +16,8 @@ size = Vector2(16, 30)
 
 [node name="Rocket" type="RigidBody2D"]
 collision_layer = 8
+contact_monitor = true
+max_contacts_reported = 4
 script = ExtResource("1_r0gyu")
 explosion = ExtResource("2_4v3rf")
 

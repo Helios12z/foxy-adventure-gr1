@@ -17,6 +17,10 @@ var _exploding := false
 var _last_pos: Vector2
 var _current_rot: float = 0.0
 
+# Giai đoạn 2: bay thẳng sau khi hết quỹ đạo cong
+var _finished_arc: bool = false
+var _fly_dir: Vector2 = Vector2.ZERO
+
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hit_area: Area2D = $HitArea2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
@@ -61,30 +65,59 @@ func _ready() -> void:
 		if hit_area.has_signal("area_entered"):
 			hit_area.area_entered.connect(_on_hit_area_entered)
 
+	if has_signal("body_entered"):
+		body_entered.connect(_on_body_entered)
+
 func _physics_process(delta: float) -> void:
 	if _exploding:
 		return
 
-	_t += delta / _duration
-	var t = clamp(_t, 0.0, 1.0)
-	var omt = 1.0 - t
+	# Giai đoạn 1: bay theo quy dao toi point
+	if not _finished_arc:
+		_t += delta / _duration
+		var t = clamp(_t, 0.0, 1.0)
+		var omt = 1.0 - t
 
-	var pos = omt * omt * _p0 + 2.0 * omt * t * _p1 + t * t * _p2
+		var pos = omt * omt * _p0 + 2.0 * omt * t * _p1 + t * t * _p2
+		var dir = pos - _last_pos
 
-	var dir = pos - _last_pos
-	global_position = pos
+		global_position = pos
 
-	if dir.length() > 0.01:
-		var target_rot = dir.angle() + PI / 2.0  
+		# Quay đầu theo hướng bay
+		if dir.length() > 0.01:
+			var target_rot = dir.angle() + PI / 2.0
+			_current_rot = lerp_angle(_current_rot, target_rot, 0.2)
+			rotation = _current_rot
+
+		_last_pos = pos
+
+		# Hết quỹ đạo cong nhưng chưa va chạm -> chuyển sang bay thẳng
+		if t >= 1.0:
+			_finished_arc = true
+			if dir.length() > 0.01:
+				_fly_dir = dir.normalized()
+			else:
+				# fallback nếu vector dir quá nhỏ
+				_fly_dir = Vector2.DOWN
+	else:
+		# Giai đoạn 2: tiếp tục bay thẳng theo hướng cuối cùng
+		if _fly_dir == Vector2.ZERO:
+			_fly_dir = Vector2.DOWN
+
+		var move := _fly_dir * speed * delta
+		global_position += move
+
+		var target_rot = _fly_dir.angle() + PI / 2.0
 		_current_rot = lerp_angle(_current_rot, target_rot, 0.2)
-		rotation = _current_rot      
+		rotation = _current_rot
 
-	_last_pos = pos
-
-	if t >= 1.0:
-		explode()
 
 func _on_hit_area_entered(area: Area2D) -> void:
+	if _exploding:
+		return
+	explode()
+
+func _on_body_entered(body: Node) -> void:
 	if _exploding:
 		return
 	explode()
