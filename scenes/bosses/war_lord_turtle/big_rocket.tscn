@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=3 uid="uid://c8t2vryjvnseu"]
+
+[ext_resource type="Script" uid="uid://b1gkdux2hieeq" path="res://scenes/bosses/war_lord_turtle/big_rocket.gd" id="1_uodo2"]
+[ext_resource type="PackedScene" uid="uid://dhnpal80arkyc" path="res://scenes/bosses/king_crab/king_crab_shockwave.tscn" id="2_srq45"]
+[ext_resource type="Texture2D" uid="uid://bbp085semfdw1" path="res://asset/war_lord_bullet/big_rocket.png" id="3_7nokh"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="4_xcxhb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k13qx"]
+atlas = ExtResource("3_7nokh")
+region = Rect2(0, 250, 512, 250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pw0bx"]
+atlas = ExtResource("3_7nokh")
+region = Rect2(512, 250, 512, 250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6yx0j"]
+atlas = ExtResource("3_7nokh")
+region = Rect2(0, 500, 512, 250)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7tada"]
+atlas = ExtResource("3_7nokh")
+region = Rect2(512, 500, 512, 250)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3q8nh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k13qx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pw0bx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6yx0j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7tada")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_onvhn"]
+size = Vector2(27, 97)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pw0bx"]
+size = Vector2(29, 102)
+
+[node name="BigRocket" type="RigidBody2D"]
+collision_layer = 8
+contact_monitor = true
+max_contacts_reported = 4
+script = ExtResource("1_uodo2")
+explosion = ExtResource("2_srq45")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(5, 32)
+rotation = -1.5707964
+scale = Vector2(0.56713927, 0.7553332)
+sprite_frames = SubResource("SpriteFrames_3q8nh")
+autoplay = "default"
+frame = 3
+frame_progress = 0.98758006
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, -2.5)
+shape = SubResource("RectangleShape2D_onvhn")
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("4_xcxhb")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(-0.5, -3)
+shape = SubResource("RectangleShape2D_pw0bx")
+debug_color = Color(0.46818513, 0.45550036, 0.9691165, 0.41960785)

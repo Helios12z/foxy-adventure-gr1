@@ -1,7 +1,7 @@
 extends WarlordTurtleState
 
 func _enter() -> void:
-	timer = 2.25
+	timer = 3.0
 	obj.change_animation("stun")
 
 func _update(delta: float) -> void:

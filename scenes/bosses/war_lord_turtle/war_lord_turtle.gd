@@ -10,6 +10,7 @@ extends BaseCharacter
 
 @export var bomb_scene: PackedScene
 @export var missile_scene: PackedScene
+@export var big_missile_scene: PackedScene
 
 # điểm bắn bomb (skill 1)
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
@@ -19,8 +20,12 @@ extends BaseCharacter
 @onready var atk_2_shoot_point_1: Marker2D = $Direction/Atk2ShootPoint1
 @onready var atk_2_shoot_point_2: Marker2D = $Direction/Atk2ShootPoint2
 
+@onready var atk_3_shoot_point: Marker2D = $Direction/Atk3ShootPoint
+
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
+
+@onready var target_lock_effect: AnimatedSprite2D = $Direction/TargetLockEffect
 
 @export var phase2_threshold_ratio: float = 0.7
 
@@ -82,7 +87,7 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: float) -> void:
 	if not in_phase2 and health <= max_health * phase2_threshold_ratio:
 		in_phase2 = true
 		if fsm and fsm.current_state != fsm.states.dead:
-			fsm.change_state(fsm.states.atk3_windup)
+			fsm.change_state(fsm.states.atk_3_windup)
 		return
 
 	if _took_consecutive_damage():
@@ -148,7 +153,7 @@ func _update_facing() -> void:
 	
 func _detect_player()->void:
 	if seen_player: return
-	if _distance_to_player()<=500: seen_player = true 
+	if _distance_to_player()<=280: seen_player = true 
 			
 func _update_level_bounds_from_markers() -> void:
 	if bound_point_a == null or bound_point_b == null:

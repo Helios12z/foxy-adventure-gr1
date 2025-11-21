@@ -1,6 +1,7 @@
 extends EnemyState
 class_name WarlordTurtleState
 
+var _atk3_locked_pos: Vector2 = Vector2.ZERO
 var _locked_rocket_center: Vector2 = Vector2.ZERO
 var _has_locked_center: bool = false
 
@@ -69,6 +70,62 @@ func _fire_missile(from_node: Node2D, target_pos: Vector2) -> void:
 
 	if m.has_method("init"):
 		m.init(target_pos, obj.attack_speed, obj.attack_damage_boss)
+
+	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
+	parent.add_child(m)
+	
+func set_target_lock_visible(visible: bool) -> void:
+	if obj.target_lock_effect:
+		obj.target_lock_effect.visible = visible
+
+func follow_target_lock_to_player() -> void:
+	if obj.target_lock_effect == null:
+		return
+
+	var p = obj._get_player()
+	if p != null:
+		obj.target_lock_effect.global_position = p.global_position
+
+# Chốt vị trí lock (dùng sau khi follow xong, chuẩn bị warning 0.25s)
+func freeze_target_lock_position() -> void:
+	if obj.target_lock_effect and obj.target_lock_effect.visible:
+		_atk3_locked_pos = obj.target_lock_effect.global_position
+	else:
+		var p = obj._get_player()
+		if p != null:
+			_atk3_locked_pos = p.global_position
+		else:
+			_atk3_locked_pos = obj.global_position
+
+# Spawn rocket to khủng từ trên trời rơi xuống vị trí đã lock
+func spawn_atk3_rocket_from_locked_pos() -> void:
+	_spawn_atk3_rocket(_atk3_locked_pos)
+
+
+func _spawn_atk3_rocket(target_pos: Vector2) -> void:
+	if obj.big_missile_scene == null:
+		return
+	if obj.atk_3_shoot_point == null:
+		return
+
+	# Clamp target theo level_bounds
+	var final_target := target_pos
+	if obj.level_bounds.size != Vector2.ZERO:
+		var min_x = obj.level_bounds.position.x
+		var max_x = obj.level_bounds.position.x + obj.level_bounds.size.x
+		var min_y = obj.level_bounds.position.y
+		var max_y = obj.level_bounds.position.y + obj.level_bounds.size.y
+		final_target.x = clampf(final_target.x, min_x, max_x)
+		final_target.y = clampf(final_target.y, min_y, max_y)
+
+	var m = obj.big_missile_scene.instantiate()
+
+	if m is Node2D:
+		# Spawn từ điểm shoot trên trời
+		(m as Node2D).global_position = obj.atk_3_shoot_point.global_position
+
+	if m.has_method("init"):
+		m.init(final_target, 500, 100)
 
 	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
 	parent.add_child(m)

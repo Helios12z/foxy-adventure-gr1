@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=55 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://difq4hcwnikcs" path="res://asset/war_lord/war_lord_turtle2.png" id="2_lipi6"]
 [ext_resource type="Texture2D" uid="uid://c66q7vmjc2avd" path="res://asset/war_lord/war_lord_turtle3.png" id="3_bckbg"]
 [ext_resource type="PackedScene" uid="uid://dgj8e3f6gthar" path="res://scenes/bosses/war_lord_turtle/rocket.tscn" id="3_gx74n"]
+[ext_resource type="PackedScene" uid="uid://c8t2vryjvnseu" path="res://scenes/bosses/war_lord_turtle/big_rocket.tscn" id="4_jhib8"]
 [ext_resource type="Texture2D" uid="uid://cj6npy4dt0yva" path="res://asset/war_lord/war_lord_turtle4.png" id="4_lsjki"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_ye665"]
 [ext_resource type="Texture2D" uid="uid://b4tk88p3dgufr" path="res://asset/war_lord/war_lord_turtle5.png" id="5_i0mgt"]
@@ -268,6 +269,7 @@ script = ExtResource("1_lsjki")
 attack_speed = 500.0
 bomb_scene = ExtResource("2_ioqo5")
 missile_scene = ExtResource("3_gx74n")
+big_missile_scene = ExtResource("4_jhib8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.5, 0.5)
@@ -316,6 +318,9 @@ position = Vector2(43, -56)
 
 [node name="Atk2ShootPoint2" type="Marker2D" parent="Direction"]
 position = Vector2(-41, -51)
+
+[node name="Atk3ShootPoint" type="Marker2D" parent="Direction"]
+position = Vector2(0, -320)
 
 [node name="TargetLockEffect" type="AnimatedSprite2D" parent="Direction"]
 visible = false
