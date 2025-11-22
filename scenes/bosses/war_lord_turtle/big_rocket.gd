@@ -17,7 +17,6 @@ var _exploding := false
 var _last_pos: Vector2
 var _current_rot: float = 0.0
 
-# Giai đoạn 2: bay thẳng sau khi hết quỹ đạo cong
 var _finished_arc: bool = false
 var _fly_dir: Vector2 = Vector2.ZERO
 
@@ -42,12 +41,28 @@ func _ready() -> void:
 
 	_p2 = target
 
-	var mid := (_p0 + _p2) * 0.5
-	var peak_y = min(_p0.y, _p2.y) - arc_height
-	_p1 = Vector2(mid.x, peak_y)
+	var horizontal_offset := absf(_p2.x - _p0.x)
+	var vertical_dive_threshold := 80.0 
 
-	var approx_len := _p0.distance_to(_p1) + _p1.distance_to(_p2)
-	_duration = max(0.25, approx_len / max(speed, 1.0))
+	if horizontal_offset < vertical_dive_threshold:
+		_finished_arc = true
+		_fly_dir = _p2 - _p0
+		if _fly_dir.length() < 0.01:
+			_fly_dir = Vector2.DOWN
+		else:
+			_fly_dir = _fly_dir.normalized()
+
+		var target_rot = _fly_dir.angle() + PI / 2.0
+		_current_rot = target_rot
+		rotation = _current_rot
+	else:
+		var mid := (_p0 + _p2) * 0.5
+		var peak_y = min(_p0.y, _p2.y) - arc_height
+		_p1 = Vector2(mid.x, peak_y)
+
+		var approx_len := _p0.distance_to(_p1) + _p1.distance_to(_p2)
+		_duration = max(0.25, approx_len / max(speed, 1.0))
+
 	_t = 0.0
 
 	_last_pos = global_position
@@ -68,11 +83,11 @@ func _ready() -> void:
 	if has_signal("body_entered"):
 		body_entered.connect(_on_body_entered)
 
+
 func _physics_process(delta: float) -> void:
 	if _exploding:
 		return
 
-	# Giai đoạn 1: bay theo quy dao toi point
 	if not _finished_arc:
 		_t += delta / _duration
 		var t = clamp(_t, 0.0, 1.0)
@@ -91,16 +106,13 @@ func _physics_process(delta: float) -> void:
 
 		_last_pos = pos
 
-		# Hết quỹ đạo cong nhưng chưa va chạm -> chuyển sang bay thẳng
 		if t >= 1.0:
 			_finished_arc = true
 			if dir.length() > 0.01:
 				_fly_dir = dir.normalized()
 			else:
-				# fallback nếu vector dir quá nhỏ
 				_fly_dir = Vector2.DOWN
 	else:
-		# Giai đoạn 2: tiếp tục bay thẳng theo hướng cuối cùng
 		if _fly_dir == Vector2.ZERO:
 			_fly_dir = Vector2.DOWN
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=58 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c8t2vryjvnseu" path="res://scenes/bosses/war_lord_turtle/big_rocket.tscn" id="4_jhib8"]
 [ext_resource type="Texture2D" uid="uid://cj6npy4dt0yva" path="res://asset/war_lord/war_lord_turtle4.png" id="4_lsjki"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_ye665"]
+[ext_resource type="PackedScene" uid="uid://c2dsdbtuh2yso" path="res://scenes/bosses/war_lord_turtle/portal.tscn" id="5_2jxqd"]
 [ext_resource type="Texture2D" uid="uid://b4tk88p3dgufr" path="res://asset/war_lord/war_lord_turtle5.png" id="5_i0mgt"]
 [ext_resource type="Texture2D" uid="uid://3wrkn0lnsh72" path="res://asset/war_lord/war_lord_turtle6.png" id="6_4ut7l"]
 [ext_resource type="Texture2D" uid="uid://bua3xf2o4f7xx" path="res://asset/war_lord/war_lord_turtle11.png" id="7_xwhea"]
@@ -36,9 +37,11 @@
 [ext_resource type="Script" uid="uid://cekjxrlbyelf7" path="res://scenes/bosses/war_lord_turtle/hurt.gd" id="27_6vi0x"]
 [ext_resource type="Script" uid="uid://b80m708ypmrvy" path="res://scenes/bosses/war_lord_turtle/stun.gd" id="28_6x4je"]
 [ext_resource type="Texture2D" uid="uid://8ndqchwscou5" path="res://asset/war_lord/target_lock_effect.png" id="28_og2oc"]
+[ext_resource type="Texture2D" uid="uid://bq3cuutl5tg7o" path="res://asset/war_lord/war_lord_turtle23.png" id="29_yptko"]
 [ext_resource type="Script" uid="uid://j0tfb5mqggpk" path="res://scenes/bosses/war_lord_turtle/dead.gd" id="32_gx74n"]
 [ext_resource type="Script" uid="uid://d3fpcbkl548fs" path="res://scenes/bosses/war_lord_turtle/atk_3_windup.gd" id="37_jhib8"]
 [ext_resource type="Script" uid="uid://bkach280vooio" path="res://scenes/bosses/war_lord_turtle/atk_3.gd" id="38_evlw3"]
+[ext_resource type="Script" uid="uid://ce8s23uw7x5jy" path="res://scenes/bosses/war_lord_turtle/summon_portal.gd" id="42_2jxqd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
@@ -194,6 +197,14 @@ animations = [{
 "loop": true,
 "name": &"stun",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("29_yptko")
+}],
+"loop": true,
+"name": &"windup",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i0mgt"]
@@ -270,6 +281,7 @@ attack_speed = 500.0
 bomb_scene = ExtResource("2_ioqo5")
 missile_scene = ExtResource("3_gx74n")
 big_missile_scene = ExtResource("4_jhib8")
+portal_scene = ExtResource("5_2jxqd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.5, 0.5)
@@ -280,10 +292,8 @@ shape = SubResource("RectangleShape2D_k7whc")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_og2oc")
 sprite_frames = SubResource("SpriteFrames_g47qh")
-animation = &"cast"
+animation = &"windup"
 autoplay = "idle"
-frame = 2
-frame_progress = 0.59245545
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
 collision_layer = 16
@@ -356,3 +366,6 @@ script = ExtResource("37_jhib8")
 
 [node name="Atk_3" type="Node" parent="States"]
 script = ExtResource("38_evlw3")
+
+[node name="Summon_Portal" type="Node" parent="States"]
+script = ExtResource("42_2jxqd")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://c8t2vryjvnseu"]
 
 [ext_resource type="Script" uid="uid://b1gkdux2hieeq" path="res://scenes/bosses/war_lord_turtle/big_rocket.gd" id="1_uodo2"]
-[ext_resource type="PackedScene" uid="uid://dhnpal80arkyc" path="res://scenes/bosses/king_crab/king_crab_shockwave.tscn" id="2_srq45"]
+[ext_resource type="PackedScene" uid="uid://b5goagjkak3t7" path="res://scenes/bosses/war_lord_turtle/nuclear_explosion.tscn" id="2_uodo2"]
 [ext_resource type="Texture2D" uid="uid://bbp085semfdw1" path="res://asset/war_lord_bullet/big_rocket.png" id="3_7nokh"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="4_xcxhb"]
 
@@ -42,17 +42,17 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onvhn"]
-size = Vector2(27, 97)
+size = Vector2(48, 103)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pw0bx"]
-size = Vector2(29, 102)
+size = Vector2(50, 108)
 
 [node name="BigRocket" type="RigidBody2D"]
 collision_layer = 8
 contact_monitor = true
 max_contacts_reported = 4
 script = ExtResource("1_uodo2")
-explosion = ExtResource("2_srq45")
+explosion = ExtResource("2_uodo2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(5, 32)
@@ -61,10 +61,9 @@ scale = Vector2(0.56713927, 0.7553332)
 sprite_frames = SubResource("SpriteFrames_3q8nh")
 autoplay = "default"
 frame = 3
-frame_progress = 0.98758006
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, -2.5)
+position = Vector2(10, 0.5)
 shape = SubResource("RectangleShape2D_onvhn")
 
 [node name="HitArea2D" type="Area2D" parent="."]
@@ -74,6 +73,6 @@ script = ExtResource("4_xcxhb")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
-position = Vector2(-0.5, -3)
+position = Vector2(10, 0)
 shape = SubResource("RectangleShape2D_pw0bx")
 debug_color = Color(0.46818513, 0.45550036, 0.9691165, 0.41960785)

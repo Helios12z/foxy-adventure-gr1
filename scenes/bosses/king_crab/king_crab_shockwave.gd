@@ -1,9 +1,9 @@
 extends Node2D
 
 @export var max_radius: float = 150.0
-@export var expand_speed: float = 900.0      # tốc độ nở sóng (đơn vị world)
+@export var expand_speed: float = 900.0      
 @export var damage: int = 60
-@export var lifetime: float = 0.6           
+@export var lifetime: float = 1.8           
 
 @export var initial_radius: float = 20.0 
 

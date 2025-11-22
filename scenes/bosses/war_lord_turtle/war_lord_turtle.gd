@@ -11,6 +11,7 @@ extends BaseCharacter
 @export var bomb_scene: PackedScene
 @export var missile_scene: PackedScene
 @export var big_missile_scene: PackedScene
+@export var portal_scene: PackedScene
 
 # điểm bắn bomb (skill 1)
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
@@ -91,7 +92,7 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: float) -> void:
 		return
 
 	if _took_consecutive_damage():
-		if not in_phase2 and fsm.current_state != fsm.states.atk_2 and fsm.current_state != fsm.states.dead:
+		if fsm.current_state != fsm.states.atk_2 and fsm.current_state != fsm.states.dead:
 			fsm.change_state(fsm.states.atk_2)
 		_recent_damage_times.clear()
 		return 

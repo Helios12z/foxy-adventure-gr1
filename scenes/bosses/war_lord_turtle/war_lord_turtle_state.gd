@@ -97,7 +97,6 @@ func freeze_target_lock_position() -> void:
 		else:
 			_atk3_locked_pos = obj.global_position
 
-# Spawn rocket to khủng từ trên trời rơi xuống vị trí đã lock
 func spawn_atk3_rocket_from_locked_pos() -> void:
 	_spawn_atk3_rocket(_atk3_locked_pos)
 
@@ -108,7 +107,6 @@ func _spawn_atk3_rocket(target_pos: Vector2) -> void:
 	if obj.atk_3_shoot_point == null:
 		return
 
-	# Clamp target theo level_bounds
 	var final_target := target_pos
 	if obj.level_bounds.size != Vector2.ZERO:
 		var min_x = obj.level_bounds.position.x
@@ -121,7 +119,6 @@ func _spawn_atk3_rocket(target_pos: Vector2) -> void:
 	var m = obj.big_missile_scene.instantiate()
 
 	if m is Node2D:
-		# Spawn từ điểm shoot trên trời
 		(m as Node2D).global_position = obj.atk_3_shoot_point.global_position
 
 	if m.has_method("init"):
@@ -129,3 +126,58 @@ func _spawn_atk3_rocket(target_pos: Vector2) -> void:
 
 	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
 	parent.add_child(m)
+	
+func _spawn_portals() -> void:
+	if obj.portal_scene == null:
+		return
+
+	# Lấy vị trí base theo player (nếu không có thì lấy theo boss)
+	var p = obj._get_player()
+	var base_pos: Vector2 = obj.global_position
+	if p != null:
+		base_pos = p.global_position
+
+	# Số lượng portal và khoảng cách ngang giữa chúng
+	var portal_count := 3
+	var spacing := 260.0   # có thể export thành var trên boss cho dễ chỉnh
+
+	# Chiều cao spawn portal: ở "trên đầu" player, hơi cao hơn 1 đoạn
+	var desired_y := base_pos.y - 400.0
+
+	var min_x := -INF
+	var max_x := INF
+	var min_y := -INF
+	var max_y := INF
+
+	if obj.level_bounds.size != Vector2.ZERO:
+		min_x = obj.level_bounds.position.x
+		max_x = obj.level_bounds.position.x + obj.level_bounds.size.x
+		min_y = obj.level_bounds.position.y
+		max_y = obj.level_bounds.position.y + obj.level_bounds.size.y
+
+	# Clamp Y để không vượt khỏi map (trong trường hợp trần map thấp)
+	var final_y := clampf(desired_y, min_y, max_y)
+
+	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
+
+	# Spawn 3 portal, 1 cái ngay trên đầu player, 2 cái lệch trái/phải
+	# index: 0,1,2 -> offset: -1,0,1
+	for i in portal_count:
+		var offset_index := float(i) - float(portal_count - 1) / 2.0
+		var target_x := base_pos.x + offset_index * spacing
+		target_x = clampf(target_x, min_x, max_x)
+
+		var portal = obj.portal_scene.instantiate()
+		parent.add_child(portal)
+
+		if portal is Node2D:
+			(portal as Node2D).global_position = Vector2(target_x, final_y)
+			
+func _get_portal_count() -> int:
+	# Đếm số portal đang tồn tại, dựa trên group
+	var tree := obj.get_tree()
+	if tree == null:
+		return 0
+
+	var nodes := tree.get_nodes_in_group("warlord_portal")
+	return nodes.size()

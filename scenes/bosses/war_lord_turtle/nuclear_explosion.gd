@@ -1,14 +1,14 @@
 extends Node2D
 
-@export var max_radius: float = 150.0
-@export var expand_speed: float = 900.0      
-@export var damage: int = 60
-@export var lifetime: float = 1.0          
+@export var max_radius: float = 100.0
+@export var expand_speed: float = 600.0      
+@export var damage: int = 100
+@export var lifetime: float = 1.2           
 @export var initial_radius: float = 20.0 
 @export var fallback_base_radius: float = 0.0
 
 var _current_radius: float = 0.0
-var _alive_time: float = 0.0
+var _alive_time: float = 0.0                 
 
 var _base_anim_scale: Vector2             
 var _sprite_radius: float = 1.0            
@@ -45,13 +45,13 @@ func _ready() -> void:
 
 	hit_area.damage = damage
 
-	if anim.sprite_frames != null and anim.sprite_frames.has_animation("default"):
-		anim.play("default")
+	anim.frame=0
+	anim.play("default")
 
 	anim.animation_finished.connect(_on_anim_finished)
 
 func _physics_process(delta: float) -> void:
-	_alive_time += delta
+	_alive_time += delta                         
 
 	_current_radius = min(_current_radius + expand_speed * delta, max_radius)
 	shape.radius = _current_radius
@@ -59,7 +59,7 @@ func _physics_process(delta: float) -> void:
 
 	if _alive_time >= lifetime and not is_queued_for_deletion():
 		queue_free()
-
+	
 func _update_visual_scale() -> void:
 	if _sprite_radius <= 0.0:
 		return

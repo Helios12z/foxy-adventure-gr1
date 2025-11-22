@@ -1,0 +1,117 @@
+[gd_scene load_steps=18 format=3 uid="uid://b5goagjkak3t7"]
+
+[ext_resource type="Texture2D" uid="uid://dy84abpevif17" path="res://asset/effects/nuclear_effect.png" id="1_1ljqq"]
+[ext_resource type="Script" uid="uid://cp3mr1md0e1y1" path="res://scenes/bosses/war_lord_turtle/nuclear_explosion.gd" id="1_krme3"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_krme3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kygvq"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cb06m"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ucrtc"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ramyr"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3f7og"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32l55"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_abe1g"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4npw"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45yp2"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4vddl"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lx3sf"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bg1g"]
+atlas = ExtResource("1_1ljqq")
+region = Rect2(1408, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6y2gm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kygvq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cb06m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ucrtc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ramyr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3f7og")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_32l55")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_abe1g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g4npw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_45yp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4vddl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lx3sf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bg1g")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wrmnb"]
+
+[node name="NuclearExplosion" type="Node2D"]
+script = ExtResource("1_krme3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -56)
+sprite_frames = SubResource("SpriteFrames_6y2gm")
+autoplay = "default"
+frame = 11
+frame_progress = 1.0
+
+[node name="HitArea2D" type="Area2D" parent="."]
+script = ExtResource("2_krme3")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(0, -66)
+shape = SubResource("CircleShape2D_wrmnb")
