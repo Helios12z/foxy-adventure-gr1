@@ -1,6 +1,6 @@
 extends BaseCharacter
 
-@export var max_health_boss: float = 600.0
+@export var max_health_boss: int = 600
 
 @export var spike_damage: int = 70
 @export var attack_speed: float = 200.0          
@@ -12,20 +12,17 @@ extends BaseCharacter
 @export var missile_scene: PackedScene
 @export var big_missile_scene: PackedScene
 @export var portal_scene: PackedScene
+@export var blow_scene: PackedScene
 
-# điểm bắn bomb (skill 1)
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
 @onready var atk_1_shoot_point_2: Marker2D = $Direction/Atk1ShootPoint2
-
-# điểm bắn tên lửa (skill 2)
 @onready var atk_2_shoot_point_1: Marker2D = $Direction/Atk2ShootPoint1
 @onready var atk_2_shoot_point_2: Marker2D = $Direction/Atk2ShootPoint2
-
 @onready var atk_3_shoot_point: Marker2D = $Direction/Atk3ShootPoint
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
-@onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 
+@onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 @onready var target_lock_effect: AnimatedSprite2D = $Direction/TargetLockEffect
 
 @export var phase2_threshold_ratio: float = 0.7
@@ -36,7 +33,6 @@ extends BaseCharacter
 @export var retaliate_damage_window_seconds: float = 6.0 #6 seconds
 @export var retaliate_combo_hits: int = 3  #3 hits
 
-var _missile_targets: Array[Node2D] = []
 var seen_player: bool = false 
 var _flash_tw: Tween
 var in_phase2: bool = false
@@ -73,7 +69,7 @@ func _init_hurt_area() -> void:
 		var hurt_area = $Direction/HurtArea2D
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
-func _on_hurt_area_2d_hurt(_dir: Vector2, damage: float) -> void:
+func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	take_damage(damage)
 	_note_damage_hit()
 	
@@ -92,8 +88,8 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: float) -> void:
 		return
 
 	if _took_consecutive_damage():
-		if fsm.current_state != fsm.states.atk_2 and fsm.current_state != fsm.states.dead:
-			fsm.change_state(fsm.states.atk_2)
+		if fsm.current_state == fsm.states.idle and fsm.current_state != fsm.states.dead:
+			fsm.change_state(fsm.states.blow)
 		_recent_damage_times.clear()
 		return 
 

@@ -86,7 +86,7 @@ func follow_target_lock_to_player() -> void:
 	if p != null:
 		obj.target_lock_effect.global_position = p.global_position
 
-# Chốt vị trí lock (dùng sau khi follow xong, chuẩn bị warning 0.25s)
+# Chốt vị trí lock (sau khi follow xong, chuẩn bị warning 0.25s)
 func freeze_target_lock_position() -> void:
 	if obj.target_lock_effect and obj.target_lock_effect.visible:
 		_atk3_locked_pos = obj.target_lock_effect.global_position
@@ -131,17 +131,14 @@ func _spawn_portals() -> void:
 	if obj.portal_scene == null:
 		return
 
-	# Lấy vị trí base theo player (nếu không có thì lấy theo boss)
 	var p = obj._get_player()
 	var base_pos: Vector2 = obj.global_position
 	if p != null:
 		base_pos = p.global_position
 
-	# Số lượng portal và khoảng cách ngang giữa chúng
 	var portal_count := 3
-	var spacing := 260.0   # có thể export thành var trên boss cho dễ chỉnh
+	var spacing := 260.0   
 
-	# Chiều cao spawn portal: ở "trên đầu" player, hơi cao hơn 1 đoạn
 	var desired_y := base_pos.y - 400.0
 
 	var min_x := -INF
@@ -155,13 +152,10 @@ func _spawn_portals() -> void:
 		min_y = obj.level_bounds.position.y
 		max_y = obj.level_bounds.position.y + obj.level_bounds.size.y
 
-	# Clamp Y để không vượt khỏi map (trong trường hợp trần map thấp)
 	var final_y := clampf(desired_y, min_y, max_y)
 
 	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
 
-	# Spawn 3 portal, 1 cái ngay trên đầu player, 2 cái lệch trái/phải
-	# index: 0,1,2 -> offset: -1,0,1
 	for i in portal_count:
 		var offset_index := float(i) - float(portal_count - 1) / 2.0
 		var target_x := base_pos.x + offset_index * spacing
@@ -174,10 +168,22 @@ func _spawn_portals() -> void:
 			(portal as Node2D).global_position = Vector2(target_x, final_y)
 			
 func _get_portal_count() -> int:
-	# Đếm số portal đang tồn tại, dựa trên group
 	var tree := obj.get_tree()
 	if tree == null:
 		return 0
 
 	var nodes := tree.get_nodes_in_group("warlord_portal")
 	return nodes.size()
+	
+func _blow_away() -> void:
+	if obj.blow_scene == null:
+		return
+
+	var b = obj.blow_scene.instantiate()
+	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
+	parent.add_child(b)
+
+	if b is Node2D:
+		(b as Node2D).global_position = obj.global_position
+		# Nếu muốn blow từ miệng / tay, có thể offset:
+		# (b as Node2D).global_position = obj.blow_spawn_point.global_position
