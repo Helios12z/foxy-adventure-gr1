@@ -6,7 +6,7 @@ extends BaseCharacter
 @export var attack_speed: float = 200.0          
 @export var attack_damage_boss: int = 50        
 @export var bomb_move_speed: float = 200.0      
-@export var stun_time: float = 2.25  
+@export var stun_time: float = 3.25  
 
 @export var bomb_scene: PackedScene
 @export var missile_scene: PackedScene
@@ -14,6 +14,7 @@ extends BaseCharacter
 @export var portal_scene: PackedScene
 @export var blow_scene: PackedScene
 @export var water_tornado_scene: PackedScene
+@export var atomic_bomb_scene: PackedScene
 
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
 @onready var atk_1_shoot_point_2: Marker2D = $Direction/Atk1ShootPoint2
@@ -27,6 +28,7 @@ extends BaseCharacter
 @onready var target_lock_effect: AnimatedSprite2D = $Direction/TargetLockEffect
 
 @export var phase2_threshold_ratio: float = 0.7
+@export var atomic_threshold_ratio: float = 0.3
 
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D

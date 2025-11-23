@@ -88,7 +88,7 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mavu"]
-radius = 8.0
+radius = 4.0
 height = 50.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_seqq4"]
@@ -120,6 +120,7 @@ frame = 3
 frame_progress = 0.8471647
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_4mavu")
 

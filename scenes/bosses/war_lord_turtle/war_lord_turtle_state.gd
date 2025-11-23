@@ -252,10 +252,20 @@ func _get_ground_position_for_x(x: float, min_y: float, max_y: float) -> Vector2
 		return Vector2(x, bottom_y)
 		
 	return result["position"]
-	
 
 func _get_tornado_water_count() -> int:
 	var tree := obj.get_tree()
 	if tree == null:
 		return 0
 	return tree.get_nodes_in_group("water_tornado").size()
+	
+func _spawn_atomic_bomb() -> void:
+	if obj.atomic_bomb_scene == null:
+		return
+
+	var b = obj.atomic_bomb_scene.instantiate()
+	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
+	parent.add_child(b)
+
+	if b is Node2D:
+		(b as Node2D).global_position = obj.global_position
