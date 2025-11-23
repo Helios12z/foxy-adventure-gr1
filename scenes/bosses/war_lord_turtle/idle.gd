@@ -1,16 +1,25 @@
 extends WarlordTurtleState
 
-var idle_to_skill_delay: float = 2.75
-var is_next_attack: bool = false          # toggle atk1 / atk2
+var idle_to_skill_delay: float = 2.25
+var is_next_attack: bool = false          
 var first_attack: bool = true
 
-# Phase 2:
 var is_followup_next: bool = false       
-var is_next_followup_portal: bool = false 
+
+var _followup_index: int = 0
+var _followup_states: Array = []
+
 
 func _enter() -> void:
 	timer = idle_to_skill_delay
 	obj.change_animation("idle")
+
+	if _followup_states.is_empty():
+		_followup_states = [
+			fsm.states.atk_3_windup,
+			fsm.states.summon_portal,
+			fsm.states.summon_water_tornado,
+		]
 
 
 func _update(delta: float) -> void:
@@ -30,7 +39,6 @@ func _decide_and_go_next_state() -> void:
 		_run_phase2_pattern()
 	else:
 		_run_phase1_pattern()
-
 
 func _run_phase1_pattern() -> void:
 	if not is_next_attack:
@@ -53,10 +61,6 @@ func _run_phase2_pattern() -> void:
 			fsm.change_state(fsm.states.atk_2)
 	else:
 		is_followup_next = false
-
-		if is_next_followup_portal:
-			is_next_followup_portal = false
-			fsm.change_state(fsm.states.summon_portal)
-		else:
-			is_next_followup_portal = true
-			fsm.change_state(fsm.states.atk_3)
+		var next_state = _followup_states[_followup_index]
+		_followup_index = (_followup_index + 1) % _followup_states.size()
+		fsm.change_state(next_state)

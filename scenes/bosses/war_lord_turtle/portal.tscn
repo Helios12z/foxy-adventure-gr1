@@ -66,9 +66,9 @@ cannon_scene = ExtResource("2_5b0bm")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_5b0bm")
-position = Vector2(9.536743e-07, 0)
+position = Vector2(3.8146973e-06, 9.536743e-07)
 rotation = -1.5707964
-scale = Vector2(1.5927162, 1.7102373)
+scale = Vector2(2.1997395, 2.744425)
 sprite_frames = SubResource("SpriteFrames_unmtn")
 autoplay = "default"
 frame_progress = 0.37896132

@@ -13,6 +13,7 @@ extends BaseCharacter
 @export var big_missile_scene: PackedScene
 @export var portal_scene: PackedScene
 @export var blow_scene: PackedScene
+@export var water_tornado_scene: PackedScene
 
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
 @onready var atk_1_shoot_point_2: Marker2D = $Direction/Atk1ShootPoint2

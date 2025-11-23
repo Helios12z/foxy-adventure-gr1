@@ -185,5 +185,77 @@ func _blow_away() -> void:
 
 	if b is Node2D:
 		(b as Node2D).global_position = obj.global_position
-		# Nếu muốn blow từ miệng / tay, có thể offset:
-		# (b as Node2D).global_position = obj.blow_spawn_point.global_position
+		
+func _spawn_tornado_water() -> void:
+	if obj.water_tornado_scene == null:
+		return
+
+	var p = obj._get_player()
+	var base_x: float = obj.global_position.x
+	if p != null:
+		base_x = p.global_position.x
+
+	var min_x := -INF
+	var max_x := INF
+	var min_y := -INF
+	var max_y := INF
+
+	if obj.level_bounds.size != Vector2.ZERO:
+		min_x = obj.level_bounds.position.x
+		max_x = obj.level_bounds.position.x + obj.level_bounds.size.x
+		min_y = obj.level_bounds.position.y
+		max_y = obj.level_bounds.position.y + obj.level_bounds.size.y
+
+	var count := 5
+	var spacing := 220.0 
+
+	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
+
+	for i in range(count):
+		var offset_index := float(i) - float(count - 1) / 2.0
+		var x := base_x + offset_index * spacing
+
+		if min_x != -INF and max_x != INF:
+			x = clampf(x, min_x, max_x)
+
+		var spawn_pos := _get_ground_position_for_x(x, min_y, max_y)
+
+		var tw = obj.water_tornado_scene.instantiate()
+		parent.add_child(tw)
+
+		if tw is Node2D:
+			(tw as Node2D).global_position = spawn_pos
+			
+func _get_ground_position_for_x(x: float, min_y: float, max_y: float) -> Vector2:
+	var top_y: float
+	var bottom_y: float
+
+	if min_y != -INF and max_y != INF:
+		top_y = min_y - 32.0
+		bottom_y = max_y + 32.0
+
+	var world := obj.get_world_2d()
+	if world == null:
+		return Vector2(x, bottom_y)
+
+	var state := world.direct_space_state
+	var from := Vector2(x, top_y)
+	var to := Vector2(x, bottom_y)
+
+	var query := PhysicsRayQueryParameters2D.create(from, to)
+	query.exclude = [obj.get_rid()]
+
+	var result := state.intersect_ray(query)
+
+	if result.is_empty():
+		# Không hit gì: fallback mặt đất ở đáy bounds
+		return Vector2(x, bottom_y)
+		
+	return result["position"]
+	
+
+func _get_tornado_water_count() -> int:
+	var tree := obj.get_tree()
+	if tree == null:
+		return 0
+	return tree.get_nodes_in_group("water_tornado").size()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=62 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://b4tk88p3dgufr" path="res://asset/war_lord/war_lord_turtle5.png" id="5_i0mgt"]
 [ext_resource type="Texture2D" uid="uid://3wrkn0lnsh72" path="res://asset/war_lord/war_lord_turtle6.png" id="6_4ut7l"]
 [ext_resource type="PackedScene" uid="uid://wn1itenn2aw7" path="res://scenes/bosses/war_lord_turtle/blow_effect.tscn" id="6_k5ojm"]
+[ext_resource type="PackedScene" uid="uid://b4xm5pk0uin2j" path="res://scenes/enemies/water_tornado/water_tornado.tscn" id="7_6fm8k"]
 [ext_resource type="Texture2D" uid="uid://bua3xf2o4f7xx" path="res://asset/war_lord/war_lord_turtle11.png" id="7_xwhea"]
 [ext_resource type="Texture2D" uid="uid://dvj78awilo0ng" path="res://asset/war_lord/war_lord_turtle12.png" id="8_6vi0x"]
 [ext_resource type="Texture2D" uid="uid://ba5h7am6qky5h" path="res://asset/war_lord/war_lord_turtle13.png" id="9_6x4je"]
@@ -44,6 +45,7 @@
 [ext_resource type="Script" uid="uid://bkach280vooio" path="res://scenes/bosses/war_lord_turtle/atk_3.gd" id="38_evlw3"]
 [ext_resource type="Script" uid="uid://ce8s23uw7x5jy" path="res://scenes/bosses/war_lord_turtle/summon_portal.gd" id="42_2jxqd"]
 [ext_resource type="Script" uid="uid://c2sr34fgiw76d" path="res://scenes/bosses/war_lord_turtle/blow.gd" id="43_6pwq0"]
+[ext_resource type="Script" uid="uid://ck1a3rwk4tj3" path="res://scenes/bosses/war_lord_turtle/summon_water_tornado.gd" id="45_rt4pc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
@@ -285,6 +287,7 @@ missile_scene = ExtResource("3_gx74n")
 big_missile_scene = ExtResource("4_jhib8")
 portal_scene = ExtResource("5_2jxqd")
 blow_scene = ExtResource("6_k5ojm")
+water_tornado_scene = ExtResource("7_6fm8k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.5, 0.5)
@@ -375,3 +378,6 @@ script = ExtResource("42_2jxqd")
 
 [node name="Blow" type="Node" parent="States"]
 script = ExtResource("43_6pwq0")
+
+[node name="Summon_Water_Tornado" type="Node" parent="States"]
+script = ExtResource("45_rt4pc")

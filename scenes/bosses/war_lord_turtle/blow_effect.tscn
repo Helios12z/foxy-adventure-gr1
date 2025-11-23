@@ -74,8 +74,7 @@ animations = [{
 script = ExtResource("1_ktyip")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-1.9073486e-06, -1.9073486e-06)
-scale = Vector2(2.3333335, 2.375)
+scale = Vector2(1.8697919, 1.9739585)
 sprite_frames = SubResource("SpriteFrames_84aqr")
 autoplay = "default"
 frame = 7
