@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=69 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://8kpmjqhthmel" path="res://scenes/bosses/war_lord_turtle/atomic_bomb.tscn" id="8_5moyg"]
 [ext_resource type="Texture2D" uid="uid://dvj78awilo0ng" path="res://asset/war_lord/war_lord_turtle12.png" id="8_6vi0x"]
 [ext_resource type="Texture2D" uid="uid://ba5h7am6qky5h" path="res://asset/war_lord/war_lord_turtle13.png" id="9_6x4je"]
+[ext_resource type="PackedScene" uid="uid://bklhkn41sbvwa" path="res://scenes/bosses/war_lord_turtle/laser_beam.tscn" id="9_sr0mj"]
 [ext_resource type="Texture2D" uid="uid://7c76aihswb45" path="res://asset/war_lord/war_lord_turtle14.png" id="10_td4te"]
 [ext_resource type="Texture2D" uid="uid://bwvaceiepbqp4" path="res://asset/war_lord/war_lord_turtle15.png" id="11_giamn"]
 [ext_resource type="Texture2D" uid="uid://c83oawvrsnyw6" path="res://asset/war_lord/war_lord_turtle16.png" id="12_ioqo5"]
@@ -42,12 +43,16 @@
 [ext_resource type="Texture2D" uid="uid://8ndqchwscou5" path="res://asset/war_lord/target_lock_effect.png" id="28_og2oc"]
 [ext_resource type="Texture2D" uid="uid://bq3cuutl5tg7o" path="res://asset/war_lord/war_lord_turtle23.png" id="29_yptko"]
 [ext_resource type="Script" uid="uid://j0tfb5mqggpk" path="res://scenes/bosses/war_lord_turtle/dead.gd" id="32_gx74n"]
+[ext_resource type="Texture2D" uid="uid://dwisvdn7b4ptk" path="res://asset/war_lord/war_lord_turtle24.png" id="32_o2ix3"]
 [ext_resource type="Script" uid="uid://d3fpcbkl548fs" path="res://scenes/bosses/war_lord_turtle/atk_3_windup.gd" id="37_jhib8"]
 [ext_resource type="Script" uid="uid://bkach280vooio" path="res://scenes/bosses/war_lord_turtle/atk_3.gd" id="38_evlw3"]
 [ext_resource type="Script" uid="uid://ce8s23uw7x5jy" path="res://scenes/bosses/war_lord_turtle/summon_portal.gd" id="42_2jxqd"]
 [ext_resource type="Script" uid="uid://c2sr34fgiw76d" path="res://scenes/bosses/war_lord_turtle/blow.gd" id="43_6pwq0"]
 [ext_resource type="Script" uid="uid://ck1a3rwk4tj3" path="res://scenes/bosses/war_lord_turtle/summon_water_tornado.gd" id="45_rt4pc"]
 [ext_resource type="Script" uid="uid://bc8jw4lqxla8g" path="res://scenes/bosses/war_lord_turtle/summon_atomic_bomb.gd" id="47_5ffqh"]
+[ext_resource type="Script" uid="uid://bahndayducg6i" path="res://scenes/bosses/war_lord_turtle/strafe.gd" id="49_wqdu7"]
+[ext_resource type="Script" uid="uid://cg168aafng6ga" path="res://scenes/bosses/war_lord_turtle/strafe_windup.gd" id="51_n5e63"]
+[ext_resource type="Script" uid="uid://lf5e4c6o3vuj" path="res://scenes/bosses/war_lord_turtle/strafe_stop.gd" id="52_15ujm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
@@ -189,6 +194,42 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("32_o2ix3")
+}],
+"loop": true,
+"name": &"strafe",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_gx74n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ye665")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_6vi0x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xwhea")
+}],
+"loop": false,
+"name": &"strafe_stop",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_xwhea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_6vi0x")
+}],
+"loop": false,
+"name": &"strafe_windup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_giamn")
 }, {
 "duration": 1.0,
@@ -291,6 +332,7 @@ portal_scene = ExtResource("5_2jxqd")
 blow_scene = ExtResource("6_k5ojm")
 water_tornado_scene = ExtResource("7_6fm8k")
 atomic_bomb_scene = ExtResource("8_5moyg")
+laser_beam_scene = ExtResource("9_sr0mj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.5, 0.5)
@@ -301,7 +343,7 @@ shape = SubResource("RectangleShape2D_k7whc")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_og2oc")
 sprite_frames = SubResource("SpriteFrames_g47qh")
-animation = &"windup"
+animation = &"strafe"
 autoplay = "idle"
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
@@ -340,6 +382,24 @@ position = Vector2(-41, -51)
 
 [node name="Atk3ShootPoint" type="Marker2D" parent="Direction"]
 position = Vector2(0, -320)
+
+[node name="StrafeShootPoint1" type="Marker2D" parent="Direction"]
+position = Vector2(-27, -27)
+
+[node name="StrafeShootPoint2" type="Marker2D" parent="Direction"]
+position = Vector2(26, -27)
+
+[node name="StrafeShootPoint3" type="Marker2D" parent="Direction"]
+position = Vector2(55, 5)
+
+[node name="StrafeShootPoint4" type="Marker2D" parent="Direction"]
+position = Vector2(-51, 1)
+
+[node name="StrafeShootPoint5" type="Marker2D" parent="Direction"]
+position = Vector2(-27, 29)
+
+[node name="StrafeShootPoint6" type="Marker2D" parent="Direction"]
+position = Vector2(18, 29)
 
 [node name="TargetLockEffect" type="AnimatedSprite2D" parent="Direction"]
 visible = false
@@ -387,3 +447,12 @@ script = ExtResource("45_rt4pc")
 
 [node name="Summon_Atomic_Bomb" type="Node" parent="States"]
 script = ExtResource("47_5ffqh")
+
+[node name="Strafe" type="Node" parent="States"]
+script = ExtResource("49_wqdu7")
+
+[node name="Strafe_Windup" type="Node" parent="States"]
+script = ExtResource("51_n5e63")
+
+[node name="Strafe_Stop" type="Node" parent="States"]
+script = ExtResource("52_15ujm")

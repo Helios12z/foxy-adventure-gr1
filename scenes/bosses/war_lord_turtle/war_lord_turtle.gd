@@ -6,7 +6,8 @@ extends BaseCharacter
 @export var attack_speed: float = 200.0          
 @export var attack_damage_boss: int = 50        
 @export var bomb_move_speed: float = 200.0      
-@export var stun_time: float = 3.25  
+@export var stun_time: float = 3.5 
+@export var beam_attack_duration: float = 1.5 
 
 @export var bomb_scene: PackedScene
 @export var missile_scene: PackedScene
@@ -15,12 +16,19 @@ extends BaseCharacter
 @export var blow_scene: PackedScene
 @export var water_tornado_scene: PackedScene
 @export var atomic_bomb_scene: PackedScene
+@export var laser_beam_scene: PackedScene
 
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
 @onready var atk_1_shoot_point_2: Marker2D = $Direction/Atk1ShootPoint2
 @onready var atk_2_shoot_point_1: Marker2D = $Direction/Atk2ShootPoint1
 @onready var atk_2_shoot_point_2: Marker2D = $Direction/Atk2ShootPoint2
 @onready var atk_3_shoot_point: Marker2D = $Direction/Atk3ShootPoint
+@onready var strafe_shoot_point_1: Marker2D = $Direction/StrafeShootPoint1
+@onready var strafe_shoot_point_2: Marker2D = $Direction/StrafeShootPoint2
+@onready var strafe_shoot_point_3: Marker2D = $Direction/StrafeShootPoint3
+@onready var strafe_shoot_point_4: Marker2D = $Direction/StrafeShootPoint4
+@onready var strafe_shoot_point_5: Marker2D = $Direction/StrafeShootPoint5
+@onready var strafe_shoot_point_6: Marker2D = $Direction/StrafeShootPoint6
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 
@@ -40,6 +48,7 @@ var seen_player: bool = false
 var _flash_tw: Tween
 var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
+var _active_beams: Array = []
 var level_bounds: Rect2
 
 func _ready() -> void:

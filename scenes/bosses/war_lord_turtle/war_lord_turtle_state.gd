@@ -269,3 +269,69 @@ func _spawn_atomic_bomb() -> void:
 
 	if b is Node2D:
 		(b as Node2D).global_position = obj.global_position
+
+func _beam_attack() -> void:
+	if obj.laser_beam_scene == null:
+		return
+
+	for b in obj._active_beams:
+		if is_instance_valid(b):
+			if b.has_method("set_is_casting"):
+				b.set_is_casting(false)
+			b.queue_free()
+	obj._active_beams.clear()
+
+	var points: Array = [
+		obj.strafe_shoot_point_1,
+		obj.strafe_shoot_point_2,
+		obj.strafe_shoot_point_3,
+		obj.strafe_shoot_point_4,
+		obj.strafe_shoot_point_5,
+		obj.strafe_shoot_point_6,
+	]
+
+	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
+
+	for p in points:
+		if p == null:
+			continue
+
+		var beam = obj.laser_beam_scene.instantiate()
+		parent.add_child(beam)
+
+		if beam is Node2D:
+			var b2d := beam as Node2D
+			b2d.global_position = p.global_position
+
+			var dir: Vector2 = (p.global_position - obj.global_position)
+			if dir.length() < 0.001:
+				var facing_left = obj.animated_sprite_2d.global_scale.x > 0.0
+				dir = Vector2(-1, 0) if facing_left else Vector2(1, 0)
+			dir = dir.normalized()
+
+			b2d.global_rotation = dir.angle()
+
+		if beam.has_method("set_is_casting"):
+			beam.set_is_casting(true)
+
+		obj._active_beams.append(beam)
+
+	if obj._active_beams.is_empty():
+		return
+
+	var tw := obj.create_tween()
+	tw.tween_interval(obj.beam_attack_duration)
+	tw.tween_callback(func ():
+		for b in obj._active_beams:
+			if is_instance_valid(b):
+				if b.has_method("set_is_casting"):
+					b.set_is_casting(false)
+				b.queue_free()
+		obj._active_beams.clear()
+	)
+
+func _are_beams_active() -> bool:
+	for b in obj._active_beams:
+		if is_instance_valid(b):
+			return true
+	return false

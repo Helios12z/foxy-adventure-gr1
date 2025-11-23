@@ -19,6 +19,7 @@ func _enter() -> void:
 			fsm.states.atk_3_windup,
 			fsm.states.summon_portal,
 			fsm.states.summon_water_tornado,
+			fsm.states.strafe_windup
 		]
 
 func _update(delta: float) -> void:

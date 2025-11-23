@@ -1,5 +1,4 @@
 extends RigidBody2D
-class_name WarlordCannon
 
 @export var move_speed: float = 100.0
 @export var spike_damage: int = 70
