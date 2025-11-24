@@ -53,6 +53,10 @@ project/assembly_name="FoxyAdventureGR1"
 
 enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 
+[global_group]
+
+player=""
+
 [input]
 
 right={
