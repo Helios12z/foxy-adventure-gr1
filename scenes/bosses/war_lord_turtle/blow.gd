@@ -19,7 +19,7 @@ func _update(d: float) -> void:
 	if update_timer(d):
 		_end_blink()
 		_blow_away()
-		change_state(fsm.states.idle)
+		change_state(fsm.previous_state)
 
 
 func _begin_blink(total: float, times := 6, color := Color(1, 0.8, 0.2, 1)) -> void:
