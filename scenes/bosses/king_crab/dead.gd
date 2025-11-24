@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 func _enter() -> void:
 	obj.velocity.x=0

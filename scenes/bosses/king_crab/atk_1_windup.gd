@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 func _enter() -> void:
 	obj.change_animation("atk1_windup")
@@ -14,9 +14,9 @@ func _enter() -> void:
 	obj.queued_bullet_dir_x = dir_x
 
 	timer = 0.75
-	obj.play_attack_effect(1, timer)
+	play_attack_effect(1, timer)
 
 func _update(d: float) -> void:
 	if update_timer(d):
-		obj._disable_attack_effect()
+		disable_attack_effect()
 		change_state(fsm.states.atk1_fire)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=231 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=232 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="3_skber"]
 [ext_resource type="Texture2D" uid="uid://bfn8jhlmklgu1" path="res://asset/effects/effect_1.png" id="3_wwxs8"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_5jg2x"]
+[ext_resource type="PackedScene" uid="uid://dhnpal80arkyc" path="res://scenes/bosses/king_crab/king_crab_shockwave.tscn" id="4_daqye"]
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
@@ -1049,6 +1050,7 @@ collision_layer = 8
 script = ExtResource("1_3obn1")
 bullet_scene = ExtResource("2_vlw8a")
 minion_scene = ExtResource("3_skber")
+king_crab_shockwave_scene = ExtResource("4_daqye")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -1062,7 +1064,7 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"hurt_with_one_claw"
+animation = &"walk"
 autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]

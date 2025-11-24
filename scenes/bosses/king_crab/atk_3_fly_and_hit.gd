@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 enum { HOVER, DASH, IMPACT }
 var phase := HOVER
@@ -10,23 +10,46 @@ var blink_color_start: Color = Color8(255, 200, 64, 255)
 var blink_times_windup := 6
 var _blink_tw: Tween
 
-func _enter()->void:
+var _hover_total := 0.0
+var _target_locked := false
+var _lock_ratio := 0.5    # lock sau khi đã hover được 50% thời gian
+
+func _enter() -> void:
 	obj.change_animation("atk3_fly_and_hit")
+
 	start_x = obj._atk3_liftoff_x
 	hover_y = obj._atk3_drop_target.y - obj.atk3_fly_height
+
 	obj.global_position = Vector2(start_x, hover_y)
+
 	phase = HOVER
+
 	hover_timer = obj.atk3_hover_time
-	obj.play_attack_effect(5, hover_timer)
+	_hover_total = hover_timer
+	_target_locked = false
+
+	play_attack_effect(5, hover_timer)
 	_begin_cast_blink(hover_timer, blink_times_windup, blink_color_start)
 
-func _update(d: float)->void:
+func _update(d: float) -> void:
 	match phase:
 		HOVER:
 			obj.global_position = Vector2(start_x, hover_y)
+
 			hover_timer -= d
+
+			_face_player()
+
+			if not _target_locked and hover_timer <= _hover_total * (1.0 - _lock_ratio):
+				lock_drop_target_at_player()
+				_target_locked = true
+
 			if hover_timer <= 0.0:
-				obj._disable_attack_effect()
+				if not _target_locked:
+					lock_drop_target_at_player()
+					_target_locked = true
+
+				disable_attack_effect()
 				_end_cast_blink()
 				phase = DASH
 
@@ -50,12 +73,13 @@ func _update(d: float)->void:
 				obj.global_position += step
 
 		IMPACT:
-			change_state(fsm.states.idle) 
+			change_state(fsm.states.idle)
 			return
 
 func _do_impact() -> void:
-	obj._snap_to_ground() 
-	obj._end_fly_mode()
+	snap_to_ground()
+	end_fly_mode()
+	spawn_shockwave()
 	obj._chain_after_basic = false
 	phase = IMPACT
 	
@@ -81,3 +105,18 @@ func _end_cast_blink() -> void:
 	var mat := obj.animated_sprite_2d.material as ShaderMaterial
 	if mat:
 		mat.set_shader_parameter("flash_amount", 0.0)
+
+func _face_player() -> void:
+	var target_x: float
+	var have := false
+	if obj.found_player != null:
+		target_x = obj.found_player.global_position.x
+		have = true
+	elif obj.has_last_seen:
+		target_x = obj.last_seen_player_x
+		have = true
+
+	if have:
+		var desired := 1 if (target_x - obj.global_position.x) > 0.0 else -1
+		if desired != obj.direction:
+			obj.change_direction(desired)

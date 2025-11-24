@@ -17,6 +17,8 @@ func control_hurt():
 func control_die(): 
 	pass
 
+func control_attack():
+	pass
 
 func _should_turn_around(): 
 	if obj.is_touch_wall() or obj.is_can_fall():

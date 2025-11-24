@@ -27,6 +27,12 @@ var dash_cooldown_timer: Timer = null
 
 @export var run_speed_multiplier: float = 1.35
 @export var run_double_tap_window_ms: int = 250
+
+
+@onready var jump_sound = $Jump
+
+#signal take_dame
+
 var _last_left_press_ms: int = -100000
 var _last_right_press_ms: int = -100000
 
@@ -158,6 +164,7 @@ func load_state(data: Dictionary) -> void:
 			collected_water_room_gem()
 			
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
+	#take_dame.emit()
 	if invincible_zone:
 		return
 	if !is_invulnerable: 
