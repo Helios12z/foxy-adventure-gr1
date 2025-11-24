@@ -3,6 +3,7 @@ extends EnemyState
 
 func _enter():
 	obj.change_animation("dead")
+	obj.gravity = 700
 	timer = 1.0
 	obj.velocity.x = 0
 	obj.set_hurt_collision(false)

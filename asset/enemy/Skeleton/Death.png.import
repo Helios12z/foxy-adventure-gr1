@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clex0alqgtj07"
-path="res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"
+uid="uid://bc13jptnfkne6"
+path="res://.godot/imported/Death.png-f104f9ff73b873750fe4a3ce1779690a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/effects/explosion_effect.png"
-dest_files=["res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"]
+source_file="res://asset/enemy/Skeleton/Death.png"
+dest_files=["res://.godot/imported/Death.png-f104f9ff73b873750fe4a3ce1779690a.ctex"]
 
 [params]
 

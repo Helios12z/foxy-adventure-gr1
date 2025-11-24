@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clex0alqgtj07"
-path="res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"
+uid="uid://ncexcgwimwuy"
+path="res://.godot/imported/Shield.png-6f0fb848a02ae1acbc4512eb9dad4bd8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/effects/explosion_effect.png"
-dest_files=["res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"]
+source_file="res://asset/enemy/Skeleton/Shield.png"
+dest_files=["res://.godot/imported/Shield.png-6f0fb848a02ae1acbc4512eb9dad4bd8.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clex0alqgtj07"
-path="res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"
+uid="uid://cjwlrhvwu2qu0"
+path="res://.godot/imported/Idle.png-541e51ead56c99596545fa64bc1fa956.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/effects/explosion_effect.png"
-dest_files=["res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"]
+source_file="res://asset/enemy/Skeleton/Idle.png"
+dest_files=["res://.godot/imported/Idle.png-541e51ead56c99596545fa64bc1fa956.ctex"]
 
 [params]
 

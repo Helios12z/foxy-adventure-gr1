@@ -1,14 +1,10 @@
-[gd_scene load_steps=10 format=4 uid="uid://ccjclk3f7u170"]
+[gd_scene load_steps=6 format=4 uid="uid://ccjclk3f7u170"]
 
 [ext_resource type="Script" uid="uid://dld7o3j0igwm7" path="res://scenes/enemies/enemy_test_scene.gd" id="1_mkubj"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_ejmpy"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_ejmpy"]
-[ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="4_sxkfg"]
-[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://scenes/enemies/spike/spike.tscn" id="5_6dj5k"]
+[ext_resource type="PackedScene" uid="uid://cnt8ey2jdqrgv" path="res://scenes/enemies/mushroom_zoombie/mushroom_zombie.tscn" id="5_6dj5k"]
 [ext_resource type="PackedScene" uid="uid://oplmtt8e4gwb" path="res://scenes/character/npcs/crystal-mauler.tscn" id="6_wl40g"]
-[ext_resource type="PackedScene" uid="uid://bbmftido5vkbj" path="res://scenes/enemies/pelican/peligan.tscn" id="7_62jtg"]
-[ext_resource type="PackedScene" uid="uid://t6vtn81e7w6p" path="res://scenes/enemies/mushroom/mushroom.tscn" id="7_x0uj1"]
-[ext_resource type="PackedScene" uid="uid://dt1wkv6f2kmyv" path="res://scenes/enemies/pear/pear.tscn" id="8_836ia"]
 
 [node name="EnemyTestScene" type="Node"]
 script = ExtResource("1_mkubj")
@@ -20,31 +16,13 @@ tile_map_data = PackedByteArray("AAD/////AAAPAAQAAAAAAP//AAABAAQAAAABAP//AAABAAQ
 tile_set = ExtResource("2_ejmpy")
 
 [node name="Player" parent="." instance=ExtResource("3_ejmpy")]
-position = Vector2(378, -71)
+position = Vector2(412, -195)
 max_health = 20
-
-[node name="Crab" parent="." instance=ExtResource("4_sxkfg")]
-position = Vector2(265, -45)
-movement_speed = 60.0
-
-[node name="Spike" parent="." instance=ExtResource("5_6dj5k")]
-position = Vector2(592, -49)
-
-[node name="Spike2" parent="." instance=ExtResource("5_6dj5k")]
-position = Vector2(675, -47)
 
 [node name="Crystal-mauler" parent="." instance=ExtResource("6_wl40g")]
 position = Vector2(55, -32)
 
-[node name="mushroom" parent="." instance=ExtResource("7_x0uj1")]
-position = Vector2(-23, 42)
-
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Pear" parent="Enemies" instance=ExtResource("8_836ia")]
-position = Vector2(520, -51)
-
-[node name="Peligan" parent="Enemies" instance=ExtResource("7_62jtg")]
-position = Vector2(144, -217)
-
-[node name="Bullets" type="Node2D" parent="."]
+[node name="MushroomZombie" parent="." instance=ExtResource("5_6dj5k")]
+position = Vector2(152, -74)

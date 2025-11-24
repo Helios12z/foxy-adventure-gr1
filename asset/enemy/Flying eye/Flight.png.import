@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clex0alqgtj07"
-path="res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"
+uid="uid://bedvl4c2yg4uo"
+path="res://.godot/imported/Flight.png-fad1579c9db82ce7bb883d778586d0dc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/effects/explosion_effect.png"
-dest_files=["res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"]
+source_file="res://asset/enemy/Flying eye/Flight.png"
+dest_files=["res://.godot/imported/Flight.png-fad1579c9db82ce7bb883d778586d0dc.ctex"]
 
 [params]
 
