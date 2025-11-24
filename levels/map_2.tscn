@@ -429,6 +429,7 @@ texture_scale = 0.5
 
 [node name="FireGem" parent="." instance=ExtResource("7_nd2ra")]
 position = Vector2(276, 61)
+bob_amplitude = null
 
 [node name="RainParticles" type="GPUParticles2D" parent="."]
 material = SubResource("CanvasItemMaterial_wkgak")

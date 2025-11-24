@@ -28,16 +28,15 @@ func show_popup() -> void:
 	var tree := get_tree()
 	if tree:
 		tree.paused = true
-	if _desc_label:
+	if _desc_label and text_lines.size() > 0:
 		_desc_label.text = "\n".join(text_lines)
 	# clear previous keys
-	if _keys_box:
+	if _keys_box and keys.size() > 0:
 		for c in _keys_box.get_children():
 			c.queue_free()
 		for k in keys:
 			var keynode: Node2D = KEYBOARD_KEY_SCENE.instantiate()
 			if keynode.has_method("set"):
-				# default text only
 				keynode.key_text = k
 			_keys_box.add_child(keynode)
 	# setup video
@@ -45,9 +44,6 @@ func show_popup() -> void:
 		if video_path != "":
 			_video.stream = load(video_path)
 			_video.play()
-		else:
-			_video.stop()
-			_video.stream = null
 	# Hiệu ứng mở: nảy/bounce mượt
 	if _panel:
 		_panel.scale = Vector2(0.6, 0.6)
