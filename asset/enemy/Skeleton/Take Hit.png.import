@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clex0alqgtj07"
-path="res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"
+uid="uid://dai4akr5x1pio"
+path="res://.godot/imported/Take Hit.png-b350011e924337555f82c0504a0cf47b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/effects/explosion_effect.png"
-dest_files=["res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"]
+source_file="res://asset/enemy/Skeleton/Take Hit.png"
+dest_files=["res://.godot/imported/Take Hit.png-b350011e924337555f82c0504a0cf47b.ctex"]
 
 [params]
 

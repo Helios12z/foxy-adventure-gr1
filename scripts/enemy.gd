@@ -3,11 +3,11 @@ extends BaseCharacter
 
 
 # Raycast check wall and fall
-var front_ray_cast: RayCast2D;
-var down_ray_cast: RayCast2D;
+var front_ray_cast: RayCast2D
+var down_ray_cast: RayCast2D
 
 # detect player area
-var detect_player_area: Area2D;
+var detect_player_area: Area2D
 var found_player: Player = null
 
 var knockback_direction: Vector2
@@ -58,6 +58,7 @@ func is_can_fall() -> bool:
 		return not down_ray_cast.is_colliding()
 	return false
 
+
 #enable check player in sight
 func enable_check_player_in_sight() -> void:
 	if(detect_player_area != null):
@@ -92,6 +93,9 @@ func _take_damage_from_dir(_damage_dir: Vector2, _damage: float):
 
 func set_hurt_collision(enabled):
 	$Direction/HurtArea2D/CollisionShape2D.set_deferred("disabled",not enabled)
+	
+func set_hit_collision(enabled : bool):
+	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",not enabled)
 
 func run_to(pos: Vector2) -> void:
 	scripted_mode = true

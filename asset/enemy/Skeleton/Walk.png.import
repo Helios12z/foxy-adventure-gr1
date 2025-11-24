@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clex0alqgtj07"
-path="res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"
+uid="uid://c08exc80o10pj"
+path="res://.godot/imported/Walk.png-faa2e6cae5b2d5320aaa075803839322.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/effects/explosion_effect.png"
-dest_files=["res://.godot/imported/explosion_effect.png-467a446c19ae11f67fbe8d18c0f63bb2.ctex"]
+source_file="res://asset/enemy/Skeleton/Walk.png"
+dest_files=["res://.godot/imported/Walk.png-faa2e6cae5b2d5320aaa075803839322.ctex"]
 
 [params]
 
