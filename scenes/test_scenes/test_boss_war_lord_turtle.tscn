@@ -12,14 +12,14 @@ tile_set = ExtResource("1_khba0")
 
 [node name="WarLordTurtle" parent="." node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_5nu06")]
 position = Vector2(622, 348)
-max_health_boss = 20
+max_health_boss = 50
 bound_point_a = NodePath("../PointA")
 bound_point_b = NodePath("../PointB")
 
 [node name="Player" parent="." instance=ExtResource("3_uefka")]
 position = Vector2(-49, 556)
 has_blade = true
-max_health = 1000
+max_health = 500
 
 [node name="PointA" type="Marker2D" parent="."]
 position = Vector2(-72, 576)

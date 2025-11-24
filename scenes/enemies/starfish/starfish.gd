@@ -5,7 +5,7 @@ extends EnemyCharacter
 func _ready() -> void:
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Walk)
-	max_health = 10
+	health = 10
 	hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
