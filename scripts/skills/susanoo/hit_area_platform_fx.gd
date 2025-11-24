@@ -13,6 +13,9 @@ var _hole_marker: Node2D = null
 # Nhấc sprite lên nhẹ để tránh lún nền
 @export var spawn_offset: Vector2 = Vector2(0, -2)
 
+# Tắt/bật tạo fire hole khi va chạm thân (platform/body). Mặc định: tắt
+@export var spawn_firehole_on_body_enter: bool = false
+
 # Signal when something was hit
 signal hitted(area)
 
@@ -57,4 +60,6 @@ func _on_area_entered(area: Area2D) -> void:
 
 # When overlapping a physics body (environment/platform), spawn fire hole below
 func _on_body_entered(_body: Node) -> void:
+	if not spawn_firehole_on_body_enter:
+		return
 	_spawn_firehole_at_marker()

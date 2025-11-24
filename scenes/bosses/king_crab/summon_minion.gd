@@ -1,4 +1,4 @@
-extends EnemyState
+extends KingCrabState
 
 var phase := 0
 var t := 0.0
@@ -14,6 +14,11 @@ var blink_times_post := 4
 var _blink_tw: Tween
 
 func _enter() -> void:
+	if get_minion_count() >= 4:
+		obj._chain_after_basic = false
+		change_state(fsm.states.idle)
+		return
+	
 	phase = 0
 	t = 0.0
 	obj.velocity.x = 0.0
@@ -27,10 +32,9 @@ func _update(delta: float) -> void:
 			if t >= windup_duration:
 				t = 0.0
 				_end_summon_blink()
-				obj._disable_attack_effect()
+				disable_attack_effect()
 
-				if obj.has_method("spawn_minions"):
-					obj.spawn_minions()
+				spawn_minions()
 
 				_begin_summon_blink(post_pause, blink_times_post, summon_blink_color_end)
 				phase = 1
@@ -41,11 +45,11 @@ func _update(delta: float) -> void:
 
 func _exit() -> void:
 	_end_summon_blink()
-	obj._disable_attack_effect()
+	disable_attack_effect()
 
 func _finish_summon() -> void:
 	_end_summon_blink()
-	obj._disable_attack_effect()
+	disable_attack_effect()
 	obj._chain_after_basic=false
 	change_state(fsm.states.idle)
 

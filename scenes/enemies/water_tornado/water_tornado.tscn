@@ -1,0 +1,160 @@
+[gd_scene load_steps=24 format=3 uid="uid://b4xm5pk0uin2j"]
+
+[ext_resource type="Script" uid="uid://cxlftrotx5ggp" path="res://scenes/enemies/water_tornado/water_tornado.gd" id="1_pg56c"]
+[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_8mju6"]
+[ext_resource type="Texture2D" uid="uid://i638lhe6bq6o" path="res://asset/effects/blue_effect_impact.png" id="2_pg56c"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_su4ak"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="4_su4ak"]
+[ext_resource type="Script" uid="uid://bov1576u3biok" path="res://scenes/enemies/water_tornado/tornado.gd" id="6_18ji6"]
+[ext_resource type="Script" uid="uid://b4688p23ef86k" path="res://scenes/enemies/water_tornado/water.gd" id="6_svmuy"]
+[ext_resource type="Script" uid="uid://c8wknmfq0pndo" path="res://scenes/enemies/water_tornado/dead.gd" id="7_18ji6"]
+[ext_resource type="Script" uid="uid://b7eki0edbvy3l" path="res://scenes/enemies/water_tornado/hurt.gd" id="9_xtxs6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xtxs6"]
+shader = ExtResource("2_8mju6")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mojv"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(192, 448, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1uxr"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(224, 448, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_daqat"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(256, 448, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2s8bw"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(288, 448, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6ufjv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5mojv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s1uxr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_daqat")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2s8bw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tiq4x"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qm2a3"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1v1a"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3tsd8"]
+atlas = ExtResource("2_pg56c")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qbip4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tiq4x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qm2a3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1v1a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3tsd8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4mavu"]
+radius = 4.0
+height = 50.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_seqq4"]
+radius = 8.0
+height = 48.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5mojv"]
+size = Vector2(28, 50)
+
+[node name="WaterTornado" type="CharacterBody2D"]
+collision_layer = 8
+script = ExtResource("1_pg56c")
+metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="Water" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_xtxs6")
+scale = Vector2(1.6875, 1.25)
+sprite_frames = SubResource("SpriteFrames_6ufjv")
+autoplay = "default"
+frame = 1
+frame_progress = 0.013847258
+
+[node name="Tornado" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(4.7683716e-07, -25)
+scale = Vector2(1.40625, 1.59375)
+sprite_frames = SubResource("SpriteFrames_qbip4")
+frame = 3
+frame_progress = 0.8471647
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_4mavu")
+
+[node name="HurtArea2D" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("3_su4ak")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea2D"]
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_seqq4")
+debug_color = Color(0.9592332, 0, 0.5254361, 0.41960785)
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("4_su4ak")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(0, -25)
+shape = SubResource("RectangleShape2D_5mojv")
+
+[node name="States" type="Node" parent="."]
+
+[node name="Water" type="Node" parent="States"]
+script = ExtResource("6_svmuy")
+
+[node name="Tornado" type="Node" parent="States"]
+script = ExtResource("6_18ji6")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("7_18ji6")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("9_xtxs6")

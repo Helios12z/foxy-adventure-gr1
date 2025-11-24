@@ -1,6 +1,10 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://swi381ypjdht"]
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://swi381ypjdht"]
 
 [ext_resource type="Texture2D" uid="uid://dorb4tdwb6oce" path="res://asset/forest/terrain/test1.png" id="1_543xl"]
+[ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://scenes/enemies/spike/spike.tscn" id="1_k7no8"]
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_gx23y"]
+scenes/1/scene = ExtResource("1_k7no8")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k7no8"]
 texture = ExtResource("1_543xl")
@@ -389,3 +393,4 @@ terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Land2"
 terrain_set_0/terrain_0/color = Color(0, 0.459799, 0.281014, 1)
 sources/2 = SubResource("TileSetAtlasSource_k7no8")
+sources/0 = SubResource("TileSetScenesCollectionSource_gx23y")

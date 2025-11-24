@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://bklhkn41sbvwa"]
+
+[ext_resource type="Script" uid="uid://b1ppqm3070a5a" path="res://scenes/bosses/war_lord_turtle/laser_beam.gd" id="1_872lr"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_0oo8a"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_31klp"]
+radius = 5.0
+height = 60.0
+
+[node name="LaserBeam" type="RayCast2D"]
+target_position = Vector2(0, 0)
+collision_mask = 0
+script = ExtResource("1_872lr")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 50, 0)
+default_color = Color(0.74272513, 0.61382186, 0.7437369, 1)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_0oo8a")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(25, 0)
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_31klp")
+debug_color = Color(0.8399241, 0.32299453, 0.5428815, 0.41960785)

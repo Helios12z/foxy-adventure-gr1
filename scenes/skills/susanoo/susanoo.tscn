@@ -84,7 +84,7 @@ size = Vector2(109, 142)
 
 [node name="SusanooSpirit" type="Node2D"]
 script = ExtResource("1_script")
-level = 4
+level = 3
 meteor_top_margin = 280.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

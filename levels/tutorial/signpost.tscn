@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dme30hj53kiyq"]
+
+[ext_resource type="Texture2D" uid="uid://b2u6p5fjf7swf" path="res://asset/tutorial/signpost.png" id="1_kjbs3"]
+[ext_resource type="Script" uid="uid://dixvsxbhu6xpj" path="res://levels/tutorial/signpost.gd" id="2_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kjbs3"]
+size = Vector2(41, 1350)
+
+[node name="Area2D" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_kjbs3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, -608)
+shape = SubResource("RectangleShape2D_kjbs3")
