@@ -8,7 +8,7 @@ var is_followup_next: bool = false
 var _followup_index: int = 0
 var _followup_states: Array = []
 
-var atomic_followup_chance: float = 0.05
+var atomic_followup_chance: float = 0.12
 
 func _enter() -> void:
 	timer = idle_to_skill_delay
