@@ -3,13 +3,12 @@
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_k3ymo"]
-[ext_resource type="PackedScene" uid="uid://bvgyep1nrjs86" path="res://scenes/ui/HeartsContainer/hearts_container.tscn" id="2_ncpwn"]
 [ext_resource type="Texture2D" uid="uid://ck8762h1hy2cf" path="res://asset/island/background/additional_water.png" id="3_44ejs"]
-[ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="3_cbqdj"]
+[ext_resource type="PackedScene" path="res://screens/game_screen/hud.tscn" id="3_cbqdj"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="4_8dbd0"]
 [ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="4_36gkw"]
 [ext_resource type="Texture2D" uid="uid://bqde0l4at7gv8" path="res://asset/island/background/bg_image.png" id="4_rwkv0"]
-[ext_resource type="PackedScene" uid="uid://dmngvbkuj5adl" path="res://scenes/enemies/starfish/starfish.tscn" id="5_88mrp"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/starfish/starfish.tscn" id="5_88mrp"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="6_44ejs"]
 [ext_resource type="Script" uid="uid://bdc58gv7lyc30" path="res://levels/parallax_layer_cloud.gd" id="7_6s483"]
 [ext_resource type="PackedScene" uid="uid://bbmftido5vkbj" path="res://scenes/enemies/pelican/peligan.tscn" id="7_a7slf"]
@@ -50,6 +49,7 @@
 [ext_resource type="PackedScene" uid="uid://dr6cgamag4fva" path="res://levels/tutorial/signpost_details/tutorial_popup.tscn" id="46_ncpwn"]
 [ext_resource type="AudioStream" uid="uid://8ig7y4yrrv5e" path="res://asset/sounds/music.mp3" id="49_8dbd0"]
 [ext_resource type="PackedScene" uid="uid://dt1wkv6f2kmyv" path="res://scenes/enemies/pear/pear.tscn" id="50_cjww2"]
+[ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="51_cjww2"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -183,8 +183,6 @@ script = ExtResource("1_vf8qv")
 camera_bottom_limit_y = -200.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="HeartsContainer" parent="CanvasLayer" instance=ExtResource("2_ncpwn")]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("3_cbqdj")]
 
@@ -655,3 +653,7 @@ position = Vector2(11495, 50)
 
 [node name="Pear5" parent="." instance=ExtResource("50_cjww2")]
 position = Vector2(11821, 50)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerHUD" parent="UI" instance=ExtResource("51_cjww2")]

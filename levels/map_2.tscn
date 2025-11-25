@@ -4,12 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
 [ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="3_gpada"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_hrn5s"]
-[ext_resource type="PackedScene" path="res://ui/PlayerHUD.tscn" id="8_playerhud"]
 [ext_resource type="Texture2D" uid="uid://c3u4por3c6pmn" path="res://asset/forest/background/tree1.png" id="4_aph5k"]
 [ext_resource type="Texture2D" uid="uid://7e4tmseq4hhm" path="res://asset/forest/background/Layer_0002_7.png" id="4_wkgak"]
 [ext_resource type="Texture2D" uid="uid://5nbx21n1v745" path="res://asset/forest/background/tree2.png" id="4_x0kog"]
 [ext_resource type="Texture2D" uid="uid://q2faej61blnu" path="res://asset/forest/background/2ac948c0-553d-4c6f-9935-bed90a7ccfe6.png" id="6_nd2ra"]
 [ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="7_nd2ra"]
+[ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="8_playerhud"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
 blend_mode = 1
@@ -417,6 +417,7 @@ tile_set = ExtResource("3_gpada")
 
 [node name="Player" parent="." instance=ExtResource("3_hrn5s")]
 position = Vector2(152, 3)
+scale = Vector2(1.2, 1.2)
 has_blade = true
 
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
