@@ -131,10 +131,10 @@ func respawn_at_checkpoint() -> void:
 	else:
 		print("Player not found for respawn")
 	
-	if inventory_system != null:
-		var inventory_data: Dictionary = checkpoint_info.get("inventory_data")
-		inventory_system.coins = inventory_data["coins"]
-		inventory_system.keys = inventory_data["keys"]
+	#if inventory_system != null:
+		#var inventory_data: Dictionary = checkpoint_info.get("inventory_data")
+		#inventory_system.coins = inventory_data["coins"]
+		#inventory_system.keys = inventory_data["keys"]
 
 #check if there is a checkpoint
 func has_checkpoint() -> bool:
