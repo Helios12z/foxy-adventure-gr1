@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=4 uid="uid://x5qrj66qebnm"]
+[gd_scene load_steps=7 format=4 uid="uid://x5qrj66qebnm"]
 
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_v68y4"]
 [ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="2_vy0vx"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_4co4v"]
 [ext_resource type="Script" uid="uid://cu4d7qndrtnyl" path="res://levels/boss_levels/king_crab/boss_hud.gd" id="4_vy0vx"]
+[ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="5_4co4v"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70wrx"]
+atlas = ExtResource("5_4co4v")
+region = Rect2(74, 48, 1151, 127)
 
 [node name="TestBossKingCrab" type="Node2D"]
 
@@ -36,17 +41,40 @@ position = Vector2(773, 267)
 
 [node name="BossHUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("4_vy0vx")
 
 [node name="BossHealthBar" type="TextureProgressBar" parent="CanvasLayer/BossHUD"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -286.0
+offset_top = -83.0
+offset_right = 865.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+texture_under = SubResource("AtlasTexture_70wrx")
+metadata/_edit_group_ = true
 
 [node name="BossHealthLabel" type="Label" parent="CanvasLayer/BossHUD"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 527.0
+offset_top = 558.0
+offset_right = 634.0
+offset_bottom = 581.0
+theme_override_colors/font_color = Color(0.9721158, 0.036824163, 7.70092e-07, 1)
+theme_override_colors/font_outline_color = Color(0.773859, 0, 0, 1)
+text = "The King Crab"
+horizontal_alignment = 1
+vertical_alignment = 1
