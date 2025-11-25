@@ -4,7 +4,7 @@ extends Node2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D  
 @onready var hit_area_2d: HitArea2D = $HitArea2D
 @onready var collision_shape_2d: CollisionShape2D = $HitArea2D/CollisionShape2D
-@onready var circle_shape: CircleShape2D = $HitArea2D/CollisionShape2D.shape as CircleShape2D
+@onready var rect_shape: RectangleShape2D = $HitArea2D/CollisionShape2D.shape as RectangleShape2D
 
 @export var damage: int = 300
 @export var explode_time: float = 2.75
@@ -15,7 +15,7 @@ var _elapsed: float = 0.0
 var _exploding: bool = false
 
 var _base_anim_scale: Vector2
-var _fallback_radius: float = 64.0
+var _fallback_extents: Vector2 = Vector2(64.0, 64.0)
 
 func _ready() -> void:
 	hit_area_2d.damage = damage
@@ -29,8 +29,9 @@ func _ready() -> void:
 	hit_area_2d.monitorable = false
 
 	_base_anim_scale = animated_sprite_2d.scale
-	_fallback_radius = 64.0
+	_fallback_extents = Vector2(64.0, 64.0)
 
+	# Tính kích thước fallback dựa trên frame đầu tiên của animation nổ
 	if animated_sprite_2d.sprite_frames != null:
 		var anim_name := animated_sprite_2d.animation
 		if anim_name == "":
@@ -43,9 +44,10 @@ func _ready() -> void:
 			if tex != null:
 				var w := tex.get_width() * _base_anim_scale.x
 				var h := tex.get_height() * _base_anim_scale.y
-				_fallback_radius = min(w, h) * 0.5
+				_fallback_extents = Vector2(w, h) * 0.5
 
-	circle_shape.radius = 0.0
+	if rect_shape:
+		rect_shape.extents = Vector2.ZERO
 
 	animated_sprite_2d.frame_changed.connect(_on_explosion_frame_changed)
 	animated_sprite_2d.animation_finished.connect(_on_explosion_finished)
@@ -88,12 +90,15 @@ func _on_explosion_frame_changed() -> void:
 		hit_area_2d.monitorable = true
 
 	if hit_area_2d.monitoring:
-		_update_hit_radius_for_current_frame()
+		_update_hit_rect_for_current_frame()
 
-func _update_hit_radius_for_current_frame() -> void:
+func _update_hit_rect_for_current_frame() -> void:
+	if rect_shape == null:
+		return
+
 	var sf := animated_sprite_2d.sprite_frames
 	if sf == null:
-		circle_shape.radius = _fallback_radius
+		rect_shape.extents = _fallback_extents
 		return
 
 	var anim_name := animated_sprite_2d.animation
@@ -102,12 +107,12 @@ func _update_hit_radius_for_current_frame() -> void:
 
 	var tex := sf.get_frame_texture(anim_name, animated_sprite_2d.frame)
 	if tex == null:
-		circle_shape.radius = _fallback_radius
+		rect_shape.extents = _fallback_extents
 		return
 
 	var w := tex.get_width() * animated_sprite_2d.scale.x
 	var h := tex.get_height() * animated_sprite_2d.scale.y
-	circle_shape.radius = min(w, h) * 0.5
+	rect_shape.extents = Vector2(w, h) * 0.5
 
 func _on_explosion_finished() -> void:
 	if not is_queued_for_deletion():

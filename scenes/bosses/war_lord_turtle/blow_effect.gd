@@ -2,7 +2,7 @@ extends Node2D
 
 @export var damage: int = 50
 @export var initial_radius: float = 20.0
-@export var max_radius: float = 260.0
+@export var max_radius: float = 240.0
 
 var _base_anim_scale: Vector2
 var _sprite_radius: float = 1.0
