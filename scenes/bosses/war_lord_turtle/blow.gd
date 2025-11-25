@@ -1,6 +1,6 @@
 extends WarlordTurtleState
 
-var windup_duration := 1.5                   
+var windup_duration: float                   
 
 var summon_blink_color_start: Color = Color8(255, 200, 64, 255)   
 var blink_times_windup := 6
@@ -9,6 +9,8 @@ var blink_times_post := 4
 var _blink_tw: Tween
 
 func _enter() -> void:
+	if obj.in_phase2: windup_duration = 1.5
+	else: windup_duration = 2.25 
 	timer = windup_duration
 
 	obj.change_animation("windup") 

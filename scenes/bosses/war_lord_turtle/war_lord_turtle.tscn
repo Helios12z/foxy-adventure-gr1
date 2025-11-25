@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=73 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -40,12 +40,12 @@
 [ext_resource type="Script" uid="uid://dohwiudsn2vhs" path="res://scenes/bosses/war_lord_turtle/atk_2.gd" id="26_xwhea"]
 [ext_resource type="Script" uid="uid://cekjxrlbyelf7" path="res://scenes/bosses/war_lord_turtle/hurt.gd" id="27_6vi0x"]
 [ext_resource type="Script" uid="uid://b80m708ypmrvy" path="res://scenes/bosses/war_lord_turtle/stun.gd" id="28_6x4je"]
-[ext_resource type="Texture2D" uid="uid://8ndqchwscou5" path="res://asset/war_lord/target_lock_effect.png" id="28_og2oc"]
 [ext_resource type="Texture2D" uid="uid://bq3cuutl5tg7o" path="res://asset/war_lord/war_lord_turtle23.png" id="29_yptko"]
 [ext_resource type="Script" uid="uid://j0tfb5mqggpk" path="res://scenes/bosses/war_lord_turtle/dead.gd" id="32_gx74n"]
 [ext_resource type="Texture2D" uid="uid://dwisvdn7b4ptk" path="res://asset/war_lord/war_lord_turtle24.png" id="32_o2ix3"]
 [ext_resource type="Script" uid="uid://d3fpcbkl548fs" path="res://scenes/bosses/war_lord_turtle/atk_3_windup.gd" id="37_jhib8"]
 [ext_resource type="Script" uid="uid://bkach280vooio" path="res://scenes/bosses/war_lord_turtle/atk_3.gd" id="38_evlw3"]
+[ext_resource type="Texture2D" uid="uid://cxilppvxdfvn1" path="res://asset/effects/target_lock_effect.png" id="38_sr0mj"]
 [ext_resource type="Script" uid="uid://ce8s23uw7x5jy" path="res://scenes/bosses/war_lord_turtle/summon_portal.gd" id="42_2jxqd"]
 [ext_resource type="Script" uid="uid://c2sr34fgiw76d" path="res://scenes/bosses/war_lord_turtle/blow.gd" id="43_6pwq0"]
 [ext_resource type="Script" uid="uid://ck1a3rwk4tj3" path="res://scenes/bosses/war_lord_turtle/summon_water_tornado.gd" id="45_rt4pc"]
@@ -260,65 +260,129 @@ size = Vector2(64, 67)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4ut7l"]
 size = Vector2(57, 65)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gpe5m"]
-atlas = ExtResource("28_og2oc")
-region = Rect2(0, 0, 204, 1024)
+[sub_resource type="AtlasTexture" id="AtlasTexture_px23k"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(0, 0, 207, 207)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3t3e0"]
-atlas = ExtResource("28_og2oc")
-region = Rect2(204, 0, 204, 1024)
+[sub_resource type="AtlasTexture" id="AtlasTexture_g3nhw"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(207, 0, 207, 207)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_su8nf"]
-atlas = ExtResource("28_og2oc")
-region = Rect2(408, 0, 204, 1024)
+[sub_resource type="AtlasTexture" id="AtlasTexture_bdclj"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(414, 0, 207, 207)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_evlw3"]
-atlas = ExtResource("28_og2oc")
-region = Rect2(612, 0, 204, 1024)
+[sub_resource type="AtlasTexture" id="AtlasTexture_okblm"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(0, 207, 207, 207)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jhib8"]
-atlas = ExtResource("28_og2oc")
-region = Rect2(816, 0, 204, 1024)
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhhfu"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(207, 207, 207, 207)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8dygg"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(414, 207, 207, 207)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lu0bj"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(0, 414, 207, 207)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nh47e"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(207, 414, 207, 207)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4jsi"]
+atlas = ExtResource("38_sr0mj")
+region = Rect2(414, 414, 207, 207)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yptko"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gpe5m")
+"texture": SubResource("AtlasTexture_px23k")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3t3e0")
+"texture": SubResource("AtlasTexture_g3nhw")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_su8nf")
+"texture": SubResource("AtlasTexture_bdclj")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_su8nf")
+"texture": SubResource("AtlasTexture_okblm")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3t3e0")
+"texture": SubResource("AtlasTexture_fhhfu")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3t3e0")
+"texture": SubResource("AtlasTexture_8dygg")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_su8nf")
+"texture": SubResource("AtlasTexture_lu0bj")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_su8nf")
+"texture": SubResource("AtlasTexture_nh47e")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3t3e0")
+"texture": SubResource("AtlasTexture_o4jsi")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_evlw3")
+"texture": SubResource("AtlasTexture_px23k")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jhib8")
+"texture": SubResource("AtlasTexture_g3nhw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bdclj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_okblm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhhfu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8dygg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lu0bj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nh47e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o4jsi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_px23k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g3nhw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bdclj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_okblm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhhfu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8dygg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lu0bj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nh47e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o4jsi")
 }],
 "loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [node name="WarLordTurtle" type="CharacterBody2D"]
@@ -343,7 +407,7 @@ shape = SubResource("RectangleShape2D_k7whc")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_og2oc")
 sprite_frames = SubResource("SpriteFrames_g47qh")
-animation = &"strafe"
+animation = &"stun"
 autoplay = "idle"
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
@@ -407,7 +471,7 @@ position = Vector2(-6, 9)
 scale = Vector2(0.6519608, 0.5625)
 sprite_frames = SubResource("SpriteFrames_yptko")
 autoplay = "default"
-frame = 10
+frame = 26
 frame_progress = 1.0
 
 [node name="States" type="Node" parent="."]
