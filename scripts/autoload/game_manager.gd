@@ -16,6 +16,7 @@ func _ready() -> void:
 	load_checkpoint_data()
 		# Init inventory system
 	inventory_system = InvetorySystem.new()
+	inventory_system.name = "InventorySystem" 
 	add_child(inventory_system)
 	pass
 

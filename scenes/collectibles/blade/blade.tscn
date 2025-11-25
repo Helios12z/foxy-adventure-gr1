@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bspppngjkao4a" path="res://asset/island/images/blade/blade_anim_5.png" id="6_g6b4b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qo648"]
+size = Vector2(20, 13)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8xgkt"]
 animations = [{
@@ -38,6 +39,7 @@ collision_mask = 2
 script = ExtResource("1_ok5kb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3.5)
 shape = SubResource("RectangleShape2D_qo648")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

@@ -3,6 +3,7 @@ class_name InvetorySystem
 
 signal coin_changed(new_amount: int)
 signal item_collected(item_type: String, amount: int)
+signal key_changed(new_amount: int)
 
 var coins: int = 0
 var keys: int = 0
@@ -18,12 +19,14 @@ func add_coin(amount: int) -> void:
 	
 func add_key(_amount: int = 1) -> void:
 	keys += _amount
+	key_changed.emit(keys)
 	item_collected.emit("key", _amount)
 	print("Collected ", _amount, " key Total: ", keys)
 	
 func use_key() -> bool:
 	if has_key():
 		keys -= 1
+		key_changed.emit(keys)
 		return true
 	return false
 	

@@ -92,7 +92,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqu7x"]
-size = Vector2(24, 25)
+size = Vector2(24, 21)
 
 [node name="ChestKey" type="Area2D" groups=["collectible"]]
 collision_layer = 64
@@ -104,5 +104,5 @@ sprite_frames = SubResource("SpriteFrames_e7x3q")
 animation = &"disappearance"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -0.5)
+position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_hqu7x")

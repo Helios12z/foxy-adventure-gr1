@@ -21,6 +21,7 @@ grow_vertical = 2
 script = ExtResource("1_a4it1")
 
 [node name="OverlayColorRect" type="ColorRect" parent="."]
+process_mode = 2
 self_modulate = Color(1, 1, 1, 0.352941)
 layout_mode = 2
 color = Color(0, 0.0117647, 0.0352941, 0.85098)
