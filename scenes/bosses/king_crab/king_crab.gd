@@ -160,6 +160,7 @@ func _ray_hits_player(ray: RayCast2D) -> Player:
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	take_damage(damage)
+	emit_signal("health_changed", health, max_health)
 	_note_damage_hit()
 	
 	if fsm.current_state != fsm.states.idle:
@@ -167,6 +168,7 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 
 	if health <= 0.0:
 		if fsm and fsm.current_state != fsm.states.dead:
+			emit_signal("boss_died")
 			fsm.change_state(fsm.states.dead)
 		return
 
