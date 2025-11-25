@@ -103,8 +103,6 @@ func _on_interaction_available() -> void:
 	collect_coin()
 	
 func make_position_id() -> String:
-	# Nếu map của bạn là grid (tile 16/32/64), có thể chia cho cell_size trước rồi round
-	# Ở đây tạm dùng toạ độ pixel integer luôn:
 	var ix := int(round(global_position.x))
 	var iy := int(round(global_position.y))
 	return "%d:%d" % [ix, iy]

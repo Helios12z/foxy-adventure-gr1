@@ -83,6 +83,7 @@ func _apply_checkpoint_inventory_only() -> void:
 		player.collected_water_paw_gem()
 	if data.has("has_water_room_gem") and bool(data["has_water_room_gem"]):
 		player.collected_water_room_gem()
+	apply_inventory_from_checkpoint()
 
 
 # Checkpoint system functions
@@ -130,6 +131,8 @@ func respawn_at_checkpoint() -> void:
 		if player_state == null:
 			return
 		player.load_state(player_state)
+		if inventory_system != null:
+			apply_inventory_from_checkpoint()
 		print("Player respawned at checkpoint: ", current_checkpoint_id)
 	else:
 		print("Player not found for respawn")
@@ -252,3 +255,40 @@ func is_coin_collected(coin_id: String) -> bool:
 		return false
 	var list: Array = collected_coins_by_stage.get(stage_path, [])
 	return list.has(coin_id)
+
+func update_inventory_in_checkpoint() -> void:
+	if inventory_system == null:
+		return
+
+	if current_checkpoint_id.is_empty():
+		ensure_initial_checkpoint()
+		if current_checkpoint_id.is_empty():
+			return
+
+	var chk_id: String = current_checkpoint_id
+	var checkpoint_info: Dictionary = checkpoint_data.get(chk_id, {})
+
+	checkpoint_info["inventory_data"] = inventory_system.save_data()
+	checkpoint_data[chk_id] = checkpoint_info
+
+	save_checkpoint_data()
+	
+func apply_inventory_from_checkpoint() -> void:
+	if inventory_system == null:
+		return
+	if current_checkpoint_id.is_empty():
+		return
+
+	var checkpoint_info: Dictionary = checkpoint_data.get(current_checkpoint_id, {})
+	if checkpoint_info.is_empty():
+		return
+
+	var inventory_data: Dictionary = checkpoint_info.get("inventory_data", {})
+	if inventory_data.is_empty():
+		return
+
+	inventory_system.coins = int(inventory_data.get("coins", inventory_system.coins))
+	inventory_system.keys = int(inventory_data.get("keys", inventory_system.keys))
+
+	inventory_system.coin_changed.emit(inventory_system.coins)
+	inventory_system.key_changed.emit(inventory_system.keys)

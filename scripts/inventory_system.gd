@@ -15,18 +15,22 @@ func add_coin(amount: int) -> void:
 	coins += amount
 	coin_changed.emit(coins)
 	item_collected.emit("coin", amount)
+	GameManager.update_inventory_in_checkpoint()
 	print("Collected ", amount, " coins. Total: ", coins)
 	
 func add_key(_amount: int = 1) -> void:
 	keys += _amount
 	key_changed.emit(keys)
 	item_collected.emit("key", _amount)
+	GameManager.update_inventory_in_checkpoint()
 	print("Collected ", _amount, " key Total: ", keys)
 	
 func use_key() -> bool:
 	if has_key():
 		keys -= 1
 		key_changed.emit(keys)
+		if Engine.has_singleton("GameManager"):
+			GameManager.update_inventory_in_checkpoint()
 		return true
 	return false
 	
