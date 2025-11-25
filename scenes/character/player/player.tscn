@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=34 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -15,6 +15,8 @@
 [ext_resource type="Script" uid="uid://bwe7irvywtcdf" path="res://scenes/character/player/states/hover.gd" id="20_gfavw"]
 [ext_resource type="Script" uid="uid://t4rt3tqet0ea" path="res://scenes/character/player/camera_follow.gd" id="21_camfollow"]
 [ext_resource type="AudioStream" uid="uid://irnmtldt0n5y" path="res://asset/sounds/jump.mp3" id="24_45mu1"]
+[ext_resource type="AudioStream" uid="uid://dtrphc4vgwfhl" path="res://asset/sounds/slash.mp3" id="25_65puw"]
+[ext_resource type="AudioStream" uid="uid://c7v6mh4l1j3rg" path="res://asset/sounds/dash.mp3" id="26_k7wq7"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
 [ext_resource type="Script" uid="uid://bn74l4ngryo6x" path="res://scenes/character/player/states/run.gd" id="40_fjxoa"]
 [ext_resource type="Script" uid="uid://di3w8xw7t025o" path="res://scenes/character/player/states/jump.gd" id="41_gswnw"]
@@ -50,7 +52,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfavw"]
-size = Vector2(25, 33)
+size = Vector2(35.8333, 33)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_psaxl"]
 size = Vector2(91, 143)
@@ -58,8 +60,9 @@ size = Vector2(91, 143)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4wjd"]
 size = Vector2(30, 43)
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
+[node name="Player" type="CharacterBody2D" groups=["Player", "player"]]
 z_index = 10
+scale = Vector2(1.2, 1.2)
 collision_layer = 2
 script = ExtResource("1_puv7k")
 has_fire_gem = true
@@ -109,7 +112,7 @@ light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
-animation = &"hover"
+animation = &"attack"
 
 [node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 light_mask = 2
@@ -147,7 +150,7 @@ script = ExtResource("7_t4wjd")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(12.5, -15.5)
+position = Vector2(17.9167, -15.5)
 shape = SubResource("RectangleShape2D_gfavw")
 
 [node name="PawHitArea2D" type="Area2D" parent="Direction"]
@@ -217,7 +220,14 @@ script = ExtResource("47_waterpaw")
 
 [node name="Jump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("24_45mu1")
-bus = &"SFX"
+
+[node name="Attack" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("25_65puw")
+volume_db = 4.553
+
+[node name="Dash" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("26_k7wq7")
+volume_db = 4.906
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]

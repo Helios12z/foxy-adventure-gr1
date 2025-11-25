@@ -30,13 +30,16 @@ var dash_cooldown_timer: Timer = null
 
 
 @onready var jump_sound = $Jump
-
+@onready var attack_sound = $Attack
+@onready var dash_sound = $Dash
 #signal take_dame
 
 var _last_left_press_ms: int = -100000
 var _last_right_press_ms: int = -100000
 
+
 func get_run_speed() -> float:
+	
 	return movement_speed * run_speed_multiplier
 
 func check_run_double_tap() -> int:

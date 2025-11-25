@@ -111,8 +111,8 @@ shape = SubResource("CapsuleShape2D_xf2r0")
 [node name="Direction" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-position = Vector2(1.14441e-05, -1.99999)
-scale = Vector2(0.6, 0.584)
+position = Vector2(0, 2)
+scale = Vector2(0.438672, 0.436531)
 sprite_frames = SubResource("SpriteFrames_m2cr4")
 animation = &"idle"
 autoplay = "idle"

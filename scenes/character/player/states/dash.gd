@@ -7,6 +7,7 @@ var _elapsed: float = 0.0
 var _last_ghost: float = 0.0
 
 func _enter() -> void:
+	obj.dash_sound.play()
 	# Keep current animation; just start dash movement
 	timer = obj.dash_duration
 	# Flatten vertical movement for a clean dash

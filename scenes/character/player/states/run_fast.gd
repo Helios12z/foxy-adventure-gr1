@@ -19,6 +19,9 @@ func _enter() -> void:
 
 func _update(delta: float) -> void:
 	#Toggle Susanoo spirit
+	if Input.is_action_just_pressed("attack"):
+		change_state(fsm.states.attack)
+		return
 	if control_susanoo():
 		return
 	# Activate Water Paw
