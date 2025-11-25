@@ -9,11 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://5nbx21n1v745" path="res://asset/forest/background/tree2.png" id="4_x0kog"]
 [ext_resource type="Texture2D" uid="uid://q2faej61blnu" path="res://asset/forest/background/2ac948c0-553d-4c6f-9935-bed90a7ccfe6.png" id="6_nd2ra"]
 
-# --- Giữ phần của Updated upstream ---
 [ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="7_nd2ra"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="8_playerhud"]
-
-# --- Giữ phần của Stashed changes ---
 [ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/gobin/gobin.tscn" id="9_qaift"]
 [ext_resource type="PackedScene" uid="uid://d4naxw7byqf3t" path="res://scenes/enemies/flyeye/fly_eye.tscn" id="10_2peu5"]
 [ext_resource type="PackedScene" uid="uid://g3pj503kap4d" path="res://scenes/enemies/skeleton/skeleton.tscn" id="11_x8knb"]
@@ -471,11 +468,10 @@ trail_enabled = true
 trail_lifetime = 0.6
 process_material = SubResource("ParticleProcessMaterial_pklx6")
 
-<<<<<<< Updated upstream
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="PlayerHUD" parent="UI" instance=ExtResource("8_playerhud")]
-=======
+
 [node name="Gobin" parent="." instance=ExtResource("9_qaift")]
 position = Vector2(3123, 91.00001)
 
@@ -514,4 +510,3 @@ position = Vector2(2480, 113)
 
 [node name="Checkpoint2" parent="." instance=ExtResource("13_2peu5")]
 position = Vector2(6512, 113)
->>>>>>> Stashed changes
