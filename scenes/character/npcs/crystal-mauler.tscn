@@ -55,7 +55,8 @@ collision_layer = 64
 script = ExtResource("1_flrhr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -64)
+position = Vector2(-3, -104)
+scale = Vector2(1.55903, 1.61328)
 sprite_frames = SubResource("SpriteFrames_f0gsv")
 autoplay = "default"
 frame_progress = 0.428593

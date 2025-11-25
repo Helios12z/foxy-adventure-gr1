@@ -1,0 +1,121 @@
+[gd_scene load_steps=22 format=3 uid="uid://drem1inlnoymq"]
+
+[ext_resource type="Script" uid="uid://b5ht8frfquhry" path="res://scenes/bosses/boss3/boss_3.gd" id="1_dj6mc"]
+[ext_resource type="Texture2D" uid="uid://cbsu7keqwph4k" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_05.png" id="2_vcpcy"]
+[ext_resource type="Texture2D" uid="uid://bpqx2m7kje4lb" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_04.png" id="3_2yyk8"]
+[ext_resource type="Texture2D" uid="uid://dle6loxyp83cx" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_03.png" id="4_q16wh"]
+[ext_resource type="Texture2D" uid="uid://bbg6ljyim5vq" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_02.png" id="5_jwwe7"]
+[ext_resource type="Texture2D" uid="uid://duvne638w5466" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_01.png" id="6_imosy"]
+[ext_resource type="Texture2D" uid="uid://ffyyou27xpvw" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_fire_1.png" id="7_fa86v"]
+[ext_resource type="Texture2D" uid="uid://bvwv5g7mvedl0" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_01.png" id="8_jwwe7"]
+[ext_resource type="Texture2D" uid="uid://denm2bj1aepdw" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_fire_2.png" id="8_w12rv"]
+[ext_resource type="Texture2D" uid="uid://jcwb4tmaqu2s" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_fire_3.png" id="9_qi10k"]
+[ext_resource type="Texture2D" uid="uid://bo1gwo8si1pdq" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_fire_4.png" id="10_pgwly"]
+[ext_resource type="Texture2D" uid="uid://diicvpuu4dhm4" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_fire_5.png" id="11_db1te"]
+[ext_resource type="Texture2D" uid="uid://c1j0valgeefho" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_1.png" id="12_khspc"]
+[ext_resource type="Texture2D" uid="uid://ibcd3chp2ym7" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_02.png" id="13_rnttc"]
+[ext_resource type="Texture2D" uid="uid://eeifeg3g6740" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_3.png" id="14_hsgt3"]
+[ext_resource type="Texture2D" uid="uid://b2y56tlnv66c5" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_4.png" id="15_dmnor"]
+[ext_resource type="Texture2D" uid="uid://rj76tywdau3r" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_02.tres" id="17_fa86v"]
+[ext_resource type="Texture2D" uid="uid://b8wrx822kv63v" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_07.tres" id="18_w12rv"]
+[ext_resource type="Texture2D" uid="uid://drn7knywxqna8" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_08.tres" id="19_qi10k"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xf2r0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m2cr4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_vcpcy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2yyk8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_q16wh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jwwe7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_imosy")
+}],
+"loop": true,
+"name": &"atk_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_fa86v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_w12rv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_qi10k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pgwly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_db1te")
+}],
+"loop": true,
+"name": &"atk_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_khspc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_rnttc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_hsgt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_dmnor")
+}],
+"loop": true,
+"name": &"atk_3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_jwwe7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_fa86v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_w12rv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_qi10k")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Boss3" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
+collision_layer = 256
+script = ExtResource("1_dj6mc")
+metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_xf2r0")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+position = Vector2(0, 2)
+scale = Vector2(0.438672, 0.436531)
+sprite_frames = SubResource("SpriteFrames_m2cr4")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.887347
+
+[node name="States" type="Node" parent="."]

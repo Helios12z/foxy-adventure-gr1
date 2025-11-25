@@ -62,7 +62,7 @@ func control_wall_jump() -> bool:
 			obj.velocity.y = -obj.jump_speed
 			
 			# Apply horizontal push force away from wall
-			var wall_jump_force = obj.movement_speed * 1.2  # Stronger horizontal force for wall jump
+			var wall_jump_force = obj.movement_speed  # Stronger horizontal force for wall jump
 			
 			if obj.is_on_left_wall():
 				obj.velocity.x = wall_jump_force  # Push right
