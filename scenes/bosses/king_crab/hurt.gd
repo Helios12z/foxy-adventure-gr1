@@ -10,4 +10,4 @@ func _update(d: float) -> void:
 		return
 
 	if update_timer(d):
-		change_state(fsm.states.walk)
+		change_state(fsm.previous_state)
