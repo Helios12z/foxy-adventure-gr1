@@ -613,6 +613,13 @@ popup_text_lines = Array[String](["Press 'Shift' button to Dash"])
 popup_keys = Array[String]([">"])
 popup_video_path = "res://asset/videos/dash_tutorial.ogv"
 
+[node name="Area2D5" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(4455, -292)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Press 'Shift' button to Dash"])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/dash_tutorial.ogv"
+
 [node name="Area2D2" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(6090, 27)
 popup_scene = ExtResource("46_ncpwn")
@@ -620,8 +627,22 @@ popup_text_lines = Array[String](["Double press 'left' or 'right' to run faster.
 popup_keys = Array[String]([">"])
 popup_video_path = "res://asset/videos/run_fast_tutorial.ogv"
 
+[node name="Area2D6" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(5971, -283)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Double press 'left' or 'right' to run faster."])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/run_fast_tutorial.ogv"
+
 [node name="Area2D3" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(7324, 30)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["When Foxy is out of jumps, holding Space activates a hover state that slows his fall."])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/hover_tutorial.ogv"
+
+[node name="Area2D7" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(7720, -196)
 popup_scene = ExtResource("46_ncpwn")
 popup_text_lines = Array[String](["When Foxy is out of jumps, holding Space activates a hover state that slows his fall."])
 popup_keys = Array[String]([">"])
