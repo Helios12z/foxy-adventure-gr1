@@ -1,9 +1,10 @@
-[gd_scene load_steps=33 format=4 uid="uid://dq7eu5p47t8gv"]
+[gd_scene load_steps=34 format=4 uid="uid://dq7eu5p47t8gv"]
 
 [ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
 [ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="3_gpada"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_hrn5s"]
+[ext_resource type="PackedScene" path="res://ui/PlayerHUD.tscn" id="8_playerhud"]
 [ext_resource type="Texture2D" uid="uid://c3u4por3c6pmn" path="res://asset/forest/background/tree1.png" id="4_aph5k"]
 [ext_resource type="Texture2D" uid="uid://7e4tmseq4hhm" path="res://asset/forest/background/Layer_0002_7.png" id="4_wkgak"]
 [ext_resource type="Texture2D" uid="uid://5nbx21n1v745" path="res://asset/forest/background/tree2.png" id="4_x0kog"]
@@ -464,3 +465,7 @@ visibility_rect = Rect2(-100, -100, 3000, 200)
 trail_enabled = true
 trail_lifetime = 0.6
 process_material = SubResource("ParticleProcessMaterial_pklx6")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerHUD" parent="UI" instance=ExtResource("8_playerhud")]

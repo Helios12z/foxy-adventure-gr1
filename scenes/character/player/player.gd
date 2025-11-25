@@ -2,6 +2,7 @@ class_name Player
 extends BaseCharacter
 
 ## Player character class that handles movement, combat, and state management
+signal hp_changed(current_hp, max_hp)
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var _base_movement_speed: float = 0.0
@@ -278,3 +279,11 @@ func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
 		fsm.change_state(fsm.states.dead)
 	else: 
 		fsm.change_state(fsm.states.hurt)
+
+func take_damage(damage: int) -> void:
+	super.take_damage(damage)
+	emit_signal("hp_changed", health, max_health)
+
+func heal(amount: int) -> void:
+	health = min(health + amount, max_health)
+	emit_signal("hp_changed", health, max_health)
