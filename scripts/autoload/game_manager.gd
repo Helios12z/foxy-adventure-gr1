@@ -86,9 +86,11 @@ func _apply_checkpoint_inventory_only() -> void:
 func save_checkpoint(checkpoint_id: String) -> void:
 	current_checkpoint_id = checkpoint_id
 	var player_state_dict: Dictionary = player.save_state()
+	var inventory_data: Dictionary = inventory_system.save_data()
 	checkpoint_data[checkpoint_id] = {
 		"player_state":player_state_dict,
-		"stage_path": current_stage.scene_file_path
+		"stage_path": current_stage.scene_file_path,
+		"inventory_data": inventory_data
 	}
 	print("Checkpoint saved: ", checkpoint_id)
 
@@ -128,6 +130,11 @@ func respawn_at_checkpoint() -> void:
 		print("Player respawned at checkpoint: ", current_checkpoint_id)
 	else:
 		print("Player not found for respawn")
+	
+	if inventory_system != null:
+		var inventory_data: Dictionary = checkpoint_info.get("inventory_data")
+		inventory_system.coins = inventory_data["coins"]
+		inventory_system.keys = inventory_data["keys"]
 
 #check if there is a checkpoint
 func has_checkpoint() -> bool:
