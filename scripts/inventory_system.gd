@@ -40,5 +40,11 @@ func get_gold() -> int:
 
 func get_keys() -> int:
 	return keys
+	
+func save_data() -> Dictionary:
+	return {
+		"coins": coins,
+		"keys" : keys
+	}
 
 	
