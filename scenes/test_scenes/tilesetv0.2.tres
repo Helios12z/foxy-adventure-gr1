@@ -755,9 +755,9 @@ texture_region_size = Vector2i(32, 32)
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ge83f"]
 scenes/1/scene = ExtResource("2_em3jw")
 scenes/2/scene = ExtResource("3_eudup")
-scenes/4/scene = ExtResource("4_mmvf4")
-scenes/5/scene = ExtResource("5_dm3mv")
-scenes/6/scene = ExtResource("6_7jcja")
+scenes/3/scene = ExtResource("5_dm3mv")
+scenes/4/scene = ExtResource("6_7jcja")
+scenes/5/scene = ExtResource("4_mmvf4")
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ikfa2"]
 scenes/1/scene = ExtResource("4_ybmpq")

@@ -28,10 +28,12 @@ func _unhandled_input(event):
 
 
 func _on_body_entered(_body: Node2D) -> void:
+	print("enterrrr")
 	set_process_unhandled_input(true)
 	interaction_available.emit()
 
 
 func _on_body_exited(_body: Node2D) -> void:
+	print("exitttt")
 	set_process_unhandled_input(false)
 	interaction_unavailable.emit()

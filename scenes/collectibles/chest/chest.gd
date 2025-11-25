@@ -6,15 +6,24 @@ extends InteractiveArea2D
 var is_opened: bool = false
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-
+var is_interacted = false
 
 func _ready() -> void:
 	interacted.connect(_on_interacted)
+	interaction_available.connect(_on_interaction_available)
+	interaction_unavailable.connect(_on_interaction_unavailable)
+	super._ready()
 	animated_sprite.play("close")
+	
+func _on_interaction_available() -> void:
+	is_interacted = true
 
+func _on_interaction_unavailable() -> void:
+	is_interacted = false
 
 func _on_interacted() -> void:
-	attempt_open_chest()
+	if is_interacted:
+		attempt_open_chest()
 
 
 func attempt_open_chest() -> void:
