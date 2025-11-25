@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://7e4tmseq4hhm" path="res://asset/forest/background/Layer_0002_7.png" id="4_wkgak"]
 [ext_resource type="Texture2D" uid="uid://5nbx21n1v745" path="res://asset/forest/background/tree2.png" id="4_x0kog"]
 [ext_resource type="Texture2D" uid="uid://q2faej61blnu" path="res://asset/forest/background/2ac948c0-553d-4c6f-9935-bed90a7ccfe6.png" id="6_nd2ra"]
-[ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/items/fire_gem.tscn" id="7_nd2ra"]
+[ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="7_nd2ra"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
 blend_mode = 1

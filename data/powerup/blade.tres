@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PowerupDecoratorData" load_steps=2 format=3 uid="uid://0nxovonoldk6"]
+
+[ext_resource type="Script" uid="uid://bi224x34bsap8" path="res://scripts/powerup/powerup_decorator_data.gd" id="1_aypht"]
+
+[resource]
+script = ExtResource("1_aypht")
+id = "blade"
+grants_blade_attack = true
+sprite_override = "BladeAnimatedSprite2D"
+metadata/_custom_type_script = "uid://bi224x34bsap8"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PowerupDecoratorData" load_steps=2 format=3 uid="uid://oamt0sj5rtop"]
+
+[ext_resource type="Script" uid="uid://bi224x34bsap8" path="res://scripts/powerup/powerup_decorator_data.gd" id="1_bjx6a"]
+
+[resource]
+script = ExtResource("1_bjx6a")
+id = "speed_up"
+duration = 5.0
+speed_multiplier = 3.0
+metadata/_custom_type_script = "uid://bi224x34bsap8"

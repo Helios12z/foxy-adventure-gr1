@@ -9,10 +9,14 @@ var checkpoint_data: Dictionary = {}
 var current_stage: Node = null
 var player: Player = null
 
+var inventory_system: InvetorySystem = null
+
 func _ready() -> void:
 	# Load checkpoint data when game starts
 	load_checkpoint_data()
-	
+		# Init inventory system
+	inventory_system = InvetorySystem.new()
+	add_child(inventory_system)
 	pass
 
 #change stage by path and target portal name

@@ -217,7 +217,6 @@ script = ExtResource("47_waterpaw")
 
 [node name="Jump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("24_45mu1")
-bus = &"SFX"
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]

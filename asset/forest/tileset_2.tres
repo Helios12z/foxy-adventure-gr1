@@ -1,10 +1,18 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://swi381ypjdht"]
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://swi381ypjdht"]
 
 [ext_resource type="Texture2D" uid="uid://dorb4tdwb6oce" path="res://asset/forest/terrain/test1.png" id="1_543xl"]
 [ext_resource type="PackedScene" uid="uid://30ih00wu8oui" path="res://scenes/enemies/spike/spike.tscn" id="1_k7no8"]
+[ext_resource type="PackedScene" uid="uid://bxm8mipo7fd0v" path="res://scenes/collectibles/blade/blade.tscn" id="2_23xku"]
+[ext_resource type="PackedScene" uid="uid://c2wl27feuvvb4" path="res://scenes/collectibles/chest/chest.tscn" id="3_p0u2h"]
+[ext_resource type="PackedScene" uid="uid://bsmvkgh4pu8cm" path="res://scenes/collectibles/chestkey/chest_key.tscn" id="4_8m1rr"]
+[ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="5_88od2"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_gx23y"]
 scenes/1/scene = ExtResource("1_k7no8")
+scenes/2/scene = ExtResource("2_23xku")
+scenes/3/scene = ExtResource("3_p0u2h")
+scenes/4/scene = ExtResource("4_8m1rr")
+scenes/5/scene = ExtResource("5_88od2")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k7no8"]
 texture = ExtResource("1_543xl")
