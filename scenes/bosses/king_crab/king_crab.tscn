@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="3_skber"]
 [ext_resource type="Texture2D" uid="uid://bfn8jhlmklgu1" path="res://asset/effects/effect_1.png" id="3_wwxs8"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_5jg2x"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/king_crab/king_crab_shockwave.tscn" id="4_daqye"]
+[ext_resource type="PackedScene" uid="uid://dhnpal80arkyc" path="res://scenes/bosses/king_crab/king_crab_shockwave.tscn" id="4_daqye"]
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
@@ -1048,7 +1048,6 @@ animations = [{
 [node name="KingCrab" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_3obn1")
-king_crab_max_health = 15.0
 bullet_scene = ExtResource("2_vlw8a")
 minion_scene = ExtResource("3_skber")
 king_crab_shockwave_scene = ExtResource("4_daqye")

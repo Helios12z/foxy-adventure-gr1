@@ -65,8 +65,8 @@ func _update(d: float) -> void:
 
 
 func _get_target_player() -> Node2D:
-	if "_player_fallback" in obj and is_instance_valid(obj._player_fallback):
-		return obj._player_fallback
+	if obj.seen_player:
+		return obj._get_player()
 	return null
 
 func _teleport_to_new_position() -> void:
@@ -109,9 +109,8 @@ func _teleport_to_new_position() -> void:
 
 func _finish_teleport() -> void:
 	obj.animated_sprite_2d.modulate.a = 1.0
-	obj.reset_proximity_timer()
 	disable_teleport_effect()
-	change_state(fsm.states.idle)
+	change_state(fsm.previous_state)
 
 func _exit() -> void:
 	obj.animated_sprite_2d.modulate.a = 1.0

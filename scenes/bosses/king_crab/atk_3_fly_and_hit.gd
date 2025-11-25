@@ -12,7 +12,7 @@ var _blink_tw: Tween
 
 var _hover_total := 0.0
 var _target_locked := false
-var _lock_ratio := 0.5    # lock sau khi đã hover được 50% thời gian
+var _lock_ratio := 0.5    
 
 func _enter() -> void:
 	obj.change_animation("atk3_fly_and_hit")
@@ -109,11 +109,8 @@ func _end_cast_blink() -> void:
 func _face_player() -> void:
 	var target_x: float
 	var have := false
-	if obj.found_player != null:
-		target_x = obj.found_player.global_position.x
-		have = true
-	elif obj.has_last_seen:
-		target_x = obj.last_seen_player_x
+	if obj._get_player() != null:
+		target_x = obj._get_player().global_position.x
 		have = true
 
 	if have:
