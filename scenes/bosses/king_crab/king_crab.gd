@@ -1,5 +1,8 @@
 extends BaseCharacter
 
+signal health_changed(current: float, max_health: float)
+signal boss_died
+
 @export var king_crab_max_health: float = 500
 @export var spike_damage: int = 50
 @export var speed: float = 50.0
@@ -113,6 +116,8 @@ func _ready() -> void:
 	hit_area_2d.damage = spike_damage
 	hit_collision_default_pos = hit_collision_shape_2d.position
 	
+	emit_signal("health_changed", health, max_health)
+	
 func _physics_process(delta: float) -> void:
 	if fsm != null:
 		fsm._update(delta)
@@ -197,11 +202,12 @@ func check_player_visibility() -> void:
 		_last_visible = false
 		found_player = null
 
-func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
+func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: int) -> void:
 	_take_damage(_damage)
 
-func _take_damage(_damage: float) -> void:
+func _take_damage(_damage: int) -> void:
 	take_damage(_damage)
+	emit_signal("health_changed", health, max_health)
 	_note_damage_hit()
 	
 	if not in_phase2 and health > 0 and health <= max_health * phase2_threshold_ratio:
@@ -216,7 +222,9 @@ func _take_damage(_damage: float) -> void:
 		fsm.change_state(fsm.states.hurt_with_one_claw)
 	else:
 		flash_hurt(0.25, 3)
-		if health <= 0: fsm.change_state(fsm.states.dead)
+		if health <= 0: 
+			emit_signal("boss_died")
+			fsm.change_state(fsm.states.dead)
 		
 func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
 	var mat := animated_sprite_2d.material as ShaderMaterial
@@ -294,10 +302,6 @@ func _clamp_to_level(p: Vector2) -> Vector2:
 	return Vector2(px, py)
 	
 func _update_level_bounds_from_markers() -> void:
-	if bound_point_a == null or bound_point_b == null:
-		print("KingCrab: bound_point_a/b is null!")
-		return
-
 	var a := bound_point_a.global_position
 	var b := bound_point_b.global_position
 
