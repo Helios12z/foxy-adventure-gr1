@@ -139,7 +139,7 @@ animations = [{
 size = Vector2(42, 25)
 
 [node name="Crab" type="CharacterBody2D"]
-collision_layer = 2
+collision_layer = 8
 script = ExtResource("1_jgbqf")
 movement_speed = 100.0
 
