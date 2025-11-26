@@ -24,7 +24,7 @@ func _ready() -> void:
 	super._ready()
 	change_direction(-direction)
 	collision_shape_2d.position.x *= -1
-
+	health = 100
 	fsm = FSM.new(self, $States, $States/Walk)
 	health = pear_health
 	hurt_area.hurt.connect(_on_hurt_area_2d_hurt) 
