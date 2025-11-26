@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://dq7eu5p47t8gv"]
+[gd_scene load_steps=41 format=4 uid="uid://dq7eu5p47t8gv"]
 
 [ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://g3pj503kap4d" path="res://scenes/enemies/skeleton/skeleton.tscn" id="11_x8knb"]
 [ext_resource type="PackedScene" uid="uid://cnt8ey2jdqrgv" path="res://scenes/enemies/mushroom_zoombie/mushroom_zombie.tscn" id="12_fe7x3"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="13_2peu5"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="16_pklx6"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
 blend_mode = 1
@@ -131,6 +132,9 @@ scale_min = 1.5
 scale_max = 1.8
 color_ramp = SubResource("GradientTexture1D_2peu5")
 color_initial_ramp = SubResource("GradientTexture1D_3aj2q")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yyddw"]
+size = Vector2(10333, 98)
 
 [node name="Map2" type="Node2D"]
 script = ExtResource("1_68p3w")
@@ -512,3 +516,14 @@ position = Vector2(6512, 113)
 
 [node name="FireGem" parent="." instance=ExtResource("7_nd2ra")]
 position = Vector2(6639, 62)
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+script = ExtResource("16_pklx6")
+damage = 9999
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(4787.5, 303)
+shape = SubResource("RectangleShape2D_yyddw")
