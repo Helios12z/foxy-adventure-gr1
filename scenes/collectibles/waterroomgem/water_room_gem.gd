@@ -18,4 +18,17 @@ func _process(delta: float) -> void:
 func _on_pickup_body_entered(body: Node) -> void:
     if body is Player:
         GameManager.collect_water_room_gem()
+        var popup_scene = load("res://levels/tutorial/signpost_details/room_tutorial_popup.tscn")
+        if popup_scene:
+            var popup = popup_scene.instantiate()
+            var root = get_tree().current_scene
+            if root:
+                var ui_layer = root.find_child("UILayer", true, false)
+                if ui_layer == null:
+                    ui_layer = CanvasLayer.new()
+                    ui_layer.name = "UILayer"
+                    root.add_child(ui_layer)
+                ui_layer.add_child(popup)
+                if popup.has_method("show_popup"):
+                    popup.show_popup()
         queue_free()

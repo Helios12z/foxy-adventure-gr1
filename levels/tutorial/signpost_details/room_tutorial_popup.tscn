@@ -1,0 +1,111 @@
+[gd_scene load_steps=9 format=3 uid="uid://crhhdn01v00gw"]
+
+[ext_resource type="Script" uid="uid://b4gqdv4tl3bgg" path="res://levels/tutorial/signpost_details/tutorial_popup.gd" id="1_vla15"]
+[ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="2_rfi70"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="3_2k8vl"]
+[ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="4_xrsek"]
+[ext_resource type="Texture2D" uid="uid://cx1m1wxkbipxh" path="res://asset/ui/close_button.png" id="5_v6hg1"]
+[ext_resource type="VideoStream" uid="uid://d3vu01ldb1df2" path="res://asset/videos/room_tutorial.ogv" id="6_vla15"]
+[ext_resource type="PackedScene" uid="uid://dr1kwjksl4cp5" path="res://levels/tutorial/keyboard_key.tscn" id="7_utglj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rbs2k"]
+
+[node name="TutorialPopup" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vla15")
+
+[node name="OverlayColorRect" type="ColorRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.0117647, 0.0352941, 0.85098)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(160, 96)
+layout_mode = 0
+offset_left = 268.0
+offset_top = 109.0
+offset_right = 859.0
+offset_bottom = 529.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_rfi70")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Label" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 246.0
+offset_top = 20.0
+offset_right = 353.0
+offset_bottom = 43.0
+theme_override_fonts/font = ExtResource("3_2k8vl")
+text = "TUTORIAL"
+label_settings = SubResource("LabelSettings_rbs2k")
+
+[node name="Description" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 83.0
+offset_top = 325.0
+offset_right = 534.0
+offset_bottom = 549.0
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("4_xrsek")
+text = "Foxy have just unlocked new skill! 
+
+          Press        to active this"
+autowrap_mode = 2
+
+[node name="CloseTextureButton" type="TextureButton" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 574.0
+offset_top = -2.0
+offset_right = 588.0
+offset_bottom = 13.0
+toggle_mode = true
+texture_normal = ExtResource("5_v6hg1")
+texture_pressed = ExtResource("5_v6hg1")
+texture_hover = ExtResource("5_v6hg1")
+texture_disabled = ExtResource("5_v6hg1")
+texture_focused = ExtResource("5_v6hg1")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 56.0
+offset_right = 490.0
+offset_bottom = 288.0
+stream = ExtResource("6_vla15")
+volume_db = -80.0
+autoplay = true
+expand = true
+loop = true
+
+[node name="KeysBox" type="HBoxContainer" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 495.0
+offset_top = 357.0
+offset_right = 535.0
+offset_bottom = 392.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Node" parent="NinePatchRect" instance=ExtResource("7_utglj")]
+position = Vector2(267, 375)
+key_text = "5"
+
+[connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]
+[connection signal="pressed" from="NinePatchRect/CloseTextureButton" to="." method="_on_close_texture_button_pressed"]

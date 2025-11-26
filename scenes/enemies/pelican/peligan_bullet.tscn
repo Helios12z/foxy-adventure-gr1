@@ -24,6 +24,7 @@ shape = SubResource("CircleShape2D_kfu4w")
 collision_layer = 8
 collision_mask = 5
 script = ExtResource("3_7gcl5")
+damage = 15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 shape = SubResource("CircleShape2D_5c6wj")

@@ -22,8 +22,7 @@ script = ExtResource("1_ljxj7")
 
 [node name="OverlayColorRect" type="ColorRect" parent="."]
 self_modulate = Color(1, 1, 1, 0.352941)
-layout_mode = 2
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -32,7 +31,7 @@ color = Color(0, 0.0117647, 0.0352941, 0.85098)
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 custom_minimum_size = Vector2(160, 96)
-layout_mode = 2
+layout_mode = 0
 offset_left = 268.0
 offset_top = 109.0
 offset_right = 859.0
@@ -59,9 +58,9 @@ label_settings = SubResource("LabelSettings_rbs2k")
 
 [node name="Description" type="Label" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 64.0
+offset_left = 82.0
 offset_top = 325.0
-offset_right = 515.0
+offset_right = 533.0
 offset_bottom = 549.0
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("4_7a2dl")
@@ -90,10 +89,10 @@ offset_top = 56.0
 offset_right = 490.0
 offset_bottom = 288.0
 stream = ExtResource("6_w1fcy")
-autoplay = false
+volume_db = -80.0
+autoplay = true
 expand = true
 loop = true
-volume_db = -80.0
 
 [node name="KeysBox" type="HBoxContainer" parent="NinePatchRect"]
 layout_mode = 0
@@ -105,7 +104,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Node" parent="NinePatchRect" instance=ExtResource("7_0vou5")]
-position = Vector2(248, 375)
+position = Vector2(266, 375)
 key_text = "4"
 
 [connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]

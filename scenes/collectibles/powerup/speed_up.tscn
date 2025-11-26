@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://giy64ifkb5um"]
+
+[ext_resource type="Script" uid="uid://imd20iere2ar" path="res://scenes/collectibles/powerup/speed_up.gd" id="1_0ebgw"]
+[ext_resource type="Texture2D" uid="uid://2o8vmjn4kwq4" path="res://asset/powerup/speed_up.png" id="1_5e36u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ia6ek"]
+
+[node name="SpeedUp" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_0ebgw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ia6ek")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_5e36u")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://drem1inlnoymq"]
+[gd_scene load_steps=24 format=3 uid="uid://drem1inlnoymq"]
 
 [ext_resource type="Script" uid="uid://b5ht8frfquhry" path="res://scenes/bosses/boss3/boss_3.gd" id="1_dj6mc"]
 [ext_resource type="Texture2D" uid="uid://cbsu7keqwph4k" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_05.png" id="2_vcpcy"]
@@ -19,6 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://rj76tywdau3r" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_02.tres" id="17_fa86v"]
 [ext_resource type="Texture2D" uid="uid://b8wrx822kv63v" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_07.tres" id="18_w12rv"]
 [ext_resource type="Texture2D" uid="uid://drn7knywxqna8" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_08.tres" id="19_qi10k"]
+[ext_resource type="Script" uid="uid://dsynr3clvqlf1" path="res://scenes/bosses/boss3/boss3_phase_1.gd" id="20_w12rv"]
+[ext_resource type="Script" uid="uid://dy6ms2a1nbppg" path="res://scenes/bosses/boss3/boss3_phase_2.gd" id="21_qi10k"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xf2r0"]
 
@@ -114,8 +116,15 @@ shape = SubResource("CapsuleShape2D_xf2r0")
 position = Vector2(0, 2)
 scale = Vector2(0.438672, 0.436531)
 sprite_frames = SubResource("SpriteFrames_m2cr4")
-animation = &"idle"
+animation = &"atk_3"
 autoplay = "idle"
-frame_progress = 0.887347
 
 [node name="States" type="Node" parent="."]
+
+[node name="Phase1" type="Node" parent="States"]
+script = ExtResource("20_w12rv")
+metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="Phase2" type="Node" parent="States"]
+script = ExtResource("21_qi10k")
+metadata/_custom_type_script = "uid://1yeaxl8cdu5k"

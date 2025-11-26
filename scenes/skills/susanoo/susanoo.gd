@@ -1,5 +1,9 @@
 extends Node2D
 
+signal susanoo_started
+signal susanoo_ended
+signal attack_meter_changed(value, max, triggered)
+
 # Susanoo spirit: follows player smoothly, mirrors attacks,
 # and handles appear/disappear visual effects.
 
@@ -34,6 +38,7 @@ var _combo_timer: Timer = null
 var combo_index: int = 0 # 0: none, 1: next press = attack2
 @export var combo_window: float = 0.35
 var attack_count: int = 0
+@export var meteor_attack_threshold: int = 9
 
 var _sprite: AnimatedSprite2D = null
 var _hit: Area2D = null
@@ -100,6 +105,8 @@ func _ready() -> void:
 	_lifetime_timer.timeout.connect(_on_lifetime_timeout)
 	add_child(_lifetime_timer)
 	_lifetime_timer.start()
+
+	susanoo_started.emit()
 
 	# Combo timer
 	_combo_timer = Timer.new()
@@ -202,9 +209,13 @@ func _on_attack_timeout() -> void:
 	_set_hit_area_enabled(_hit2, false)
 	# Count attacks for combo-based clone spawning regardless of collision range
 	attack_count += 1
-	# Level 3: every 9th attack triggers meteor shower
-	if level >= 3 and attack_count % 9 == 0:
+	var threshold = max(1, meteor_attack_threshold)
+	var meter = attack_count % threshold
+	var triggered := false
+	if level >= 3 and meter == 0:
 		_trigger_meteor_shower()
+		triggered = true
+	attack_meter_changed.emit(meter, threshold, triggered)
 
 func _on_hit_enable_timeout() -> void:
 	if _sprite and _sprite.animation == "attack2" and _hit2 != null:
@@ -344,6 +355,7 @@ func play_disappear_and_free() -> void:
 	tw.tween_callback(Callable(self, "queue_free"))
 
 func _on_lifetime_timeout() -> void:
+	susanoo_ended.emit()
 	play_disappear_and_free()
 	# Bật/tắt defense theo level
 	if _defense_area:

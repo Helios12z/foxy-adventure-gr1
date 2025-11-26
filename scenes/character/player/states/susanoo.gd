@@ -4,6 +4,12 @@ extends PlayerState
 # the player with the appearance sequence, then return to idle.
 
 var susanoo_scene: PackedScene = null
+signal susanoo_cooldown_started(duration)
+signal susanoo_cooldown_updated(time_left)
+signal susanoo_cooldown_finished()
+@export var cooldown_time: float = 20.0
+var on_cooldown: bool = false
+var cooldown_timer: Timer = null
 
 func _enter() -> void:
 	# Load scene lazily
@@ -13,7 +19,10 @@ func _enter() -> void:
 	if not obj.has_fire_gem:
 		change_state(fsm.states.idle)
 		return
-	# Nếu đã có spirit, không làm gì cả
+	# Nếu đang cooldown hoặc đã có spirit, không làm gì cả
+	if on_cooldown:
+		change_state(fsm.states.idle)
+		return
 	var existing := obj.get_node_or_null("SusanooSpirit")
 	if existing != null:
 		change_state(fsm.states.idle)
@@ -30,7 +39,15 @@ func _enter() -> void:
 	var dir := obj.direction
 	spirit.global_position = obj.global_position + Vector2(-60 * dir, -8)
 
-	# Appearance đã bỏ, spirit hiển thị ngay lập tức
+	if cooldown_timer == null:
+		cooldown_timer = Timer.new()
+		cooldown_timer.one_shot = true
+		cooldown_timer.timeout.connect(_on_cooldown_timeout)
+		add_child(cooldown_timer)
+	on_cooldown = true
+	cooldown_timer.wait_time = cooldown_time
+	cooldown_timer.start()
+	susanoo_cooldown_started.emit(cooldown_time)
 
 	# Return control to idle after toggling
 	change_state(fsm.states.idle)
@@ -38,5 +55,13 @@ func _enter() -> void:
 func _update(_delta: float) -> void:
 	pass
 
+func _process(_delta: float) -> void:
+	if on_cooldown and cooldown_timer != null:
+		susanoo_cooldown_updated.emit(cooldown_timer.time_left)
+
 func _exit() -> void:
 	pass
+
+func _on_cooldown_timeout() -> void:
+	on_cooldown = false
+	susanoo_cooldown_finished.emit()
