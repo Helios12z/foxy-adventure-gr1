@@ -180,6 +180,9 @@ func _blow_away() -> void:
 		return
 
 	var b = obj.blow_scene.instantiate()
+	if not obj.in_phase2: 
+		b.initial_radius = 10.0
+		b.max_radius = 120.0
 	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
 	parent.add_child(b)
 
