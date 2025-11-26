@@ -1,52 +1,93 @@
-[gd_scene load_steps=5 format=4 uid="uid://x5qrj66qebnm"]
+[gd_scene load_steps=10 format=4 uid="uid://x5qrj66qebnm"]
 
-[ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_v68y4"]
-[ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="2_vy0vx"]
-[ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_4co4v"]
-[ext_resource type="Script" uid="uid://cu4d7qndrtnyl" path="res://levels/boss_levels/king_crab/boss_hud.gd" id="4_vy0vx"]
+[ext_resource type="Script" uid="uid://bl3x6kmrgh3te" path="res://levels/boss_levels/king_crab/level_king_crab.gd" id="1_5yrod"]
+[ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_n68t6"]
+[ext_resource type="PackedScene" uid="uid://bunssbth60xh8" path="res://scenes/bosses/king_crab/king_crab.tscn" id="2_5yrod"]
+[ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_wyfuh"]
+[ext_resource type="Script" uid="uid://cu4d7qndrtnyl" path="res://levels/boss_levels/king_crab/boss_hud.gd" id="4_42jcx"]
+[ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="5_uiho5"]
 
-[node name="TestBossKingCrab" type="Node2D"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5yrod"]
+atlas = ExtResource("5_uiho5")
+region = Rect2(106, 355, 1087, 33)
+margin = Rect2(30, 55, 0, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_42jcx"]
+atlas = ExtResource("5_uiho5")
+region = Rect2(74, 48, 1151, 127)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wyfuh"]
+atlas = ExtResource("5_uiho5")
+region = Rect2(106, 227, 1087, 33)
+margin = Rect2(30, 55, 40, 80)
+
+[node name="LevelKingCrab" type="Node2D"]
+script = ExtResource("1_5yrod")
 
 [node name="World" type="Node2D" parent="."]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="World"]
 position = Vector2(-113, 10)
 tile_map_data = PackedByteArray("AAAIABQAAAAAAAIAAAAJABQAAAAHAAAAAAAKABQAAAABAAEAAAALABQAAAABAAEAAAAMABQAAAABAAEAAAANABQAAAABAAEAAAAOABQAAAABAAEAAAAPABQAAAABAAEAAAAQABQAAAABAAEAAAARABQAAAABAAEAAAASABQAAAABAAEAAAATABQAAAABAAEAAAAUABQAAAABAAEAAAAVABQAAAABAAEAAAAWABQAAAABAAEAAAAXABQAAAAGAAAAAAAYABMAAAAGAAAAAAAXABMAAAABAAEAAAAWABMAAAABAAEAAAAVABMAAAABAAEAAAAUABMAAAABAAEAAAATABMAAAABAAEAAAASABMAAAABAAEAAAARABMAAAABAAEAAAAQABMAAAABAAEAAAAPABMAAAABAAEAAAAOABMAAAABAAEAAAANABMAAAABAAEAAAAMABMAAAABAAEAAAALABMAAAABAAEAAAAKABMAAAABAAEAAAAJABMAAAABAAEAAAAIABMAAAAHAAAAAAAHABMAAAAAAAIAAAAEABAAAAAAAAQAAAAFABEAAAAAAAIAAAAFABAAAAAKAAMAAAAGABAAAAABAAAAAAAGABEAAAAHAAAAAAAGABIAAAAAAAIAAAAHABIAAAAHAAAAAAAHABEAAAABAAEAAAAHABAAAAABAAAAAAAIABAAAAABAAAAAAAIABEAAAABAAEAAAAIABIAAAABAAEAAAAJABIAAAABAAEAAAAKABIAAAABAAEAAAAKABEAAAABAAEAAAALABEAAAABAAEAAAALABAAAAABAAAAAAALABIAAAABAAEAAAAMABIAAAABAAEAAAANABIAAAABAAEAAAANABEAAAABAAEAAAAMABEAAAABAAEAAAAMABAAAAABAAAAAAANABAAAAABAAAAAAAOABEAAAABAAEAAAAOABIAAAABAAEAAAAPABIAAAABAAEAAAAQABIAAAABAAEAAAAQABEAAAABAAEAAAAPABEAAAABAAEAAAAPABAAAAABAAAAAAAOABAAAAABAAAAAAAQABAAAAABAAAAAAARABAAAAABAAAAAAARABEAAAABAAEAAAARABIAAAABAAEAAAASABIAAAABAAEAAAASABAAAAABAAAAAAASABEAAAABAAEAAAAUABIAAAABAAEAAAAVABEAAAABAAEAAAAVABAAAAABAAAAAAAVABIAAAABAAEAAAAWABEAAAABAAEAAAAWABAAAAABAAAAAAAXABAAAAABAAAAAAAXABEAAAABAAEAAAAXABIAAAABAAEAAAAYABIAAAABAAEAAAAYABEAAAABAAEAAAAWABIAAAABAAEAAAAYABAAAAABAAAAAAAZABAAAAABAAAAAAAaABAAAAABAAAAAAAbABAAAAAJAAMAAAAJABEAAAABAAEAAAAJABAAAAABAAAAAAAKABAAAAABAAAAAAATABAAAAABAAAAAAAUABAAAAABAAAAAAAUABEAAAABAAEAAAATABEAAAABAAEAAAATABIAAAABAAEAAAAZABEAAAABAAEAAAAaABEAAAAGAAAAAAAZABIAAAAGAAAAAAAWABUAAAAGAAAAAAAVABUAAAABAAEAAAAUABUAAAABAAEAAAATABUAAAABAAEAAAASABUAAAABAAEAAAARABUAAAABAAEAAAAQABUAAAABAAEAAAAPABUAAAABAAEAAAAOABUAAAABAAEAAAANABUAAAABAAEAAAAMABUAAAABAAEAAAALABUAAAABAAEAAAAKABUAAAAHAAAAAAAJABUAAAAAAAIAAAAKABYAAAAAAAIAAAALABYAAAAHAAAAAAAMABYAAAABAAEAAAANABYAAAABAAEAAAAOABYAAAABAAEAAAAPABYAAAABAAEAAAAQABYAAAABAAEAAAARABYAAAABAAEAAAASABYAAAABAAEAAAATABYAAAABAAEAAAAUABYAAAABAAEAAAAVABYAAAAGAAAAAAAUABcAAAAGAAAAAAATABcAAAABAAEAAAASABcAAAABAAEAAAARABcAAAABAAEAAAAQABcAAAABAAEAAAAPABcAAAABAAEAAAAOABcAAAABAAEAAAANABcAAAABAAEAAAAMABcAAAAHAAAAAAALABcAAAAAAAIAAAASABgAAAABAAEAAAASABkAAAAGAAAAAAATABgAAAAGAAAAAAARABkAAAABAAEAAAAQABkAAAABAAEAAAAPABkAAAABAAEAAAAPABgAAAABAAEAAAAOABgAAAABAAEAAAANABgAAAAHAAAAAAAMABgAAAAAAAIAAAANABkAAAAAAAIAAAAOABkAAAAHAAAAAAAQABgAAAABAAEAAAARABgAAAABAAEAAAAOABoAAAAAAAIAAAARABoAAAAGAAAAAAAQABoAAAABAAEAAAAPABoAAAAHAAAAAAAPABsAAAAAAAIAAAAQABsAAAAKAAEAAAAcABAAAAACAAQAAAAbABEAAAACAAIAAAAaABIAAAACAAIAAAAZABMAAAACAAIAAAAYABQAAAACAAIAAAAXABUAAAACAAIAAAAWABYAAAACAAIAAAAVABcAAAACAAIAAAAUABgAAAACAAIAAAATABkAAAACAAIAAAASABoAAAACAAIAAAARABsAAAACAAIAAAAQABwAAAAEAAIAAAA=")
-tile_set = ExtResource("1_v68y4")
+tile_set = ExtResource("1_n68t6")
 
-[node name="KingCrab" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_vy0vx")]
+[node name="KingCrab" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_5yrod")]
 position = Vector2(527, 485)
-king_crab_max_health = 40.0
-player_path = NodePath("../Player")
+king_crab_max_health = 30
 bound_point_a = NodePath("../PointA")
 bound_point_b = NodePath("../PointB")
 
-[node name="Player" parent="World" instance=ExtResource("3_4co4v")]
+[node name="Player" parent="World" instance=ExtResource("3_wyfuh")]
 position = Vector2(70, 494)
 has_blade = true
 max_health = 1000
 
 [node name="PointA" type="Marker2D" parent="World"]
-position = Vector2(59, 520)
+position = Vector2(59, 522)
 
 [node name="PointB" type="Marker2D" parent="World"]
-position = Vector2(773, 267)
+position = Vector2(773, 345)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BossHUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("4_vy0vx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("4_42jcx")
 
 [node name="BossHealthBar" type="TextureProgressBar" parent="CanvasLayer/BossHUD"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -278.0
+offset_top = -65.0
+offset_right = 873.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+texture_under = SubResource("AtlasTexture_5yrod")
+texture_over = SubResource("AtlasTexture_42jcx")
+texture_progress = SubResource("AtlasTexture_wyfuh")
+metadata/_edit_group_ = true
 
 [node name="BossHealthLabel" type="Label" parent="CanvasLayer/BossHUD"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 530.0
+offset_top = 564.0
+offset_right = 637.0
+offset_bottom = 587.0
+theme_override_colors/font_color = Color(0.9721158, 0.036824163, 7.70092e-07, 1)
+theme_override_colors/font_outline_color = Color(0.773859, 0, 0, 1)
+text = "The King Crab"
+horizontal_alignment = 1
+vertical_alignment = 1

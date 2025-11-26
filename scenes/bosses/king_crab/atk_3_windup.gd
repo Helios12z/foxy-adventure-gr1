@@ -14,6 +14,8 @@ func _enter()->void:
 	begin_fly_mode()
 
 func _update(d: float)->void:
+	_face_player()
+	
 	t += d
 
 	obj.global_position.x = obj._atk3_liftoff_x
@@ -40,3 +42,15 @@ func _update(d: float)->void:
 	if update_timer(d):
 		disable_attack_effect()
 		change_state(fsm.states.atk3_fly_and_hit)
+		
+func _face_player() -> void:
+	var target_x: float
+	var have := false
+	if obj._get_player() != null:
+		target_x = obj._get_player().global_position.x
+		have = true
+
+	if have:
+		var desired := 1 if (target_x - obj.global_position.x) > 0.0 else -1
+		if desired != obj.direction:
+			obj.change_direction(desired)

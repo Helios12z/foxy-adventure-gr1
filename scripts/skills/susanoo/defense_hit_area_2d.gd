@@ -1,5 +1,7 @@
 extends Area2D
 
+signal charges_changed(left, max)
+
 # Defense hit area: absolute guard against enemies and bullets.
 # Spawns a fire shield at the tangent contact point and consumes charges.
 
@@ -17,6 +19,7 @@ func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 	body_entered.connect(_on_body_entered)
 	_set_enabled(enabled)
+	charges_changed.emit(_charges_left, max_charges)
 
 func _on_area_entered(area: Area2D) -> void:
 	if not _enabled or _charges_left <= 0:
@@ -123,6 +126,13 @@ func _consume_charge() -> void:
 		if shape:
 			shape.disabled = true
 		monitoring = false
+	charges_changed.emit(max(0, _charges_left), max_charges)
+
+func get_charges_left() -> int:
+	return _charges_left
+
+func get_max_charges() -> int:
+	return max_charges
 
 func _find_character_body_root(area: Area2D) -> Node:
 	var p := area.get_parent()

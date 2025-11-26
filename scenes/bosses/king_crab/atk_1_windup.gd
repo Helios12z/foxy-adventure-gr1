@@ -3,10 +3,8 @@ extends KingCrabState
 func _enter() -> void:
 	obj.change_animation("atk1_windup")
 	var dir_x := 1.0
-	if obj.found_player:
-		dir_x = sign(obj.found_player.global_position.x - obj.global_position.x)
-	elif obj.has_last_seen:
-		dir_x = sign(obj.last_seen_player_x - obj.global_position.x)
+	if obj.seen_player:
+		dir_x = sign(obj._get_player().global_position.x - obj.global_position.x)
 	else:
 		dir_x = -obj.direction
 

@@ -21,6 +21,9 @@ func _ready() -> void:
 	_video = $NinePatchRect/VideoStreamPlayer if has_node("NinePatchRect/VideoStreamPlayer") else null
 	_panel = $NinePatchRect if has_node("NinePatchRect") else null
 	_overlay = $OverlayColorRect if has_node("OverlayColorRect") else null
+	if _video:
+		_video.autoplay = false
+		_video.volume_db = -80.0
 
 func show_popup() -> void:
 	visible = true
@@ -43,6 +46,7 @@ func show_popup() -> void:
 	if _video:
 		if video_path != "":
 			_video.stream = load(video_path)
+			_video.volume_db = -80.0
 			_video.play()
 	# Hiệu ứng mở: nảy/bounce mượt
 	if _panel:

@@ -8,14 +8,12 @@
 [ext_resource type="Texture2D" uid="uid://7e4tmseq4hhm" path="res://asset/forest/background/Layer_0002_7.png" id="4_wkgak"]
 [ext_resource type="Texture2D" uid="uid://5nbx21n1v745" path="res://asset/forest/background/tree2.png" id="4_x0kog"]
 [ext_resource type="Texture2D" uid="uid://q2faej61blnu" path="res://asset/forest/background/2ac948c0-553d-4c6f-9935-bed90a7ccfe6.png" id="6_nd2ra"]
-[ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="7_nd2ra"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="8_playerhud"]
 [ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/gobin/gobin.tscn" id="9_qaift"]
 [ext_resource type="PackedScene" uid="uid://d4naxw7byqf3t" path="res://scenes/enemies/flyeye/fly_eye.tscn" id="10_2peu5"]
 [ext_resource type="PackedScene" uid="uid://g3pj503kap4d" path="res://scenes/enemies/skeleton/skeleton.tscn" id="11_x8knb"]
 [ext_resource type="PackedScene" uid="uid://cnt8ey2jdqrgv" path="res://scenes/enemies/mushroom_zoombie/mushroom_zombie.tscn" id="12_fe7x3"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="13_2peu5"]
-[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="16_pklx6"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
 blend_mode = 1
@@ -132,9 +130,6 @@ scale_min = 1.5
 scale_max = 1.8
 color_ramp = SubResource("GradientTexture1D_2peu5")
 color_initial_ramp = SubResource("GradientTexture1D_3aj2q")
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_yyddw"]
-size = Vector2(10333, 98)
 
 [node name="Map2" type="Node2D"]
 script = ExtResource("1_68p3w")
@@ -513,17 +508,3 @@ position = Vector2(2480, 113)
 
 [node name="Checkpoint2" parent="." instance=ExtResource("13_2peu5")]
 position = Vector2(6512, 113)
-
-[node name="FireGem" parent="." instance=ExtResource("7_nd2ra")]
-position = Vector2(6639, 62)
-
-[node name="HitArea2D" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 128
-script = ExtResource("16_pklx6")
-damage = 9999
-metadata/_custom_type_script = "uid://bss631ltk5rcm"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
-position = Vector2(4787.5, 303)
-shape = SubResource("RectangleShape2D_yyddw")

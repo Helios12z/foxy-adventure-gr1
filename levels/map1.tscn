@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_k3ymo"]
-[ext_resource type="PackedScene" uid="uid://bvgyep1nrjs86" path="res://scenes/ui/HeartsContainer/hearts_container.tscn" id="2_ncpwn"]
 [ext_resource type="Texture2D" uid="uid://ck8762h1hy2cf" path="res://asset/island/background/additional_water.png" id="3_44ejs"]
 [ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="3_cbqdj"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="4_8dbd0"]
@@ -50,6 +49,7 @@
 [ext_resource type="PackedScene" uid="uid://dr6cgamag4fva" path="res://levels/tutorial/signpost_details/tutorial_popup.tscn" id="46_ncpwn"]
 [ext_resource type="AudioStream" uid="uid://8ig7y4yrrv5e" path="res://asset/sounds/music.mp3" id="49_8dbd0"]
 [ext_resource type="PackedScene" uid="uid://dt1wkv6f2kmyv" path="res://scenes/enemies/pear/pear.tscn" id="50_cjww2"]
+[ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="51_cjww2"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -178,13 +178,11 @@ size = Vector2(12590, 1610)
 size = Vector2(20, 596)
 
 [node name="Map1" type="Node2D"]
-position = Vector2(1, 0)
+position = Vector2(12, 0)
 script = ExtResource("1_vf8qv")
 camera_bottom_limit_y = -200.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="HeartsContainer" parent="CanvasLayer" instance=ExtResource("2_ncpwn")]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("3_cbqdj")]
 
@@ -591,7 +589,7 @@ shape = SubResource("RectangleShape2D_a7slf")
 collision_layer = 0
 collision_mask = 128
 script = ExtResource("43_a7slf")
-damage = 3
+damage = 9999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D2"]
@@ -615,6 +613,13 @@ popup_text_lines = Array[String](["Press 'Shift' button to Dash"])
 popup_keys = Array[String]([">"])
 popup_video_path = "res://asset/videos/dash_tutorial.ogv"
 
+[node name="Area2D5" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(4455, -292)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Press 'Shift' button to Dash"])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/dash_tutorial.ogv"
+
 [node name="Area2D2" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(6090, 27)
 popup_scene = ExtResource("46_ncpwn")
@@ -622,8 +627,22 @@ popup_text_lines = Array[String](["Double press 'left' or 'right' to run faster.
 popup_keys = Array[String]([">"])
 popup_video_path = "res://asset/videos/run_fast_tutorial.ogv"
 
+[node name="Area2D6" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(5971, -283)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Double press 'left' or 'right' to run faster."])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/run_fast_tutorial.ogv"
+
 [node name="Area2D3" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(7324, 30)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["When Foxy is out of jumps, holding Space activates a hover state that slows his fall."])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/hover_tutorial.ogv"
+
+[node name="Area2D7" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(7720, -196)
 popup_scene = ExtResource("46_ncpwn")
 popup_text_lines = Array[String](["When Foxy is out of jumps, holding Space activates a hover state that slows his fall."])
 popup_keys = Array[String]([">"])
@@ -655,3 +674,7 @@ position = Vector2(11495, 50)
 
 [node name="Pear5" parent="." instance=ExtResource("50_cjww2")]
 position = Vector2(11821, 50)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerHUD" parent="UI" instance=ExtResource("51_cjww2")]

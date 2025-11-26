@@ -67,12 +67,10 @@ radius = 287.00174
 z_index = 10
 collision_layer = 2
 script = ExtResource("1_puv7k")
-has_fire_gem = true
-has_water_paw_gem = true
-has_water_room_gem = true
 dash_chain_cooldown = 1.0
 run_speed_multiplier = 2.1
 movement_speed = 120.0
+max_health = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -12)
