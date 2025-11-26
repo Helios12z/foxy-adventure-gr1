@@ -529,10 +529,6 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 position = Vector2(4787.5, 303)
 shape = SubResource("RectangleShape2D_yyddw")
 
-[node name="Path2D" parent="." instance=ExtResource("18_sqrxr")]
-position = Vector2(5901, 129)
-scale = Vector2(0.54280114, 1)
-
 [node name="MushroomZombie2" parent="." instance=ExtResource("12_fe7x3")]
 position = Vector2(5788, -262.99997)
 
@@ -573,3 +569,9 @@ position = Vector2(10679, -114)
 
 [node name="Door" parent="." instance=ExtResource("20_nljfo")]
 position = Vector2(99, 128)
+
+[node name="Path2D" parent="." instance=ExtResource("18_sqrxr")]
+position = Vector2(5942, 130)
+
+[node name="Checkpoint3" parent="." instance=ExtResource("13_2peu5")]
+position = Vector2(141, 112)

@@ -70,7 +70,7 @@ script = ExtResource("1_puv7k")
 dash_chain_cooldown = 1.0
 run_speed_multiplier = 2.1
 movement_speed = 120.0
-max_health = 100
+max_health = 500
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -12)

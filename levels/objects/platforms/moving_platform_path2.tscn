@@ -6,7 +6,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_pre6l"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 63, 9, 0, 0, 0, 0, 1065, 9)
+"points": PackedVector2Array(0, 0, 0, 0, 63, 9, 0, 0, 0, 0, 457.21924, 9.442841)
 }
 point_count = 2
 
@@ -14,12 +14,14 @@ point_count = 2
 size = Vector2(85, 15)
 
 [node name="Path2D" type="Path2D"]
+position = Vector2(1.5089836, 9)
+scale = Vector2(0.97604793, 1)
 curve = SubResource("Curve2D_pre6l")
 script = ExtResource("2_mpp2")
 move_duration = 2.0
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
-position = Vector2(582, 185)
+position = Vector2(63, 9)
 rotates = false
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
