@@ -218,6 +218,7 @@ scale = Vector2(1.4, 1.4)
 collision_layer = 8
 script = ExtResource("1_he1hr")
 gravity = 0.0
+max_health = 100
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -238,6 +239,7 @@ target_position = Vector2(0, 28)
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("2_3vu3r")
+damage = 20
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]

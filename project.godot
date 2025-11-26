@@ -12,7 +12,7 @@ config_version=5
 
 config/name="FoxyAdventureGR1"
 run/main_scene="uid://p1noemh0cl3y"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [audio]
@@ -95,6 +95,8 @@ enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 
 Camera=""
 Player=""
+WaterEruption=""
+WaterEruption2=""
 
 [input]
 

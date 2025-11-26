@@ -64,6 +64,7 @@ size = Vector2(42, 25)
 [node name="mushroom" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_7aunm")
+max_health = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 13)
@@ -82,6 +83,7 @@ target_position = Vector2(0, 22)
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("2_3dip8")
+damage = 15
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]

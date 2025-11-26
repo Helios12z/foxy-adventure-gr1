@@ -172,7 +172,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_imecc"]
-size = Vector2(12590, 1610)
+size = Vector2(17222, 1610)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a7slf"]
 size = Vector2(20, 596)
@@ -562,7 +562,7 @@ damage = 999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
-position = Vector2(5497, 1026)
+position = Vector2(6230, 1043)
 shape = SubResource("RectangleShape2D_imecc")
 
 [node name="Bullets" type="Node2D" parent="."]
@@ -589,11 +589,11 @@ shape = SubResource("RectangleShape2D_a7slf")
 collision_layer = 0
 collision_mask = 128
 script = ExtResource("43_a7slf")
-damage = 9999
+damage = 999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D2"]
-position = Vector2(5497, 1026)
+position = Vector2(6228, 1026)
 shape = SubResource("RectangleShape2D_imecc")
 
 [node name="Door" parent="." instance=ExtResource("44_imecc")]
@@ -657,7 +657,6 @@ popup_video_path = "res://asset/videos/dash_diagonal_tutorial.ogv"
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("49_8dbd0")
 autoplay = true
-bus = &"Music"
 parameters/looping = false
 
 [node name="Pear" parent="." instance=ExtResource("50_cjww2")]
