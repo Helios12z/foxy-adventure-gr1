@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://dq7eu5p47t8gv"]
+[gd_scene load_steps=39 format=4 uid="uid://dq7eu5p47t8gv"]
 
 [ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://7e4tmseq4hhm" path="res://asset/forest/background/Layer_0002_7.png" id="4_wkgak"]
 [ext_resource type="Texture2D" uid="uid://5nbx21n1v745" path="res://asset/forest/background/tree2.png" id="4_x0kog"]
 [ext_resource type="Texture2D" uid="uid://q2faej61blnu" path="res://asset/forest/background/2ac948c0-553d-4c6f-9935-bed90a7ccfe6.png" id="6_nd2ra"]
-
 [ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="7_nd2ra"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="8_playerhud"]
 [ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/gobin/gobin.tscn" id="9_qaift"]
@@ -510,3 +509,6 @@ position = Vector2(2480, 113)
 
 [node name="Checkpoint2" parent="." instance=ExtResource("13_2peu5")]
 position = Vector2(6512, 113)
+
+[node name="FireGem" parent="." instance=ExtResource("7_nd2ra")]
+position = Vector2(6639, 62)
