@@ -649,6 +649,7 @@ popup_video_path = "res://asset/videos/dash_diagonal_tutorial.ogv"
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("49_8dbd0")
 autoplay = true
+bus = &"Music"
 parameters/looping = false
 
 [node name="Pear" parent="." instance=ExtResource("50_cjww2")]
