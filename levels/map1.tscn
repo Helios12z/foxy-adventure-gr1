@@ -694,3 +694,7 @@ position = Vector2(13454, 69)
 
 [node name="BossRoomBoundPointB" type="Marker2D" parent="."]
 position = Vector2(14675, -265)
+
+[node name="Door2" parent="." instance=ExtResource("44_imecc")]
+position = Vector2(14673, 70)
+target_stage = "uid://dq7eu5p47t8gv"
