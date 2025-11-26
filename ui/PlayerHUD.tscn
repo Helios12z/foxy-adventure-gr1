@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://btj7ilbg28lwi"]
+[gd_scene load_steps=9 format=3 uid="uid://btj7ilbg28lwi"]
 
 [ext_resource type="Texture2D" uid="uid://cnktdo5kyepe3" path="res://asset/ui/avatar_foxy.png" id="1_rp7d4"]
 [ext_resource type="Texture2D" uid="uid://31wwmmc0vdti" path="res://asset/ui/background_bar.png" id="2_rrwxd"]
-[ext_resource type="Texture2D" uid="uid://crp7x1pjmej31" path="res://asset/ui/susanoo.png" id="3_l5yv8"]
+[ext_resource type="Texture2D" uid="uid://crp7x1pjmej31" path="res://asset/ui/player/susanoo.png" id="3_l5yv8"]
 [ext_resource type="Texture2D" uid="uid://baelapdxhwubq" path="res://asset/ui/hp_progress_bar.png" id="3_rrwxd"]
 [ext_resource type="Texture2D" uid="uid://htvl4wkrav6m" path="res://asset/ui/mana_progress_bar.png" id="4_8syaf"]
 [ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="5_r6v1a"]
 [ext_resource type="Script" uid="uid://d0nsldc0urj8n" path="res://ui/player_hud.gd" id="5_script"]
+[ext_resource type="PackedScene" uid="uid://dufomu7dd3vmb" path="res://ui/skill_bar.tscn" id="8_kor1e"]
 
 [node name="PlayerHud" type="Control"]
 layout_mode = 3
@@ -112,3 +113,6 @@ scale = Vector2(0.15, 0.113)
 value = 100.0
 texture_under = ExtResource("2_rrwxd")
 texture_progress = ExtResource("4_8syaf")
+
+[node name="SkillBar" parent="." instance=ExtResource("8_kor1e")]
+layout_mode = 0

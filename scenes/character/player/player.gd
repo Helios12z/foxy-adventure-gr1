@@ -3,6 +3,9 @@ extends BaseCharacter
 
 ## Player character class that handles movement, combat, and state management
 signal hp_changed(current_hp, max_hp)
+signal dash_cooldown_started(duration)
+signal dash_cooldown_updated(time_left)
+signal dash_cooldown_finished()
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var _base_movement_speed: float = 0.0
@@ -101,6 +104,10 @@ func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	if is_on_wall() or is_on_floor():
 		reset_jump_count()
+
+func _process(_delta: float) -> void:
+	if dash_on_cooldown and dash_cooldown_timer != null:
+		dash_cooldown_updated.emit(dash_cooldown_timer.time_left)
 
 func _apply_safe_zone_mods() -> void:
 	if invincible_zone:
@@ -249,10 +256,12 @@ func start_dash_cooldown() -> void:
 		add_child(dash_cooldown_timer)
 	dash_cooldown_timer.wait_time = dash_chain_cooldown
 	dash_cooldown_timer.start()
+	dash_cooldown_started.emit(dash_chain_cooldown)
 
 func _on_dash_cooldown_timeout() -> void:
 	dash_on_cooldown = false
 	dash_chain_count = 0
+	dash_cooldown_finished.emit()
 
 func _start_blink_effect() -> void:
 	if blink_timer == null:
