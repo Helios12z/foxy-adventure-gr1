@@ -131,6 +131,8 @@ func control_room() -> bool:
 	if Input.is_action_just_pressed("room"):
 		if not obj.has_water_room_gem:
 			return true
+		if obj.room_on_cooldown:
+			return true
 		# Tránh spawn trùng khi hiệu ứng còn tồn tại
 		if obj.get_node_or_null("RoomSkill") != null:
 			return true
@@ -141,5 +143,6 @@ func control_room() -> bool:
 			if inst is Node2D:
 				(inst as Node2D).global_position = obj.global_position
 			obj.add_child(inst)
+			obj.start_room_cooldown()
 			return true
 	return false
