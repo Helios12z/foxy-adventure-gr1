@@ -389,7 +389,9 @@ animations = [{
 [node name="WarLordTurtle" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_lsjki")
+max_health_boss = 300
 attack_speed = 500.0
+attack_damage_boss = 10
 bomb_scene = ExtResource("2_ioqo5")
 missile_scene = ExtResource("3_gx74n")
 big_missile_scene = ExtResource("4_jhib8")

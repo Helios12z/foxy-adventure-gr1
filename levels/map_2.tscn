@@ -558,6 +558,8 @@ position = Vector2(7411, 90)
 
 [node name="WarLordTurtle" parent="." node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("19_dnroh")]
 position = Vector2(10124, 91)
+max_health_boss = 200
+attack_damage_boss = 10
 bound_point_a = NodePath("../BossRoomBoundPointA")
 bound_point_b = NodePath("../BossRoomBoundPointB")
 
