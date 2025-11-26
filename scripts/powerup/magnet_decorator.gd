@@ -18,8 +18,8 @@ func on_apply():
 	magnet_area.monitorable = true
 
 	# Layer và mask
-	magnet_area.set_collision_layer_value(6, true)
-	magnet_area.set_collision_mask_value(7, true)
+	magnet_area.set_collision_layer_value(10, true)
+	magnet_area.set_collision_mask_value(11, true)
 
 	print("Magnet activated! Found:", magnet_area)
 

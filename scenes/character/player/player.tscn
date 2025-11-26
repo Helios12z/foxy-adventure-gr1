@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=35 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -59,6 +59,9 @@ size = Vector2(91, 143)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4wjd"]
 size = Vector2(30, 43)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k7wq7"]
+radius = 287.00174
 
 [node name="Player" type="CharacterBody2D" groups=["Player", "player"]]
 z_index = 10
@@ -171,6 +174,13 @@ metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 position = Vector2(-1, -13.5)
 shape = SubResource("RectangleShape2D_t4wjd")
 debug_color = Color(0.0608557, 0.0185072, 0.0127914, 0.42)
+
+[node name="MagnetArea2D" type="Area2D" parent="Direction"]
+collision_layer = 512
+collision_mask = 1024
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/MagnetArea2D"]
+shape = SubResource("CircleShape2D_k7wq7")
 
 [node name="States" type="Node" parent="."]
 

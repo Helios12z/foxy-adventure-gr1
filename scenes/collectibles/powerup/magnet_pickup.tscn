@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1y35nujs3trx"]
+
+[ext_resource type="Script" uid="uid://dps6mm0ppf7pv" path="res://scenes/collectibles/powerup/magnet_pickup.gd" id="1_hfbx6"]
+[ext_resource type="Texture2D" uid="uid://bnrmk6r17tpql" path="res://asset/powerup/magnet.png" id="1_rlats"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wkxx4"]
+
+[node name="MagnetPickup" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_hfbx6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_rlats")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wkxx4")

@@ -278,13 +278,13 @@ autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.685657, 0.170201, 0.197746, 1)
-position = Vector2(1.42857, 15)
+position = Vector2(0.71428573, 16.428572)
 target_position = Vector2(150, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.219501, 0.219501, 0.219501, 1)
-position = Vector2(0.714286, 15.7143)
+position = Vector2(5.9604645e-08, 17.142857)
 target_position = Vector2(-150, 0)
 collision_mask = 2
 

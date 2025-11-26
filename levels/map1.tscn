@@ -178,7 +178,7 @@ size = Vector2(17222, 1610)
 size = Vector2(20, 596)
 
 [node name="Map1" type="Node2D"]
-position = Vector2(1, 0)
+position = Vector2(12, 0)
 script = ExtResource("1_vf8qv")
 camera_bottom_limit_y = -200.0
 
