@@ -2,6 +2,7 @@ extends BaseCharacter
 
 signal health_changed(current: float, max_health: float)
 signal boss_died
+signal into_phase2
 
 @export var king_crab_max_health: int = 500
 @export var spike_damage: int = 50
@@ -19,6 +20,7 @@ signal boss_died
 @export var bullet_scene: PackedScene
 @export var minion_scene: PackedScene
 @export var king_crab_shockwave_scene: PackedScene
+@export var fire_gem_scene: PackedScene
 
 @export var teleport_proximity_seconds: float = 4.0     
 @export var teleport_proximity_distance: float = 200.0    
@@ -174,7 +176,8 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 
 	if not in_phase2 and health <= max_health * phase2_threshold_ratio:
 		in_phase2 = true
-		if fsm and fsm.current_state != fsm.states.dead:
+		emit_signal("into_phase2")
+		if fsm and fsm.current_state != fsm.states.dead and fsm.current_state != fsm.states.idle_atk and fsm.current_state != fsm.states.hurt_with_one_claw:
 			fsm.change_state(fsm.states.atk3_cast)
 		return
 

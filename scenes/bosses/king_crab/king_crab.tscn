@@ -1,4 +1,4 @@
-[gd_scene load_steps=232 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=233 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
+[ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="5_d8mst"]
 [ext_resource type="Texture2D" uid="uid://bf8kvj2al6xut" path="res://asset/King_Crab/King_Crab_27.png" id="5_dg743"]
 [ext_resource type="Texture2D" uid="uid://b1025qsl7bvwi" path="res://asset/King_Crab/King_Crab_20.png" id="5_pr7tb"]
 [ext_resource type="Texture2D" uid="uid://bqdlq6j7saohj" path="res://asset/King_Crab/King_Crab_24.png" id="5_whuld"]
@@ -1051,6 +1052,7 @@ script = ExtResource("1_3obn1")
 bullet_scene = ExtResource("2_vlw8a")
 minion_scene = ExtResource("3_skber")
 king_crab_shockwave_scene = ExtResource("4_daqye")
+fire_gem_scene = ExtResource("5_d8mst")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

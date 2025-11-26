@@ -17,6 +17,7 @@ extends BaseCharacter
 @export var water_tornado_scene: PackedScene
 @export var atomic_bomb_scene: PackedScene
 @export var laser_beam_scene: PackedScene
+@export var water_room_gem_scene: PackedScene
 
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
 @onready var atk_1_shoot_point_2: Marker2D = $Direction/Atk1ShootPoint2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://x5qrj66qebnm"]
+[gd_scene load_steps=15 format=4 uid="uid://x5qrj66qebnm"]
 
 [ext_resource type="Script" uid="uid://bl3x6kmrgh3te" path="res://levels/boss_levels/king_crab/level_king_crab.gd" id="1_5yrod"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_n68t6"]
@@ -6,6 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_wyfuh"]
 [ext_resource type="Script" uid="uid://cu4d7qndrtnyl" path="res://levels/boss_levels/king_crab/boss_hud.gd" id="4_42jcx"]
 [ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="5_uiho5"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="5_wyfuh"]
+[ext_resource type="Texture2D" uid="uid://d2ev340t8yegq" path="res://asset/boss_levels/level_king_crab/bg_7_0003_layer_3.png" id="6_uiho5"]
+[ext_resource type="Texture2D" uid="uid://bsqkgjgy8pvjk" path="res://asset/boss_levels/level_king_crab/bg_7_0002_layer_2.png" id="7_l0rmf"]
+[ext_resource type="FontFile" uid="uid://x4u0fnuaebe3" path="res://asset/fonts/ThaleahFat.ttf" id="8_42jcx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_42jcx"]
+size = Vector2(4339, 17717)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5yrod"]
 atlas = ExtResource("5_uiho5")
@@ -48,6 +55,39 @@ position = Vector2(59, 522)
 [node name="PointB" type="Marker2D" parent="World"]
 position = Vector2(773, 345)
 
+[node name="HitArea2D" type="Area2D" parent="World"]
+position = Vector2(0, 1000)
+collision_layer = 0
+collision_mask = 20
+script = ExtResource("5_wyfuh")
+damage = 9999
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D"]
+position = Vector2(368.5, 8805.5)
+shape = SubResource("RectangleShape2D_42jcx")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="World"]
+
+[node name="ParallaxLayerFar" type="ParallaxLayer" parent="World/ParallaxBackground"]
+motion_scale = Vector2(0.001, 0.8)
+motion_mirroring = Vector2(1000, 570)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerFar"]
+position = Vector2(509, 338)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("6_uiho5")
+
+[node name="ParallaxLayerMid" type="ParallaxLayer" parent="World/ParallaxBackground"]
+position = Vector2(-22, -73)
+motion_scale = Vector2(0.1, 0.8)
+motion_mirroring = Vector2(1020, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerMid"]
+position = Vector2(322, 437.00003)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("7_l0rmf")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BossHUD" type="Control" parent="CanvasLayer"]
@@ -63,15 +103,15 @@ script = ExtResource("4_42jcx")
 
 [node name="BossHealthBar" type="TextureProgressBar" parent="CanvasLayer/BossHUD"]
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -278.0
-offset_top = -65.0
-offset_right = 873.0
-offset_bottom = 62.0
+offset_left = -290.0
+offset_top = -75.0
+offset_right = 861.0
+offset_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.5, 0.5)
@@ -81,13 +121,23 @@ texture_progress = SubResource("AtlasTexture_wyfuh")
 metadata/_edit_group_ = true
 
 [node name="BossHealthLabel" type="Label" parent="CanvasLayer/BossHUD"]
-layout_mode = 0
-offset_left = 530.0
-offset_top = 564.0
-offset_right = 637.0
-offset_bottom = 587.0
-theme_override_colors/font_color = Color(0.9721158, 0.036824163, 7.70092e-07, 1)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -77.5
+offset_top = -88.0
+offset_right = 77.5
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.9731731, 0.000406031, 0.2564146, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.773859, 0, 0, 1)
-text = "The King Crab"
+theme_override_fonts/font = ExtResource("8_42jcx")
+theme_override_font_sizes/font_size = 24
+text = "THE KING CRAB"
 horizontal_alignment = 1
 vertical_alignment = 1
