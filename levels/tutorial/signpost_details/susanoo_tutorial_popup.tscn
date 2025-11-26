@@ -90,9 +90,10 @@ offset_top = 56.0
 offset_right = 490.0
 offset_bottom = 288.0
 stream = ExtResource("6_w1fcy")
-autoplay = true
+autoplay = false
 expand = true
 loop = true
+volume_db = -80.0
 
 [node name="KeysBox" type="HBoxContainer" parent="NinePatchRect"]
 layout_mode = 0

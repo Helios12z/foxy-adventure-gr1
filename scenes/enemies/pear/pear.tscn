@@ -126,7 +126,7 @@ size = Vector2(17, 9)
 size = Vector2(21, 31)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ber8n"]
-size = Vector2(32, 28)
+size = Vector2(36, 28)
 
 [node name="Pear" type="CharacterBody2D"]
 collision_layer = 8
@@ -188,7 +188,7 @@ shape = SubResource("RectangleShape2D_eiosc")
 debug_color = Color(0.6963841, 0.494107, 0.055398293, 0.41960785)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(6, 4)
+position = Vector2(4, 4)
 shape = SubResource("RectangleShape2D_ber8n")
 debug_color = Color(0.9550579, 0.056059465, 0.51702577, 0.41960785)
 

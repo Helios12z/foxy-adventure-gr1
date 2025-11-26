@@ -35,6 +35,10 @@ func _physics_process(delta: float) -> void:
 		fsm.change_state(fsm.states.dead)
 
 func _on_hurt_area_2d_hurt(_direction: Variant, damage: Variant) -> void:
+	if fsm == null or fsm.current_state == null:
+		health -= damage
+		return
+	
 	fsm.current_state.take_damage(Vector2.ZERO, damage)
 	if health <= 0:
 		fsm.change_state(fsm.states.dead)

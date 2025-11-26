@@ -2,11 +2,13 @@ class_name Player
 extends BaseCharacter
 
 ## Player character class that handles movement, combat, and state management
+signal hp_changed(current_hp, max_hp)
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var _base_movement_speed: float = 0.0
 var _base_gravity: float = 0.0
 var _base_max_jump_count: int = 0
+var decorator_manager: DecoratorManager = null
 @export var has_blade: bool = false
 @export var has_fire_gem: bool = false
 @export var has_water_paw_gem: bool = false
@@ -63,7 +65,14 @@ func _ready() -> void:
 	
 	fsm = FSM.new(self, $States, $States/Idle)
 	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",true)
+		# Register player in GameManager
 	GameManager.player = self
+
+	# Decorator manager to apply powerups
+	decorator_manager = DecoratorManager.new()
+	decorator_manager.initialize(self)
+
+	add_child(decorator_manager)
 	if has_blade:
 		collected_blade()
 	if has_fire_gem:
@@ -102,8 +111,14 @@ func _apply_safe_zone_mods() -> void:
 	else:
 		movement_speed = _base_movement_speed
 		gravity = _base_gravity
+		
+#Collect powerup to apply to the player
+func collect_powerup(powerup_id: String) -> void:
+	decorator_manager.apply_powerup(powerup_id)
 
 func can_attack() -> bool:
+	#if decorator_manager != null:
+		#return decorator_manager.can_blade_attack()
 	return has_blade
 	
 func can_jump() -> bool:
@@ -264,3 +279,11 @@ func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
 		fsm.change_state(fsm.states.dead)
 	else: 
 		fsm.change_state(fsm.states.hurt)
+
+func take_damage(damage: int) -> void:
+	super.take_damage(damage)
+	emit_signal("hp_changed", health, max_health)
+
+func heal(amount: int) -> void:
+	health = min(health + amount, max_health)
+	emit_signal("hp_changed", health, max_health)

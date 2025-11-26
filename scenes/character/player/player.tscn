@@ -62,15 +62,12 @@ size = Vector2(30, 43)
 
 [node name="Player" type="CharacterBody2D" groups=["Player", "player"]]
 z_index = 10
-scale = Vector2(1.2, 1.2)
 collision_layer = 2
 script = ExtResource("1_puv7k")
-has_fire_gem = true
-has_water_paw_gem = true
-has_water_room_gem = true
 dash_chain_cooldown = 1.0
 run_speed_multiplier = 2.1
 movement_speed = 120.0
+max_health = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -12)
@@ -218,16 +215,19 @@ script = ExtResource("46_susanoo")
 [node name="WaterPaw" type="Node" parent="States"]
 script = ExtResource("47_waterpaw")
 
-[node name="Jump" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("24_45mu1")
-
 [node name="Attack" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("25_65puw")
 volume_db = 4.553
+bus = &"SFX"
 
 [node name="Dash" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("26_k7wq7")
 volume_db = 4.906
+bus = &"SFX"
+
+[node name="Jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("24_45mu1")
+bus = &"SFX"
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]

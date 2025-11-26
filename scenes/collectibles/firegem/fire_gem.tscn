@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bmqdyggq31jj2"]
 
 [ext_resource type="Texture2D" uid="uid://dxk7gtydhpw31" path="res://asset/foxy/foxy/fox_susanoo/fire_gem.png" id="1_cpriy"]
-[ext_resource type="Script" uid="uid://b1ixwhisr0sho" path="res://scenes/items/fire_gem.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://b1ixwhisr0sho" path="res://scenes/collectibles/firegem/fire_gem.gd" id="2_script"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cpriy"]
 

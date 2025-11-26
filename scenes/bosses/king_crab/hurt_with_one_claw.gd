@@ -11,4 +11,4 @@ func _update(d: float) -> void:
 		return
 	if update_timer(d):
 		reset_hit_collision_position()
-		change_state(fsm.states.idle_atk)
+		change_state(fsm.previous_state)

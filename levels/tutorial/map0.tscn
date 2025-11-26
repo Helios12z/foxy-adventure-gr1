@@ -402,7 +402,7 @@ position = Vector2(200, -118)
 key_text = ">"
 
 [node name="Node6" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(546, -30)
+position = Vector2(545, -56)
 scale = Vector2(0.8, 0.8)
 key_text = "F"
 
@@ -438,10 +438,10 @@ popup_keys = Array[String](["C"])
 popup_video_path = "res://asset/videos/attack_tutorial.ogv"
 
 [node name="Label" type="Label" parent="."]
-offset_left = 450.0
-offset_top = -39.0
-offset_right = 520.0
-offset_bottom = -16.0
+offset_left = 449.0
+offset_top = -65.0
+offset_right = 519.0
+offset_bottom = -42.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "Press"
 
@@ -480,10 +480,10 @@ text = "to teleport to the next stage"
 autowrap_mode = 2
 
 [node name="Label2" type="Label" parent="."]
-offset_left = 577.0
-offset_top = -47.0
-offset_right = 853.0
-offset_bottom = 7.0
+offset_left = 576.0
+offset_top = -73.0
+offset_right = 852.0
+offset_bottom = -19.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "to receive blade from Crystal Mauler
 "

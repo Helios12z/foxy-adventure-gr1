@@ -3,7 +3,6 @@ extends Node
 
 @export var camera_bottom_limit_y: float = INF
 
-@onready var heartsContainer = $CanvasLayer/HeartsContainer
 @onready var player = $Player
 
 func get_camera_bottom_limit_y() -> float:
@@ -16,7 +15,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not GameManager.respawn_at_portal():
 		GameManager.respawn_at_checkpoint()
-	heartsContainer.setMaxHearts(player.max_health)
 
 func _process(delta: float) -> void:
-	heartsContainer.updateHearts(player.health)
+	pass

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PowerupDecoratorData" load_steps=3 format=3 uid="uid://dbbp450hgdqtr"]
+
+[ext_resource type="Script" uid="uid://bupt6wctajdrq" path="res://scripts/powerup/magnet_decorator.gd" id="1_nf7xl"]
+[ext_resource type="Script" uid="uid://bi224x34bsap8" path="res://scripts/powerup/powerup_decorator_data.gd" id="1_t17ne"]
+
+[resource]
+script = ExtResource("1_t17ne")
+id = "magnet"
+decorator_script = ExtResource("1_nf7xl")
+priority = 5
+duration = 5.0
+can_stack = false
+metadata/_custom_type_script = "uid://bi224x34bsap8"

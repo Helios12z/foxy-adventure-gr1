@@ -3,7 +3,7 @@ extends EnemyCharacter
 @export var pear_attack_damage: int = 50 
 @export var pear_health: int = 300 
 @export var sight: int = 100
-@export var move_speed: int = 50 
+@export var move_speed: int = 90 
 @export var attack_distance: float = 40.0
 @export var spike_damage: int = 150
 @export var turn_time: float = 1.25 
@@ -33,14 +33,26 @@ func _ready() -> void:
 	spike_hit_area_2d.damage = spike_damage
 
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
-	var dir = _direction if _direction is Vector2 else Vector2.ZERO
-	knockback_direction = dir.normalized() if dir.length() > 0.0001 else Vector2.ZERO
+	var dir := Vector2.ZERO
+	if _direction is Vector2 and _direction.length() > 0.0001:
+		dir = _direction.normalized()
+	knockback_direction = dir
+
+	var facing := Vector2.RIGHT * direction
+	var attack_from_dir := -dir  
+
+	var from_front := false
+	if attack_from_dir != Vector2.ZERO:
+		from_front = facing.dot(attack_from_dir) > 0.0
+
+	if from_front:
+		# sound shield block played here
+		return
+
 	fsm.current_state.take_damage(knockback_direction, _damage)
 
 	if health <= 0:
 		fsm.change_state(fsm.states.dead)
-	else:
-		fsm.change_state(fsm.states.hurt)
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
