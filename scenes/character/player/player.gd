@@ -70,7 +70,6 @@ func _ready() -> void:
 	# Decorator manager to apply powerups
 	decorator_manager = DecoratorManager.new()
 	decorator_manager.initialize(self)
-
 	add_child(decorator_manager)
 	if has_blade:
 		collected_blade()
@@ -100,6 +99,7 @@ func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	if is_on_wall() or is_on_floor():
 		reset_jump_count()
+	
 
 func _apply_safe_zone_mods() -> void:
 	if invincible_zone:
@@ -110,7 +110,6 @@ func _apply_safe_zone_mods() -> void:
 	else:
 		movement_speed = _base_movement_speed
 		gravity = _base_gravity
-		
 #Collect powerup to apply to the player
 func collect_powerup(powerup_id: String) -> void:
 	decorator_manager.apply_powerup(powerup_id)
@@ -278,3 +277,21 @@ func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
 		fsm.change_state(fsm.states.dead)
 	else: 
 		fsm.change_state(fsm.states.hurt)
+		
+
+func get_movement_speed():
+	if decorator_manager != null:
+		return decorator_manager.get_effective_movement_speed()
+	return movement_speed
+	
+		
+func get_jump_speed():
+	if decorator_manager != null:
+		decorator_manager.get_effective_jump_speed()
+	return jump_speed
+	
+func speed_up(multiplier: float, duration: float) -> void:
+	movement_speed = movement_speed * multiplier
+	await get_tree().create_timer(duration).timeout
+	movement_speed = movement_speed / multiplier
+	

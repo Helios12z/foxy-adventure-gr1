@@ -178,6 +178,8 @@ room={
 2d_physics/layer_7="crystal_mauler"
 2d_physics/layer_8="crystal_mauler_interaction"
 2d_physics/layer_9="peligan_limitation"
+2d_physics/layer_10="magnet_area"
+2d_physics/layer_11="item"
 
 [rendering]
 
