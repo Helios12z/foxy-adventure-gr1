@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=4 uid="uid://dq7eu5p47t8gv"]
+[gd_scene load_steps=41 format=4 uid="uid://dq7eu5p47t8gv"]
 
 [ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
@@ -16,7 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://cnt8ey2jdqrgv" path="res://scenes/enemies/mushroom_zoombie/mushroom_zombie.tscn" id="12_fe7x3"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="13_2peu5"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="16_pklx6"]
-[ext_resource type="PackedScene" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="17_yyddw"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
 blend_mode = 1
@@ -528,9 +527,3 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 position = Vector2(4787.5, 303)
 shape = SubResource("RectangleShape2D_yyddw")
-
-[node name="WaterRoomGem" parent="." instance=ExtResource("17_yyddw")]
-position = Vector2(330, 83)
-
-[node name="FireGem2" parent="." instance=ExtResource("7_nd2ra")]
-position = Vector2(190, 89)
