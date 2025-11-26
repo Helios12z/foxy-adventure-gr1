@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=4 uid="uid://dq7eu5p47t8gv"]
+[gd_scene load_steps=44 format=4 uid="uid://dq7eu5p47t8gv"]
 
 [ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="13_2peu5"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="16_pklx6"]
 [ext_resource type="PackedScene" uid="uid://cko6qhhakt6kh" path="res://levels/objects/platforms/moving_platform_path2.tscn" id="18_sqrxr"]
+[ext_resource type="PackedScene" uid="uid://dqawcb458fxlf" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.tscn" id="19_dnroh"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
 blend_mode = 1
@@ -557,3 +558,14 @@ position = Vector2(5005, -7)
 
 [node name="Gobin4" parent="." instance=ExtResource("9_qaift")]
 position = Vector2(7411, 90)
+
+[node name="WarLordTurtle" parent="." node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("19_dnroh")]
+position = Vector2(10124, 91)
+bound_point_a = NodePath("../BossRoomBoundPointA")
+bound_point_b = NodePath("../BossRoomBoundPointB")
+
+[node name="BossRoomBoundPointA" type="Marker2D" parent="."]
+position = Vector2(9367, 129)
+
+[node name="BossRoomBoundPointB" type="Marker2D" parent="."]
+position = Vector2(10679, -114)
