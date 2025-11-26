@@ -91,6 +91,8 @@ enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 
 Camera=""
 Player=""
+WaterEruption=""
+WaterEruption2=""
 
 [input]
 

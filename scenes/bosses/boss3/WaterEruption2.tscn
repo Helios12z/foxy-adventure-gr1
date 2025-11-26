@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://clgtrl0k7dopq"]
+
+[ext_resource type="Script" uid="uid://dx0xvuwsd5ctp" path="res://scenes/bosses/boss3/water_eruption.gd" id="1_0y26q"]
+[ext_resource type="Texture2D" uid="uid://c7demcv6olxaw" path="res://asset/level_3_water_palace/water_goddess/skills/ice_fly_v2.png" id="2_jatt3"]
+[ext_resource type="Texture2D" uid="uid://tiqn63ki162w" path="res://asset/level_3_water_palace/water_goddess/skills/ice_fly_v2_01.png" id="3_x4s4j"]
+[ext_resource type="Texture2D" uid="uid://b3faja7mok77k" path="res://asset/level_3_water_palace/water_goddess/skills/ice_fly_v2_02.png" id="4_x72ed"]
+[ext_resource type="Texture2D" uid="uid://djtc6iecausoj" path="res://asset/level_3_water_palace/water_goddess/skills/ice_circle_02.png" id="5_7cv6m"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="6_gam2r"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jgwws"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_jatt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_x4s4j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_x72ed")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="WaterEruption" type="Node2D" groups=["WaterEruption2"]]
+script = ExtResource("1_0y26q")
+fade_duration = 0.5
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, -32)
+scale = Vector2(0.183, 0.1815)
+sprite_frames = SubResource("SpriteFrames_jgwws")
+frame_progress = 0.958073
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-1.39064, -0.843754)
+scale = Vector2(0.102972, 0.046242)
+texture = ExtResource("5_7cv6m")
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+script = ExtResource("6_gam2r")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="HitArea2D"]
+position = Vector2(1, -17)
+scale = Vector2(0.210804, 0.221339)
+polygon = PackedVector2Array(13, -13, 76, -83, 127, 25, 115, 106, 68, 134, -53, 140, -122, 104, -137, 41, -137, -17, -1, -187, 76, -80)
