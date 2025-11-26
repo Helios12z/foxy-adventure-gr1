@@ -7,7 +7,8 @@ func _enter()->void:
 	timer = wait_time
 
 func _update(delta: float)->void:
-	if update_timer(delta):
+	timer -= wait_time 
+	if timer <= 0: 
 		if obj.seen_player:
 			change_state(fsm.states.walk)
 		else: 

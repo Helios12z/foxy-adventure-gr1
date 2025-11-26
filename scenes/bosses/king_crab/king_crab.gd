@@ -3,8 +3,11 @@ extends BaseCharacter
 signal health_changed(current: float, max_health: float)
 signal boss_died
 signal into_phase2
+signal start_fight
 
 @export var king_crab_max_health: int = 500
+@export var is_sleeping: bool = true 
+@export var sleep_health_max: int = 30
 @export var spike_damage: int = 50
 @export var speed: float = 50.0
 @export var king_crab_gravity: float = 700.0
@@ -52,6 +55,7 @@ signal into_phase2
 var front_ray_cast: RayCast2D
 var down_ray_cast: RayCast2D
 
+var _sleep_health: int = 0   
 var seen_player: bool = false 
 var _flash_tw: Tween
 var in_phase2: bool = false
@@ -96,12 +100,14 @@ func _ready() -> void:
 
 	movement_speed = speed
 	max_health=king_crab_max_health
+	_sleep_health = sleep_health_max
 	gravity = king_crab_gravity
 	direction=-1
 	_next_direction=-1
 	
 	super._ready()
-	fsm = FSM.new(self, $States, $States/Idle)
+	if is_sleeping: fsm = FSM.new(self, $States, $States/Sleep)
+	else: fsm = FSM.new(self, $States, $States/Idle)
 	hit_area_2d.damage = spike_damage
 	hit_collision_default_pos = hit_collision_shape_2d.position
 	
@@ -113,7 +119,7 @@ func _physics_process(delta: float) -> void:
 	_update_movement(delta)
 	_check_changed_animation()
 	check_changed_direction()
-	_detect_player()
+	_update_level_bounds_from_markers()
 	
 	if level_bounds.size != Vector2.ZERO:
 		global_position = _clamp_to_level(global_position)
@@ -161,6 +167,10 @@ func _ray_hits_player(ray: RayCast2D) -> Player:
 	return null
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
+	if is_sleeping:
+		_handle_sleep_damage(damage)
+		return
+
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
 	_note_damage_hit()
@@ -192,6 +202,18 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	if fsm.current_state == fsm.states.idle:
 		fsm.change_state(fsm.states.hurt)
 		
+func _handle_sleep_damage(damage: int) -> void:
+	_sleep_health -= damage
+	flash_hurt(0.2, 1)
+
+	if _sleep_health <= 0:
+		is_sleeping = false
+		_recent_damage_times.clear()
+		if fsm and fsm.current_state == fsm.states.sleep:
+			fsm.change_state(fsm.states.idle)
+
+		emit_signal("start_fight")
+		
 func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
 	var mat := animated_sprite_2d.material as ShaderMaterial
 	mat.set_shader_parameter("flash_color", color)
@@ -220,10 +242,6 @@ func _get_player() -> Node2D:
 func _distance_to_player()->float:
 	var p:= _get_player()
 	return abs(global_position.x-p.global_position.x)
-	
-func _detect_player()->void:
-	if seen_player: return
-	if _distance_to_player()<=280: seen_player = true 
 	
 func _now_secs() -> float:
 	return Time.get_ticks_msec() / 1000.0
