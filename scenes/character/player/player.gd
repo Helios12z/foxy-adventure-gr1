@@ -6,6 +6,9 @@ signal hp_changed(current_hp, max_hp)
 signal dash_cooldown_started(duration)
 signal dash_cooldown_updated(time_left)
 signal dash_cooldown_finished()
+signal room_cooldown_started(duration)
+signal room_cooldown_updated(time_left)
+signal room_cooldown_finished()
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var _base_movement_speed: float = 0.0
@@ -29,6 +32,10 @@ var decorator_manager: DecoratorManager = null
 var dash_chain_count: int = 0
 var dash_on_cooldown: bool = false
 var dash_cooldown_timer: Timer = null
+
+@export var room_cooldown_time: float = 20.0
+var room_on_cooldown: bool = false
+var room_cooldown_timer: Timer = null
 
 @export var run_speed_multiplier: float = 1.35
 @export var run_double_tap_window_ms: int = 250
@@ -108,6 +115,8 @@ func _physics_process(delta: float) -> void:
 func _process(_delta: float) -> void:
 	if dash_on_cooldown and dash_cooldown_timer != null:
 		dash_cooldown_updated.emit(dash_cooldown_timer.time_left)
+	if room_on_cooldown and room_cooldown_timer != null:
+		room_cooldown_updated.emit(room_cooldown_timer.time_left)
 
 func _apply_safe_zone_mods() -> void:
 	if invincible_zone:
@@ -261,6 +270,21 @@ func _on_dash_cooldown_timeout() -> void:
 	dash_on_cooldown = false
 	dash_chain_count = 0
 	dash_cooldown_finished.emit()
+
+func start_room_cooldown() -> void:
+	room_on_cooldown = true
+	if room_cooldown_timer == null:
+		room_cooldown_timer = Timer.new()
+		room_cooldown_timer.one_shot = true
+		room_cooldown_timer.timeout.connect(_on_room_cooldown_timeout)
+		add_child(room_cooldown_timer)
+	room_cooldown_timer.wait_time = room_cooldown_time
+	room_cooldown_timer.start()
+	room_cooldown_started.emit(room_cooldown_time)
+
+func _on_room_cooldown_timeout() -> void:
+	room_on_cooldown = false
+	room_cooldown_finished.emit()
 
 func _start_blink_effect() -> void:
 	if blink_timer == null:
