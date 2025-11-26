@@ -14,9 +14,8 @@ func _update(delta: float) -> void:
 
 	var ready = control_move()
 	if not ready: return
-	if obj.found_player == null: return
 
-	var dx = obj.found_player.global_position.x - obj.global_position.x
+	var dx = obj._get_player().global_position.x - obj.global_position.x
 	var desired: int 
 	if dx >= 0: desired = 1
 	else: desired = -1 

@@ -98,19 +98,15 @@ func enable_collision_after_teleporting()->void:
 	obj.hit_collision_shape_2d.disabled=false
 	
 func can_attack1() -> bool:
-	if obj.found_player == null or obj.claw_busy: return false
-	return _distance_to_player_x() <= obj.attack1_range
+	if not obj.seen_player or obj.claw_busy: return false
+	return obj._distance_to_player() <= obj.attack1_range
 
 func can_attack2() -> bool:
-	if obj.found_player == null: return false
-	return _distance_to_player_x() <= obj.attack2_range
-	
-func _distance_to_player_x() -> float:
-	if obj.found_player == null: return INF
-	return absf(obj.found_player.global_position.x - obj.global_position.x)
+	if not obj.seen_player: return false
+	return obj._distance_to_player() <= obj.attack2_range
 	
 func control_move() -> bool:
-	if obj.found_player == null or _distance_to_player_x()>obj.attack1_range or _distance_to_player_x()>obj.attack2_range:
+	if not obj.seen_player or obj._distance_to_player()>obj.attack1_range or obj._distance_to_player()>obj.attack2_range:
 		if obj._blocked_ahead():
 			obj.change_direction(-obj.direction)
 		obj.velocity.x = obj.direction * obj.speed
@@ -241,8 +237,8 @@ func clamp_to_level(p: Vector2) -> Vector2:
 	
 func lock_drop_target_at_player() -> void:
 	var px: float
-	if is_instance_valid(obj._player_fallback):
-		px = obj._player_fallback.global_position.x
+	if is_instance_valid(obj._get_player()):
+		px = obj._get_player().global_position.x
 	else:
 		px = obj.global_position.x
 

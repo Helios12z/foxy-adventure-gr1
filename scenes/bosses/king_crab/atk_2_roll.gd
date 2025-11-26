@@ -34,8 +34,9 @@ func _update(d: float) -> void:
 		# lăn nhanh
 		obj.velocity.x = roll_dir * roll_speed
 
-		if obj.found_player:
-			var side_now = sign(obj.found_player.global_position.x - obj.global_position.x)
+		if obj.seen_player:
+			var player = obj._get_player()
+			var side_now = sign(player.global_position.x - obj.global_position.x)
 			if side_now != 0.0 and side_now != roll_dir:
 				braking = true
 				

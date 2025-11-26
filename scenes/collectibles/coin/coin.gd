@@ -1,7 +1,7 @@
 extends InteractiveArea2D
 
 @export var coin_amount: int = 1
-
+@export var coin_id: String = ""
 
 var is_collected: bool = false
 var is_flying: bool = false
@@ -20,6 +20,13 @@ var p3: Vector2
 
 
 func _ready() -> void:
+	if coin_id.is_empty():
+		coin_id = make_position_id()
+	
+	if GameManager.is_coin_collected(coin_id): 
+		queue_free()
+		return 
+	
 	sprite.play("appearance")
 	interaction_available.connect(_on_interaction_available)
 	super._ready()
@@ -85,6 +92,7 @@ func collect_coin() -> void:
 	is_collected = true   # <<-- CHỐT QUAN TRỌNG (chỉ nhặt 1 lần)
 
 	GameManager.inventory_system.add_coin(coin_amount)
+	GameManager.mark_coin_collected(coin_id)
 
 	sprite.play("disappearance")
 	await sprite.animation_finished
@@ -93,3 +101,9 @@ func collect_coin() -> void:
 
 func _on_interaction_available() -> void:
 	collect_coin()
+	
+func make_position_id() -> String:
+	var ix := int(round(global_position.x))
+	var iy := int(round(global_position.y))
+	return "%d:%d" % [ix, iy]
+	
