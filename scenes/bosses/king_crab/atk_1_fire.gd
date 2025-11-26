@@ -6,6 +6,6 @@ func _enter() -> void:
 
 func _update(d: float)->void:
 	if update_timer(d):
-		#obj.camera.trigger_shake()
+		obj.camera.camera_shake()
 		spawn_bullet_with_dir(obj.queued_bullet_dir_x)
 		change_state(fsm.states.idle_atk)

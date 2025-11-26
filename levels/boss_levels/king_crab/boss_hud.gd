@@ -8,7 +8,7 @@ var _boss: Node = null
 func set_boss(boss: Node) -> void:
 	_boss = boss
 	if not _boss:
-		visible = false
+		print("no boss found in level king crab")
 		return
 
 	if not _boss.health_changed.is_connected(_on_boss_health_changed):
@@ -19,7 +19,10 @@ func set_boss(boss: Node) -> void:
 		_boss.into_phase2.connect(_on_boss_into_phase2)
 
 	_on_boss_health_changed(_boss.health, _boss.max_health)
-	visible = true
+	visible = false
+	
+func _on_boss_start_fighting() -> void:
+	visible = true 
 
 func _on_boss_health_changed(current: float, max_health: float) -> void:
 	bar.max_value = max_health
