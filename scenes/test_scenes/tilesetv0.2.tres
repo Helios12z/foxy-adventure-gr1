@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=17 format=3 uid="uid://d3c8dnj104u5w"]
+[gd_resource type="TileSet" load_steps=19 format=3 uid="uid://d3c8dnj104u5w"]
 
 [ext_resource type="Texture2D" uid="uid://v2dtejovry7r" path="res://asset/island/terrain/terrain_32x32.png" id="1_uwm3g"]
 [ext_resource type="PackedScene" uid="uid://b64dtt1sqigic" path="res://levels/objects/platforms/cloud_platform_01.tscn" id="2_em3jw"]
@@ -9,7 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://bghk1nocyicg" path="res://levels/objects/palm_tree_2.tscn" id="5_eudup"]
 [ext_resource type="PackedScene" uid="uid://bsmvkgh4pu8cm" path="res://scenes/collectibles/chestkey/chest_key.tscn" id="6_7jcja"]
 [ext_resource type="PackedScene" uid="uid://kgiks45x5kpk" path="res://levels/objects/palm_tree_3.tscn" id="6_xp6v3"]
+[ext_resource type="PackedScene" uid="uid://giy64ifkb5um" path="res://scenes/collectibles/powerup/speed_up.tscn" id="7_rbsfj"]
 [ext_resource type="Texture2D" uid="uid://j0f7e7xceopf" path="res://asset/island/terrain/Mossy - TileSet.png" id="7_xp6v3"]
+[ext_resource type="PackedScene" uid="uid://c1y35nujs3trx" path="res://scenes/collectibles/powerup/magnet_pickup.tscn" id="8_2x5sh"]
 [ext_resource type="Texture2D" uid="uid://g6dpub8cqobr" path="res://asset/island/terrain/Tileset.png" id="8_wu8qf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5kmfq"]
@@ -758,6 +760,8 @@ scenes/2/scene = ExtResource("3_eudup")
 scenes/3/scene = ExtResource("5_dm3mv")
 scenes/4/scene = ExtResource("6_7jcja")
 scenes/5/scene = ExtResource("4_mmvf4")
+scenes/6/scene = ExtResource("7_rbsfj")
+scenes/7/scene = ExtResource("8_2x5sh")
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ikfa2"]
 scenes/1/scene = ExtResource("4_ybmpq")

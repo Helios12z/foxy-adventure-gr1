@@ -46,8 +46,8 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_305sh"]
 
-[node name="Coin" type="Area2D"]
-collision_layer = 0
+[node name="Coin" type="Area2D" groups=["collectible"]]
+collision_layer = 1024
 collision_mask = 2
 script = ExtResource("1_or5sm")
 
