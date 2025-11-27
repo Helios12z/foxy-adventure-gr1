@@ -10,6 +10,7 @@ const EPS := 8.0
 
 func _enter() -> void:
 	obj.change_animation("atk2_roll")
+	obj.roll.play()
 
 	roll_dir = sign(obj.queued_roll_dir_x)
 
@@ -61,4 +62,5 @@ func _on_roll_hit_area(a: Area2D) -> void:
 	change_state(fsm.states.atk2_stop)
 	
 func _exit()->void:
+	obj.roll.stop()
 	toggle_next_attack()

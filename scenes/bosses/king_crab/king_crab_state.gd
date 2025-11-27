@@ -47,11 +47,6 @@ func play_attack_effect(type: int, duration: float) -> void:
 		obj.attack_3_hover_effect.play("default")
 		obj.attack_3_hover_effect.frame = 0 
 		
-		var frames = obj.attack_3_hover_effect.sprite_frames.get_frame_count("default")
-		var fps = max(obj.attack_3_hover_effect.sprite_frames.get_animation_speed("default"), 0.001)
-		var base_duration = frames / fps                   
-		obj.attack_3_hover_effect.speed_scale = base_duration / duration
-		
 func play_teleport_effect(duration: float)->void:
 	obj.teleport_effect.visible = true 
 	obj.teleport_effect.play("default")
@@ -137,7 +132,7 @@ func spawn_bullet_with_dir(dir_x: float) -> void:
 	if bullet.has_signal("returned"):
 		bullet.connect("returned", Callable(self, "on_bullet_returned"))
 	if "spike_damage" in bullet:
-		bullet.spike_damage = obj.spike_damage
+		bullet.spike_damage = obj.claw_damage
 
 	bullet.launch(self, origin, target)
 	
@@ -169,7 +164,6 @@ func spawn_minions() -> void:
 
 		var target_x = obj.global_position.x + off
 
-		# Tôn trọng level_bounds nếu có
 		if obj.level_bounds.size != Vector2.ZERO:
 			target_x = clampf(
 				target_x,
@@ -177,7 +171,6 @@ func spawn_minions() -> void:
 				obj.level_bounds.position.x + obj.level_bounds.size.x
 			)
 
-		# Lấy vị trí an toàn trên mặt đất quanh boss
 		var safe_pos = safe_snap_ground(
 			target_x,
 			obj.global_position.y - 300.0
@@ -223,6 +216,7 @@ func ground_at(xy: Vector2, max_drop: float = 1000.0) -> Vector2:
 
 func snap_to_ground() -> void:
 	var gy := ground_at(obj.global_position, 1000.0).y
+	obj.camera.camera_shake(0.35, 27)
 	obj.global_position.y = gy - obj._feet_offset_y
 
 func safe_snap_ground(x: float, probe_top_y: float, max_drop: float = 1000.0) -> Vector2:
@@ -315,9 +309,28 @@ func spawn_shockwave() -> void:
 	if obj.king_crab_shockwave_scene == null:
 		return
 
+	var parent_node: Node = null
+	if obj.get_tree().current_scene != null:
+		parent_node = obj.get_tree().current_scene
+	else:
+		parent_node = obj.get_parent()
+
+	var origin_x := obj.global_position.x
+	if obj.level_bounds.size != Vector2.ZERO:
+		origin_x = clampf(
+			origin_x,
+			obj.level_bounds.position.x,
+			obj.level_bounds.position.x + obj.level_bounds.size.x
+		)
+
+	var probe_top_y := obj.global_position.y - 300.0
+	var spawn_pos := safe_snap_ground(origin_x, probe_top_y)
+
 	var explosion = obj.king_crab_shockwave_scene.instantiate()
-	get_parent().add_child(explosion)
-	explosion.global_position = obj.global_position
+	parent_node.add_child(explosion)
+
+	if explosion is Node2D:
+		explosion.global_position = spawn_pos
 	
 func move_hit_collision_at_idle_attack()->void:
 	obj.hit_collision_shape_2d.position.x += 11

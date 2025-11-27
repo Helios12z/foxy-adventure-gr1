@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://dhnpal80arkyc"]
+[gd_scene load_steps=16 format=3 uid="uid://dhnpal80arkyc"]
 
 [ext_resource type="Texture2D" uid="uid://clex0alqgtj07" path="res://asset/effects/explosion_effect.png" id="1_e2ws3"]
 [ext_resource type="Script" uid="uid://cmaqyikgctvdb" path="res://scenes/bosses/king_crab/king_crab_shockwave.gd" id="1_lr5s0"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_hd1su"]
+[ext_resource type="AudioStream" uid="uid://bf88fnkwbixfj" path="res://asset/sounds/king_crab_sound/explosion.mp3" id="4_hd1su"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ot5xg"]
 atlas = ExtResource("1_e2ws3")
@@ -96,3 +97,7 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 shape = SubResource("CircleShape2D_qb37j")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_hd1su")
+bus = &"SFX"

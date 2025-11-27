@@ -5,10 +5,11 @@ signal boss_died
 signal into_phase2
 signal start_fight
 
-@export var king_crab_max_health: int = 500
+@export var king_crab_max_health: int = 2500
 @export var is_sleeping: bool = true 
-@export var sleep_health_max: int = 30
-@export var spike_damage: int = 50
+@export var sleep_health_max: int = 100
+@export var spike_damage: int = 100
+@export var claw_damage: int = 200
 @export var speed: float = 50.0
 @export var king_crab_gravity: float = 700.0
 @export var phase2_threshold_ratio: float = 0.7    
@@ -23,7 +24,6 @@ signal start_fight
 @export var bullet_scene: PackedScene
 @export var minion_scene: PackedScene
 @export var king_crab_shockwave_scene: PackedScene
-@export var fire_gem_scene: PackedScene
 
 @export var teleport_proximity_seconds: float = 4.0     
 @export var teleport_proximity_distance: float = 200.0    
@@ -32,7 +32,7 @@ signal start_fight
  
 @export var atk3_cast_time: float = 1.5
 @export var atk3_windup_time: float = 1.0
-@export var atk3_hover_time: float = 0.6
+@export var atk3_hover_time: float = 1.25
 @export var atk3_fly_height: float = 150.0         
 @export var atk3_rise_speed: float = 600.0
 @export var atk3_rise_accel: float = 2200.0    
@@ -40,6 +40,11 @@ signal start_fight
 @export var atk3_fall_speed: float = 1200.0
 @export var atk3_dash_speed: float = 1600.0 
 @export var atk3_strafe_speed: float = 900.0
+
+@export var phase2_slowmo_scale: float = 0.15     # tốc độ khi slow (0.1–0.3)
+@export var phase2_slowmo_duration: float = 0.6   
+@export var phase2_flash_duration: float = 0.4    
+@export var phase2_flash_blinks: int = 4 
 
 @export var chain_after_basic_prob: float = 0.5    
 
@@ -54,14 +59,17 @@ signal start_fight
 
 var front_ray_cast: RayCast2D
 var down_ray_cast: RayCast2D
-
-var _sleep_health: int = 0   
+ 
 var seen_player: bool = false 
 var _flash_tw: Tween
 var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
 var level_bounds: Rect2
+var _phase2_transition_running := false
 var _chain_after_basic: bool = false
+
+var _original_time_scale: float = 1.0
+var _sleep_health: int = 0  
 var _saved_gravity: float = 0.0
 var hit_collision_default_pos: Vector2
 
@@ -91,6 +99,13 @@ var queued_roll_dir_x: float = 1.0
 @onready var hurt_collision_shape_2d: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
 @onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 @onready var boss_direction: Node2D = $Direction
+
+@onready var shoot: AudioStreamPlayer2D = $Sound/Shoot
+@onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
+@onready var roll: AudioStreamPlayer2D = $Sound/Roll
+@onready var cast: AudioStreamPlayer2D = $Sound/Cast
+@onready var electric: AudioStreamPlayer2D = $Sound/Electric
+@onready var roar: AudioStreamPlayer2D = $Sound/Roar
 
 func _ready() -> void:
 	_init_ray_casts()
@@ -170,12 +185,15 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	if is_sleeping:
 		_handle_sleep_damage(damage)
 		return
+	
+	if not seen_player: 
+		return 
 
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
 	_note_damage_hit()
 	
-	if fsm.current_state != fsm.states.idle:
+	if fsm.current_state != fsm.states.idle and fsm.current_state != fsm.states.idle_atk:
 		flash_hurt(0.25, 3)
 
 	if health <= 0.0:
@@ -184,19 +202,18 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 			fsm.change_state(fsm.states.dead)
 		return
 
-	if not in_phase2 and health <= max_health * phase2_threshold_ratio:
-		in_phase2 = true
-		emit_signal("into_phase2")
-		if fsm and fsm.current_state != fsm.states.dead and fsm.current_state != fsm.states.idle_atk and fsm.current_state != fsm.states.hurt_with_one_claw:
-			fsm.change_state(fsm.states.atk3_cast)
+	if not in_phase2 and health <= max_health * phase2_threshold_ratio and fsm.current_state != fsm.states.idle_atk and fsm.current_state != fsm.states.idle_stun:
+		_start_phase2_transition()
 		return
 
 	if _took_consecutive_damage():
-		if fsm.current_state == fsm.states.idle and fsm.current_state != fsm.states.dead and fsm.current_state != fsm.states.hurt_with_one_claw and fsm.current_state != fsm.states.idle_atk:
+		if fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk1_windup or fsm.current_state == fsm.states.atk2_windup:
 			fsm.change_state(fsm.states.teleport)
 		_recent_damage_times.clear()
 		return 
 
+	if fsm.current_state == fsm.states.idle_stun:
+		fsm.change_state(fsm.states.walk)
 	if fsm.current_state == fsm.states.idle_atk:
 		fsm.change_state(fsm.states.hurt_with_one_claw)
 	if fsm.current_state == fsm.states.idle:
@@ -210,7 +227,7 @@ func _handle_sleep_damage(damage: int) -> void:
 		is_sleeping = false
 		_recent_damage_times.clear()
 		if fsm and fsm.current_state == fsm.states.sleep:
-			fsm.change_state(fsm.states.idle)
+			fsm.change_state(fsm.states.castaftersleep)
 
 		emit_signal("start_fight")
 		
@@ -280,3 +297,34 @@ func _update_level_bounds_from_markers() -> void:
 		max_x - min_x,
 		max_y - min_y
 	)
+	
+func _start_phase2_transition() -> void:
+	if _phase2_transition_running:
+		return
+	_phase2_transition_running = true
+
+	if camera:
+		camera.camera_shake(0.35, 20)
+	
+	roar.play()
+	
+	_original_time_scale = Engine.time_scale
+
+	flash_hurt(phase2_flash_duration, phase2_flash_blinks, Color(1, 1, 1, 1))
+
+	Engine.time_scale = phase2_slowmo_scale
+
+	var tw := create_tween()
+	tw.tween_interval(phase2_slowmo_duration)
+	tw.tween_callback(Callable(self, "_finish_phase2_transition"))
+
+func _finish_phase2_transition() -> void:
+	Engine.time_scale = _original_time_scale
+	_phase2_transition_running = false
+
+	in_phase2 = true
+	emit_signal("into_phase2")
+	roar.stop()
+
+	if fsm and fsm.current_state != fsm.states.dead:
+		fsm.change_state(fsm.states.atk3_cast)

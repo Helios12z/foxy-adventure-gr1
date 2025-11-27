@@ -1,6 +1,6 @@
 extends KingCrabState
 
-var wait_time: float = 0.5
+var wait_time: float = 1.25
 
 func _enter()->void:
 	obj.change_animation("idle")

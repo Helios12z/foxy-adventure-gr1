@@ -18,8 +18,10 @@ var _sprite_radius: float = 1.0
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hit_area: Area2D = $HitArea2D
 @onready var shape: CircleShape2D = $HitArea2D/CollisionShape2D.shape as CircleShape2D
+@onready var sound: AudioStreamPlayer2D = $Sound
 
 func _ready() -> void:
+	sound.play()
 	_base_anim_scale = anim.scale
 
 	var tex: Texture2D = null

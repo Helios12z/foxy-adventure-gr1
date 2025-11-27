@@ -14,7 +14,7 @@ var blink_times_post := 4
 var _blink_tw: Tween
 
 func _enter() -> void:
-	if get_minion_count() >= 4:
+	if get_minion_count() >= 3:
 		obj._chain_after_basic = false
 		change_state(fsm.states.idle)
 		return
@@ -23,6 +23,7 @@ func _enter() -> void:
 	t = 0.0
 	obj.velocity.x = 0.0
 	obj.change_animation("cast")
+	obj.cast.play()
 	_begin_summon_blink(windup_duration, blink_times_windup, summon_blink_color_start)
 
 func _update(delta: float) -> void:

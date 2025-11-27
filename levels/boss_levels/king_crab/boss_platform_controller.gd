@@ -4,11 +4,16 @@ signal complete_moving_up
 
 @export var rect_platform: Node2D
 @export var diamond_platform: Node2D
+@onready var spear_platform: TileMapLayer = $Spear
+@onready var left_platform: TileMapLayer = $LeftPlatform
+@onready var right_platform: TileMapLayer = $RightPlatform
 
 @export var rise_height: float = 200.0
 @export var rise_time: float = 3.5
 
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
+
+@onready var craking: AudioStreamPlayer2D = $"../../Sound/Craking"
 
 var _intro_done := false
 var _returned := false
@@ -20,11 +25,14 @@ func _ready() -> void:
 
 	_rect_start_pos = rect_platform.global_position
 
-	diamond_platform.visible = false
 	if "modulate" in diamond_platform:
 		diamond_platform.modulate.a = 1.0
-	_set_platform_collision(diamond_platform, false)
-
+	
+	spear_platform.visible = false 
+	_set_platform_collision(spear_platform, false)
+	
+	right_platform.visible = false 
+	_set_platform_collision(right_platform, false)
 
 func start_boss_intro() -> void:
 	if _intro_done:
@@ -32,14 +40,19 @@ func start_boss_intro() -> void:
 	_intro_done = true
 
 	if camera:
-		camera.camera_shake(0.4, 22)
+		camera.camera_shake(0.4, 24)
+	craking.play(2.0)
+	
+	left_platform.visible = false 
+	_set_platform_collision(left_platform, false)
 
 	diamond_platform.global_position = _rect_start_pos
-	diamond_platform.visible = true
+	
+	spear_platform.visible = true
+	_set_platform_collision(spear_platform, true)
+	
 	if "modulate" in diamond_platform:
 		diamond_platform.modulate.a = 1.0
-	_set_platform_collision(diamond_platform, true)
-
 	if "modulate" in rect_platform:
 		rect_platform.modulate.a = 1.0
 
@@ -53,29 +66,22 @@ func start_boss_intro() -> void:
 		rise_time
 	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-	if "modulate" in rect_platform:
-		tw.tween_property(
-			rect_platform,
-			"modulate:a",
-			0.0,
-			rise_time
-		)
-
 	tw.finished.connect(func ():
-		rect_platform.visible = false
 		emit_signal("complete_moving_up")
+		craking.stop()
 	)
-
 
 func return_platform_after_boss_dead() -> void:
 	if _returned:
 		return
 	_returned = true
+	
+	if camera:
+		camera.camera_shake(0.4, 24)
+	craking.play(2.0)
 
-	rect_platform.visible = true
 	if "modulate" in rect_platform:
 		rect_platform.modulate.a = 0.0
-	_set_platform_collision(rect_platform, true)
 
 	var tw := create_tween()
 	tw.set_parallel(true)
@@ -96,8 +102,13 @@ func return_platform_after_boss_dead() -> void:
 		)
 
 	tw.finished.connect(func ():
-		_set_platform_collision(diamond_platform, false)
-		diamond_platform.visible = false
+		craking.stop()
+		spear_platform.visible = false
+		_set_platform_collision(spear_platform, false)
+		right_platform.visible = true 
+		_set_platform_collision(right_platform, true)
+		left_platform.visible = true
+		_set_platform_collision(left_platform, true)
 	)
 
 

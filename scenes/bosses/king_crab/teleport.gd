@@ -19,6 +19,7 @@ var teleport_blink_color_in:  Color = Color8(255, 255, 255, 255)
 func _enter() -> void:
 	disable_attack_effect()
 	obj.change_animation("cast")
+	obj.cast.play()
 	teleport_phase = 0
 	fade_timer = 0.0
 	obj.velocity.x = 0.0

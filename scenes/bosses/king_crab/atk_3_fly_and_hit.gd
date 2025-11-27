@@ -29,6 +29,7 @@ func _enter() -> void:
 	_target_locked = false
 
 	play_attack_effect(5, hover_timer)
+	obj.electric.play()
 	_begin_cast_blink(hover_timer, blink_times_windup, blink_color_start)
 
 func _update(d: float) -> void:
@@ -49,6 +50,7 @@ func _update(d: float) -> void:
 					lock_drop_target_at_player()
 					_target_locked = true
 
+				obj.electric.stop()
 				disable_attack_effect()
 				_end_cast_blink()
 				phase = DASH

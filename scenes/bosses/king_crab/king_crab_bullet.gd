@@ -8,6 +8,8 @@ signal hit_player
 @export var spike_damage: int = 1
 @export var return_stop_radius: float = 6.0
 
+@onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
+
 var origin: Vector2
 var target_corner: Vector2
 var going_out := true
@@ -16,9 +18,9 @@ var traveled := 0.0
 var dir: Vector2 = Vector2.RIGHT
 
 func _ready() -> void:
+	hit_area_2d.damage = spike_damage
 	gravity = 0.0
 
-#no gravity count
 func _update_movement(delta: float) -> void:
 	move_and_slide()
 
