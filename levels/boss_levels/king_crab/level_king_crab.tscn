@@ -167,7 +167,9 @@ texture = ExtResource("9_ooya2")
 flip_v = true
 
 [node name="LeavesParticle" type="GPUParticles2D" parent="World"]
-position = Vector2(450, 321)
+position = Vector2(420.00003, 321)
+scale = Vector2(1.5, 1.5)
+amount = 20
 texture = ExtResource("9_gq3ge")
 lifetime = 5.0
 preprocess = 5.0
@@ -223,9 +225,9 @@ offset_right = 77.5
 offset_bottom = -65.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.9731731, 0.000406031, 0.2564146, 1)
+theme_override_colors/font_color = Color(18.399155, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
-theme_override_colors/font_outline_color = Color(0.773859, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(14.807277, 0, 0, 1)
 theme_override_fonts/font = ExtResource("8_42jcx")
 theme_override_font_sizes/font_size = 24
 text = "THE KING CRAB"

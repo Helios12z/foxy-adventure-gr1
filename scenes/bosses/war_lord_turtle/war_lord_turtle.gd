@@ -1,7 +1,11 @@
 extends BaseCharacter
 
-@export var max_health_boss: int = 600
+signal health_changed(current: float, max_health: float)
+signal boss_died
+signal into_phase2
+signal start_fight
 
+@export var max_health_boss: int = 600
 @export var spike_damage: int = 70
 @export var attack_speed: float = 200.0          
 @export var attack_damage_boss: int = 50        
@@ -17,7 +21,6 @@ extends BaseCharacter
 @export var water_tornado_scene: PackedScene
 @export var atomic_bomb_scene: PackedScene
 @export var laser_beam_scene: PackedScene
-@export var water_room_gem_scene: PackedScene
 
 @onready var atk_1_shoot_point_1: Marker2D = $Direction/Atk1ShootPoint1
 @onready var atk_1_shoot_point_2: Marker2D = $Direction/Atk1ShootPoint2
@@ -32,12 +35,12 @@ extends BaseCharacter
 @onready var strafe_shoot_point_6: Marker2D = $Direction/StrafeShootPoint6
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
+@onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 @onready var target_lock_effect: AnimatedSprite2D = $Direction/TargetLockEffect
 
 @export var phase2_threshold_ratio: float = 0.7
-@export var atomic_threshold_ratio: float = 0.3
 
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D
@@ -45,12 +48,22 @@ extends BaseCharacter
 @export var retaliate_damage_window_seconds: float = 6.0 #6 seconds
 @export var retaliate_combo_hits: int = 3  #3 hits
 
+@export var phase2_slowmo_scale: float = 0.15    
+@export var phase2_slowmo_duration: float = 0.6   
+@export var phase2_flash_duration: float = 0.4    
+@export var phase2_flash_blinks: int = 4          
+
 var seen_player: bool = false 
 var _flash_tw: Tween
 var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
 var _active_beams: Array = []
 var level_bounds: Rect2
+
+var _phase2_transition_running := false
+var _original_time_scale: float = 1.0
+
+@onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
 
 func _ready() -> void:
 	movement_speed = 0.0
@@ -68,6 +81,8 @@ func _ready() -> void:
 	_update_level_bounds_from_markers()
 
 	fsm = FSM.new(self, $States, $States/Idle)
+	
+	emit_signal("health_changed", health, max_health)
 
 func _physics_process(delta: float) -> void:
 	if fsm != null: fsm._update(delta)
@@ -84,6 +99,7 @@ func _init_hurt_area() -> void:
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	take_damage(damage)
+	emit_signal("health_changed", health, max_health)
 	_note_damage_hit()
 	
 	if fsm.current_state != fsm.states.idle:
@@ -91,13 +107,13 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 
 	if health <= 0.0:
 		if fsm and fsm.current_state != fsm.states.dead:
+			emit_signal("boss_died")
 			fsm.change_state(fsm.states.dead)
 		return
 
 	if not in_phase2 and health <= max_health * phase2_threshold_ratio:
-		in_phase2 = true
-		if fsm and fsm.current_state != fsm.states.dead:
-			fsm.change_state(fsm.states.atk_3_windup)
+		fsm.change_state(fsm.states.cast_into_phase2)
+		_start_phase2_transition()
 		return
 
 	if _took_consecutive_damage():
@@ -163,7 +179,9 @@ func _update_facing() -> void:
 	
 func _detect_player()->void:
 	if seen_player: return
-	if _distance_to_player()<=280: seen_player = true 
+	if _distance_to_player()<=280: 
+		seen_player = true 
+		emit_signal("start_fight")
 			
 func _update_level_bounds_from_markers() -> void:
 	if bound_point_a == null or bound_point_b == null:
@@ -184,3 +202,26 @@ func _update_level_bounds_from_markers() -> void:
 		max_x - min_x,
 		max_y - min_y
 	)
+	
+func _start_phase2_transition() -> void:
+	if _phase2_transition_running:
+		return
+	_phase2_transition_running = true
+
+	if camera:
+		camera.camera_shake(0.35, 20)
+
+	flash_hurt(phase2_flash_duration, phase2_flash_blinks, Color(1, 1, 1, 1))
+
+	_original_time_scale = Engine.time_scale
+	Engine.time_scale = phase2_slowmo_scale
+
+	var tw := create_tween()
+	tw.tween_interval(phase2_slowmo_duration)
+	tw.tween_callback(Callable(self, "_finish_phase2_transition"))
+
+func _finish_phase2_transition() -> void:
+	Engine.time_scale = _original_time_scale
+	_phase2_transition_running = false
+	in_phase2 = true
+	emit_signal("into_phase2")

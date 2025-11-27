@@ -1,0 +1,99 @@
+extends Node2D
+
+@onready var boss: CharacterBody2D = $World/WarLordTurtle
+@onready var room_bound_point_a: Marker2D = $World/RoomBoundPointA
+@onready var room_bound_point_b: Marker2D = $World/RoomBoundPointB
+@onready var boss_platform_controller: Node2D = $World/BossPlatformController
+@onready var boss_hud: Control = $CanvasLayer/CanvasLayer/BossHUD
+
+@onready var chest: Area2D = $World/Chest
+
+@onready var ambient: AudioStreamPlayer2D = $Sound/Ambient
+
+#func _enter_tree() -> void:
+	#GameManager.current_stage = self
+
+func _ready() -> void:
+	#if not GameManager.respawn_at_portal():
+		#GameManager.respawn_at_checkpoint()
+	
+	ambient.play()
+	
+	if chest:
+		chest.visible = false
+		_set_chest_collision(chest, false)
+	
+	boss_hud.set_boss(boss)
+	
+	if not boss.start_fight.is_connected(_on_boss_start_fight):
+		boss.start_fight.connect(_on_boss_start_fight)
+
+	if not boss.boss_died.is_connected(_on_boss_died):
+		boss.boss_died.connect(_on_boss_died)
+		
+	if not boss.into_phase2.is_connected(_on_boss_into_phase2):
+		boss.into_phase2.connect(_on_boss_into_phase2)
+		
+	if not boss_platform_controller.complete_moving_up.is_connected(_on_complete_moving_up):
+		boss_platform_controller.complete_moving_up.connect(_on_complete_moving_up)
+
+func _on_boss_start_fight() -> void:
+	await get_tree().create_timer(0.75).timeout
+	boss_platform_controller.start_boss_intro()
+	boss_hud._on_boss_start_fighting()
+	boss.boss_music.play()
+
+func _on_boss_died() -> void:
+	boss_platform_controller.return_platform_after_boss_dead()
+	
+	var fall_time = boss_platform_controller.rise_time if boss_platform_controller.has_method("get") else 1.0
+	await get_tree().create_timer(fall_time + 1.25).timeout
+	_spawn_chest()
+	
+func _on_complete_moving_up() -> void:
+	boss.seen_player = true 
+	
+func _spawn_chest() -> void:
+	if chest == null:
+		return
+	
+	chest.visible = true 
+	_set_chest_collision(chest, true)
+
+	var feet := chest.get_node("Feet") as Marker2D
+
+	var a = room_bound_point_a.global_position
+	var b = room_bound_point_b.global_position
+
+	var spawn_x = (a.x + b.x) * 0.5
+	var ground_y = a.y
+
+	var target_y = ground_y - feet.position.y
+	var start_y = target_y - 300.0
+
+	chest.global_position = Vector2(spawn_x, start_y)
+	add_child(chest)
+
+	var tw := create_tween()
+	tw.tween_property(
+		chest,
+		"global_position:y",
+		target_y,
+		1.0
+	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	
+func _on_boss_into_phase2() -> void:
+	boss_platform_controller.start_phase2_platforms()
+	
+func _set_chest_collision(root: Node, enabled: bool) -> void:
+	if root == null:
+		return
+
+	for child in root.get_children():
+		if child is CollisionShape2D or child is CollisionPolygon2D:
+			child.disabled = not enabled
+		if child is Area2D:
+			child.monitoring = enabled
+			child.monitorable = enabled
+		if child.get_child_count() > 0:
+			_set_chest_collision(child, enabled)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=75 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://dvj78awilo0ng" path="res://asset/war_lord/war_lord_turtle12.png" id="8_6vi0x"]
 [ext_resource type="Texture2D" uid="uid://ba5h7am6qky5h" path="res://asset/war_lord/war_lord_turtle13.png" id="9_6x4je"]
 [ext_resource type="PackedScene" uid="uid://bklhkn41sbvwa" path="res://scenes/bosses/war_lord_turtle/laser_beam.tscn" id="9_sr0mj"]
-[ext_resource type="PackedScene" uid="uid://bx2xcf02m4m0r" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="10_px23k"]
 [ext_resource type="Texture2D" uid="uid://7c76aihswb45" path="res://asset/war_lord/war_lord_turtle14.png" id="10_td4te"]
 [ext_resource type="Texture2D" uid="uid://bwvaceiepbqp4" path="res://asset/war_lord/war_lord_turtle15.png" id="11_giamn"]
 [ext_resource type="Texture2D" uid="uid://c83oawvrsnyw6" path="res://asset/war_lord/war_lord_turtle16.png" id="12_ioqo5"]
@@ -54,6 +53,8 @@
 [ext_resource type="Script" uid="uid://bahndayducg6i" path="res://scenes/bosses/war_lord_turtle/strafe.gd" id="49_wqdu7"]
 [ext_resource type="Script" uid="uid://cg168aafng6ga" path="res://scenes/bosses/war_lord_turtle/strafe_windup.gd" id="51_n5e63"]
 [ext_resource type="Script" uid="uid://lf5e4c6o3vuj" path="res://scenes/bosses/war_lord_turtle/strafe_stop.gd" id="52_15ujm"]
+[ext_resource type="Script" uid="uid://whhob2wo8bpu" path="res://scenes/bosses/war_lord_turtle/cast_into_phase_2.gd" id="54_px23k"]
+[ext_resource type="AudioStream" uid="uid://vwei5j06jknd" path="res://asset/sounds/war_lord_turtle_sound/boss_music.mp3" id="55_g3nhw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
@@ -400,7 +401,6 @@ blow_scene = ExtResource("6_k5ojm")
 water_tornado_scene = ExtResource("7_6fm8k")
 atomic_bomb_scene = ExtResource("8_5moyg")
 laser_beam_scene = ExtResource("9_sr0mj")
-water_room_gem_scene = ExtResource("10_px23k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.5, 0.5)
@@ -411,7 +411,7 @@ shape = SubResource("RectangleShape2D_k7whc")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_og2oc")
 sprite_frames = SubResource("SpriteFrames_g47qh")
-animation = &"stun"
+animation = &"windup"
 autoplay = "idle"
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
@@ -524,3 +524,13 @@ script = ExtResource("51_n5e63")
 
 [node name="Strafe_Stop" type="Node" parent="States"]
 script = ExtResource("52_15ujm")
+
+[node name="Cast_Into_Phase2" type="Node" parent="States"]
+script = ExtResource("54_px23k")
+
+[node name="Sound" type="Node2D" parent="."]
+
+[node name="BossMusic" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("55_g3nhw")
+bus = &"Music"
+parameters/looping = true
