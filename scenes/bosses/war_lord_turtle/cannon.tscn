@@ -18,6 +18,8 @@ atlas = ExtResource("1_1exh6")
 [node name="Cannon" type="RigidBody2D"]
 collision_layer = 8
 script = ExtResource("1_gny6r")
+move_speed = 300.0
+spike_damage = 80
 explosion = ExtResource("2_rctjp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

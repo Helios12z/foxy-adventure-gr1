@@ -6,10 +6,7 @@ signal into_phase2
 signal start_fight
 
 @export var max_health_boss: int = 600
-@export var spike_damage: int = 70
-@export var attack_speed: float = 200.0          
-@export var attack_damage_boss: int = 50        
-@export var bomb_move_speed: float = 200.0      
+@export var spike_damage: int = 70             
 @export var stun_time: float = 3.5 
 @export var beam_attack_duration: float = 1.5 
 
@@ -62,8 +59,17 @@ var level_bounds: Rect2
 
 var _phase2_transition_running := false
 var _original_time_scale: float = 1.0
+var phase2_platform_ready: bool = false
 
 @onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
+@onready var roar: AudioStreamPlayer2D = $Sound/Roar
+@onready var cannon_firing: AudioStreamPlayer2D = $Sound/CannonFiring
+@onready var rocket_launch: AudioStreamPlayer2D = $Sound/RocketLaunch
+@onready var energy: AudioStreamPlayer2D = $Sound/Energy
+@onready var warning: AudioStreamPlayer2D = $Sound/Warning
+@onready var missile_launch: AudioStreamPlayer2D = $Sound/MissileLaunch
+@onready var cast: AudioStreamPlayer2D = $Sound/Cast
+@onready var laser: AudioStreamPlayer2D = $Sound/Laser
 
 func _ready() -> void:
 	movement_speed = 0.0
@@ -118,7 +124,12 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 
 	if _took_consecutive_damage():
 		if fsm.current_state == fsm.states.idle and fsm.current_state != fsm.states.dead:
-			fsm.change_state(fsm.states.blow)
+			if not in_phase2:
+				var x = randi_range(1, 3)
+				if x==1: fsm.change_state(fsm.states.atk_1)
+				elif x==2: fsm.change_state(fsm.states.atk_2)
+				else: fsm.change_state(fsm.states.blow)
+			else: fsm.change_state(fsm.states.blow)
 		_recent_damage_times.clear()
 		return 
 
@@ -210,7 +221,8 @@ func _start_phase2_transition() -> void:
 
 	if camera:
 		camera.camera_shake(0.35, 20)
-
+	
+	roar.play()
 	flash_hurt(phase2_flash_duration, phase2_flash_blinks, Color(1, 1, 1, 1))
 
 	_original_time_scale = Engine.time_scale

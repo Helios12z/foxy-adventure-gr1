@@ -1,10 +1,15 @@
 extends Node2D
 
+@export var back_layer_normal_color: Color = Color(1, 1, 1, 1)          
+@export var back_layer_dark_color: Color = Color(0.25, 0.25, 0.35, 1)   
+@export var back_layer_tween_time: float = 2.0  
+
 @onready var boss: CharacterBody2D = $World/WarLordTurtle
 @onready var room_bound_point_a: Marker2D = $World/RoomBoundPointA
 @onready var room_bound_point_b: Marker2D = $World/RoomBoundPointB
 @onready var boss_platform_controller: Node2D = $World/BossPlatformController
 @onready var boss_hud: Control = $CanvasLayer/CanvasLayer/BossHUD
+@onready var parallax_layer_back: ParallaxLayer = $World/ParallaxBackground/ParallaxLayerBack
 
 @onready var chest: Area2D = $World/Chest
 
@@ -18,6 +23,9 @@ func _ready() -> void:
 		#GameManager.respawn_at_checkpoint()
 	
 	ambient.play()
+	
+	#if the boss has been defeated, no more this
+	_dim_background()
 	
 	if chest:
 		chest.visible = false
@@ -51,7 +59,7 @@ func _on_boss_died() -> void:
 	_spawn_chest()
 	
 func _on_complete_moving_up() -> void:
-	boss.seen_player = true 
+	boss.phase2_platform_ready = true 
 	
 func _spawn_chest() -> void:
 	if chest == null:
@@ -84,6 +92,7 @@ func _spawn_chest() -> void:
 	
 func _on_boss_into_phase2() -> void:
 	boss_platform_controller.start_phase2_platforms()
+	_restore_background()
 	
 func _set_chest_collision(root: Node, enabled: bool) -> void:
 	if root == null:
@@ -97,3 +106,18 @@ func _set_chest_collision(root: Node, enabled: bool) -> void:
 			child.monitorable = enabled
 		if child.get_child_count() > 0:
 			_set_chest_collision(child, enabled)
+
+func _dim_background() -> void:
+	parallax_layer_back.modulate = back_layer_dark_color	
+
+func _restore_background() -> void:
+	if not is_instance_valid(parallax_layer_back):
+		return
+	
+	var tw := create_tween()
+	tw.tween_property(
+		parallax_layer_back,
+		"modulate",
+		back_layer_normal_color,
+		back_layer_tween_time
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

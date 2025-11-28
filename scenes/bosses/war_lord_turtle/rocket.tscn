@@ -19,6 +19,7 @@ collision_layer = 8
 contact_monitor = true
 max_contacts_reported = 4
 script = ExtResource("1_r0gyu")
+speed = 500.0
 explosion = ExtResource("2_4v3rf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

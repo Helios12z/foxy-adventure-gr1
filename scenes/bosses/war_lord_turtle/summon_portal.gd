@@ -14,6 +14,7 @@ func _enter() -> void:
 	timer = windup_duration
 
 	obj.change_animation("windup") 
+	obj.cast.play()
 	_begin_summon_blink(windup_duration, blink_times_windup, summon_blink_color_start)
 	
 

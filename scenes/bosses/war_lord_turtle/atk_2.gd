@@ -43,21 +43,25 @@ func _on_frame_changed() -> void:
 	# Rocket 1: frame 4, gun 1, target A (index 0)
 	if not _rocket1_spawned and f == ROCKET1_FRAME:
 		_rocket1_spawned = true
+		obj.rocket_launch.play(0.4)
 		spawn_rocket_from_index(0, 0)
 
 	# Rocket 2: frame 5, gun 2, target B (index 1)
 	if not _rocket2_spawned and f == ROCKET2_FRAME:
 		_rocket2_spawned = true
+		obj.rocket_launch.play(0.4)
 		spawn_rocket_from_index(1, 1)
 
 	# Rocket 3: frame 7, gun 1, target C (index 2)
 	if not _rocket3_spawned and f == ROCKET3_FRAME:
 		_rocket3_spawned = true
+		obj.rocket_launch.play(0.4)
 		spawn_rocket_from_index(2, 0)
 
 	# Rocket 4: frame 8, gun 2, target D (index 3)
 	if not _rocket4_spawned and f == ROCKET4_FRAME:
 		_rocket4_spawned = true
+		obj.rocket_launch.play(0.4)
 		spawn_rocket_from_index(3, 1)
 
 func _on_anim_finished() -> void:

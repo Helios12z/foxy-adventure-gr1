@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=83 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -55,6 +55,14 @@
 [ext_resource type="Script" uid="uid://lf5e4c6o3vuj" path="res://scenes/bosses/war_lord_turtle/strafe_stop.gd" id="52_15ujm"]
 [ext_resource type="Script" uid="uid://whhob2wo8bpu" path="res://scenes/bosses/war_lord_turtle/cast_into_phase_2.gd" id="54_px23k"]
 [ext_resource type="AudioStream" uid="uid://vwei5j06jknd" path="res://asset/sounds/war_lord_turtle_sound/boss_music.mp3" id="55_g3nhw"]
+[ext_resource type="AudioStream" uid="uid://dsafms5eborjs" path="res://asset/sounds/king_crab_sound/roaring.mp3" id="56_bdclj"]
+[ext_resource type="AudioStream" uid="uid://dnsg083s0n24p" path="res://asset/sounds/war_lord_turtle_sound/cannon_firing.mp3" id="57_okblm"]
+[ext_resource type="AudioStream" uid="uid://dh46dgb6mmfdg" path="res://asset/sounds/war_lord_turtle_sound/rocket_launch.mp3" id="58_fhhfu"]
+[ext_resource type="AudioStream" uid="uid://l232q2tnhnr6" path="res://asset/sounds/war_lord_turtle_sound/energy_release.mp3" id="59_8dygg"]
+[ext_resource type="AudioStream" uid="uid://dh8in8du3axfv" path="res://asset/sounds/war_lord_turtle_sound/warning.mp3" id="60_lu0bj"]
+[ext_resource type="AudioStream" uid="uid://c0gnqu245dm54" path="res://asset/sounds/war_lord_turtle_sound/missile_launch.mp3" id="61_nh47e"]
+[ext_resource type="AudioStream" uid="uid://b0upod035k5en" path="res://asset/sounds/king_crab_sound/cast.mp3" id="62_o4jsi"]
+[ext_resource type="AudioStream" uid="uid://cmyphpkdn1iv3" path="res://asset/sounds/war_lord_turtle_sound/laser.mp3" id="63_kyooo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
@@ -534,3 +542,36 @@ script = ExtResource("54_px23k")
 stream = ExtResource("55_g3nhw")
 bus = &"Music"
 parameters/looping = true
+
+[node name="Roar" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("56_bdclj")
+bus = &"SFX"
+
+[node name="CannonFiring" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("57_okblm")
+bus = &"SFX"
+
+[node name="RocketLaunch" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("58_fhhfu")
+bus = &"SFX"
+
+[node name="Energy" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("59_8dygg")
+bus = &"SFX"
+
+[node name="Warning" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("60_lu0bj")
+bus = &"SFX"
+parameters/looping = true
+
+[node name="MissileLaunch" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("61_nh47e")
+bus = &"SFX"
+
+[node name="Cast" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("62_o4jsi")
+bus = &"SFX"
+
+[node name="Laser" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("63_kyooo")
+bus = &"SFX"

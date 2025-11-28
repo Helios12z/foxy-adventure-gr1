@@ -9,12 +9,14 @@ extends Node2D
 
 @onready var marker_2d: Marker2D = $Marker2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sound: AudioStreamPlayer2D = $Sound
 
 var _blink_tw: Tween
 var _alive_time: float = 0.0
 var _time_since_last_spawn: float = 0.0
 
 func _ready() -> void:
+	sound.play()
 	_begin_blink(0.6, 4, Color(0.809, 0.579, 0.06, 1.0))
 	add_to_group("warlord_portal")
 
@@ -27,6 +29,7 @@ func _physics_process(delta: float) -> void:
 		_spawn_cannon()
 
 	if _alive_time >= lifetime and not is_queued_for_deletion():
+		sound.stop()
 		queue_free()
 
 func _begin_blink(total: float, times: int, color: Color) -> void:
@@ -64,7 +67,6 @@ func _spawn_cannon() -> void:
 	if b is Node2D:
 		(b as Node2D).global_position = marker_2d.global_position
 
-	# Hướng thả đạn thẳng xuống
 	var dir_vec := Vector2.DOWN
 
 	if "move_speed" in b:

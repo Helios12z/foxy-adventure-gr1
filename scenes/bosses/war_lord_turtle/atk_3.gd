@@ -17,6 +17,7 @@ func _enter() -> void:
 	obj.change_animation("atk_3")
 
 	set_target_lock_visible(true)
+	obj.warning.play()
 	follow_target_lock_to_player()
 
 	if obj.target_lock_effect:
@@ -39,6 +40,8 @@ func _update(delta: float) -> void:
 			_warning_timer += delta
 			if _warning_timer >= LOCK_WARNING_TIME:
 				_rocket_spawned = true
+				obj.missile_launch.play()
+				obj.warning.stop()
 				spawn_atk3_rocket_from_locked_pos()
 				set_target_lock_visible(false)
 		else:

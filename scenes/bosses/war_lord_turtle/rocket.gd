@@ -1,7 +1,7 @@
 extends RigidBody2D
 
-var speed: float        
-var damage: int 
+@export var speed: float = 200       
+@export var damage: int = 100
 @export var arc_height: float = 150.0   
 @export var explosion: PackedScene
 
@@ -26,10 +26,8 @@ var _fly_dir: Vector2 = Vector2.ZERO
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var hit_collision_shape_2d: CollisionShape2D = $HitArea2D/CollisionShape2D
 
-func init(p_target: Vector2, p_speed: float, p_damage: int) -> void:
+func init(p_target: Vector2) -> void:
 	target = p_target
-	speed = p_speed
-	damage = p_damage
 
 func _ready() -> void:
 	gravity_scale = 0.0

@@ -9,12 +9,14 @@ var _blink_tw: Tween
 
 func _enter() -> void:
 	obj.change_animation("windup")
-	_begin_blink(1.0)
+	obj.cast.play()
+	_begin_blink(2.0, 8)
 
-func _update( _delta ):
+func _update(_delta) -> void:
 	if obj._phase2_transition_running:
-		change_state(fsm.states.cast_into_phase2)
-	else:
+		return
+
+	if obj.phase2_platform_ready:
 		change_state(fsm.states.atk_3_windup)
 		
 func _exit() -> void:

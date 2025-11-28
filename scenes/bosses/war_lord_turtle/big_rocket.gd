@@ -1,7 +1,7 @@
 extends RigidBody2D
 
-var speed: float        
-var damage: int 
+@export var speed: float = 500.0     
+@export var damage: int = 150
 @export var arc_height: float = 150.0   
 @export var explosion: PackedScene
 
@@ -98,7 +98,6 @@ func _physics_process(delta: float) -> void:
 
 		global_position = pos
 
-		# Quay đầu theo hướng bay
 		if dir.length() > 0.01:
 			var target_rot = dir.angle() + PI / 2.0
 			_current_rot = lerp_angle(_current_rot, target_rot, 0.2)

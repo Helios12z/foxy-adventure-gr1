@@ -16,9 +16,11 @@ var _sprite_radius: float = 1.0
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hit_area: Area2D = $HitArea2D
 @onready var shape: CircleShape2D = $HitArea2D/CollisionShape2D.shape as CircleShape2D
+@onready var explosion: AudioStreamPlayer2D = $Explosion
 
 func _ready() -> void:
 	_base_anim_scale = anim.scale
+	explosion.play()
 
 	var tex: Texture2D = null
 	if anim.sprite_frames != null:
@@ -58,6 +60,7 @@ func _physics_process(delta: float) -> void:
 	_update_visual_scale()
 
 	if _alive_time >= lifetime and not is_queued_for_deletion():
+		explosion.stop()
 		queue_free()
 
 func _update_visual_scale() -> void:
@@ -69,4 +72,5 @@ func _update_visual_scale() -> void:
 
 func _on_anim_finished() -> void:
 	if not is_queued_for_deletion():
+		explosion.stop()
 		queue_free()

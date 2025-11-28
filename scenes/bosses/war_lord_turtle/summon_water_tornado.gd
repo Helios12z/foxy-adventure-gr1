@@ -8,7 +8,6 @@ var blink_times_windup := 6
 var _blink_tw: Tween
 
 func _enter() -> void:
-	# Nếu đã có >= 2 cột nước thì khỏi windup, về idle luôn
 	if _get_tornado_water_count() >= 2:
 		change_state(fsm.states.idle)
 		return
@@ -16,6 +15,7 @@ func _enter() -> void:
 	timer = windup_duration
 
 	obj.change_animation("windup") 
+	obj.cast.play()
 	_begin_summon_blink(windup_duration, blink_times_windup, summon_blink_color_start)
 	
 

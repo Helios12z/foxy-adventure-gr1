@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://c2dsdbtuh2yso"]
+[gd_scene load_steps=14 format=3 uid="uid://c2dsdbtuh2yso"]
 
 [ext_resource type="Script" uid="uid://5j560tidv05m" path="res://scenes/bosses/war_lord_turtle/portal.gd" id="1_en1un"]
 [ext_resource type="Texture2D" uid="uid://b52iq74k2mvcs" path="res://asset/war_lord/portal.png" id="1_u2jpd"]
 [ext_resource type="PackedScene" uid="uid://yp0djju0lyfn" path="res://scenes/bosses/war_lord_turtle/cannon.tscn" id="2_5b0bm"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_fvsbi"]
+[ext_resource type="AudioStream" uid="uid://c1swpoj7h4uek" path="res://asset/sounds/war_lord_turtle_sound/portal.mp3" id="5_5b0bm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5b0bm"]
 shader = ExtResource("2_fvsbi")
@@ -74,3 +75,7 @@ autoplay = "default"
 frame_progress = 0.37896132
 
 [node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_5b0bm")
+bus = &"SFX"

@@ -14,12 +14,15 @@ func _enter() -> void:
 	timer = windup_duration
 
 	obj.change_animation("windup") 
+	obj.cast.play()
 	_begin_blink(windup_duration, blink_times_windup, summon_blink_color_start)
 	
 
 func _update(d: float) -> void:
 	if update_timer(d):
 		_end_blink()
+		obj.energy.play()
+		obj.camera.camera_shake(0.4, 20)
 		_blow_away()
 		change_state(fsm.previous_state)
 

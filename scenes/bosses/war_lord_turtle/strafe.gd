@@ -15,6 +15,7 @@ func _update(delta: float) -> void:
 		if _fire_timer <= 0.0:
 			has_fired = true
 			_beam_attack()
+			obj.laser.play()
 			return
 	
 	if has_fired and not _are_beams_active():

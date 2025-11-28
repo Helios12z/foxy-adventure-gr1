@@ -31,18 +31,20 @@ func _on_frame_changed() -> void:
 
 	if not _spawned_first and f == FIRST_CANNON_FRAME:
 		_spawned_first = true
+		obj.cannon_firing.play()
+		obj.camera.camera_shake(0.3, 20)
 		_spawn_cannon_1()
 
 	if not _spawned_second and f == SECOND_CANNON_FRAME:
 		_spawned_second = true
+		obj.cannon_firing.play()
+		obj.camera.camera_shake(0.3, 20)
 		_spawn_cannon_2()
 		
 func _spawn_cannon_1() -> void:
-	# trái
 	_spawn_bomb(obj.atk_1_shoot_point_1, Vector2.RIGHT)
 
 func _spawn_cannon_2() -> void:
-	# phải
 	_spawn_bomb(obj.atk_1_shoot_point_2, Vector2.LEFT)
 	
 func _on_anim_finished() -> void:

@@ -16,12 +16,8 @@ func _spawn_bomb(from_node: Node2D, dir_vec: Vector2) -> void:
 	if b is Node2D:
 		(b as Node2D).global_position = from_node.global_position
 
-	if "move_speed" in b:
-		b.move_speed = obj.bomb_move_speed
 	if "dir" in b:
 		b.dir = dir_vec.normalized()
-	if "spike_damage" in b:
-		b.spike_damage = obj.spike_damage
 	if b.has_method("set_direction"):
 		b.set_direction(-1 if dir_vec.x < 0.0 else 1)
 
@@ -69,7 +65,7 @@ func _fire_missile(from_node: Node2D, target_pos: Vector2) -> void:
 		(m as Node2D).global_position = (from_node.global_position if from_node else obj.global_position)
 
 	if m.has_method("init"):
-		m.init(target_pos, obj.attack_speed, obj.attack_damage_boss)
+		m.init(target_pos)
 
 	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
 	parent.add_child(m)
@@ -100,7 +96,6 @@ func freeze_target_lock_position() -> void:
 func spawn_atk3_rocket_from_locked_pos() -> void:
 	_spawn_atk3_rocket(_atk3_locked_pos)
 
-
 func _spawn_atk3_rocket(target_pos: Vector2) -> void:
 	if obj.big_missile_scene == null:
 		return
@@ -122,7 +117,7 @@ func _spawn_atk3_rocket(target_pos: Vector2) -> void:
 		(m as Node2D).global_position = obj.atk_3_shoot_point.global_position
 
 	if m.has_method("init"):
-		m.init(final_target, 500, 100)
+		m.init(final_target, 500, obj.big_missile_damage)
 
 	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
 	parent.add_child(m)

@@ -5,6 +5,8 @@ extends Node2D
 @onready var hit_area_2d: HitArea2D = $HitArea2D
 @onready var collision_shape_2d: CollisionShape2D = $HitArea2D/CollisionShape2D
 @onready var rect_shape: RectangleShape2D = $HitArea2D/CollisionShape2D.shape as RectangleShape2D
+@onready var explosion: AudioStreamPlayer2D = $Explosion
+@onready var sound: AudioStreamPlayer2D = $Sound
 
 @export var damage: int = 300
 @export var explode_time: float = 2.75
@@ -19,6 +21,7 @@ var _fallback_extents: Vector2 = Vector2(64.0, 64.0)
 
 func _ready() -> void:
 	hit_area_2d.damage = damage
+	sound.play()
 
 	sprite_2d.visible = true
 	animated_sprite_2d.stop()
@@ -31,7 +34,6 @@ func _ready() -> void:
 	_base_anim_scale = animated_sprite_2d.scale
 	_fallback_extents = Vector2(64.0, 64.0)
 
-	# Tính kích thước fallback dựa trên frame đầu tiên của animation nổ
 	if animated_sprite_2d.sprite_frames != null:
 		var anim_name := animated_sprite_2d.animation
 		if anim_name == "":
@@ -86,6 +88,8 @@ func _on_explosion_frame_changed() -> void:
 
 	if frame == hide_bomb_frame and sprite_2d.visible:
 		sprite_2d.visible = false
+		explosion.play()
+		sound.stop()
 		hit_area_2d.monitoring = true
 		hit_area_2d.monitorable = true
 
@@ -116,4 +120,5 @@ func _update_hit_rect_for_current_frame() -> void:
 
 func _on_explosion_finished() -> void:
 	if not is_queued_for_deletion():
+		explosion.stop()
 		queue_free()
