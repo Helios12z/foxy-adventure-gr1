@@ -101,11 +101,13 @@ var queued_roll_dir_x: float = 1.0
 @onready var boss_direction: Node2D = $Direction
 
 @onready var shoot: AudioStreamPlayer2D = $Sound/Shoot
-@onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
 @onready var roll: AudioStreamPlayer2D = $Sound/Roll
 @onready var cast: AudioStreamPlayer2D = $Sound/Cast
 @onready var electric: AudioStreamPlayer2D = $Sound/Electric
 @onready var roar: AudioStreamPlayer2D = $Sound/Roar
+@onready var phase_1: AudioStreamPlayer2D = $Sound/Phase1
+@onready var phase_2_intro: AudioStreamPlayer2D = $Sound/Phase2Intro
+@onready var phase_2: AudioStreamPlayer2D = $Sound/Phase2
 
 func _ready() -> void:
 	_init_ray_casts()
@@ -127,6 +129,9 @@ func _ready() -> void:
 	hit_collision_default_pos = hit_collision_shape_2d.position
 	
 	emit_signal("health_changed", health, max_health)
+	
+	if phase_2_intro and not phase_2_intro.finished.is_connected(_on_phase2_intro_finished):
+		phase_2_intro.finished.connect(_on_phase2_intro_finished)
 	
 func _physics_process(delta: float) -> void:
 	if fsm != null:
@@ -326,5 +331,14 @@ func _finish_phase2_transition() -> void:
 	emit_signal("into_phase2")
 	roar.stop()
 
+	if phase_1 and phase_1.playing:
+		phase_1.stop()
+	if phase_2_intro:
+		phase_2_intro.play()
+
 	if fsm and fsm.current_state != fsm.states.dead:
 		fsm.change_state(fsm.states.atk3_cast)
+		
+func _on_phase2_intro_finished() -> void:
+	if health > 0 and phase_2:
+		phase_2.play()

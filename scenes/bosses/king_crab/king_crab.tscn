@@ -1,4 +1,4 @@
-[gd_scene load_steps=241 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=243 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -190,11 +190,13 @@
 [ext_resource type="Script" uid="uid://34awkybwg3fs" path="res://scenes/bosses/king_crab/sleep.gd" id="189_h0v77"]
 [ext_resource type="AudioStream" uid="uid://q7m5ru2q56h7" path="res://asset/sounds/king_crab_sound/shoot.mp3" id="190_45o64"]
 [ext_resource type="Script" uid="uid://blo6btsoa0yf4" path="res://scenes/bosses/king_crab/cast_after_sleep.gd" id="190_bsmmm"]
-[ext_resource type="AudioStream" uid="uid://bgehp1q52annf" path="res://asset/sounds/king_crab_sound/boss_music.mp3" id="191_45o64"]
 [ext_resource type="AudioStream" uid="uid://dtj8enf5cb5cd" path="res://asset/sounds/king_crab_sound/rolling.mp3" id="192_ck4wx"]
 [ext_resource type="AudioStream" uid="uid://b0upod035k5en" path="res://asset/sounds/king_crab_sound/cast.mp3" id="193_jq8or"]
 [ext_resource type="AudioStream" uid="uid://drxgrnc0xdnya" path="res://asset/sounds/king_crab_sound/electric.mp3" id="194_oa8bx"]
+[ext_resource type="AudioStream" uid="uid://cosuvmbckne8f" path="res://asset/sounds/king_crab_sound/phase1.mp3" id="195_hyvv3"]
 [ext_resource type="AudioStream" uid="uid://dsafms5eborjs" path="res://asset/sounds/king_crab_sound/roaring.mp3" id="195_ilp01"]
+[ext_resource type="AudioStream" uid="uid://cc3gxoxfpggem" path="res://asset/sounds/king_crab_sound/phase2_intro.mp3" id="196_hyvv3"]
+[ext_resource type="AudioStream" uid="uid://buvwe8m1k5foa" path="res://asset/sounds/king_crab_sound/phase2.mp3" id="197_daor2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
 radius = 20.0
@@ -1236,11 +1238,8 @@ script = ExtResource("190_bsmmm")
 
 [node name="Shoot" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("190_45o64")
+volume_db = 5.0
 bus = &"SFX"
-
-[node name="BossMusic" type="AudioStreamPlayer2D" parent="Sound"]
-stream = ExtResource("191_45o64")
-parameters/looping = true
 
 [node name="Roll" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("192_ck4wx")
@@ -1257,3 +1256,20 @@ stream = ExtResource("194_oa8bx")
 [node name="Roar" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("195_ilp01")
 bus = &"SFX"
+
+[node name="Phase1" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("195_hyvv3")
+volume_db = 5.0
+bus = &"Music"
+parameters/looping = true
+
+[node name="Phase2Intro" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("196_hyvv3")
+volume_db = 5.0
+bus = &"Music"
+
+[node name="Phase2" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("197_daor2")
+volume_db = 5.0
+bus = &"Music"
+parameters/looping = true

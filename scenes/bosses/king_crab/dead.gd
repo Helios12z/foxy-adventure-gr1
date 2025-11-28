@@ -14,8 +14,7 @@ func _enter() -> void:
 	
 	obj.roar.play()
 
-	if obj.boss_music and obj.boss_music.playing:
-		obj.boss_music.stop()
+	obj.phase_2.stop()
 
 	obj.flash_hurt(
 		obj.phase2_flash_duration,

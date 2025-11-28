@@ -52,6 +52,7 @@ func _update(d: float) -> void:
 		if fade_timer >= post_teleport_pause:
 			teleport_phase = 3
 			fade_timer = 0.0
+			obj.cast.play()
 			play_teleport_effect(fade_duration)
 			_begin_claw_blink(fade_duration, 6, teleport_blink_color_in)
 

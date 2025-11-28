@@ -46,8 +46,9 @@ func _on_boss_died() -> void:
 	
 func _on_complete_moving_up() -> void:
 	boss.seen_player = true 
-	boss.boss_music.play()
 	boss_hud._on_boss_start_fighting()
+	if boss.phase_1 and not boss.phase_1.playing:
+		boss.phase_1.play()
 	
 func _spawn_chest() -> void:
 	if chest == null:
