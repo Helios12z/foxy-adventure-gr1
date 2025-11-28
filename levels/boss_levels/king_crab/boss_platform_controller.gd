@@ -124,3 +124,9 @@ func _set_platform_collision(root: Node, enabled: bool) -> void:
 			child.disabled = not enabled
 		elif child.get_child_count() > 0:
 			_set_platform_collision(child, enabled)
+			
+func setup_after_boss_dead_state() -> void:
+	left_platform.visible = true
+	_set_platform_collision(left_platform, true)
+	right_platform.visible = true 
+	_set_platform_collision(right_platform, true)

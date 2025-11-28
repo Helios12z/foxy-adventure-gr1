@@ -14,6 +14,9 @@ var collected_coins_by_stage: Dictionary = {}
 
 var inventory_system: InvetorySystem = null
 
+var boss_defeated_by_stage: Dictionary = {}
+var chest_opened_by_stage: Dictionary = {}
+
 func _ready() -> void:
 	# Load checkpoint data when game starts
 	load_checkpoint_data()
@@ -152,7 +155,9 @@ func save_checkpoint_data() -> void:
 	var save_data = {
 		"current_checkpoint_id": current_checkpoint_id,
 		"checkpoint_data": checkpoint_data,
-		"collected_coins_by_stage": collected_coins_by_stage
+		"collected_coins_by_stage": collected_coins_by_stage,
+		"boss_defeated_by_stage": boss_defeated_by_stage,
+		"chest_opened_by_stage": chest_opened_by_stage
 	}
 	SaveSystem.save_checkpoint_data(save_data)
 
@@ -163,6 +168,8 @@ func load_checkpoint_data() -> void:
 		current_checkpoint_id = save_data.get("current_checkpoint_id", "")
 		checkpoint_data = save_data.get("checkpoint_data", {})
 		collected_coins_by_stage = save_data.get("collected_coins_by_stage", {})
+		boss_defeated_by_stage = save_data.get("boss_defeated_by_stage", {})
+		chest_opened_by_stage = save_data.get("chest_opened_by_stage", {})
 		print("Checkpoint data loaded from save file")
 
 # Clear all checkpoint data
@@ -293,3 +300,33 @@ func apply_inventory_from_checkpoint() -> void:
 
 	inventory_system.coin_changed.emit(inventory_system.coins)
 	inventory_system.key_changed.emit(inventory_system.keys)
+	
+func mark_boss_defeated(stage_path: String = "") -> void:
+	if stage_path.is_empty():
+		stage_path = _get_current_stage_path()
+	if stage_path.is_empty():
+		return
+	boss_defeated_by_stage[stage_path] = true
+	save_checkpoint_data()
+
+func is_boss_defeated(stage_path: String = "") -> bool:
+	if stage_path.is_empty():
+		stage_path = _get_current_stage_path()
+	if stage_path.is_empty():
+		return false
+	return bool(boss_defeated_by_stage.get(stage_path, false))
+
+func mark_chest_opened(stage_path: String = "") -> void:
+	if stage_path.is_empty():
+		stage_path = _get_current_stage_path()
+	if stage_path.is_empty():
+		return
+	chest_opened_by_stage[stage_path] = true
+	save_checkpoint_data()
+
+func is_chest_opened(stage_path: String = "") -> bool:
+	if stage_path.is_empty():
+		stage_path = _get_current_stage_path()
+	if stage_path.is_empty():
+		return false
+	return bool(chest_opened_by_stage.get(stage_path, false))

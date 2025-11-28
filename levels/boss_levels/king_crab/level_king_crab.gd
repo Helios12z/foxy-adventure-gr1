@@ -9,29 +9,21 @@ extends Node2D
 
 @onready var ambient: AudioStreamPlayer2D = $Sound/Ambient
 
-#func _enter_tree() -> void:
-	#GameManager.current_stage = self
+func _enter_tree() -> void:
+	GameManager.current_stage = self
 
 func _ready() -> void:
-	#if not GameManager.respawn_at_portal():
-		#GameManager.respawn_at_checkpoint()
+	if not GameManager.respawn_at_portal():
+		GameManager.respawn_at_checkpoint()
 	
 	ambient.play(2.0)
 	
-	if chest:
-		chest.visible = false
-		_set_chest_collision(chest, false)
-	
-	boss_hud.set_boss(boss)
-	
-	if not boss.start_fight.is_connected(_on_boss_start_fight):
-		boss.start_fight.connect(_on_boss_start_fight)
+	var boss_defeated := GameManager.is_boss_defeated()
 
-	if not boss.boss_died.is_connected(_on_boss_died):
-		boss.boss_died.connect(_on_boss_died)
-		
-	if not boss_platform_controller.complete_moving_up.is_connected(_on_complete_moving_up):
-		boss_platform_controller.complete_moving_up.connect(_on_complete_moving_up)
+	if boss_defeated:
+		_setup_boss_defeated_state()
+	else:
+		_setup_boss_alive_state()
 
 func _on_boss_start_fight() -> void:
 	await get_tree().create_timer(0.75).timeout
@@ -91,3 +83,50 @@ func _set_chest_collision(root: Node, enabled: bool) -> void:
 			child.monitorable = enabled
 		if child.get_child_count() > 0:
 			_set_chest_collision(child, enabled)
+			
+func _setup_boss_alive_state() -> void:
+	if chest:
+		chest.visible = false
+		_set_chest_collision(chest, false)
+
+	boss_hud.set_boss(boss)
+	
+	if not boss.start_fight.is_connected(_on_boss_start_fight):
+		boss.start_fight.connect(_on_boss_start_fight)
+
+	if not boss.boss_died.is_connected(_on_boss_died):
+		boss.boss_died.connect(_on_boss_died)
+		
+	if not boss_platform_controller.complete_moving_up.is_connected(_on_complete_moving_up):
+		boss_platform_controller.complete_moving_up.connect(_on_complete_moving_up)
+
+
+func _setup_boss_defeated_state() -> void:
+	if is_instance_valid(boss):
+		boss.queue_free()
+
+	if boss_hud and boss_hud.has_method("reset"):
+		boss_hud.reset()
+	
+	boss_platform_controller.setup_after_boss_dead_state()
+
+	if chest:
+		chest.visible = true
+
+		var chest_opened := GameManager.is_chest_opened()
+		_set_chest_collision(chest, not chest_opened)
+
+		var feet := chest.get_node("Feet") as Marker2D
+		var a = room_bound_point_a.global_position
+		var b = room_bound_point_b.global_position
+
+		var spawn_x = (a.x + b.x) * 0.5
+		var ground_y = a.y
+		var target_y = ground_y - feet.position.y
+
+		chest.global_position = Vector2(spawn_x, target_y)
+
+		if chest.has_node("AnimatedSprite2D"):
+			var anim := chest.get_node("AnimatedSprite2D") as AnimatedSprite2D
+			if chest_opened:
+				anim.play("open")   

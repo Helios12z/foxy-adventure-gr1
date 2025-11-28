@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://x5qrj66qebnm"]
+[gd_scene load_steps=29 format=4 uid="uid://x5qrj66qebnm"]
 
 [ext_resource type="Script" uid="uid://bl3x6kmrgh3te" path="res://levels/boss_levels/king_crab/level_king_crab.gd" id="1_5yrod"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_n68t6"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="4_fe663"]
 [ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="5_uiho5"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="5_wyfuh"]
+[ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="5_yeyly"]
 [ext_resource type="Texture2D" uid="uid://d2ev340t8yegq" path="res://asset/boss_levels/level_king_crab/bg_7_0003_layer_3.png" id="6_uiho5"]
 [ext_resource type="Texture2D" uid="uid://bsqkgjgy8pvjk" path="res://asset/boss_levels/level_king_crab/bg_7_0002_layer_2.png" id="7_l0rmf"]
 [ext_resource type="FontFile" uid="uid://x4u0fnuaebe3" path="res://asset/fonts/ThaleahFat.ttf" id="8_42jcx"]
@@ -24,7 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://d24jcdo6d6n0k" path="res://asset/sounds/king_crab_sound/level_craking.mp3" id="19_ih6sn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_42jcx"]
-size = Vector2(4339, 27955)
+size = Vector2(4339, 10413)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iallj"]
 particle_flag_disable_z = true
@@ -90,11 +91,17 @@ tile_set = ExtResource("1_n68t6")
 
 [node name="LeftPlatform" type="TileMapLayer" parent="World/BossPlatformController"]
 position = Vector2(-113, 106)
-tile_map_data = PackedByteArray("AAD//xAAAAACAAAAAAD+/xAAAAABAAAAAAD9/xAAAAABAAAAAAD9/xEAAAABAAIAAAD+/xEAAAABAAIAAAD//xEAAAACAAIAAAD8/xAAAAAAAAAAAAD8/xEAAAAAAAIAAAA=")
+tile_map_data = PackedByteArray("AAD//xAAAAACAAAAAAD+/xAAAAABAAAAAAD9/xAAAAABAAAAAAD9/xEAAAABAAIAAAD+/xEAAAABAAIAAAD//xEAAAACAAIAAAD8/xEAAAABAAIAAAD8/xAAAAABAAAAAAD7/xAAAAABAAAAAAD7/xEAAAABAAIAAAD6/xAAAAAAAAAAAAD6/xEAAAAAAAIAAAA=")
 tile_set = ExtResource("1_n68t6")
 
 [node name="LeftDoor" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("4_fe663")]
-position = Vector2(-63, 513)
+position = Vector2(-129, 512)
+target_stage = "uid://65dl3olpohwm"
+target_door = "Door2"
+is_cross_scene = true
+
+[node name="Checkpoint" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_yeyly")]
+position = Vector2(-63, 497)
 
 [node name="RightPlatform" type="TileMapLayer" parent="World/BossPlatformController"]
 position = Vector2(-113, 106)
@@ -106,17 +113,14 @@ position = Vector2(1122, 513)
 target_stage = "uid://dq7eu5p47t8gv"
 is_cross_scene = true
 
+[node name="Player" parent="World" instance=ExtResource("3_wyfuh")]
+
 [node name="KingCrab" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_5yrod")]
-position = Vector2(514, 604)
-king_crab_max_health = 1500
+position = Vector2(485, 611)
+king_crab_max_health = 1700
 spike_damage = 100
 bound_point_a = NodePath("../BossPlatformController/DiamondPlatform/RoomBoundPointA")
 bound_point_b = NodePath("../BossPlatformController/DiamondPlatform/RoomBoundPointB")
-
-[node name="Player" parent="World" instance=ExtResource("3_wyfuh")]
-position = Vector2(120, 592)
-has_blade = true
-max_health = 1000
 
 [node name="HitArea2D" type="Area2D" parent="World"]
 position = Vector2(0, 1000)
@@ -127,7 +131,19 @@ damage = 9999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D"]
-position = Vector2(417, 14038.5)
+position = Vector2(417, 5268.5)
+shape = SubResource("RectangleShape2D_42jcx")
+
+[node name="HitArea2D2" type="Area2D" parent="World"]
+position = Vector2(0, 1000)
+collision_layer = 0
+collision_mask = 22
+script = ExtResource("5_wyfuh")
+damage = 9999
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D2"]
+position = Vector2(437, 5634)
 shape = SubResource("RectangleShape2D_42jcx")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="World"]
@@ -244,10 +260,11 @@ vertical_alignment = 1
 
 [node name="Ambient" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("17_2l32d")
-volume_db = -20.0
+volume_db = -15.0
 autoplay = true
 bus = &"SFX"
 parameters/looping = true
 
 [node name="Craking" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("19_ih6sn")
+volume_db = 5.0

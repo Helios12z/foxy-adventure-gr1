@@ -1255,6 +1255,7 @@ stream = ExtResource("194_oa8bx")
 
 [node name="Roar" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("195_ilp01")
+volume_db = 5.0
 bus = &"SFX"
 
 [node name="Phase1" type="AudioStreamPlayer2D" parent="Sound"]

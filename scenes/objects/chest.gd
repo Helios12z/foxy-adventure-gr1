@@ -15,8 +15,16 @@ var is_opened: bool = false
 
 func _ready() -> void:
 	interacted.connect(_on_interacted)
-	animated_sprite.play("close")
 	_sync_counts_array()
+	
+	is_opened = GameManager.is_chest_opened()
+
+	if is_opened:
+		animated_sprite.play("open")
+		if has_node("CollisionShape2D"):
+			$CollisionShape2D.disabled = true
+	else:
+		animated_sprite.play("close")
 
 func _sync_counts_array() -> void:
 	while reward_counts.size() < reward_scenes.size():
@@ -51,6 +59,8 @@ func open_chest() -> void:
 	await animated_sprite.animation_finished
 
 	_spawn_rewards()
+
+	GameManager.mark_chest_opened()
 
 func _spawn_rewards() -> void:
 	var world := get_tree().current_scene

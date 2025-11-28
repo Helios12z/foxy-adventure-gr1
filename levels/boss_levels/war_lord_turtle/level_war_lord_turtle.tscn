@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://k0emccpu8xrk"]
+[gd_scene load_steps=29 format=4 uid="uid://k0emccpu8xrk"]
 
 [ext_resource type="Script" uid="uid://da6x2hjpl5vhs" path="res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.gd" id="1_fed17"]
 [ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="1_i0g7a"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="4_8jrbq"]
 [ext_resource type="Script" uid="uid://d6ca3ixdmryp" path="res://levels/boss_levels/war_lord_turtle/boss_platform_controller.gd" id="4_bqd06"]
 [ext_resource type="Texture2D" uid="uid://djq3ebe3d0cxi" path="res://asset/boss_levels/level_war_lord_turtle/back.png" id="5_3srj3"]
+[ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="5_7i7cj"]
 [ext_resource type="Texture2D" uid="uid://cjfowc4ucv4hx" path="res://asset/boss_levels/level_war_lord_turtle/middle.png" id="6_rj8dq"]
 [ext_resource type="Texture2D" uid="uid://dipacf3r6b45k" path="res://asset/boss_levels/level_war_lord_turtle/front.png" id="7_hgx5j"]
 [ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="9_fed17"]
@@ -85,11 +86,17 @@ tile_map_data = PackedByteArray("AAD8/xIAAgAEAAIAAAD8/xEAAgAEAAEAAAD8/xAAAgAEAAE
 tile_set = ExtResource("1_i0g7a")
 
 [node name="LeftPlatform" type="TileMapLayer" parent="World/BossPlatformController"]
-tile_map_data = PackedByteArray("AAD4/xIAAgACAAAAAAD3/xIAAgABAAAAAAD2/xIAAgABAAAAAAD1/xIAAgAAAAAAAAD1/xMAAgAAAAEAAAD2/xMAAgABAAEAAAD3/xMAAgABAAEAAAD4/xMAAgACAAEAAAD4/xQAAgACAAIAAAD3/xQAAgABAAIAAAD2/xQAAgABAAIAAAD1/xQAAgAAAAIAAAA=")
+tile_map_data = PackedByteArray("AAD4/xIAAgACAAAAAAD3/xIAAgABAAAAAAD2/xIAAgABAAAAAAD1/xIAAgABAAAAAAD1/xMAAgABAAEAAAD2/xMAAgABAAEAAAD3/xMAAgABAAEAAAD4/xMAAgACAAEAAAD4/xQAAgACAAIAAAD3/xQAAgABAAIAAAD2/xQAAgABAAIAAAD1/xQAAgABAAIAAAD0/xIAAgAAAAAAAAD0/xMAAgAAAAEAAAD0/xQAAgAAAAIAAAA=")
 tile_set = ExtResource("1_i0g7a")
 
 [node name="LeftDoor" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("4_8jrbq")]
-position = Vector2(-289, 577)
+position = Vector2(-332, 577)
+target_stage = "uid://dq7eu5p47t8gv"
+target_door = "Door2"
+is_cross_scene = true
+
+[node name="Checkpoint" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_7i7cj")]
+position = Vector2(-275, 561)
 
 [node name="RightPlatform" type="TileMapLayer" parent="World/BossPlatformController"]
 tile_map_data = PackedByteArray("AAAvABIAAgAAAAAAAAAwABIAAgABAAAAAAAxABIAAgABAAAAAAAyABIAAgACAAAAAAAyABMAAgACAAEAAAAxABQAAgABAAIAAAAxABMAAgABAAEAAAAwABMAAgABAAEAAAAwABQAAgABAAIAAAAvABQAAgAAAAIAAAAvABMAAgAAAAEAAAAyABQAAgACAAIAAAA=")
@@ -101,11 +108,10 @@ position = Vector2(1566, 576)
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
 position = Vector2(-49, 556)
 has_blade = true
-max_health = 1000
 
 [node name="WarLordTurtle" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_7dedx")]
 position = Vector2(652, 541)
-max_health_boss = 2000
+max_health_boss = 2200
 bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
 
@@ -249,6 +255,7 @@ vertical_alignment = 1
 
 [node name="Craking" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("16_x24gd")
+volume_db = 10.0
 bus = &"SFX"
 
 [node name="Ambient" type="AudioStreamPlayer2D" parent="Sound"]
