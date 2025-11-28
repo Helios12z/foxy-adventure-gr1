@@ -61,7 +61,9 @@ var _phase2_transition_running := false
 var _original_time_scale: float = 1.0
 var phase2_platform_ready: bool = false
 
-@onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
+@onready var phase_1: AudioStreamPlayer2D = $Sound/Phase1
+@onready var phase_2_intro: AudioStreamPlayer2D = $Sound/Phase2Intro
+@onready var phase_2: AudioStreamPlayer2D = $Sound/Phase2
 @onready var roar: AudioStreamPlayer2D = $Sound/Roar
 @onready var cannon_firing: AudioStreamPlayer2D = $Sound/CannonFiring
 @onready var rocket_launch: AudioStreamPlayer2D = $Sound/RocketLaunch
@@ -89,6 +91,9 @@ func _ready() -> void:
 	fsm = FSM.new(self, $States, $States/Idle)
 	
 	emit_signal("health_changed", health, max_health)
+	
+	if not phase_2_intro.finished.is_connected(_on_phase2_intro_finished):
+		phase_2_intro.finished.connect(_on_phase2_intro_finished)
 
 func _physics_process(delta: float) -> void:
 	if fsm != null: fsm._update(delta)
@@ -192,6 +197,7 @@ func _detect_player()->void:
 	if seen_player: return
 	if _distance_to_player()<=280: 
 		seen_player = true 
+		phase_1.play()
 		emit_signal("start_fight")
 			
 func _update_level_bounds_from_markers() -> void:
@@ -236,4 +242,10 @@ func _finish_phase2_transition() -> void:
 	Engine.time_scale = _original_time_scale
 	_phase2_transition_running = false
 	in_phase2 = true
+	phase_1.stop()
+	phase_2_intro.play()
 	emit_signal("into_phase2")
+
+func _on_phase2_intro_finished() -> void:
+	if health > 0:
+		phase_2.play()

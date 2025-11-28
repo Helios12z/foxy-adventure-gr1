@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=85 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -54,7 +54,6 @@
 [ext_resource type="Script" uid="uid://cg168aafng6ga" path="res://scenes/bosses/war_lord_turtle/strafe_windup.gd" id="51_n5e63"]
 [ext_resource type="Script" uid="uid://lf5e4c6o3vuj" path="res://scenes/bosses/war_lord_turtle/strafe_stop.gd" id="52_15ujm"]
 [ext_resource type="Script" uid="uid://whhob2wo8bpu" path="res://scenes/bosses/war_lord_turtle/cast_into_phase_2.gd" id="54_px23k"]
-[ext_resource type="AudioStream" uid="uid://vwei5j06jknd" path="res://asset/sounds/war_lord_turtle_sound/boss_music.mp3" id="55_g3nhw"]
 [ext_resource type="AudioStream" uid="uid://dsafms5eborjs" path="res://asset/sounds/king_crab_sound/roaring.mp3" id="56_bdclj"]
 [ext_resource type="AudioStream" uid="uid://dnsg083s0n24p" path="res://asset/sounds/war_lord_turtle_sound/cannon_firing.mp3" id="57_okblm"]
 [ext_resource type="AudioStream" uid="uid://dh46dgb6mmfdg" path="res://asset/sounds/war_lord_turtle_sound/rocket_launch.mp3" id="58_fhhfu"]
@@ -62,7 +61,10 @@
 [ext_resource type="AudioStream" uid="uid://dh8in8du3axfv" path="res://asset/sounds/war_lord_turtle_sound/warning.mp3" id="60_lu0bj"]
 [ext_resource type="AudioStream" uid="uid://c0gnqu245dm54" path="res://asset/sounds/war_lord_turtle_sound/missile_launch.mp3" id="61_nh47e"]
 [ext_resource type="AudioStream" uid="uid://b0upod035k5en" path="res://asset/sounds/king_crab_sound/cast.mp3" id="62_o4jsi"]
+[ext_resource type="AudioStream" uid="uid://da1u4k1rmhn26" path="res://asset/sounds/war_lord_turtle_sound/phase1.mp3" id="63_ixxox"]
 [ext_resource type="AudioStream" uid="uid://cmyphpkdn1iv3" path="res://asset/sounds/war_lord_turtle_sound/laser.mp3" id="63_kyooo"]
+[ext_resource type="AudioStream" uid="uid://cbfm2jrihutk2" path="res://asset/sounds/war_lord_turtle_sound/phase2_intro.mp3" id="64_ixxox"]
+[ext_resource type="AudioStream" uid="uid://c0ukn88yi1n06" path="res://asset/sounds/war_lord_turtle_sound/phase2_loop.mp3" id="65_aq66n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k7whc"]
 size = Vector2(59, 67)
@@ -399,8 +401,6 @@ animations = [{
 collision_layer = 8
 script = ExtResource("1_lsjki")
 max_health_boss = 300
-attack_speed = 500.0
-attack_damage_boss = 10
 bomb_scene = ExtResource("2_ioqo5")
 missile_scene = ExtResource("3_gx74n")
 big_missile_scene = ExtResource("4_jhib8")
@@ -538,11 +538,6 @@ script = ExtResource("54_px23k")
 
 [node name="Sound" type="Node2D" parent="."]
 
-[node name="BossMusic" type="AudioStreamPlayer2D" parent="Sound"]
-stream = ExtResource("55_g3nhw")
-bus = &"Music"
-parameters/looping = true
-
 [node name="Roar" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("56_bdclj")
 bus = &"SFX"
@@ -575,3 +570,20 @@ bus = &"SFX"
 [node name="Laser" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("63_kyooo")
 bus = &"SFX"
+
+[node name="Phase1" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("63_ixxox")
+volume_db = 5.0
+bus = &"Music"
+parameters/looping = true
+
+[node name="Phase2Intro" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("64_ixxox")
+volume_db = 5.0
+bus = &"Music"
+
+[node name="Phase2" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("65_aq66n")
+volume_db = 5.0
+bus = &"Music"
+parameters/looping = true

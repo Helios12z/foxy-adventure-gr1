@@ -11,6 +11,8 @@ func _enter() -> void:
 
 	if obj.camera:
 		obj.camera.camera_shake(0.4, 24)
+	
+	obj.roar.play()
 
 	if obj.boss_music and obj.boss_music.playing:
 		obj.boss_music.stop()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://k0emccpu8xrk"]
+[gd_scene load_steps=28 format=4 uid="uid://k0emccpu8xrk"]
 
 [ext_resource type="Script" uid="uid://da6x2hjpl5vhs" path="res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.gd" id="1_fed17"]
 [ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="1_i0g7a"]
@@ -16,7 +16,10 @@
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="11_0sdmd"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="11_x24gd"]
 [ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="12_8kqfi"]
+[ext_resource type="PackedScene" uid="uid://dcyxh7eep8web" path="res://scenes/objects/chest.tscn" id="12_myin1"]
+[ext_resource type="PackedScene" uid="uid://c700eni2s0ngm" path="res://scenes/collectibles/waterpawgem/water_paw_gem.tscn" id="13_7i7cj"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="13_wcg3s"]
+[ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="14_7gl8q"]
 [ext_resource type="AudioStream" uid="uid://d24jcdo6d6n0k" path="res://asset/sounds/king_crab_sound/level_craking.mp3" id="16_x24gd"]
 [ext_resource type="AudioStream" uid="uid://bfmjl0sopd8ah" path="res://asset/sounds/war_lord_turtle_sound/level_ambient.mp3" id="17_8kqfi"]
 
@@ -98,6 +101,7 @@ position = Vector2(1566, 576)
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
 position = Vector2(-49, 556)
 has_blade = true
+max_health = 1000
 
 [node name="WarLordTurtle" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_7dedx")]
 position = Vector2(652, 541)
@@ -173,6 +177,11 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D"]
 position = Vector2(724, 1358)
 shape = SubResource("RectangleShape2D_s3fr0")
+
+[node name="Chest" parent="World" instance=ExtResource("12_myin1")]
+requires_key = false
+reward_scenes = Array[PackedScene]([ExtResource("13_7i7cj"), ExtResource("14_7gl8q")])
+reward_counts = Array[int]([1, 10])
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

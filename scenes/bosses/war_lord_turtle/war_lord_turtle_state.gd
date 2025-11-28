@@ -117,7 +117,7 @@ func _spawn_atk3_rocket(target_pos: Vector2) -> void:
 		(m as Node2D).global_position = obj.atk_3_shoot_point.global_position
 
 	if m.has_method("init"):
-		m.init(final_target, 500, obj.big_missile_damage)
+		m.init(final_target)
 
 	var parent := obj.get_tree().current_scene if obj.get_tree().current_scene != null else obj.get_parent()
 	parent.add_child(m)
