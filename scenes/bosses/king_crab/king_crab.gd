@@ -193,6 +193,9 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	
 	if not seen_player: 
 		return 
+		
+	if _phase2_transition_running:
+		return
 
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
