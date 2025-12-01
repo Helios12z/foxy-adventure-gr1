@@ -105,7 +105,7 @@ size_flags_vertical = 4
 
 [node name="Node" parent="NinePatchRect" instance=ExtResource("7_utglj")]
 position = Vector2(267, 375)
-key_text = "5"
+key_text = "2"
 
 [connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]
 [connection signal="pressed" from="NinePatchRect/CloseTextureButton" to="." method="_on_close_texture_button_pressed"]
