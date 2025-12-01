@@ -178,10 +178,6 @@ scale = Vector2(1.5, 1.5)
 
 [node name="Player" parent="." instance=ExtResource("3_ayhlk")]
 position = Vector2(-196, 48)
-has_blade = true
-has_fire_gem = true
-has_water_paw_gem = true
-has_water_room_gem = true
 max_jump_count = 1000
 attack_damage = 1000
 max_health = 10000
