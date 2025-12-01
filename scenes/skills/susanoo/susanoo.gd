@@ -170,7 +170,7 @@ func start_attack() -> void:
 	if attacking:
 		return
 	attacking = true
-	var damage_val: int = 2 if level >= 2 else 1
+	var damage_val: int = int(player.attack_damage * 2) if player != null else 0
 	if combo_index == 0:
 		# Attack1
 		if _sprite:
