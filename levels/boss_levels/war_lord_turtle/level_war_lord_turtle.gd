@@ -11,7 +11,7 @@ extends Node2D
 @onready var boss_hud: Control = $CanvasLayer/CanvasLayer/BossHUD
 @onready var parallax_layer_back: ParallaxLayer = $World/ParallaxBackground/ParallaxLayerBack
 
-@onready var chest: Area2D = $World/Chest
+@onready var chest: Node2D = $World/Chest
 
 @onready var ambient: AudioStreamPlayer2D = $Sound/Ambient
 
@@ -23,10 +23,17 @@ func _ready() -> void:
 		GameManager.respawn_at_checkpoint()
 	
 	ambient.play()
-	
-	#if the boss has been defeated, no more this
+
+	var boss_defeated := GameManager.is_boss_defeated()
+
+	if boss_defeated:
+		_setup_boss_defeated_state()
+	else:
+		_setup_boss_alive_state()
+
+func _setup_boss_alive_state() -> void:
 	_dim_background()
-	
+
 	if chest:
 		chest.visible = false
 		_set_chest_collision(chest, false)
@@ -51,15 +58,57 @@ func _on_boss_start_fight() -> void:
 	boss_hud._on_boss_start_fighting()
 
 func _on_boss_died() -> void:
+	GameManager.mark_boss_defeated()
+
 	boss_platform_controller.return_platform_after_boss_dead()
 	
-	var fall_time = boss_platform_controller.rise_time if boss_platform_controller.has_method("get") else 1.0
+	var fall_time := 1.0
+	if "rise_time" in boss_platform_controller:
+		fall_time = boss_platform_controller.rise_time
+
 	await get_tree().create_timer(fall_time + 1.25).timeout
 	_spawn_chest()
 	
 func _on_complete_moving_up() -> void:
 	boss.phase2_platform_ready = true 
 	
+func _on_boss_into_phase2() -> void:
+	boss_platform_controller.start_phase2_platforms()
+	_restore_background()
+
+func _setup_boss_defeated_state() -> void:
+	if is_instance_valid(boss):
+		boss.queue_free()
+
+	if boss_hud and boss_hud.has_method("reset"):
+		boss_hud.reset()
+
+	if boss_platform_controller.has_method("setup_after_boss_dead_state"):
+		boss_platform_controller.setup_after_boss_dead_state()
+
+	_restore_background()
+
+	if chest:
+		chest.visible = true
+
+		var chest_opened := GameManager.is_chest_opened()
+		_set_chest_collision(chest, not chest_opened)
+
+		var feet := chest.get_node("Feet") as Marker2D
+		var a = room_bound_point_a.global_position
+		var b = room_bound_point_b.global_position
+
+		var spawn_x = (a.x + b.x) * 0.5
+		var ground_y = a.y
+		var target_y = ground_y - feet.position.y
+
+		chest.global_position = Vector2(spawn_x, target_y)
+
+		if chest.has_node("AnimatedSprite2D"):
+			var anim := chest.get_node("AnimatedSprite2D") as AnimatedSprite2D
+			if chest_opened:
+				anim.play("open")
+
 func _spawn_chest() -> void:
 	if chest == null:
 		return
@@ -88,11 +137,7 @@ func _spawn_chest() -> void:
 		target_y,
 		1.0
 	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-	
-func _on_boss_into_phase2() -> void:
-	boss_platform_controller.start_phase2_platforms()
-	_restore_background()
-	
+
 func _set_chest_collision(root: Node, enabled: bool) -> void:
 	if root == null:
 		return
@@ -107,7 +152,8 @@ func _set_chest_collision(root: Node, enabled: bool) -> void:
 			_set_chest_collision(child, enabled)
 
 func _dim_background() -> void:
-	parallax_layer_back.modulate = back_layer_dark_color	
+	if is_instance_valid(parallax_layer_back):
+		parallax_layer_back.modulate = back_layer_dark_color	
 
 func _restore_background() -> void:
 	if not is_instance_valid(parallax_layer_back):

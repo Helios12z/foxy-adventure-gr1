@@ -5,7 +5,7 @@ extends Node2D
 @onready var boss_platform_controller: Node2D = $World/BossPlatformController
 @onready var room_bound_point_b: Marker2D = $World/BossPlatformController/DiamondPlatform/RoomBoundPointB
 @onready var room_bound_point_a: Marker2D = $World/BossPlatformController/DiamondPlatform/RoomBoundPointA
-@onready var chest: Area2D = $World/Chest
+@onready var chest: Node2D = $World/Chest
 
 @onready var ambient: AudioStreamPlayer2D = $Sound/Ambient
 
