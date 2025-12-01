@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/gobin/gobin.tscn" id="9_qaift"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="9_yyddw"]
 [ext_resource type="PackedScene" uid="uid://d4naxw7byqf3t" path="res://scenes/enemies/flyeye/fly_eye.tscn" id="10_2peu5"]
-[ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="11_sqrxr"]
+[ext_resource type="PackedScene" path="res://screens/game_screen/hud.tscn" id="11_sqrxr"]
 [ext_resource type="PackedScene" uid="uid://g3pj503kap4d" path="res://scenes/enemies/skeleton/skeleton.tscn" id="11_x8knb"]
 [ext_resource type="PackedScene" uid="uid://cnt8ey2jdqrgv" path="res://scenes/enemies/mushroom_zoombie/mushroom_zombie.tscn" id="12_fe7x3"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="13_2peu5"]
@@ -520,7 +520,7 @@ position = Vector2(6576, 113)
 collision_layer = 0
 collision_mask = 128
 script = ExtResource("16_pklx6")
-damage = 9999
+damage = 999999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]

@@ -178,6 +178,13 @@ scale = Vector2(1.5, 1.5)
 
 [node name="Player" parent="." instance=ExtResource("3_ayhlk")]
 position = Vector2(-196, 48)
+has_blade = true
+has_fire_gem = true
+has_water_paw_gem = true
+has_water_room_gem = true
+max_jump_count = 1000
+attack_damage = 1000
+max_health = 10000
 
 [node name="Npcs" type="Node2D" parent="."]
 
@@ -360,7 +367,7 @@ autoplay = "default"
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("35_ukr74")
-damage = 999
+damage = 99999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
@@ -371,7 +378,7 @@ shape = SubResource("RectangleShape2D_imecc")
 collision_layer = 0
 collision_mask = 128
 script = ExtResource("35_ukr74")
-damage = 999
+damage = 999999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D2"]
