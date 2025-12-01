@@ -120,6 +120,7 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 		if fsm and fsm.current_state != fsm.states.dead:
 			emit_signal("boss_died")
 			fsm.change_state(fsm.states.dead)
+			GameManager.mark_boss_defeated()
 		return
 
 	if not in_phase2 and health <= max_health * phase2_threshold_ratio:

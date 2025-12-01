@@ -117,15 +117,16 @@ is_cross_scene = true
 
 [node name="KingCrab" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_5yrod")]
 position = Vector2(485, 611)
-king_crab_max_health = 1700
+king_crab_max_health = 1850
 spike_damage = 100
+phase2_threshold_ratio = 0.6
 bound_point_a = NodePath("../BossPlatformController/DiamondPlatform/RoomBoundPointA")
 bound_point_b = NodePath("../BossPlatformController/DiamondPlatform/RoomBoundPointB")
 
 [node name="HitArea2D" type="Area2D" parent="World"]
 position = Vector2(0, 1000)
 collision_layer = 0
-collision_mask = 22
+collision_mask = 20
 script = ExtResource("5_wyfuh")
 damage = 9999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
@@ -137,13 +138,13 @@ shape = SubResource("RectangleShape2D_42jcx")
 [node name="HitArea2D2" type="Area2D" parent="World"]
 position = Vector2(0, 1000)
 collision_layer = 0
-collision_mask = 22
+collision_mask = 20
 script = ExtResource("5_wyfuh")
 damage = 9999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D2"]
-position = Vector2(437, 5634)
+position = Vector2(411, 15644)
 shape = SubResource("RectangleShape2D_42jcx")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="World"]

@@ -1,4 +1,4 @@
-extends InteractiveArea2D
+extends Node2D
 
 @export var requires_key: bool = true
 
@@ -10,19 +10,21 @@ extends InteractiveArea2D
 
 var is_opened: bool = false
 
+@onready var interactive_area: InteractiveArea2D = $InteractiveArea2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var chest_open: AudioStreamPlayer2D = $ChestOpen
 
 func _ready() -> void:
-	interacted.connect(_on_interacted)
+	if interactive_area:
+		interactive_area.interacted.connect(_on_interacted)
+	
 	_sync_counts_array()
 	
 	is_opened = GameManager.is_chest_opened()
 
 	if is_opened:
 		animated_sprite.play("open")
-		if has_node("CollisionShape2D"):
-			$CollisionShape2D.disabled = true
+		_disable_chest_collision()
 	else:
 		animated_sprite.play("close")
 
@@ -48,7 +50,7 @@ func attempt_open_chest() -> void:
 func open_chest() -> void:
 	if is_opened:
 		return
-		
+
 	chest_open.play()
 	is_opened = true
 
@@ -59,8 +61,14 @@ func open_chest() -> void:
 	await animated_sprite.animation_finished
 
 	_spawn_rewards()
+	_disable_chest_collision()
 
 	GameManager.mark_chest_opened()
+
+func _disable_chest_collision() -> void:
+	var shape := find_child("CollisionShape2D", true, false)
+	if shape is CollisionShape2D:
+		shape.disabled = true
 
 func _spawn_rewards() -> void:
 	var world := get_tree().current_scene
@@ -72,8 +80,10 @@ func _spawn_rewards() -> void:
 			continue
 
 		var count: int 
-		if i < reward_counts.size(): count = reward_counts[i]
-		else: count = 1
+		if i < reward_counts.size():
+			count = reward_counts[i]
+		else:
+			count = 1
 		if count <= 0:
 			continue
 

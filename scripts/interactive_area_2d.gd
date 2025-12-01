@@ -20,7 +20,9 @@ func _ready():
 
 
 func _unhandled_input(event):
+	print("Input event: ", event.as_text())
 	if event.is_action_pressed(interact_input_action):
+		print("Interact action pressed!")
 		interacted.emit()
 		var viewport = get_viewport()
 		if viewport != null:

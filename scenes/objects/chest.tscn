@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dcyxh7eep8web"]
+[gd_scene load_steps=14 format=3 uid="uid://dcyxh7eep8web"]
 
 [ext_resource type="Texture2D" uid="uid://btnwd6wmuxmda" path="res://asset/island/objects/chest/chest_open_01.png" id="1_or75c"]
 [ext_resource type="Script" uid="uid://bgojdu5nwd5cn" path="res://scenes/objects/chest.gd" id="1_so5va"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b67b2vn864ieo" path="res://asset/island/objects/chest/chest_open_04.png" id="7_copr4"]
 [ext_resource type="Texture2D" uid="uid://bwcclik4ny1ry" path="res://asset/island/objects/chest/chest_open_05.png" id="8_f0raw"]
 [ext_resource type="AudioStream" uid="uid://kn4w30q3wtte" path="res://asset/sounds/chest_open.mp3" id="10_ekffs"]
+[ext_resource type="Script" uid="uid://n4lx7r4yxqp0" path="res://scripts/interactive_area_2d.gd" id="10_mhowy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pybmd"]
 animations = [{
@@ -67,23 +68,16 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ge7e3"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cu4jo"]
 size = Vector2(32, 26)
 
-[node name="Chest" type="Area2D"]
-collision_layer = 0
-collision_mask = 2
+[node name="Chest" type="Node2D"]
 script = ExtResource("1_so5va")
-metadata/_custom_type_script = "uid://n4lx7r4yxqp0"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_pybmd")
 animation = &"open"
 autoplay = "close_idle"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 10)
-shape = SubResource("RectangleShape2D_ge7e3")
 
 [node name="Feet" type="Marker2D" parent="."]
 position = Vector2(0, 23)
@@ -91,3 +85,11 @@ position = Vector2(0, 23)
 [node name="ChestOpen" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_ekffs")
 bus = &"SFX"
+
+[node name="InteractiveArea2D" type="Area2D" parent="."]
+script = ExtResource("10_mhowy")
+metadata/_custom_type_script = "uid://n4lx7r4yxqp0"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractiveArea2D"]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_cu4jo")

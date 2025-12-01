@@ -452,7 +452,6 @@ visibility_rect = Rect2(-350, -200, 7705.75, 400)
 process_material = SubResource("ParticleProcessMaterial_fe7x3")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-visible = false
 occluder = SubResource("OccluderPolygon2D_nd2ra")
 
 [node name="SplashRainParticles" type="GPUParticles2D" parent="."]
