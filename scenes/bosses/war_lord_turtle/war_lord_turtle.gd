@@ -109,6 +109,9 @@ func _init_hurt_area() -> void:
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
+	if _phase2_transition_running: 
+		return 
+	
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
 	_note_damage_hit()

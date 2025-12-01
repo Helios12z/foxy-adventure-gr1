@@ -19,13 +19,13 @@
 [ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="12_ql135"]
 [ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="13_fe663"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="14_prfob"]
-[ext_resource type="PackedScene" path="res://screens/game_screen/hud.tscn" id="16_r6g7g"]
+[ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="16_r6g7g"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="17_1fgx5"]
 [ext_resource type="AudioStream" uid="uid://bvgv16hpnqyah" path="res://asset/sounds/king_crab_sound/level_ambient.mp3" id="17_2l32d"]
 [ext_resource type="AudioStream" uid="uid://d24jcdo6d6n0k" path="res://asset/sounds/king_crab_sound/level_craking.mp3" id="19_ih6sn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_42jcx"]
-size = Vector2(4339, 10413)
+size = Vector2(4339, 2092)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iallj"]
 particle_flag_disable_z = true
@@ -126,25 +126,25 @@ bound_point_b = NodePath("../BossPlatformController/DiamondPlatform/RoomBoundPoi
 [node name="HitArea2D" type="Area2D" parent="World"]
 position = Vector2(0, 1000)
 collision_layer = 0
-collision_mask = 20
+collision_mask = 18
 script = ExtResource("5_wyfuh")
 damage = 999999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D"]
-position = Vector2(417, 5268.5)
+position = Vector2(417, 1108)
 shape = SubResource("RectangleShape2D_42jcx")
 
 [node name="HitArea2D2" type="Area2D" parent="World"]
-position = Vector2(0, 1000)
+position = Vector2(0, 1073)
 collision_layer = 0
-collision_mask = 20
+collision_mask = 128
 script = ExtResource("5_wyfuh")
-damage = 999999999
+damage = 999999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D2"]
-position = Vector2(411, 15644)
+position = Vector2(417, 1108)
 shape = SubResource("RectangleShape2D_42jcx")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="World"]

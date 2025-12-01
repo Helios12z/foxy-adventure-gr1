@@ -1,4 +1,4 @@
-[gd_scene load_steps=243 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=244 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -188,6 +188,7 @@
 [ext_resource type="Texture2D" uid="uid://d0kst1pv442c5" path="res://asset/effects/electric_effect.png" id="167_gncue"]
 [ext_resource type="Script" uid="uid://dggrb3yqglexl" path="res://scenes/bosses/king_crab/atk_3_fly_and_hit.gd" id="184_0mt3f"]
 [ext_resource type="Script" uid="uid://34awkybwg3fs" path="res://scenes/bosses/king_crab/sleep.gd" id="189_h0v77"]
+[ext_resource type="Script" uid="uid://dk5kdicp2nxum" path="res://scenes/bosses/king_crab/cast_into_phase_2.gd" id="190_6w262"]
 [ext_resource type="AudioStream" uid="uid://q7m5ru2q56h7" path="res://asset/sounds/king_crab_sound/shoot.mp3" id="190_45o64"]
 [ext_resource type="Script" uid="uid://blo6btsoa0yf4" path="res://scenes/bosses/king_crab/cast_after_sleep.gd" id="190_bsmmm"]
 [ext_resource type="AudioStream" uid="uid://dtj8enf5cb5cd" path="res://asset/sounds/king_crab_sound/rolling.mp3" id="192_ck4wx"]
@@ -315,6 +316,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"cast",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("35_i2k7a")
+}],
+"loop": true,
+"name": &"cast_into_phase2",
 "speed": 5.0
 }, {
 "frames": [{
@@ -1085,7 +1094,7 @@ position = Vector2(0, -10)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"cast"
+animation = &"cast_into_phase2"
 autoplay = "walk"
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -1233,6 +1242,9 @@ script = ExtResource("189_h0v77")
 
 [node name="CastAfterSleep" type="Node" parent="States"]
 script = ExtResource("190_bsmmm")
+
+[node name="CastIntoPhase2" type="Node" parent="States"]
+script = ExtResource("190_6w262")
 
 [node name="Sound" type="Node2D" parent="."]
 

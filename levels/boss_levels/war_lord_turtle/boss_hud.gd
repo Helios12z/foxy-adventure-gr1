@@ -33,3 +33,19 @@ func _on_boss_died() -> void:
 	
 func _on_boss_into_phase2() -> void:
 	boss_health_label.text = "GRIMM, MORNINGSTAR OF DESPAIR"
+	
+func reset() -> void:
+	if _boss:
+		if _boss.health_changed.is_connected(_on_boss_health_changed):
+			_boss.health_changed.disconnect(_on_boss_health_changed)
+		if _boss.boss_died.is_connected(_on_boss_died):
+			_boss.boss_died.disconnect(_on_boss_died)
+		if _boss.into_phase2.is_connected(_on_boss_into_phase2):
+			_boss.into_phase2.disconnect(_on_boss_into_phase2)
+
+	_boss = null
+
+	visible = false
+	bar.value = 0
+	bar.max_value = 0
+	boss_health_label.text = ""
