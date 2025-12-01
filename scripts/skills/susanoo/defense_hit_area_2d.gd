@@ -30,10 +30,14 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.has_method("take_damage"):
 		# Only react when the enemy area actually has an active collision
 		if _has_active_collision(area):
-			var dir: Vector2 = (area.global_position - global_position).normalized()
-			area.take_damage(dir, defense_damage)
-			# Push the enemy farther away when hurt
 			var enemy := _find_character_body_root(area)
+			if enemy and _is_boss(enemy):
+				_spawn_shield(cp.pos, cp.normal)
+				_consume_charge()
+				return
+			var dir: Vector2 = (area.global_position - global_position).normalized()
+			var dmg := _get_susanoo_damage()
+			area.take_damage(dir, dmg)
 			if enemy and enemy is CharacterBody2D:
 				var cb := enemy as CharacterBody2D
 				cb.velocity.x = sign(dir.x) * abs(enemy_knockback_force.x)
@@ -156,3 +160,27 @@ func _has_active_collision(n: Node) -> bool:
 		if _has_active_collision(c):
 			return true
 	return false
+
+func _is_boss(n: Node) -> bool:
+	if n == null:
+		return false
+	if n.has_method("is_in_group"):
+		if n.is_in_group("boss") or n.is_in_group("Boss") or n.is_in_group("bosses") or n.is_in_group("Bosses"):
+			return true
+	var sc = n.get_script()
+	if sc != null:
+		var p: String = str(sc.resource_path)
+		if p.findn("scenes/bosses/") != -1:
+			return true
+	return false
+
+func _get_susanoo_damage() -> int:
+	var p := GameManager.player if Engine.has_singleton("GameManager") else null
+	if p == null:
+		p = get_tree().get_first_node_in_group("Player")
+	if p and p.has_node("Direction/HitArea2D"):
+		var ha := p.get_node("Direction/HitArea2D")
+		if ha:
+			var base := int(ha.get("damage"))
+			return max(1, base * 2)
+	return max(1, defense_damage)
