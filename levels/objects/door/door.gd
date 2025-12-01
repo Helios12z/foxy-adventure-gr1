@@ -19,4 +19,5 @@ func load_next_stage():
 		GameManager.player.global_position = (door as Node2D).global_position
 
 func _on_interactive_area_2d_interacted() -> void:
+	print("interacted")
 	load_next_stage()
