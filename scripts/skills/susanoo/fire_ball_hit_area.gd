@@ -13,7 +13,8 @@ func _ready() -> void:
 func _on_area_entered(area: Area2D) -> void:
 	if area and area.has_method("take_damage"):
 		var hit_dir: Vector2 = area.global_position - global_position
-		area.take_damage(hit_dir.normalized(), damage)
+		var dmg := _get_susanoo_damage()
+		area.take_damage(hit_dir.normalized(), dmg)
 		# Sau khi gây damage lên enemy, làm fireball biến mất
 		_vanish_fireball()
 # Khi chạm body (platform), không tự spawn hole để tránh trùng với RayCast trong fire_ball.gd
@@ -35,3 +36,14 @@ func _is_platform(body: Node) -> bool:
 		return true
 	var name_str := String(body.name).to_lower()
 	return name_str.find("platform") != -1
+
+func _get_susanoo_damage() -> int:
+	var p := GameManager.player if Engine.has_singleton("GameManager") else null
+	if p == null:
+		p = get_tree().get_first_node_in_group("Player")
+	if p and p.has_node("Direction/HitArea2D"):
+		var ha := p.get_node("Direction/HitArea2D")
+		if ha:
+			var base := int(ha.get("damage"))
+			return max(1, base * 2)
+	return max(1, damage)

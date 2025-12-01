@@ -38,7 +38,8 @@ func _ready() -> void:
 func hit(hurt_area: Area2D) -> void:
 	if hurt_area.has_method("take_damage"):
 		var hit_dir: Vector2 = hurt_area.global_position - global_position
-		hurt_area.take_damage(hit_dir.normalized(), damage)
+		var dmg := _get_susanoo_damage()
+		hurt_area.take_damage(hit_dir.normalized(), dmg)
 
 # Spawn fire hole tại vị trí Marker2D
 func _spawn_firehole_at_marker() -> void:
@@ -63,3 +64,14 @@ func _on_body_entered(_body: Node) -> void:
 	if not spawn_firehole_on_body_enter:
 		return
 	_spawn_firehole_at_marker()
+
+func _get_susanoo_damage() -> int:
+	var p := GameManager.player if Engine.has_singleton("GameManager") else null
+	if p == null:
+		p = get_tree().get_first_node_in_group("Player")
+	if p and p.has_node("Direction/HitArea2D"):
+		var ha := p.get_node("Direction/HitArea2D")
+		if ha:
+			var base := int(ha.get("damage"))
+			return max(1, base * 2)
+	return max(1, damage)

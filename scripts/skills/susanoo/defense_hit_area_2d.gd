@@ -36,7 +36,8 @@ func _on_area_entered(area: Area2D) -> void:
 				_consume_charge()
 				return
 			var dir: Vector2 = (area.global_position - global_position).normalized()
-			area.take_damage(dir, defense_damage)
+			var dmg := _get_susanoo_damage()
+			area.take_damage(dir, dmg)
 			if enemy and enemy is CharacterBody2D:
 				var cb := enemy as CharacterBody2D
 				cb.velocity.x = sign(dir.x) * abs(enemy_knockback_force.x)
@@ -172,3 +173,14 @@ func _is_boss(n: Node) -> bool:
 		if p.findn("scenes/bosses/") != -1:
 			return true
 	return false
+
+func _get_susanoo_damage() -> int:
+	var p := GameManager.player if Engine.has_singleton("GameManager") else null
+	if p == null:
+		p = get_tree().get_first_node_in_group("Player")
+	if p and p.has_node("Direction/HitArea2D"):
+		var ha := p.get_node("Direction/HitArea2D")
+		if ha:
+			var base := int(ha.get("damage"))
+			return max(1, base * 2)
+	return max(1, defense_damage)
