@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dt1wkv6f2kmyv"]
+[gd_scene load_steps=36 format=3 uid="uid://dt1wkv6f2kmyv"]
 
 [ext_resource type="Script" uid="uid://51ghqdayxr6x" path="res://scenes/enemies/pear/pear.gd" id="1_sxt8t"]
 [ext_resource type="Texture2D" uid="uid://bpe3vxdgu84d0" path="res://asset/spear/spear/spear_11.png" id="2_paj4y"]
@@ -28,6 +28,8 @@
 [ext_resource type="Script" uid="uid://fisf88adgk4y" path="res://scenes/enemies/pear/hurt.gd" id="26_gqval"]
 [ext_resource type="Script" uid="uid://dbrklg2xtjijh" path="res://scenes/enemies/pear/dead.gd" id="27_iujux"]
 [ext_resource type="Script" uid="uid://cg13ctqwws6ll" path="res://scenes/enemies/pear/attack.gd" id="28_v4u0k"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="29_iujux"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="30_v4u0k"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_mcdti"]
 animations = [{
@@ -219,3 +221,12 @@ script = ExtResource("27_iujux")
 
 [node name="Attack" type="Node" parent="States"]
 script = ExtResource("28_v4u0k")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -22.0
+offset_top = -30.0
+offset_right = 838.0
+offset_bottom = 188.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("29_iujux")
+texture_progress = ExtResource("30_v4u0k")

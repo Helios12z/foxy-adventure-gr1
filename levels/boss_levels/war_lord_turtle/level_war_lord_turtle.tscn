@@ -135,7 +135,7 @@ texture = ExtResource("5_3srj3")
 flip_v = true
 
 [node name="ParallaxLayerMiddle" type="ParallaxLayer" parent="World/ParallaxBackground"]
-motion_scale = Vector2(0.1, 0.8)
+motion_scale = Vector2(0.25, 0.8)
 motion_mirroring = Vector2(810, 1250)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerMiddle"]
@@ -150,7 +150,7 @@ texture = ExtResource("6_rj8dq")
 flip_v = true
 
 [node name="ParallaxLayerFront" type="ParallaxLayer" parent="World/ParallaxBackground"]
-motion_scale = Vector2(0.3, 0.8)
+motion_scale = Vector2(0.5, 0.8)
 motion_mirroring = Vector2(810, 1250)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerFront"]

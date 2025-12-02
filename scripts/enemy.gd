@@ -112,9 +112,6 @@ func _update_health_bar_after_damage() -> void:
 		return
 
 	_health_bar.value = health 
-	print("min =", _health_bar.min_value, 
-	  " max =", _health_bar.max_value, 
-	  " value =", _health_bar.value)
 
 	_health_bar.visible = true
 	_health_bar_timer = health_bar_hide_delay

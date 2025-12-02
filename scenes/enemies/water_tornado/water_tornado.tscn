@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b4xm5pk0uin2j"]
+[gd_scene load_steps=26 format=3 uid="uid://b4xm5pk0uin2j"]
 
 [ext_resource type="Script" uid="uid://cxlftrotx5ggp" path="res://scenes/enemies/water_tornado/water_tornado.gd" id="1_pg56c"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_8mju6"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://b4688p23ef86k" path="res://scenes/enemies/water_tornado/water.gd" id="6_svmuy"]
 [ext_resource type="Script" uid="uid://c8wknmfq0pndo" path="res://scenes/enemies/water_tornado/dead.gd" id="7_18ji6"]
 [ext_resource type="Script" uid="uid://b7eki0edbvy3l" path="res://scenes/enemies/water_tornado/hurt.gd" id="9_xtxs6"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="10_ojumb"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="11_8ji8r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xtxs6"]
 shader = ExtResource("2_8mju6")
@@ -101,7 +103,7 @@ size = Vector2(28, 50)
 [node name="WaterTornado" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_pg56c")
-minion_health = 30
+minion_health = 75
 tornado_damage = 50
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
@@ -160,3 +162,12 @@ script = ExtResource("7_18ji6")
 
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("9_xtxs6")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -21.0
+offset_top = -23.0
+offset_right = 839.0
+offset_bottom = 195.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("10_ojumb")
+texture_progress = ExtResource("11_8ji8r")

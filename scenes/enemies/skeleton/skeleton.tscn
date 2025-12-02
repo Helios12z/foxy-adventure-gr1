@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://g3pj503kap4d"]
+[gd_scene load_steps=45 format=3 uid="uid://g3pj503kap4d"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_p222q"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_pk2ch"]
@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_yptew"]
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="13_u0q46"]
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_qfitn"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_kdl81"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_wkpb5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
 size = Vector2(37, 54)
@@ -334,3 +336,12 @@ script = ExtResource("13_u0q46")
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_qfitn")
 metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -15.714287
+offset_top = -38.57143
+offset_right = 844.2857
+offset_bottom = 179.42857
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("15_kdl81")
+texture_progress = ExtResource("16_wkpb5")
