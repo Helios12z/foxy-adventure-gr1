@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=4 uid="uid://dq7eu5p47t8gv"]
+[gd_scene load_steps=49 format=4 uid="uid://dq7eu5p47t8gv"]
 
 [ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="Texture2D" uid="uid://bf3njubt3epi2" path="res://asset/forest/background/Background.png" id="1_ofl10"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="13_2peu5"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="16_pklx6"]
 [ext_resource type="PackedScene" uid="uid://cko6qhhakt6kh" path="res://levels/objects/platforms/moving_platform_path2.tscn" id="18_sqrxr"]
+[ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="19_ixb2s"]
 [ext_resource type="AudioStream" uid="uid://deuadby5kwrfc" path="res://asset/sounds/ShadowsoftheMysticWoods_FULL_SONG_MusicGPT (mp3cut.net).mp3" id="20_4tdrg"]
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="20_nljfo"]
 [ext_resource type="AudioStream" uid="uid://c5uy78jxcl7ar" path="res://asset/sounds/Free Thunder Sound Effect  No Copyright - Friendly Free Sounds.mp3" id="21_4tdrg"]
@@ -432,7 +433,7 @@ tile_map_data = PackedByteArray("AABOAAQAAgABAAAAAABNAAQAAgABAAAAAABMAAQAAgABAAA
 tile_set = ExtResource("3_gpada")
 
 [node name="Player" parent="." instance=ExtResource("3_hrn5s")]
-position = Vector2(99, 110)
+position = Vector2(99, 92)
 has_blade = true
 max_health = 1000
 
@@ -565,8 +566,9 @@ target_stage = "uid://x5qrj66qebnm"
 target_door = "RightDoor"
 is_cross_scene = true
 
-[node name="Door2" parent="." instance=ExtResource("20_nljfo")]
-position = Vector2(9392, 129)
+[node name="Teleport" parent="." instance=ExtResource("19_ixb2s")]
+position = Vector2(9391, 99)
+scale = Vector2(0.5, 0.5)
 target_stage = "uid://k0emccpu8xrk"
 target_door = "LeftDoor"
 is_cross_scene = true

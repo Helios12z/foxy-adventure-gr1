@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=4 uid="uid://65dl3olpohwm"]
+[gd_scene load_steps=62 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
@@ -52,6 +52,7 @@
 [ext_resource type="AudioStream" uid="uid://dtl6nhxvi2mxk" path="res://asset/sounds/Winter Morning Ambience Sound Effect  Copyright Free Nature Sounds - Audio Wind.mp3" id="49_r8xm3"]
 [ext_resource type="PackedScene" uid="uid://dt1wkv6f2kmyv" path="res://scenes/enemies/pear/pear.tscn" id="50_cjww2"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="51_cjww2"]
+[ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="53_70u64"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -197,7 +198,7 @@ position = Vector2(540, -183)
 scale = Vector2(1.3, 1.3)
 
 [node name="Player" parent="." instance=ExtResource("6_44ejs")]
-position = Vector2(-218, 59)
+position = Vector2(-219, 49)
 max_health = 1000
 
 [node name="Npcs" type="Node2D" parent="."]
@@ -685,8 +686,9 @@ position = Vector2(13454, 69)
 [node name="BossRoomBoundPointB" type="Marker2D" parent="."]
 position = Vector2(14675, -265)
 
-[node name="Door2" parent="." instance=ExtResource("44_imecc")]
-position = Vector2(13472, 70)
+[node name="Teleport" parent="." instance=ExtResource("53_70u64")]
+position = Vector2(13472, 39)
+scale = Vector2(0.5, 0.5)
 target_stage = "uid://x5qrj66qebnm"
 target_door = "LeftDoor"
 is_cross_scene = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://x5qrj66qebnm"]
+[gd_scene load_steps=30 format=4 uid="uid://x5qrj66qebnm"]
 
 [ext_resource type="Script" uid="uid://bl3x6kmrgh3te" path="res://levels/boss_levels/king_crab/level_king_crab.gd" id="1_5yrod"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_n68t6"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_wyfuh"]
 [ext_resource type="Script" uid="uid://cu4d7qndrtnyl" path="res://levels/boss_levels/king_crab/boss_hud.gd" id="4_42jcx"]
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="4_fe663"]
+[ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="4_jockp"]
 [ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="5_uiho5"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="5_wyfuh"]
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="5_yeyly"]
@@ -94,10 +95,11 @@ position = Vector2(-113, 106)
 tile_map_data = PackedByteArray("AAD//xAAAAACAAAAAAD+/xAAAAABAAAAAAD9/xAAAAABAAAAAAD9/xEAAAABAAIAAAD+/xEAAAABAAIAAAD//xEAAAACAAIAAAD8/xEAAAABAAIAAAD8/xAAAAABAAAAAAD7/xAAAAABAAAAAAD7/xEAAAABAAIAAAD6/xAAAAAAAAAAAAD6/xEAAAAAAAIAAAA=")
 tile_set = ExtResource("1_n68t6")
 
-[node name="LeftDoor" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("4_fe663")]
-position = Vector2(-129, 512)
+[node name="LeftDoor" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("4_jockp")]
+position = Vector2(-112, 483)
+scale = Vector2(0.5, 0.5)
 target_stage = "uid://65dl3olpohwm"
-target_door = "Door2"
+target_door = "Teleport"
 is_cross_scene = true
 
 [node name="Checkpoint" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_yeyly")]
