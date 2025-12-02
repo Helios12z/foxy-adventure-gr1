@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d4naxw7byqf3t"]
+[gd_scene load_steps=43 format=3 uid="uid://d4naxw7byqf3t"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_he1hr"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_3vu3r"]
@@ -10,7 +10,9 @@
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_5efj7"]
 [ext_resource type="Script" uid="uid://bmq61fof8icwp" path="res://scenes/enemies/flyeye/attack.gd" id="10_ov88m"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_1y8aa"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="13_cmmhk"]
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="13_t5cn8"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="14_ib1x5"]
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_uunq7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
@@ -298,3 +300,12 @@ script = ExtResource("13_t5cn8")
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_uunq7")
 metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -22.0
+offset_top = -26.0
+offset_right = 838.0
+offset_bottom = 192.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("13_cmmhk")
+texture_progress = ExtResource("14_ib1x5")

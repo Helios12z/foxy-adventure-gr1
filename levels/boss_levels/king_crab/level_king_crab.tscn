@@ -154,7 +154,7 @@ shape = SubResource("RectangleShape2D_42jcx")
 
 [node name="ParallaxLayerFar" type="ParallaxLayer" parent="World/ParallaxBackground"]
 motion_scale = Vector2(0.001, 0.8)
-motion_mirroring = Vector2(1000, 550)
+motion_mirroring = Vector2(800, 550)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerFar"]
 position = Vector2(509.00003, 250.00002)
@@ -163,25 +163,31 @@ texture = ExtResource("6_uiho5")
 
 [node name="ParallaxLayerMid" type="ParallaxLayer" parent="World/ParallaxBackground"]
 position = Vector2(-22, -73)
-motion_scale = Vector2(0.1, 0.8)
-motion_mirroring = Vector2(1018, 0)
+motion_scale = Vector2(0.3, 0.8)
+motion_mirroring = Vector2(1750, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerMid"]
 position = Vector2(359, 437.00006)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("7_l0rmf")
 
+[node name="Sprite2DFlipped" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerMid"]
+position = Vector2(1378, 437.00006)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("7_l0rmf")
+flip_h = true
+
 [node name="ParallaxLayerNear" type="ParallaxLayer" parent="World/ParallaxBackground"]
-motion_scale = Vector2(0.3, 0.8)
+motion_scale = Vector2(0.5, 0.8)
 motion_mirroring = Vector2(1000, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerNear"]
-position = Vector2(402, 343.99997)
+position = Vector2(510, 344.0001)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("9_ooya2")
 
 [node name="Sprite2DMirror" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerNear"]
-position = Vector2(402, 915)
+position = Vector2(509.00003, 915.00006)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("9_ooya2")
 flip_v = true

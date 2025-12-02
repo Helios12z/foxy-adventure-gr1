@@ -5,7 +5,7 @@ extends Node2D
 @export var spike_damage: float = 70.0
 
 @export var spawn_interval: float = 2.5
-@export var lifetime: float = 10.0
+@export var lifetime: float = 12.5
 
 @onready var marker_2d: Marker2D = $Marker2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D

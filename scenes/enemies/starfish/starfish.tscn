@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dmngvbkuj5adl"]
+[gd_scene load_steps=25 format=3 uid="uid://dmngvbkuj5adl"]
 
 [ext_resource type="Script" uid="uid://bmiuidbc22fru" path="res://scenes/enemies/starfish/starfish.gd" id="1_r5ogx"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_wmhok"]
@@ -18,6 +18,8 @@
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_gmc80"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_l27mi"]
 [ext_resource type="Script" uid="uid://055ybebvgq2r" path="res://scenes/enemies/starfish/attack.gd" id="18_wmhok"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="19_t00wx"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="20_db23i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
 size = Vector2(20, 0)
@@ -55,6 +57,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("11_ovnnu")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("9_04onw")
 }],
 "loop": true,
@@ -69,7 +79,7 @@ animations = [{
 "texture": ExtResource("11_ovnnu")
 }],
 "loop": false,
-"name": &"hurt",
+"name": &"hit",
 "speed": 5.0
 }, {
 "frames": [{
@@ -157,7 +167,7 @@ shape = SubResource("CircleShape2D_tvsr8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_ogm1e")
-animation = &"attack"
+animation = &"start_roll"
 autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -183,3 +193,12 @@ script = ExtResource("17_l27mi")
 
 [node name="Attack" type="Node" parent="States"]
 script = ExtResource("18_wmhok")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -22.0
+offset_top = -28.0
+offset_right = 838.0
+offset_bottom = 190.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("19_t00wx")
+texture_progress = ExtResource("20_db23i")
