@@ -1,10 +1,10 @@
-[gd_scene load_steps=62 format=4 uid="uid://65dl3olpohwm"]
+[gd_scene load_steps=63 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="2_k3ymo"]
 [ext_resource type="Texture2D" uid="uid://ck8762h1hy2cf" path="res://asset/island/background/additional_water.png" id="3_44ejs"]
-[ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="3_cbqdj"]
+[ext_resource type="PackedScene" path="res://screens/game_screen/hud.tscn" id="3_cbqdj"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="4_8dbd0"]
 [ext_resource type="PackedScene" uid="uid://tew7lh8j1um5" path="res://scenes/enemies/crab/crab.tscn" id="4_36gkw"]
 [ext_resource type="Texture2D" uid="uid://bqde0l4at7gv8" path="res://asset/island/background/bg_image.png" id="4_rwkv0"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://drl3x1wfs0vai" path="res://asset/island/background/water_reflect_big_03.png" id="9_6nwv2"]
 [ext_resource type="Script" uid="uid://cumeqa20il3u" path="res://levels/parallax_layer_small_cloud.gd" id="9_h1x0w"]
 [ext_resource type="Texture2D" uid="uid://ci5tpl05cnmra" path="res://asset/island/background/small_cloud_1.png" id="10_0v5xw"]
+[ext_resource type="PackedScene" uid="uid://dr1kwjksl4cp5" path="res://levels/tutorial/keyboard_key.tscn" id="10_e0w0y"]
 [ext_resource type="Texture2D" uid="uid://c5ur36rqix0vh" path="res://asset/island/background/water_reflect_big_04.png" id="10_trk35"]
 [ext_resource type="Texture2D" uid="uid://clqwctkiuocld" path="res://asset/island/background/water_reflect_medium_01.png" id="11_mt68y"]
 [ext_resource type="Texture2D" uid="uid://1t3pkyls8wyt" path="res://asset/island/background/small_cloud_2.png" id="11_pmpee"]
@@ -291,6 +292,26 @@ position = Vector2(8298, -295)
 
 [node name="Peligan6" parent="Enemies" instance=ExtResource("7_a7slf")]
 position = Vector2(9360, -297)
+
+[node name="KeyboardPlatform1" parent="Enemies" instance=ExtResource("10_e0w0y")]
+position = Vector2(2247, -11.000002)
+scale = Vector2(0.7, 0.7)
+key_text = "F"
+
+[node name="KeyboardPlatform2" parent="Enemies" instance=ExtResource("10_e0w0y")]
+position = Vector2(6356, -263)
+scale = Vector2(0.7, 0.7)
+key_text = "F"
+
+[node name="KeyboardPlatform3" parent="Enemies" instance=ExtResource("10_e0w0y")]
+position = Vector2(12679, -24.000004)
+scale = Vector2(0.7, 0.7)
+key_text = "F"
+
+[node name="KeyboardTeleport" parent="Enemies" instance=ExtResource("10_e0w0y")]
+position = Vector2(13474, -36)
+scale = Vector2(0.7, 0.7)
+key_text = "F"
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(112, 5)
