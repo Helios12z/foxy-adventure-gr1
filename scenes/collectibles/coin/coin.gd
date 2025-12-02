@@ -2,6 +2,7 @@ extends InteractiveArea2D
 
 @export var coin_amount: int = 1
 @export var coin_id: String = ""
+@export var persistent: bool = true
 
 var is_collected: bool = false
 var is_flying: bool = false
@@ -23,7 +24,7 @@ func _ready() -> void:
 	if coin_id.is_empty():
 		coin_id = make_position_id()
 	
-	if GameManager.is_coin_collected(coin_id): 
+	if persistent and GameManager.is_coin_collected(coin_id): 
 		queue_free()
 		return 
 	
@@ -92,7 +93,8 @@ func collect_coin() -> void:
 	is_collected = true   # <<-- CHỐT QUAN TRỌNG (chỉ nhặt 1 lần)
 
 	GameManager.inventory_system.add_coin(coin_amount)
-	GameManager.mark_coin_collected(coin_id)
+	if persistent and not coin_id.is_empty():
+		GameManager.mark_coin_collected(coin_id)
 
 	sprite.play("disappearance")
 	await sprite.animation_finished

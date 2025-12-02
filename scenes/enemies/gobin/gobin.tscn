@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cc0iusqt6xbwc" path="res://asset/enemy/Goblin/Take Hit.png" id="6_g41d4"]
 [ext_resource type="Texture2D" uid="uid://djs1a2kyshej5" path="res://asset/enemy/Goblin/Idle.png" id="7_wj18h"]
 [ext_resource type="Texture2D" uid="uid://wvmqaqgupikv" path="res://asset/enemy/Goblin/Run.png" id="8_pxkrn"]
-[ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_yr0v4"]
+[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="9_yr0v4"]
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_y6kf8"]
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_g41d4"]
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_wj18h"]
@@ -252,6 +252,7 @@ animations = [{
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
 script = ExtResource("1_y6kf8")
+coin_drop_count = 1
 max_health = 100
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 

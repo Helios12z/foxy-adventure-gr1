@@ -7,6 +7,7 @@ func _enter():
 	timer = 1.0
 	obj.velocity.x = 0
 	obj.set_hurt_collision(false)
+	obj.drop_coins()
 
 
 func _update(delta):

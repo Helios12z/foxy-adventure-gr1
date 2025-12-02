@@ -135,6 +135,7 @@ pear_attack_damage = 30
 pear_health = 100
 spike_damage = 25
 turn_time = 0.75
+coin_drop_count = 2
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="Direction" type="Node2D" parent="."]

@@ -3,6 +3,9 @@ extends BaseCharacter
 
 @export var health_bar_hide_delay: float = 1.5 
 
+@export var coin_drop_count: int = 0
+@export var coin_scene: PackedScene = preload("res://scenes/collectibles/coin/coin.tscn")
+
 var _health_bar: TextureProgressBar
 var _health_bar_timer: float = 0.0
 
@@ -161,3 +164,23 @@ func _update_health_bar_visibility(delta: float) -> void:
 		_health_bar_timer -= delta
 		if _health_bar_timer <= 0.0:
 			_health_bar.visible = false
+
+func drop_coins() -> void:
+	if coin_scene == null:
+		return
+	var parent := get_parent()
+	if parent == null:
+		parent = get_tree().current_scene
+	if parent == null:
+		return
+	for i in coin_drop_count:
+		var coin := coin_scene.instantiate()
+		coin.persistent = false
+		parent.add_child(coin)
+		coin.global_position = global_position
+		var landing_offset := Vector2(
+			randf_range(-60, 60),
+			randf_range(120, 180)
+		)
+		var landing_pos := global_position + landing_offset
+		coin.fly_to(landing_pos)

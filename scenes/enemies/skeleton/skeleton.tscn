@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dai4akr5x1pio" path="res://asset/enemy/Skeleton/Take Hit.png" id="6_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://cjwlrhvwu2qu0" path="res://asset/enemy/Skeleton/Idle.png" id="7_03bn8"]
 [ext_resource type="Texture2D" uid="uid://c08exc80o10pj" path="res://asset/enemy/Skeleton/Walk.png" id="8_8eo2u"]
-[ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_lsssd"]
+[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="9_lsssd"]
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_e0ypk"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_cm4hu"]
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_yptew"]
@@ -224,6 +224,7 @@ animations = [{
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
 script = ExtResource("1_p222q")
+coin_drop_count = 2
 max_health = 150
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
