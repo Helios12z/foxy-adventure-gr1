@@ -1,6 +1,8 @@
 class_name PlayerState
 extends FSMState
 
+@export var dash_mana = 10
+
 #Control moving and changing state to run
 #Return true if moving
 #Add friction and acceleration effects
@@ -55,7 +57,8 @@ func control_hover() -> bool:
 	return false
 
 func control_dash() -> bool:
-	if Input.is_action_just_pressed("dash") and obj.can_dash():
+	if Input.is_action_just_pressed("dash") and obj.can_dash() and obj.can_use_skill(dash_mana):
+		obj.take_mana(dash_mana)
 		change_state(fsm.states.dash)
 		return true
 	return false

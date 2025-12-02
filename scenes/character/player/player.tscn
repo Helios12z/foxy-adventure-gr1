@@ -242,4 +242,5 @@ bus = &"SFX"
 
 [connection signal="hurt" from="Direction/HurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
 [connection signal="hurt" from="Direction/HoverHurtArea2D" to="." method="_on_hurt_area_2d_hurt"]
+[connection signal="hitted" from="Direction/HitArea2D" to="." method="_on_hit_area_2d_hitted"]
 [connection signal="hurt" from="Direction/FallHurtArea2D" to="." method="_on_fall_hurt_area_2d_hurt"]

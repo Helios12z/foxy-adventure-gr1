@@ -3,6 +3,7 @@ extends BaseCharacter
 
 ## Player character class that handles movement, combat, and state management
 signal hp_changed(current_hp, max_hp)
+signal mana_changed(current_mana, max_mana)
 signal dash_cooldown_started(duration)
 signal dash_cooldown_updated(time_left)
 signal dash_cooldown_finished()
@@ -20,6 +21,12 @@ var decorator_manager: DecoratorManager = null
 @export var has_water_paw_gem: bool = false
 @export var has_water_room_gem: bool = false
 @export var max_jump_count = 2
+@export var max_mana : int = 100
+var mana : int 
+@export var charge_mana_step = 5
+@export var mana_regen_interval: float = 0.5   # mỗi 0.5s
+@export var mana_regen_amount: int = 1         # cộng 1 mana
+var mana_regen_timer: Timer = null             # timer regen
 @export var deccel = 800     # ma sát khi ở trên đất
 @export var air_deccel = 100   # ma sát khi ở trên không
 @export var dash_speed: float = 800.0
@@ -72,7 +79,7 @@ func check_run_double_tap() -> int:
 
 func _ready() -> void:
 	super._ready()
-	
+	mana = max_mana
 	fsm = FSM.new(self, $States, $States/Idle)
 	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",true)
 		# Register player in GameManager
@@ -104,12 +111,21 @@ func _ready() -> void:
 	_base_gravity = gravity
 	_base_max_jump_count = max_jump_count
 	
+	# --- Tạo timer tự regen mana ---
+	mana_regen_timer = Timer.new()
+	mana_regen_timer.wait_time = mana_regen_interval
+	mana_regen_timer.one_shot = false
+	mana_regen_timer.autostart = true
+	mana_regen_timer.timeout.connect(_on_mana_regen_timeout)
+	add_child(mana_regen_timer)
+	
 func _physics_process(delta: float) -> void:
 	# Apply safe-zone modifiers before physics so gravity uses updated value
 	_apply_safe_zone_mods()
 	super._physics_process(delta)
 	if is_on_wall() or is_on_floor():
 		reset_jump_count()
+	
 	
 
 func _process(_delta: float) -> void:
@@ -337,3 +353,22 @@ func take_damage(damage: int) -> void:
 func heal(amount: int) -> void:
 	health = min(health + amount, max_health)
 	emit_signal("hp_changed", health, max_health)
+	
+func take_mana(amount: int ) -> void:
+	mana -= amount
+	emit_signal("mana_changed", mana, max_mana)
+	
+func charge_mana(amount: int) -> void:
+	mana = min(mana + amount, max_mana)
+	emit_signal("mana_changed", mana, max_mana)
+
+func can_use_skill(amount: int) -> bool:
+	return mana >= amount 
+
+func _on_hit_area_2d_hitted(area: Variant) -> void:
+	charge_mana(charge_mana_step)
+
+func _on_mana_regen_timeout() -> void:
+	# chỉ regen nếu chưa full
+	if mana < max_mana:
+		charge_mana(mana_regen_amount)
