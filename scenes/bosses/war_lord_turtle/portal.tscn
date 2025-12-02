@@ -79,3 +79,4 @@ frame_progress = 0.37896132
 [node name="Sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_5b0bm")
 bus = &"SFX"
+parameters/looping = true
