@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://c3034u380fcvt"]
+[gd_scene load_steps=49 format=3 uid="uid://c3034u380fcvt"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_y6kf8"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_sebhr"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_y6kf8"]
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_g41d4"]
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_wj18h"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_wj18h"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_pxkrn"]
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_swxqt"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_83gjm"]
 
@@ -19,7 +21,7 @@
 size = Vector2(31, 39)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf3fj"]
-size = Vector2(32, 43)
+size = Vector2(43.571426, 40.714287)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jdvj0"]
 size = Vector2(39, 39)
@@ -282,7 +284,8 @@ damage = 20
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(16, 5.5)
+position = Vector2(21.785702, 4.6428547)
+scale = Vector2(0.99999976, 0.99999976)
 shape = SubResource("RectangleShape2D_lf3fj")
 debug_color = Color(0.901445, 0.278962, 0.357004, 0.42)
 
@@ -298,8 +301,9 @@ shape = SubResource("RectangleShape2D_jdvj0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_ogm1e")
-animation = &"walk"
+animation = &"attack"
 autoplay = "walk"
+frame = 6
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.685657, 0.170201, 0.197746, 1)
@@ -359,3 +363,12 @@ script = ExtResource("16_swxqt")
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_wj18h")
 metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -22.0
+offset_top = -26.0
+offset_right = 838.0
+offset_bottom = 192.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("15_wj18h")
+texture_progress = ExtResource("16_pxkrn")

@@ -5,7 +5,7 @@ extends EnemyCharacter
 @onready var hurt_area_2d: HurtArea2D = $HurtArea2D
 @onready var hit_area_2d: HitArea2D = $HitArea2D
 
-@export var minion_health: int = 5
+@export var minion_health: int = 75
 @export var tornado_damage: int = 10
 @export var lifetime: float = 15.0            
 
@@ -13,9 +13,9 @@ var _alive_time: float = 0.0
 var _blink_tw: Tween
 
 func _ready() -> void:
+	max_health = minion_health
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Water)
-	max_health = minion_health
 
 	water.visible = true
 	tornado.visible = false
@@ -35,15 +35,7 @@ func _physics_process(delta: float) -> void:
 		fsm.change_state(fsm.states.dead)
 
 func _on_hurt_area_2d_hurt(_direction: Variant, damage: Variant) -> void:
-	if fsm == null or fsm.current_state == null:
-		health -= damage
-		return
-	
-	fsm.current_state.take_damage(Vector2.ZERO, damage)
-	if health <= 0:
-		fsm.change_state(fsm.states.dead)
-	else:
-		fsm.change_state(fsm.states.hurt)
+	super._on_hurt_area_2d_hurt(Vector2.ZERO, damage)
 
 func _start_warning_blink(total: float, times: int) -> void:
 	var mat := water.material as ShaderMaterial

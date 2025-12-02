@@ -1,6 +1,6 @@
 extends EnemyState
 
-var detect_time: float = 1.25
+var detect_time: float = 0.6
 
 func _enter() -> void:
 	obj.velocity.x = 0
