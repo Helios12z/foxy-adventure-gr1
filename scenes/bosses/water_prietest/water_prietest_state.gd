@@ -1,5 +1,5 @@
 extends EnemyState
-class_name HassasinState
+class_name WaterPrietestState
 
 const SAME_LEVEL_THRESHOLD := 24.0  # tuỳ map mà chỉnh
 

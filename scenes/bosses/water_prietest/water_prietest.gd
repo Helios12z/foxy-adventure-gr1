@@ -10,6 +10,10 @@ extends BaseCharacter
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
+@onready var atk1_collision_shape_2d: CollisionShape2D = $Direction/Atk1HitArea2D/CollisionShape2D
+@onready var atk2_collision_shape_2d_right: CollisionShape2D = $Direction/Atk2HitArea2D/CollisionShape2D
+@onready var atk2_collision_shape_2d_left: CollisionShape2D = $Direction/Atk2HitArea2D2/CollisionShape2D
+@onready var atk3_collision_shape_2d: CollisionShape2D = $Direction/Atk3HitArea2D/CollisionShape2D
 
 enum MoveMode {
 	MOVE_NONE,
@@ -72,7 +76,7 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	if not in_phase2 and health <= max_health * phase2_threshold_ratio:
 		in_phase2 = true
 		if fsm and fsm.current_state != fsm.states.dead:
-			fsm.change_state(fsm.states.atk_3_windup)
+			fsm.change_state(fsm.states.phase2_windup)
 		return
 
 	if _took_consecutive_damage():
