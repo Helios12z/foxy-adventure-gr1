@@ -1,4 +1,4 @@
-[gd_scene load_steps=185 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=196 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Texture2D" uid="uid://ql4kgokw80wq" path="res://asset/water_prietest/atk_1/1_atk_1.png" id="2_isiw1"]
@@ -176,6 +176,17 @@
 [ext_resource type="Texture2D" uid="uid://d2td2lr7dyb3d" path="res://asset/water_prietest/walk/walk_8.png" id="167_m8xwq"]
 [ext_resource type="Texture2D" uid="uid://cod4epsjfydn7" path="res://asset/water_prietest/walk/walk_9.png" id="168_pm6v4"]
 [ext_resource type="Texture2D" uid="uid://bxc3vnkxgdsx7" path="res://asset/water_prietest/walk/walk_10.png" id="169_im4w0"]
+[ext_resource type="Script" uid="uid://cd1i1gkxdqqch" path="res://scenes/bosses/water_prietest/atk_2.gd" id="174_3h4hw"]
+[ext_resource type="Script" uid="uid://dh0lu1paetqta" path="res://scenes/bosses/water_prietest/atk_3.gd" id="175_tyesj"]
+[ext_resource type="Script" uid="uid://cr34jwl1jrydq" path="res://scenes/bosses/water_prietest/atk_air.gd" id="176_d8ret"]
+[ext_resource type="Script" uid="uid://i6oaskw51kbh" path="res://scenes/bosses/water_prietest/atk_super.gd" id="177_pjmbv"]
+[ext_resource type="Script" uid="uid://85ao68773anc" path="res://scenes/bosses/water_prietest/defend.gd" id="178_pjmbv"]
+[ext_resource type="Script" uid="uid://d2c06c2e4ocoy" path="res://scenes/bosses/water_prietest/roll.gd" id="181_spm2m"]
+[ext_resource type="Script" uid="uid://rqlnopwgspi0" path="res://scenes/bosses/water_prietest/hurt.gd" id="183_6cqs2"]
+[ext_resource type="Script" uid="uid://chi7fvld2woeg" path="res://scenes/bosses/water_prietest/dead.gd" id="184_bu7ft"]
+[ext_resource type="Script" uid="uid://b8usx670g1vsm" path="res://scenes/bosses/water_prietest/phase_2_windup.gd" id="185_bboxk"]
+[ext_resource type="Script" uid="uid://dgvne3nt5k0ia" path="res://scenes/bosses/water_prietest/surf.gd" id="186_pyckh"]
+[ext_resource type="Script" uid="uid://belugcidxb8jf" path="res://scenes/bosses/water_prietest/walk.gd" id="187_gbqh0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nk125"]
 size = Vector2(19, 36)
@@ -789,7 +800,7 @@ shape = SubResource("RectangleShape2D_nk125")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 position = Vector2(0, -50)
 sprite_frames = SubResource("SpriteFrames_ed6l8")
-animation = &"idle"
+animation = &"dead"
 autoplay = "idle"
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
@@ -855,14 +866,19 @@ script = ExtResource("154_2vob4")
 script = ExtResource("155_i7mue")
 
 [node name="Atk_2" type="Node" parent="States"]
+script = ExtResource("174_3h4hw")
 
 [node name="Atk_3" type="Node" parent="States"]
+script = ExtResource("175_tyesj")
 
 [node name="Atk_Air" type="Node" parent="States"]
+script = ExtResource("176_d8ret")
 
 [node name="Atk_Super" type="Node" parent="States"]
+script = ExtResource("177_pjmbv")
 
 [node name="Defend" type="Node" parent="States"]
+script = ExtResource("178_pjmbv")
 
 [node name="Jump" type="Node" parent="States"]
 script = ExtResource("156_l5lxe")
@@ -871,14 +887,22 @@ script = ExtResource("156_l5lxe")
 script = ExtResource("157_ym30o")
 
 [node name="Roll" type="Node" parent="States"]
+script = ExtResource("181_spm2m")
 
 [node name="Run" type="Node" parent="States"]
 script = ExtResource("158_cootd")
 
 [node name="Hurt" type="Node" parent="States"]
+script = ExtResource("183_6cqs2")
 
 [node name="Dead" type="Node" parent="States"]
+script = ExtResource("184_bu7ft")
 
 [node name="Phase2_Windup" type="Node" parent="States"]
+script = ExtResource("185_bboxk")
 
 [node name="Surf" type="Node" parent="States"]
+script = ExtResource("186_pyckh")
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("187_gbqh0")

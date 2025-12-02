@@ -6,7 +6,7 @@ extends EnemyCharacter
 @export var move_speed: int = 90 
 @export var attack_distance: float = 40.0
 @export var spike_damage: int = 150
-@export var turn_time: float = 1.25 
+@export var turn_time: float = 0.75 
 
 @onready var detect_front = $Direction/DetectFrontRayCast2D
 @onready var detect_back = $Direction/DetectBackRayCast2D
@@ -21,12 +21,11 @@ var _waiting_turn_from_back: bool = false
 var _turn_timer: float = 0.0
 
 func _ready() -> void:
+	max_health = pear_health
 	super._ready()
 	change_direction(-direction)
 	collision_shape_2d.position.x *= -1
-	health = 100
 	fsm = FSM.new(self, $States, $States/Walk)
-	health = pear_health
 	hurt_area.hurt.connect(_on_hurt_area_2d_hurt) 
 	hit_area_2d.damage = pear_attack_damage
 	spear_collision_shape_2d.disabled = true
@@ -49,7 +48,7 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 		# sound shield block played here
 		return
 
-	fsm.current_state.take_damage(knockback_direction, _damage)
+	super._on_hurt_area_2d_hurt(knockback_direction, _damage)
 
 	if health <= 0:
 		fsm.change_state(fsm.states.dead)

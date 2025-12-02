@@ -45,8 +45,15 @@ func _ready() -> void:
 
 	_init_hurt_area()
 	_update_level_bounds_from_markers()
+	_disable_hit_collisionshape()
 
 	fsm = FSM.new(self, $States, $States/Idle)
+	
+func _disable_hit_collisionshape()->void:
+	atk1_collision_shape_2d.disabled = true
+	atk2_collision_shape_2d_left.disabled = true
+	atk2_collision_shape_2d_right.disable = true
+	atk3_collision_shape_2d.disabled = true 
 
 func _physics_process(delta: float) -> void:
 	if fsm != null: fsm._update(delta)

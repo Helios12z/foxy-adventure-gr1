@@ -45,3 +45,57 @@ func decide_move_mode_towards_player() -> void:
 			obj.move_mode = obj.MoveMode.MOVE_GO_EDGE_FOR_JUMP
 
 		obj.move_target_x = edge_x
+
+func do_atk1() -> void:
+	var sprite = obj.animated_sprite_2d
+	if sprite == null:
+		return
+
+	if not sprite.frame_changed.is_connected(_on_atk1_frame_changed):
+		sprite.frame_changed.connect(_on_atk1_frame_changed)
+
+	if not sprite.animation_finished.is_connected(_on_atk1_anim_finished):
+		sprite.animation_finished.connect(_on_atk1_anim_finished)
+
+
+func _on_atk1_frame_changed() -> void:
+	var sprite = obj.animated_sprite_2d
+	if sprite == null:
+		return
+
+	# Nếu không còn ở animation atk_1 thì tắt hitbox và thôi
+	if sprite.animation != "atk_1":
+		if obj.atk1_collision_shape_2d:
+			obj.atk1_collision_shape_2d.disabled = true
+		return
+
+	var current_frame = sprite.frame
+	var active = (current_frame == 2 or current_frame == 3)
+
+	if obj.atk1_collision_shape_2d:
+		obj.atk1_collision_shape_2d.disabled = not active
+
+
+func _on_atk1_anim_finished() -> void:
+	var sprite = obj.animated_sprite_2d
+	if sprite == null:
+		return
+
+	# Chỉ xử lý nếu vừa xong animation atk_1
+	if sprite.animation != "atk_1":
+		return
+
+	# Tắt hitbox
+	if obj.atk1_collision_shape_2d:
+		obj.atk1_collision_shape_2d.disabled = true
+
+	# Ngắt signal để tránh bị call nhiều lần
+	if sprite.frame_changed.is_connected(_on_atk1_frame_changed):
+		sprite.frame_changed.disconnect(_on_atk1_frame_changed)
+
+	if sprite.animation_finished.is_connected(_on_atk1_anim_finished):
+		sprite.animation_finished.disconnect(_on_atk1_anim_finished)
+
+	# Animation atk_1 xong -> về idle (hoặc state khác tuỳ bạn)
+	if obj.fsm:
+		obj.fsm.change_state(obj.fsm.states.idle)
