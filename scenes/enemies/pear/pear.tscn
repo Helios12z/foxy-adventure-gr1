@@ -130,11 +130,11 @@ size = Vector2(36, 28)
 
 [node name="Pear" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 3
 script = ExtResource("1_sxt8t")
 pear_attack_damage = 30
 pear_health = 100
 spike_damage = 25
+turn_time = 0.75
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="Direction" type="Node2D" parent="."]

@@ -1,6 +1,10 @@
 class_name EnemyCharacter
 extends BaseCharacter
 
+@export var health_bar_hide_delay: float = 1.5 
+
+var _health_bar: TextureProgressBar
+var _health_bar_timer: float = 0.0
 
 # Raycast check wall and fall
 var front_ray_cast: RayCast2D
@@ -21,9 +25,20 @@ func _ready() -> void:
 	_init_ray_cast()
 	_init_detect_player_area()
 	_init_hurt_area()
+	_init_health_bar()
 	super._ready()
 	pass
 
+func _init_health_bar() -> void:
+	if has_node("HealthBar"):
+		print("found health bar")
+		_health_bar = $HealthBar
+		_health_bar.visible = false
+
+		_health_bar.max_value = max_health
+		_health_bar.value = health
+	else:
+		_health_bar = null
 
 #init ray cast to check wall and fall
 func _init_ray_cast():
@@ -90,6 +105,19 @@ func _on_player_not_in_sight():
 
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float):
 	fsm.current_state.take_damage(_damage_dir, _damage)
+	_update_health_bar_after_damage()
+	
+func _update_health_bar_after_damage() -> void:
+	if _health_bar == null:
+		return
+
+	_health_bar.value = health 
+	print("min =", _health_bar.min_value, 
+	  " max =", _health_bar.max_value, 
+	  " value =", _health_bar.value)
+
+	_health_bar.visible = true
+	_health_bar_timer = health_bar_hide_delay
 
 func set_hurt_collision(enabled):
 	$Direction/HurtArea2D/CollisionShape2D.set_deferred("disabled",not enabled)
@@ -123,3 +151,13 @@ func _physics_process(delta: float) -> void:
 			return
 	# normal behavior
 	super._physics_process(delta)
+	_update_health_bar_visibility(delta)
+	
+func _update_health_bar_visibility(delta: float) -> void:
+	if _health_bar == null:
+		return
+
+	if _health_bar.visible:
+		_health_bar_timer -= delta
+		if _health_bar_timer <= 0.0:
+			_health_bar.visible = false
