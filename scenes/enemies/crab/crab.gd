@@ -1,5 +1,7 @@
 extends EnemyCharacter
 
+@export var minion_health: int = 75
+
 @onready var hurt_area = $Direction/HurtArea2D
 @onready var summon_effect: AnimatedSprite2D = $Direction/SummonEffect
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
@@ -8,16 +10,13 @@ var _spawn_old_speed := 0.0
 var _blink_tw: Tween
 
 func _ready() -> void:
+	max_health = minion_health
 	super._ready()
 	fsm = FSM.new(self, $States, $States/Walk)
-	health = 75
 	hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
-
-func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
-	fsm.current_state.take_damage(_direction, _damage)
 	
 func play_spawn_intro(total: float = 0.6, times: int = 6, color: Color = Color8(255, 200, 64, 255)) -> void:
 	_spawn_old_speed = movement_speed

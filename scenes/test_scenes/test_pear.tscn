@@ -12,6 +12,7 @@ tile_set = ExtResource("1_iu40g")
 
 [node name="Pear" parent="." instance=ExtResource("2_fffme")]
 position = Vector2(963, 583)
+turn_time = 0.5
 
 [node name="Player" parent="." instance=ExtResource("3_mcmvw")]
 position = Vector2(581, 592)
