@@ -1,4 +1,4 @@
-[gd_scene load_steps=163 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=166 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/hassasin/hasassin.gd" id="1_samf3"]
 [ext_resource type="Texture2D" uid="uid://dq5a5kpmof6vg" path="res://asset/hassasin/states/1_atk/1_atk_1.png" id="2_r304g"]
@@ -189,7 +189,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("9_8u17y")
 }],
-"loop": true,
+"loop": false,
 "name": &"atk_1",
 "speed": 10.0
 }, {
@@ -681,10 +681,19 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kprj2"]
-size = Vector2(19, 36)
+size = Vector2(16, 36)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_samf3"]
 size = Vector2(21, 36)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fc4ph"]
+size = Vector2(58, 21)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wh6i0"]
+size = Vector2(47, 38)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vbh7b"]
+size = Vector2(24.5, 41)
 
 [node name="Hasassin" type="CharacterBody2D"]
 script = ExtResource("1_samf3")
@@ -699,15 +708,16 @@ shape = SubResource("RectangleShape2D_nk125")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 position = Vector2(0, -50)
 sprite_frames = SubResource("SpriteFrames_ed6l8")
-animation = &"idle"
+animation = &"atk_3"
 autoplay = "idle"
+frame = 19
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
 script = ExtResource("152_pwp1n")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(0.5, -5)
+position = Vector2(1, -5)
 shape = SubResource("RectangleShape2D_kprj2")
 debug_color = Color(0.8230637, 0.34966028, 0.51627034, 0.41960785)
 
@@ -720,11 +730,32 @@ position = Vector2(0.5, -5)
 shape = SubResource("RectangleShape2D_samf3")
 debug_color = Color(0.2743382, 0.53941983, 0.8762465, 0.41960785)
 
-[node name="SwordHitArea2D" type="Area2D" parent="Direction"]
+[node name="Atk1SwordHitArea2D" type="Area2D" parent="Direction"]
 script = ExtResource("152_pwp1n")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/SwordHitArea2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/Atk1SwordHitArea2D"]
+position = Vector2(0, -7.5)
+shape = SubResource("RectangleShape2D_fc4ph")
+debug_color = Color(0.8627451, 0.03137255, 0.12941177, 0.41960785)
+
+[node name="Atk2SwordHitArea2D" type="Area2D" parent="Direction"]
+script = ExtResource("152_pwp1n")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/Atk2SwordHitArea2D"]
+position = Vector2(34.5, -12)
+shape = SubResource("RectangleShape2D_wh6i0")
+debug_color = Color(0.047058824, 1, 0, 0.41960785)
+
+[node name="Atk3SwordHitArea2D" type="Area2D" parent="Direction"]
+script = ExtResource("152_pwp1n")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/Atk3SwordHitArea2D"]
+position = Vector2(85.25, -7)
+shape = SubResource("RectangleShape2D_vbh7b")
+debug_color = Color(0, 0.13333334, 0.7372549, 0.41960785)
 
 [node name="States" type="Node" parent="."]
 
