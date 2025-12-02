@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3ysi4k2e7qlh"]
+
+[ext_resource type="Script" uid="uid://5kqgn28nnp51" path="res://levels/objects/loading/loading.gd" id="1_xq5aq"]
+
+[node name="Loading" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_xq5aq")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Loading....."
+horizontal_alignment = 1
+vertical_alignment = 1
