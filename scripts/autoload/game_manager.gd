@@ -30,8 +30,21 @@ func _ready() -> void:
 func change_stage(stage_path: String, _target_portal_name: String = "") -> void:
 	target_portal_name = _target_portal_name
 	#change scene to stage path
-	get_tree().change_scene_to_file(stage_path)
+	get_tree().change_scene_to_file(stage_path) 
 
+func change_stage_with_loading(path: String):
+# Bước 1: chuyển sang loading scene
+	get_tree().change_scene_to_file("res://levels/objects/loading/loading.tscn")
+	await get_tree().process_frame  # refresh UI để "Loading..." hiện lên
+
+	# Bước 2: load scene mới (blocking nhưng UI đã hiện)
+	var packed = ResourceLoader.load(path)
+
+	# Bước 3: chuyển thật sự qua map mới
+	if packed:
+		get_tree().change_scene_to_packed(packed)
+	else:
+		push_error("Could not load stage: " + path)
 
 #call from dialogic
 func call_from_dialogic(msg:String = ""):

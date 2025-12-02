@@ -8,7 +8,8 @@ func load_next_stage():
 	var current_scene = get_tree().current_scene
 	if is_cross_scene:
 		if target_stage != "":
-			GameManager.change_stage(target_stage, target_door)
+			GameManager.target_portal_name = target_door
+			GameManager.change_stage_with_loading(target_stage)
 		return
 	var door: Node = null
 	if target_door.find("/") != -1:
