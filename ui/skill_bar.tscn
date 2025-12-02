@@ -98,7 +98,7 @@ offset_top = 62.0
 offset_right = 83.0
 offset_bottom = 93.0
 theme_override_font_sizes/font_size = 22
-text = "5"
+text = "2"
 
 [node name="Susanoo" type="Control" parent="."]
 anchors_preset = 0
@@ -141,4 +141,4 @@ offset_top = 441.0
 offset_right = 84.0
 offset_bottom = 477.0
 theme_override_font_sizes/font_size = 26
-text = "4"
+text = "1"

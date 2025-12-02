@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dtl6nhxvi2mxk"
+path="res://.godot/imported/Winter Morning Ambience Sound Effect  Copyright Free Nature Sounds - Audio Wind.mp3-c570aa6e4a02413f59be90b9b4c91dac.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/Winter Morning Ambience Sound Effect  Copyright Free Nature Sounds - Audio Wind.mp3"
+dest_files=["res://.godot/imported/Winter Morning Ambience Sound Effect  Copyright Free Nature Sounds - Audio Wind.mp3-c570aa6e4a02413f59be90b9b4c91dac.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

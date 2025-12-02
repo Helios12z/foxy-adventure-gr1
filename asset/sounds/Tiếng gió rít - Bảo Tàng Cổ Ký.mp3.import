@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ii6il5bb1m42"
+path="res://.godot/imported/Tiếng gió rít - Bảo Tàng Cổ Ký.mp3-73f388f6d312645ae1ad5ebc6a234b27.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/Tiếng gió rít - Bảo Tàng Cổ Ký.mp3"
+dest_files=["res://.godot/imported/Tiếng gió rít - Bảo Tàng Cổ Ký.mp3-73f388f6d312645ae1ad5ebc6a234b27.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

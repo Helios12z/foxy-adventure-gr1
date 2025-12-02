@@ -108,6 +108,7 @@ position = Vector2(1566, 576)
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
 position = Vector2(-49, 556)
 has_blade = true
+max_health = 1000
 
 [node name="WarLordTurtle" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_7dedx")]
 position = Vector2(652, 541)
