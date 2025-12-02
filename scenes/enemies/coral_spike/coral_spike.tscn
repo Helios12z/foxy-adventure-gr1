@@ -1,0 +1,100 @@
+[gd_scene load_steps=14 format=3 uid="uid://dmi0uens68xjv"]
+
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="1_lliij"]
+[ext_resource type="Texture2D" uid="uid://css8fyfgs2fha" path="res://asset/level_3_water_palace/enemies/coral_spike/coral_spike_5.png" id="2_51wxb"]
+[ext_resource type="Texture2D" uid="uid://uyd1knac2hl2" path="res://asset/level_3_water_palace/enemies/coral_spike/coral_spike_4.png" id="3_pcksu"]
+[ext_resource type="Texture2D" uid="uid://7vjwnd0niccd" path="res://asset/level_3_water_palace/enemies/coral_spike/coral_spike_3.png" id="4_7sqvl"]
+[ext_resource type="Texture2D" uid="uid://brjbdgaowigwc" path="res://asset/level_3_water_palace/enemies/coral_spike/coral_spike_2.png" id="5_urfgy"]
+[ext_resource type="Texture2D" uid="uid://cqmnwtdypo62l" path="res://asset/level_3_water_palace/enemies/coral_spike/coral_spike_1.png" id="6_sc4eg"]
+[ext_resource type="Script" uid="uid://by62uay6ht7xs" path="res://scenes/enemies/coral_spike/coral_spike.gd" id="7_main"]
+[ext_resource type="Script" uid="uid://cqujhrmndjsk3" path="res://scenes/enemies/coral_spike/idle.gd" id="8_idle"]
+[ext_resource type="Script" uid="uid://75eiaosnvryo" path="res://scenes/enemies/coral_spike/show.gd" id="9_show"]
+[ext_resource type="Script" uid="uid://dbps60nwch6wt" path="res://scenes/enemies/coral_spike/hide.gd" id="10_hide"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q8i7x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_51wxb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_pcksu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7sqvl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_urfgy")
+}],
+"loop": false,
+"name": &"hide",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_sc4eg")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_urfgy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7sqvl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_pcksu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_51wxb")
+}],
+"loop": false,
+"name": &"show",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_51wxb"]
+radius = 19.0
+height = 48.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_51wxb"]
+size = Vector2(60, 12)
+
+[node name="CoralSpike" type="CharacterBody2D"]
+script = ExtResource("7_main")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+scale = Vector2(0.08, 0.08)
+sprite_frames = SubResource("SpriteFrames_q8i7x")
+animation = &"hide"
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_lliij")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(1, -6)
+shape = SubResource("CapsuleShape2D_51wxb")
+disabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 22)
+shape = SubResource("RectangleShape2D_51wxb")
+
+[node name="States" type="Node" parent="."]
+
+[node name="Hide" type="Node" parent="States"]
+script = ExtResource("10_hide")
+
+[node name="Show" type="Node" parent="States"]
+script = ExtResource("9_show")
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("8_idle")
