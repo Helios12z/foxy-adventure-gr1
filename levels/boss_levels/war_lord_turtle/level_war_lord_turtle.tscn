@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=4 uid="uid://k0emccpu8xrk"]
+[gd_scene load_steps=30 format=4 uid="uid://k0emccpu8xrk"]
 
 [ext_resource type="Script" uid="uid://da6x2hjpl5vhs" path="res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.gd" id="1_fed17"]
 [ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="1_i0g7a"]
 [ext_resource type="PackedScene" uid="uid://dqawcb458fxlf" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.tscn" id="2_7dedx"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_3dsvl"]
+[ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="4_7gl8q"]
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="4_8jrbq"]
 [ext_resource type="Script" uid="uid://d6ca3ixdmryp" path="res://levels/boss_levels/war_lord_turtle/boss_platform_controller.gd" id="4_bqd06"]
 [ext_resource type="Texture2D" uid="uid://djq3ebe3d0cxi" path="res://asset/boss_levels/level_war_lord_turtle/back.png" id="5_3srj3"]
@@ -89,10 +90,11 @@ tile_set = ExtResource("1_i0g7a")
 tile_map_data = PackedByteArray("AAD4/xIAAgACAAAAAAD3/xIAAgABAAAAAAD2/xIAAgABAAAAAAD1/xIAAgABAAAAAAD1/xMAAgABAAEAAAD2/xMAAgABAAEAAAD3/xMAAgABAAEAAAD4/xMAAgACAAEAAAD4/xQAAgACAAIAAAD3/xQAAgABAAIAAAD2/xQAAgABAAIAAAD1/xQAAgABAAIAAAD0/xIAAgAAAAAAAAD0/xMAAgAAAAEAAAD0/xQAAgAAAAIAAAA=")
 tile_set = ExtResource("1_i0g7a")
 
-[node name="LeftDoor" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("4_8jrbq")]
-position = Vector2(-332, 577)
+[node name="Teleport" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("4_7gl8q")]
+position = Vector2(-324, 546)
+scale = Vector2(0.5, 0.5)
 target_stage = "uid://dq7eu5p47t8gv"
-target_door = "Door2"
+target_door = "Teleport"
 is_cross_scene = true
 
 [node name="Checkpoint" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_7i7cj")]
