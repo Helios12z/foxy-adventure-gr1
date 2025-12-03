@@ -44,8 +44,8 @@ func _build_scene_mapping():
 		"res://levels/boss_levels/king_crab/level_king_crab.tscn": "king_crab",
 
 		# Map 1 - Forest area
-		"uid://65dl3olpohwm": "dark_forest",  # map1.tscn
-		"res://levels/map1.tscn": "dark_forest",
+		"uid://65dl3olpohwm": "island",  # map1.tscn
+		"res://levels/map1.tscn": "island",
 
 		# Map 2
 		"uid://dq7eu5p47t8gv": "dark_forest",  # map_2.tscn
@@ -54,6 +54,22 @@ func _build_scene_mapping():
 		# War Lord Turtle
 		"res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle"
 	}
+
+func get_content_for_transition(from_scene: String, to_scene: String) -> Dictionary:
+	# Try to get content based on transition
+	var transition_key = _get_transition_key(from_scene, to_scene)
+
+	if transition_key and loading_config.area_content.has(transition_key):
+		var transition_content = loading_config.area_content[transition_key]
+
+		# Process the content to get actual image paths
+		var processed_content = transition_content.duplicate()
+		processed_content.images = _get_images_for_content(transition_key)
+
+		return processed_content
+
+	# Fallback to destination-based loading if no specific transition found
+	return get_content_for_scene(to_scene)
 
 func get_content_for_scene(scene_path: String) -> Dictionary:
 	# Try to get area content based on scene path or UID
@@ -72,6 +88,28 @@ func get_content_for_scene(scene_path: String) -> Dictionary:
 	var default_content = loading_config.default_content.duplicate()
 	default_content.images = _get_default_images()
 	return default_content
+
+func _get_transition_key(from_scene: String, to_scene: String) -> String:
+	# Map specific transitions to content keys
+	var transition_map = {
+		# Map0 → Map1: Show Island loading
+		"res://levels/tutorial/map0.tscn→res://levels/map1.tscn": "island",
+
+		# Map1 → King Crab: Show King Crab loading
+		"res://levels/map1.tscn→res://levels/boss_levels/king_crab/level_king_crab.tscn": "king_crab",
+
+		# King Crab → Map2: Show Forest loading
+		"res://levels/boss_levels/king_crab/level_king_crab.tscn→res://levels/map_2.tscn": "dark_forest",
+
+		# Map2 → War Lord Turtle: Show War Lord Turtle loading
+		"res://levels/map_2.tscn→res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle"
+	}
+
+	var transition_key = from_scene + "→" + to_scene
+	if transition_map.has(transition_key):
+		return transition_map[transition_key]
+
+	return ""
 
 func _get_content_key_for_scene(scene_path: String) -> String:
 	# Try direct mapping first

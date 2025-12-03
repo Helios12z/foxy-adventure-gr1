@@ -7,14 +7,18 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_xq5aq")
 
 [node name="Background" type="TextureRect" parent="."]
+modulate = Color(0.5, 0.5, 0.5, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-modulate = Color(0.5, 0.5, 0.5, 1)
+grow_horizontal = 2
+grow_vertical = 2
 expand_mode = 1
 stretch_mode = 6
 
@@ -23,6 +27,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -36,39 +42,37 @@ offset_left = -300.0
 offset_top = -150.0
 offset_right = 300.0
 offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="AreaName" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
 text = "Area Name"
 horizontal_alignment = 1
 
 [node name="TipText" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 18
 text = "Loading tip text goes here..."
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="LoadingBar" type="ProgressBar" parent="VBoxContainer"]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
-value = 0.0
 
 [node name="ContinuePrompt" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
 text = "Press any key to continue..."
 horizontal_alignment = 1
-modulate.a = 0.0
 
 [node name="LoadingDots" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 16
 text = "Loading..."
 horizontal_alignment = 1

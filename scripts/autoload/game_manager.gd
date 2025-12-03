@@ -33,6 +33,9 @@ func change_stage(stage_path: String, _target_portal_name: String = "") -> void:
 	get_tree().change_scene_to_file(stage_path) 
 
 func change_stage_with_loading(path: String):
+# Store current scene for transition context
+	var current_scene_path = _get_current_stage_path()
+
 # Bước 1: chuyển sang loading scene
 	get_tree().change_scene_to_file("res://levels/objects/loading/loading.tscn")
 	await get_tree().process_frame  # refresh UI để "Loading..." hiện lên
@@ -40,10 +43,10 @@ func change_stage_with_loading(path: String):
 	# Bước 2: Wait a bit more for the scene to fully load
 	await get_tree().process_frame
 
-	# Bước 3: Start the loading screen with content
+	# Bước 3: Start the loading screen with transition context
 	var loading_screen = get_tree().current_scene
 	if loading_screen != null and loading_screen.has_method("start_loading"):
-		loading_screen.start_loading(path)
+		loading_screen.start_loading_with_transition(current_scene_path, path)
 
 	# Bước 4: load scene mới (blocking nhưng UI đã hiện)
 	var packed = ResourceLoader.load(path)
@@ -56,6 +59,18 @@ func change_stage_with_loading(path: String):
 		get_tree().change_scene_to_packed(packed)
 	else:
 		push_error("Could not load stage: " + path)
+
+# Helper function to get current scene path
+func _get_current_stage_path() -> String:
+	var s := get_tree().current_scene
+	if s and s.scene_file_path != "":
+		return s.scene_file_path
+
+	# Fallback: use current stage if have
+	if current_stage and current_stage.scene_file_path != "":
+		return current_stage.scene_file_path
+
+	return ""
 
 #call from dialogic
 func call_from_dialogic(msg:String = ""):
@@ -260,17 +275,6 @@ func update_current_checkpoint_player_state(updates: Dictionary, create_if_missi
 	checkpoint_data[chk_id] = checkpoint_info
 	save_checkpoint_data()
 	
-func _get_current_stage_path() -> String:
-	var s := get_tree().current_scene
-	if s and s.scene_file_path != "":
-		return s.scene_file_path
-
-	# Fallback: use current stage if have
-	if current_stage and current_stage.scene_file_path != "":
-		return current_stage.scene_file_path
-
-	return ""
-
 func mark_coin_collected(coin_id: String) -> void:
 	var stage_path := _get_current_stage_path()
 	if stage_path.is_empty():
@@ -357,6 +361,4 @@ func is_chest_opened(stage_path: String = "") -> bool:
 
 # Loading screen completion callback
 func finish_loading() -> void:
-	# This function is called when the loading screen completes
-	# The actual scene transition happens in change_stage_with_loading
 	pass

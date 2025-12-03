@@ -17,9 +17,13 @@ func _ready():
 	loading_dots.text = "Loading..."
 
 func start_loading(target_scene_path: String):
-	# Load content for the target area
+	# Legacy method - fallback to destination-based loading
+	start_loading_with_transition("", target_scene_path)
+
+func start_loading_with_transition(from_scene: String, to_scene: String):
+	# Load content based on transition
 	if get_node_or_null("/root/LoadingManager"):
-		loading_content = LoadingManager.get_content_for_scene(target_scene_path)
+		loading_content = LoadingManager.get_content_for_transition(from_scene, to_scene)
 	else:
 		# Fallback content if LoadingManager is not available
 		loading_content = {
