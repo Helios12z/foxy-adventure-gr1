@@ -143,6 +143,11 @@ func respawn_at_checkpoint() -> void:
 	var checkpoint_stage = checkpoint_info.get("stage_path", "")
 	
 	if current_stage.scene_file_path != checkpoint_stage and not checkpoint_stage.is_empty():
+		if not is_instance_valid(player):
+			var p := get_tree().current_scene.find_child("Player", true, false)
+			if p is Player:
+				player = p
+		_apply_checkpoint_inventory_only()
 		return
 		
 	# Can change stage if different but not implemented yet to test
@@ -150,6 +155,10 @@ func respawn_at_checkpoint() -> void:
 	#	# Wait for scene to load
 	#	await get_tree().process_frame
 
+	if player == null:
+		var p := get_tree().current_scene.find_child("Player", true, false)
+		if p is Player:
+			player = p
 	if player != null:
 		var player_state: Dictionary = checkpoint_info.get("player_state")
 		if player_state == null:
