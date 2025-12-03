@@ -10,6 +10,7 @@ extends Control
 var loading_content: Dictionary
 var current_tip: String
 var loading_complete: bool = false
+var target_scene_path: String
 
 func _ready():
 	continue_prompt.modulate.a = 0.0
@@ -21,6 +22,7 @@ func start_loading(target_scene_path: String):
 	start_loading_with_transition("", target_scene_path)
 
 func start_loading_with_transition(from_scene: String, to_scene: String):
+	target_scene_path = to_scene
 	# Load content based on transition
 	if get_node_or_null("/root/LoadingManager"):
 		loading_content = LoadingManager.get_content_for_transition(from_scene, to_scene)
@@ -68,7 +70,13 @@ func _simulate_loading_progress():
 		var dot_count = int(Time.get_ticks_msec() / 500) % 4
 		loading_dots.text = "Loading" + ".".repeat(dot_count)
 
-		await get_tree().process_frame
+		# Safe await with null check
+		var tree = get_tree()
+		if tree:
+			await tree.process_frame
+		else:
+			# Fallback: continue without waiting (will run faster but still works)
+			pass
 
 	_on_loading_complete()
 
@@ -80,5 +88,18 @@ func _on_loading_complete():
 
 func _input(event):
 	if loading_complete and event.is_pressed():
-		# Continue to the game
-		GameManager.finish_loading()
+		# Load and change to the target scene
+		_load_target_scene()
+
+func _load_target_scene():
+	if target_scene_path.is_empty():
+		push_error("No target scene path set")
+		return
+
+	# Load the scene
+	var packed = ResourceLoader.load(target_scene_path)
+	if packed:
+		print("Loading scene: ", target_scene_path)
+		get_tree().change_scene_to_packed(packed)
+	else:
+		push_error("Could not load target scene: " + target_scene_path)

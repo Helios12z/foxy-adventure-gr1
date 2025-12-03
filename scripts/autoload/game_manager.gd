@@ -56,17 +56,8 @@ func change_stage_with_loading(path: String):
 	if loading_screen != null and loading_screen.has_method("start_loading"):
 		loading_screen.start_loading_with_transition(current_scene_path, path)
 
-	# Bước 4: load scene mới (blocking nhưng UI đã hiện)
-	var packed = ResourceLoader.load(path)
-
-	# Bước 5: Wait for loading animation to complete
-	await get_tree().create_timer(3.0).timeout
-
-	# Bước 6: chuyển thật sự qua map mới
-	if packed:
-		get_tree().change_scene_to_packed(packed)
-	else:
-		push_error("Could not load stage: " + path)
+	# The loading screen will handle the scene transition when complete
+	# No need to handle it here anymore
 
 # Helper function to get current scene path
 func _get_current_stage_path() -> String:

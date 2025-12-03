@@ -52,7 +52,8 @@ func _build_scene_mapping():
 		"res://levels/map_2.tscn": "dark_forest",
 
 		# War Lord Turtle
-		"res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle"
+		"res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle",
+		"uid://k0emccpu8xrk": "war_lord_turtle"
 	}
 
 func get_content_for_transition(from_scene: String, to_scene: String) -> Dictionary:
@@ -127,10 +128,10 @@ func _get_content_key_for_scene(scene_path: String) -> String:
 				return scene_to_content_mapping[uid]
 
 	# Try to infer from path name
-	if "king_crab" in scene_path.to_lower():
-		return "island"
-	elif "war_lord_turtle" in scene_path.to_lower():
-		return "island"
+	if "war_lord_turtle" in scene_path.to_lower():
+		return "war_lord_turtle"
+	elif "king_crab" in scene_path.to_lower():
+		return "king_crab"
 	elif "map1" in scene_path.to_lower() or "map_1" in scene_path.to_lower():
 		return "dark_forest"
 	elif "map_2" in scene_path.to_lower() or "map2" in scene_path.to_lower():
