@@ -108,7 +108,7 @@ tile_set = ExtResource("1_i0g7a")
 position = Vector2(1566, 576)
 
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
-position = Vector2(-49, 556)
+position = Vector2(-325, 548)
 has_blade = true
 max_health = 1000
 

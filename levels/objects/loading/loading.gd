@@ -84,12 +84,12 @@ func _on_loading_complete():
 	loading_complete = true
 	loading_bar.value = 100.0
 	loading_dots.text = "Loading Complete!"
+	continue_prompt.text = "Entering level..."
 	continue_prompt.modulate.a = 1.0
 
-func _input(event):
-	if loading_complete and event.is_pressed():
-		# Load and change to the target scene
-		_load_target_scene()
+	# Automatically transition to the target scene after a short delay
+	await get_tree().create_timer(1.0).timeout
+	_load_target_scene()
 
 func _load_target_scene():
 	if target_scene_path.is_empty():

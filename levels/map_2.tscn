@@ -433,7 +433,7 @@ tile_map_data = PackedByteArray("AABOAAQAAgABAAAAAABNAAQAAgABAAAAAABMAAQAAgABAAA
 tile_set = ExtResource("3_gpada")
 
 [node name="Player" parent="." instance=ExtResource("3_hrn5s")]
-position = Vector2(9343, 99)
+position = Vector2(97, 62)
 has_blade = true
 max_health = 100
 
