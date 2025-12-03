@@ -16,6 +16,7 @@ var _base_movement_speed: float = 0.0
 var _base_gravity: float = 0.0
 var _base_max_jump_count: int = 0
 var decorator_manager: DecoratorManager = null
+var hack_mode: HackMode = null
 @export var has_blade: bool = false
 @export var has_fire_gem: bool = false
 @export var has_water_paw_gem: bool = false
@@ -89,6 +90,8 @@ func _ready() -> void:
 	decorator_manager = DecoratorManager.new()
 	decorator_manager.initialize(self)
 	add_child(decorator_manager)
+	hack_mode = HackMode.new()
+	add_child(hack_mode)
 	if has_blade:
 		collected_blade()
 	if has_fire_gem:
@@ -110,6 +113,10 @@ func _ready() -> void:
 	_base_movement_speed = movement_speed
 	_base_gravity = gravity
 	_base_max_jump_count = max_jump_count
+
+	if not GameManager.is_connected("hack_mode_changed", Callable(self, "_on_hack_mode_changed")):
+		GameManager.connect("hack_mode_changed", Callable(self, "_on_hack_mode_changed"))
+	_on_hack_mode_changed(GameManager.hack_mode_enabled)
 	
 	# --- Tạo timer tự regen mana ---
 	mana_regen_timer = Timer.new()
@@ -157,6 +164,11 @@ func can_jump() -> bool:
 		return true
 	return max_jump_count > 0
 
+func consume_jump() -> void:
+	if invincible_zone or GameManager.hack_mode_enabled:
+		return
+	max_jump_count -= 1
+
 func set_detect_and_hurt_collsion(enable: bool):
 	$Direction/HurtArea2D/CollisionShape2D.disabled = not enable
 	set_collision_layer_value(2,enable)
@@ -165,7 +177,16 @@ func set_hit_collision(enabled):
 	$Direction/HitArea2D/CollisionShape2D.disabled = not enabled
 
 func reset_jump_count() -> void:
-	max_jump_count = 2
+	if GameManager.hack_mode_enabled:
+		max_jump_count = 99999
+	else:
+		max_jump_count = _base_max_jump_count
+
+func adjust_after_wall_jump() -> void:
+	reset_jump_count()
+	if GameManager.hack_mode_enabled:
+		return
+	max_jump_count = 1
 
 func collected_blade() -> void:
 	has_blade = true
@@ -329,6 +350,18 @@ func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
 		fsm.change_state(fsm.states.hurt)
 		
 
+func _on_hack_mode_changed(enabled: bool) -> void:
+	if enabled:
+		hack_mode.apply(self)
+	else:
+		hack_mode.remove(self)
+
+func activate_hack_mode() -> void:
+	hack_mode.apply(self)
+
+func deactivate_hack_mode() -> void:
+	hack_mode.remove(self)
+
 func get_movement_speed():
 	if decorator_manager != null:
 		return decorator_manager.get_effective_movement_speed()
@@ -337,7 +370,7 @@ func get_movement_speed():
 		
 func get_jump_speed():
 	if decorator_manager != null:
-		decorator_manager.get_effective_jump_speed()
+		return decorator_manager.get_effective_jump_speed()
 	return jump_speed
 	
 func speed_up(multiplier: float, duration: float) -> void:
