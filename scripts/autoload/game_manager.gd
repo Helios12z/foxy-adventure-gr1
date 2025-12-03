@@ -1,5 +1,9 @@
 extends Node
 
+# Hack mode
+signal hack_mode_changed(enabled)
+var hack_mode_enabled: bool = false
+
 #target portal name is the name of the portal to which the player will be teleported
 var target_portal_name: String = ""
 # Checkpoint system variables
@@ -7,7 +11,7 @@ var current_checkpoint_id: String = ""
 var checkpoint_data: Dictionary = {}
 
 var current_stage: Node = null
-var player: Player = null
+var player: CharacterBody2D = null
 
 # collected coin by stage
 var collected_coins_by_stage: Dictionary = {}
@@ -25,6 +29,10 @@ func _ready() -> void:
 	inventory_system.name = "InventorySystem" 
 	add_child(inventory_system)
 	pass
+
+func toggle_hack_mode() -> void:
+	hack_mode_enabled = not hack_mode_enabled
+	hack_mode_changed.emit(hack_mode_enabled)
 
 #change stage by path and target portal name
 func change_stage(stage_path: String, _target_portal_name: String = "") -> void:

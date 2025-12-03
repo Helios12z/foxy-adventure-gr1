@@ -59,10 +59,10 @@ func control_wall_jump() -> bool:
 		# Wall jump logic - only when touching wall and not on floor
 		if obj.is_on_wall() and not obj.is_on_floor():
 			# Apply vertical jump force
-			obj.velocity.y = -obj.jump_speed
+			obj.velocity.y = -obj.get_jump_speed()
 			
 			# Apply horizontal push force away from wall
-			var wall_jump_force = obj.movement_speed  # Stronger horizontal force for wall jump
+			var wall_jump_force = obj.get_movement_speed()  # Stronger horizontal force for wall jump
 			
 			if obj.is_on_left_wall():
 				obj.velocity.x = wall_jump_force  # Push right
@@ -72,8 +72,7 @@ func control_wall_jump() -> bool:
 				obj.change_direction(-1)
 			
 		# Reset remaining jumps to allow a later double jump
-			obj.reset_jump_count()          # sets max_jump_count = 2
-			obj.max_jump_count = 1          # wall jump consumes 1, leave 1 for double jump
+			obj.adjust_after_wall_jump()
 			
 			# Transition to jump state
 			change_state(fsm.states.jump)
