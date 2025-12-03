@@ -66,7 +66,7 @@ curve_z = SubResource("Curve_2peu5")
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(0, -300, 0)
 emission_shape = 3
-emission_box_extents = Vector3(8350, 1, 1)
+emission_box_extents = Vector3(2200, 1, 1)
 gravity = Vector3(100, 3000, 0)
 scale_min = 0.2
 scale_over_velocity_curve = SubResource("CurveXYZTexture_x8knb")
@@ -435,7 +435,7 @@ tile_set = ExtResource("3_gpada")
 [node name="Player" parent="." instance=ExtResource("3_hrn5s")]
 position = Vector2(99, 92)
 has_blade = true
-max_health = 1000
+max_health = 100
 
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
 position = Vector2(1, -10)
@@ -449,7 +449,7 @@ texture_scale = 0.5
 [node name="RainParticles" type="GPUParticles2D" parent="."]
 material = SubResource("CanvasItemMaterial_wkgak")
 position = Vector2(7420, -173)
-amount = 40000
+amount = 1000
 sub_emitter = NodePath("../SplashRainParticles")
 preprocess = 0.5
 collision_base_size = 110.0
@@ -457,14 +457,18 @@ visibility_rect = Rect2(-350, -200, 7705.75, 400)
 process_material = SubResource("ParticleProcessMaterial_fe7x3")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-position = Vector2(-1263, 2)
+position = Vector2(-449, 6)
+occluder = SubResource("OccluderPolygon2D_nd2ra")
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
+position = Vector2(9314, 3)
 occluder = SubResource("OccluderPolygon2D_nd2ra")
 
 [node name="SplashRainParticles" type="GPUParticles2D" parent="."]
-position = Vector2(120, -10)
-amount = 400
+position = Vector2(6721, 127)
+amount = 100
 lifetime = 0.2
-visibility_rect = Rect2(-100, 0, 14000, 200)
+visibility_rect = Rect2(-100, 0, 2100, 200)
 process_material = SubResource("ParticleProcessMaterial_nd2ra")
 
 [node name="WindParticles" type="GPUParticles2D" parent="."]
