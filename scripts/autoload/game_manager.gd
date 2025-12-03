@@ -37,10 +37,21 @@ func change_stage_with_loading(path: String):
 	get_tree().change_scene_to_file("res://levels/objects/loading/loading.tscn")
 	await get_tree().process_frame  # refresh UI để "Loading..." hiện lên
 
-	# Bước 2: load scene mới (blocking nhưng UI đã hiện)
+	# Bước 2: Wait a bit more for the scene to fully load
+	await get_tree().process_frame
+
+	# Bước 3: Start the loading screen with content
+	var loading_screen = get_tree().current_scene
+	if loading_screen != null and loading_screen.has_method("start_loading"):
+		loading_screen.start_loading(path)
+
+	# Bước 4: load scene mới (blocking nhưng UI đã hiện)
 	var packed = ResourceLoader.load(path)
 
-	# Bước 3: chuyển thật sự qua map mới
+	# Bước 5: Wait for loading animation to complete
+	await get_tree().create_timer(3.0).timeout
+
+	# Bước 6: chuyển thật sự qua map mới
 	if packed:
 		get_tree().change_scene_to_packed(packed)
 	else:
@@ -343,3 +354,9 @@ func is_chest_opened(stage_path: String = "") -> bool:
 	if stage_path.is_empty():
 		return false
 	return bool(chest_opened_by_stage.get(stage_path, false))
+
+# Loading screen completion callback
+func finish_loading() -> void:
+	# This function is called when the loading screen completes
+	# The actual scene transition happens in change_stage_with_loading
+	pass

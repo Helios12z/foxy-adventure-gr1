@@ -1,0 +1,32 @@
+{
+	"default_content": {
+		"tips": [
+			"Beware the power of what dwell deep...",
+			"Explore carefully to find secrets..."
+		],
+		"area_name": "Unknown Lands",
+		"loading_duration": 2.0
+	},
+	"area_content": {
+		"uid://x5qrj66qebnm": {
+			"area_name": "The Island",
+			"tips": [
+				"Beware the power of the island protector...",
+				"Try to stay behind the king crab...",
+				"Running can keep you safe from destruction...",
+				"The King Crab's eyes are its weak point..."
+			],
+			"loading_duration": 3.0
+		},
+		"uid://65dl3olpohwm": {
+			"area_name": "The Dark Forest",
+			"tips": [
+				"Use your earned power to overcome obstacles...",
+				"Deep inside the forest, lies the existence of despair...",
+				"Hidden paths often reveal valuable treasures...",
+				"Some trees can be climbed to reach secret areas..."
+			],
+			"loading_duration": 2.0
+		}
+	}
+}

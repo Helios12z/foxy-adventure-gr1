@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://cg8krho827nct"
 GameManager="*res://scripts/autoload/game_manager.gd"
 SaveSystem="*res://scripts/autoload/save_system.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
+LoadingManager="*res://levels/objects/loading/loading_manager.gd"
 
 [dialogic]
 
