@@ -637,6 +637,13 @@ popup_text_lines = Array[String](["When Foxy is on a wall, he can climb, and his
 popup_keys = Array[String]([">"])
 popup_video_path = "res://asset/videos/climb_tutorial.ogv"
 
+[node name="HackTutorial" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(12381, 27)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Wasting time on attacking enemies? Use hack mode to quickly test through the level. (Good players won't do that)"])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/hack_tutorial.ogv"
+
 [node name="Area2D" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(4453, 30)
 popup_scene = ExtResource("46_ncpwn")
@@ -661,7 +668,7 @@ popup_video_path = "res://asset/videos/hover_tutorial.ogv"
 [node name="Area2D4" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(10316, -196)
 popup_scene = ExtResource("46_ncpwn")
-popup_text_lines = Array[String](["Press \"Shift\" when run fast to dash diagonal"])
+popup_text_lines = Array[String](["Press \"Space\" when run fast to dash diagonal"])
 popup_video_path = "res://asset/videos/dash_diagonal_tutorial.ogv"
 
 [node name="Music2" type="AudioStreamPlayer" parent="."]
