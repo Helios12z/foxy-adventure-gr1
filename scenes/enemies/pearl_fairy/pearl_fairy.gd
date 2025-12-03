@@ -30,11 +30,19 @@ func _process(delta: float) -> void:
 			attack_cooldown_timer = 0.0
 
 func _on_player_in_sight(_player_pos: Vector2):
+	if health <= 0:
+		return
+	if fsm != null and fsm.current_state == fsm.states.dead:
+		return
 	attack_immediately_next_move = true
 	if fsm != null and fsm.states.has("move"):
 		fsm.change_state(fsm.states.move)
 
 func _on_player_not_in_sight():
+	if health <= 0:
+		return
+	if fsm != null and fsm.current_state == fsm.states.dead:
+		return
 	attack_immediately_next_move = false
 	if fsm != null and fsm.states.has("idle"):
 		fsm.change_state(fsm.states.idle)
