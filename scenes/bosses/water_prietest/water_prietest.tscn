@@ -788,6 +788,7 @@ size = Vector2(22, 41)
 
 [node name="WaterPrietest" type="CharacterBody2D"]
 scale = Vector2(2, 2)
+collision_layer = 8
 script = ExtResource("1_llnvn")
 metadata/_custom_type_script = "uid://b0nlvi2cln45x"
 
@@ -804,6 +805,8 @@ animation = &"dead"
 autoplay = "idle"
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
@@ -813,6 +816,8 @@ shape = SubResource("RectangleShape2D_kprj2")
 debug_color = Color(0.8230637, 0.34966028, 0.51627034, 0.41960785)
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
 script = ExtResource("153_it8uw")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
@@ -822,6 +827,8 @@ shape = SubResource("RectangleShape2D_samf3")
 debug_color = Color(0.2743382, 0.53941983, 0.8762465, 0.41960785)
 
 [node name="Atk1HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
@@ -831,6 +838,8 @@ shape = SubResource("RectangleShape2D_fc4ph")
 debug_color = Color(0.8627451, 0.03137255, 0.12941177, 0.41960785)
 
 [node name="Atk2HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
@@ -840,6 +849,8 @@ shape = SubResource("RectangleShape2D_wh6i0")
 debug_color = Color(0.047058824, 1, 0, 0.41960785)
 
 [node name="Atk2HitArea2D2" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
@@ -849,6 +860,8 @@ shape = SubResource("RectangleShape2D_isiw1")
 debug_color = Color(0.6273019, 0.529629, 0.11675548, 0.41960785)
 
 [node name="Atk3HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 

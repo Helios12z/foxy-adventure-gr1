@@ -5,6 +5,10 @@ extends BaseCharacter
 @export var phase2_threshold_ratio: float = 0.7
 @export var retaliate_damage_window_seconds: float = 6.0 #6 seconds
 @export var retaliate_combo_hits: int = 3  #3 hits
+@export var atk1_range: float = 90.0
+@export var atk2_range: float 
+@export var atk3_range: float 
+
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D
 
@@ -52,7 +56,7 @@ func _ready() -> void:
 func _disable_hit_collisionshape()->void:
 	atk1_collision_shape_2d.disabled = true
 	atk2_collision_shape_2d_left.disabled = true
-	atk2_collision_shape_2d_right.disable = true
+	atk2_collision_shape_2d_right.disabled = true
 	atk3_collision_shape_2d.disabled = true 
 
 func _physics_process(delta: float) -> void:
@@ -132,19 +136,19 @@ func _took_consecutive_damage() -> bool:
 	_prune_damage_times(now)
 	return _recent_damage_times.size() >= retaliate_combo_hits
 
-func _get_player() -> Node2D:
+func get_player() -> Node2D:
 	return get_tree().get_first_node_in_group("Player") as Node2D
 	
 func _distance_to_player()->float:
-	var p:= _get_player()
+	var p:= get_player()
 	return abs(global_position.x-p.global_position.x)
 
 func _update_facing() -> void:
-	var p := _get_player()
+	var p := get_player()
 	if p == null:
 		return
 
-	var dir_x := 1 if p.global_position.x < global_position.x else -1
+	var dir_x := -1 if p.global_position.x < global_position.x else 1
 	change_direction(dir_x)
 	
 func _detect_player()->void:
