@@ -36,9 +36,12 @@ func _load_config():
 func _build_scene_mapping():
 	# Map scene paths to content based on their names and UIDs
 	scene_to_content_mapping = {
+		# Tutorial/Map0
+		"res://levels/tutorial/map0.tscn": "tutorial",
+
 		# King Crab level
-		"uid://x5qrj66qebnm": "island",  # level_king_crab.tscn
-		"res://levels/boss_levels/king_crab/level_king_crab.tscn": "island",
+		"uid://x5qrj66qebnm": "king_crab",  # level_king_crab.tscn
+		"res://levels/boss_levels/king_crab/level_king_crab.tscn": "king_crab",
 
 		# Map 1 - Forest area
 		"uid://65dl3olpohwm": "dark_forest",  # map1.tscn
@@ -49,7 +52,7 @@ func _build_scene_mapping():
 		"res://levels/map_2.tscn": "dark_forest",
 
 		# War Lord Turtle
-		"res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "island"
+		"res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle"
 	}
 
 func get_content_for_scene(scene_path: String) -> Dictionary:

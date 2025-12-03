@@ -1,13 +1,20 @@
 extends Control
 
-@onready var loading_label: Label = $Label
+@onready var background: TextureRect = $Background
+@onready var area_name: Label = $VBoxContainer/AreaName
+@onready var tip_text: Label = $VBoxContainer/TipText
+@onready var loading_bar: ProgressBar = $VBoxContainer/LoadingBar
+@onready var continue_prompt: Label = $VBoxContainer/ContinuePrompt
+@onready var loading_dots: Label = $VBoxContainer/LoadingDots
 
 var loading_content: Dictionary
 var current_tip: String
 var loading_complete: bool = false
 
 func _ready():
-	loading_label.text = "Loading..."
+	continue_prompt.modulate.a = 0.0
+	loading_bar.value = 0.0
+	loading_dots.text = "Loading..."
 
 func start_loading(target_scene_path: String):
 	# Load content for the target area
@@ -27,29 +34,35 @@ func start_loading(target_scene_path: String):
 	_simulate_loading_progress()
 
 func _setup_content():
-	# Set area name and tip in the loading label
-	var area_name = loading_content.get("area_name", "Unknown Lands")
+	# Set area name
+	area_name.text = loading_content.get("area_name", "Unknown Lands")
+
+	# Set random tip
 	var tips = loading_content.get("tips", [])
-
-	var tip_text = ""
 	if tips.size() > 0:
-		tip_text = tips[randi() % tips.size()]
+		var selected_tip = tips[randi() % tips.size()]
+		tip_text.text = selected_tip
 
-	loading_label.text = "Entering: " + area_name + "\n\n" + tip_text + "\n\nLoading..."
+	# Set background image
+	var images = loading_content.get("images", [])
+	if images.size() > 0:
+		var random_image = images[randi() % images.size()]
+		background.texture = load(random_image)
 
 func _simulate_loading_progress():
 	var progress = 0.0
 	var loading_duration = loading_content.get("loading_duration", 2.5)
-	var dots = ""
 
 	while progress < 100.0:
 		progress += (100.0 / loading_duration) * get_process_delta_time()
 		progress = min(progress, 100.0)
 
-		# Update loading dots
-		dots = ".".repeat(int(progress / 25) + 1)
-		var base_text = loading_label.text.rstrip(".") + dots
-		loading_label.text = base_text
+		# Update loading bar
+		loading_bar.value = progress
+
+		# Update loading dots animation
+		var dot_count = int(Time.get_ticks_msec() / 500) % 4
+		loading_dots.text = "Loading" + ".".repeat(dot_count)
 
 		await get_tree().process_frame
 
@@ -57,8 +70,9 @@ func _simulate_loading_progress():
 
 func _on_loading_complete():
 	loading_complete = true
-	loading_label.text = loading_label.text.replace("Loading", "Press any key to continue")
-	loading_label.text += "\n\nReady!"
+	loading_bar.value = 100.0
+	loading_dots.text = "Loading Complete!"
+	continue_prompt.modulate.a = 1.0
 
 func _input(event):
 	if loading_complete and event.is_pressed():
