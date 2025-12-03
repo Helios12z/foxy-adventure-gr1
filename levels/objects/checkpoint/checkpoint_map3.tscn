@@ -1,0 +1,79 @@
+[gd_scene load_steps=8 format=3 uid="uid://3jekpoeelwr4"]
+
+[ext_resource type="Script" uid="uid://bxclsu3lrfpc0" path="res://levels/objects/checkpoint/checkpoint_map_3.gd" id="1_yg1db"]
+[ext_resource type="Texture2D" uid="uid://ycku53qyaoix" path="res://asset/level_3_water_palace/objects/checkpoint/checkpoint_1.png" id="2_yg1db"]
+[ext_resource type="Texture2D" uid="uid://c8mflvel5pjt4" path="res://asset/level_3_water_palace/objects/checkpoint/checkpoint_2.png" id="3_vqbfv"]
+[ext_resource type="Texture2D" uid="uid://b3poc2nbr65hk" path="res://asset/level_3_water_palace/objects/checkpoint/checkpoint_3.png" id="4_7ooh4"]
+[ext_resource type="Texture2D" uid="uid://btdw0mxrtx3sr" path="res://asset/level_3_water_palace/objects/checkpoint/checkpoint_4.png" id="5_ju21g"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hr5eo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yg1db")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vqbfv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7ooh4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ju21g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7ooh4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vqbfv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_yg1db")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_vqbfv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7ooh4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ju21g")
+}],
+"loop": false,
+"name": &"active",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_yg1db")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_ju21g")
+}],
+"loop": false,
+"name": &"idle_active",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hmguo"]
+size = Vector2(24, 642)
+
+[node name="CheckpointMap3" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_yg1db")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.07, 0.07)
+sprite_frames = SubResource("SpriteFrames_hr5eo")
+animation = &"active"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -305)
+shape = SubResource("RectangleShape2D_hmguo")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,83 @@
+[gd_scene load_steps=14 format=4 uid="uid://xg0xxg02357j"]
+
+[ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_5wm4i"]
+[ext_resource type="PackedScene" uid="uid://fp8qfvpe8i5o" path="res://scenes/enemies/pearl_fairy/pearl_fairy.tscn" id="3_ogswb"]
+[ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_soo0h"]
+[ext_resource type="PackedScene" uid="uid://cfhmqw0q4i4lg" path="res://scenes/enemies/cray_fish/cray_fish.tscn" id="4_r2udy"]
+[ext_resource type="PackedScene" uid="uid://dmi0uens68xjv" path="res://scenes/enemies/coral_spike/coral_spike.tscn" id="5_oq7bv"]
+[ext_resource type="PackedScene" uid="uid://cwkcsms33ukwt" path="res://scenes/enemies/sea_urchin/sea_urchin.tscn" id="6_s1tju"]
+[ext_resource type="PackedScene" uid="uid://dgwlv5lvkntgn" path="res://scenes/enemies/golden_carp/golden_carp.tscn" id="7_r2udy"]
+[ext_resource type="PackedScene" uid="uid://cg88ymtkt485w" path="res://levels/objects/door/door_map3.tscn" id="9_juiqu"]
+[ext_resource type="PackedScene" uid="uid://c7booyb8kp6r2" path="res://levels/objects/platforms/bubble_platform_map3.tscn" id="10_dksfx"]
+[ext_resource type="PackedScene" uid="uid://cobfhvlyrqxsu" path="res://levels/objects/platforms/manual_moving_platform_map3.tscn" id="11_w6hps"]
+[ext_resource type="PackedScene" uid="uid://bkgoa6ay0om0g" path="res://levels/objects/platforms/moving_platform_path2_map3.tscn" id="12_hpg5y"]
+[ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="13_3q5br"]
+[ext_resource type="PackedScene" uid="uid://gxf55px8txnb" path="res://levels/objects/platforms/duckweed_map3.tscn" id="13_c4r65"]
+
+[node name="TestPear" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAABMAAAAAAAQAAAABABMAAAAKAAMAAAACABMAAAABAAAAAAADABMAAAABAAAAAAAEABMAAAABAAAAAAAFABMAAAABAAAAAAAGABMAAAABAAAAAAAHABMAAAABAAAAAAAIABMAAAABAAAAAAAJABMAAAABAAAAAAAKABMAAAABAAAAAAALABMAAAABAAAAAAAMABMAAAABAAAAAAANABMAAAABAAAAAAAOABMAAAABAAAAAAAPABMAAAABAAAAAAAQABMAAAABAAAAAAARABMAAAABAAAAAAASABMAAAABAAAAAAATABMAAAABAAAAAAAUABMAAAABAAAAAAAVABMAAAABAAAAAAAWABMAAAABAAAAAAAXABMAAAABAAAAAAAYABMAAAABAAAAAAAZABMAAAABAAAAAAAaABMAAAABAAAAAAAbABMAAAABAAAAAAAcABMAAAABAAAAAAAdABMAAAABAAAAAAAeABMAAAABAAAAAAAfABMAAAABAAAAAAAgABMAAAABAAAAAAAhABMAAAABAAAAAAAiABMAAAABAAAAAAAjABMAAAAJAAMAAAAkABMAAAAQAAQAAAABABQAAAAAAAIAAAACABQAAAAHAAAAAAACABUAAAAAAAIAAAADABUAAAABAAIAAAAEABUAAAABAAIAAAAFABUAAAAHAAAAAAAFABYAAAAAAAIAAAAGABYAAAABAAIAAAAHABYAAAABAAIAAAAIABcAAAAAAAIAAAAJABcAAAABAAIAAAAKABcAAAABAAIAAAALABcAAAAHAAAAAAALABgAAAAAAAIAAAANABgAAAAHAAAAAAAMABgAAAABAAIAAAANABkAAAAAAAIAAAAOABkAAAABAAIAAAAPABkAAAABAAIAAAAQABkAAAABAAIAAAARABkAAAABAAIAAAASABkAAAACAAIAAAATABgAAAABAAIAAAAUABgAAAABAAIAAAAVABgAAAABAAIAAAAWABgAAAABAAIAAAAXABgAAAABAAIAAAAYABgAAAABAAIAAAAZABgAAAACAAIAAAAZABcAAAAGAAAAAAAaABcAAAABAAIAAAAbABcAAAABAAIAAAAcABcAAAABAAIAAAAdABcAAAABAAIAAAAeABcAAAACAAIAAAAeABYAAAAGAAAAAAAfABYAAAABAAIAAAAgABYAAAACAAIAAAAgABUAAAAGAAAAAAAhABUAAAACAAIAAAAiABQAAAABAAIAAAAjABQAAAACAAIAAAAhABQAAAAGAAAAAAAgABQAAAABAAEAAAAFABQAAAABAAEAAAADABQAAAABAAEAAAAEABQAAAABAAEAAAAGABQAAAABAAEAAAAHABQAAAABAAEAAAAIABQAAAABAAEAAAAJABQAAAABAAEAAAAKABQAAAABAAEAAAALABQAAAABAAEAAAAMABQAAAABAAEAAAANABQAAAABAAEAAAAOABQAAAABAAEAAAAPABQAAAABAAEAAAAQABQAAAABAAEAAAARABQAAAABAAEAAAASABQAAAABAAEAAAATABQAAAABAAEAAAAUABQAAAABAAEAAAAVABQAAAABAAEAAAAWABQAAAABAAEAAAAXABQAAAABAAEAAAAYABQAAAABAAEAAAAZABQAAAABAAEAAAAaABQAAAABAAEAAAAbABQAAAABAAEAAAAcABQAAAABAAEAAAAdABQAAAABAAEAAAAeABQAAAABAAEAAAAfABQAAAABAAEAAAAeABUAAAABAAEAAAAdABUAAAABAAEAAAAcABUAAAABAAEAAAAbABYAAAABAAEAAAAaABYAAAABAAEAAAAZABYAAAABAAEAAAAcABYAAAABAAEAAAAdABYAAAABAAEAAAAfABUAAAABAAEAAAAbABUAAAABAAEAAAAaABUAAAABAAEAAAAZABUAAAABAAEAAAAYABUAAAABAAEAAAAXABUAAAABAAEAAAAWABUAAAABAAEAAAAVABUAAAABAAEAAAAUABUAAAABAAEAAAATABUAAAABAAEAAAASABUAAAABAAEAAAARABUAAAABAAEAAAAQABUAAAABAAEAAAAPABUAAAABAAEAAAAOABUAAAABAAEAAAANABUAAAABAAEAAAAMABUAAAABAAEAAAALABUAAAABAAEAAAAKABUAAAABAAEAAAAJABUAAAABAAEAAAAIABUAAAABAAEAAAAHABUAAAABAAEAAAAGABUAAAABAAEAAAAIABYAAAAHAAAAAAALABYAAAABAAEAAAAKABYAAAABAAEAAAAMABYAAAABAAEAAAANABYAAAABAAEAAAAJABYAAAABAAEAAAAMABcAAAABAAEAAAANABcAAAABAAEAAAAOABcAAAABAAEAAAAOABgAAAABAAEAAAAPABgAAAABAAEAAAAQABgAAAABAAEAAAARABgAAAABAAEAAAASABgAAAAGAAAAAAATABcAAAABAAEAAAASABcAAAABAAEAAAARABYAAAABAAEAAAAQABYAAAABAAEAAAAPABYAAAABAAEAAAAOABYAAAABAAEAAAAPABcAAAABAAEAAAAQABcAAAABAAEAAAARABcAAAABAAEAAAATABYAAAABAAEAAAASABYAAAABAAEAAAAUABYAAAABAAEAAAAVABYAAAABAAEAAAAWABcAAAABAAEAAAAXABcAAAABAAEAAAAYABcAAAABAAEAAAAVABcAAAABAAEAAAAWABYAAAABAAEAAAAXABYAAAABAAEAAAAYABYAAAABAAEAAAAUABcAAAABAAEAAAAkABIAAAAEAAEAAAAkABEAAAAEAAEAAAAkAA8AAAAEAAEAAAAkABAAAAAEAAEAAAAkAA4AAAAEAAEAAAAkAA0AAAAEAAEAAAAkAAwAAAAEAAEAAAAkAAsAAAAEAAAAAAA=")
+tile_set = ExtResource("1_5wm4i")
+
+[node name="Player" parent="." instance=ExtResource("3_soo0h")]
+position = Vector2(581, 592)
+has_blade = true
+has_fire_gem = true
+has_water_room_gem = true
+max_health = 1000
+
+[node name="PearlFairy" parent="." instance=ExtResource("3_ogswb")]
+position = Vector2(371, 429)
+
+[node name="PearlFairy2" parent="." instance=ExtResource("3_ogswb")]
+position = Vector2(831, 423)
+
+[node name="CrayFish" parent="." instance=ExtResource("4_r2udy")]
+position = Vector2(260, 570)
+
+[node name="CoralSpike2" parent="." instance=ExtResource("5_oq7bv")]
+position = Vector2(453, 582)
+
+[node name="SeaUrchin" parent="." instance=ExtResource("6_s1tju")]
+position = Vector2(936, 486)
+
+[node name="GoldenCarp" parent="." instance=ExtResource("7_r2udy")]
+position = Vector2(828.99994, 577)
+
+[node name="Door" parent="." instance=ExtResource("9_juiqu")]
+position = Vector2(98, 608)
+
+[node name="Door2" parent="." instance=ExtResource("9_juiqu")]
+position = Vector2(1028, 604)
+
+[node name="BubblePlatform" parent="." instance=ExtResource("10_dksfx")]
+position = Vector2(522, 493)
+
+[node name="BubblePlatform2" parent="." instance=ExtResource("10_dksfx")]
+position = Vector2(596, 493)
+
+[node name="BubblePlatform3" parent="." instance=ExtResource("10_dksfx")]
+position = Vector2(680, 491)
+
+[node name="ManualMovingPlatform" parent="." instance=ExtResource("11_w6hps")]
+position = Vector2(831, 466)
+
+[node name="Path2D" parent="." instance=ExtResource("12_hpg5y")]
+position = Vector2(390.50897, 404)
+
+[node name="DuckweedMap3" parent="." instance=ExtResource("13_c4r65")]
+position = Vector2(216, 518)
+
+[node name="SerpentEel" parent="." instance=ExtResource("13_3q5br")]
+position = Vector2(745, 572)
+minion_health = null
+bob_amplitude = null
+bob_speed = null
+health_bar_hide_delay = null
+coin_scene = null
+run_speed = null
+movement_speed = null
+gravity = null
+direction = null
+attack_damage = null

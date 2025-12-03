@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://cg88ymtkt485w"]
+
+[ext_resource type="Script" uid="uid://bx0udvedxepth" path="res://levels/objects/door/door.gd" id="1_7al35"]
+[ext_resource type="Texture2D" uid="uid://b0432e0yqg2bp" path="res://asset/level_3_water_palace/objects/door/door.png" id="2_7u5kf"]
+[ext_resource type="Script" uid="uid://n4lx7r4yxqp0" path="res://scripts/interactive_area_2d.gd" id="5_xm3gf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ffxa6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7u5kf")
+}],
+"loop": false,
+"name": &"closing",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7u5kf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7u5kf")
+}],
+"loop": false,
+"name": &"opening",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7l4jk"]
+size = Vector2(34, 50)
+
+[node name="Door" type="Node2D"]
+script = ExtResource("1_7al35")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -44)
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_ffxa6")
+animation = &"opening"
+
+[node name="InteractiveArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("5_xm3gf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractiveArea2D"]
+position = Vector2(0, -25)
+shape = SubResource("RectangleShape2D_7l4jk")
+
+[connection signal="interacted" from="InteractiveArea2D" to="." method="_on_interactive_area_2d_interacted"]

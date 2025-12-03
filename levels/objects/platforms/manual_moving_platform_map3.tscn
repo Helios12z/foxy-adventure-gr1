@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cobfhvlyrqxsu"]
+
+[ext_resource type="Script" uid="uid://p1jc74ehcmdp" path="res://levels/objects/platforms/manual_moving_platform.gd" id="1_5foin"]
+[ext_resource type="Texture2D" uid="uid://b5fy41hv0lq7q" path="res://asset/level_3_water_palace/platforms/moving_platform_water.png" id="2_5foin"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1yy5t"]
+size = Vector2(85, 23)
+
+[node name="ManualMovingPlatform" type="AnimatableBody2D"]
+scale = Vector2(1.2, 1.2)
+script = ExtResource("1_5foin")
+
+[node name="MovingPlatform" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5foin")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 3.5)
+shape = SubResource("RectangleShape2D_1yy5t")
+one_way_collision = true

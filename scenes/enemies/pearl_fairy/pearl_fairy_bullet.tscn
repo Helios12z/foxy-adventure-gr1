@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://p67fjwquhta0"]
+
+[ext_resource type="Texture2D" uid="uid://sfae3ro81kda" path="res://asset/level_3_water_palace/water_goddess/skills/water_bullet_move_1.png" id="1_ue0gw"]
+[ext_resource type="Texture2D" uid="uid://b1yq13rsqfptp" path="res://asset/level_3_water_palace/water_goddess/skills/water_bullet_move_2.png" id="2_8td04"]
+[ext_resource type="Texture2D" uid="uid://c42enfmfok7ni" path="res://asset/level_3_water_palace/water_goddess/skills/water_bullet_move_3.png" id="3_jre7j"]
+[ext_resource type="Texture2D" uid="uid://bhko00tuq1pax" path="res://asset/level_3_water_palace/water_goddess/skills/water_bullet_move_4.png" id="4_0q1cr"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="5_oon7p"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_adxsy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ue0gw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_8td04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_jre7j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_0q1cr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_jre7j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_8td04")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ue0gw"]
+
+[node name="PearlFairyBullet" type="RigidBody2D"]
+collision_layer = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.045, 0.045)
+sprite_frames = SubResource("SpriteFrames_adxsy")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("5_oon7p")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(9, -1)
+shape = SubResource("CircleShape2D_ue0gw")

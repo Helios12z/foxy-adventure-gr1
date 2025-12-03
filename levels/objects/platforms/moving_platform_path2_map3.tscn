@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://bkgoa6ay0om0g"]
+
+[ext_resource type="Script" uid="uid://bkmlugc5tk04g" path="res://levels/objects/platforms/moving_platform_path2.gd" id="1_yks1b"]
+[ext_resource type="Texture2D" uid="uid://b5fy41hv0lq7q" path="res://asset/level_3_water_palace/platforms/moving_platform_water.png" id="2_yks1b"]
+[ext_resource type="Script" uid="uid://n4lx7r4yxqp0" path="res://scripts/interactive_area_2d.gd" id="3_xyt31"]
+
+[sub_resource type="Curve2D" id="Curve2D_pre6l"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 63, 9, 0, 0, 0, 0, 457.21924, 9.442841)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bue25"]
+size = Vector2(85, 21.5)
+
+[node name="Path2D" type="Path2D"]
+position = Vector2(1.5089836, 9)
+scale = Vector2(1.2, 1.23)
+curve = SubResource("Curve2D_pre6l")
+script = ExtResource("1_yks1b")
+move_duration = 2.0
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+position = Vector2(63, 9)
+rotates = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
+remote_path = NodePath("../AnimatableBody2D")
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="PathFollow2D"]
+
+[node name="MovingPlatform" type="Sprite2D" parent="PathFollow2D/AnimatableBody2D"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_yks1b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D"]
+position = Vector2(0, 3.25)
+shape = SubResource("RectangleShape2D_bue25")
+one_way_collision = true
+
+[node name="InteractiveArea2D" type="Area2D" parent="PathFollow2D/AnimatableBody2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_xyt31")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D/InteractiveArea2D"]
+position = Vector2(-2.1755695e-06, 1)
+shape = SubResource("RectangleShape2D_bue25")
+
+[connection signal="interacted" from="PathFollow2D/AnimatableBody2D/InteractiveArea2D" to="." method="_on_interactive_area_2d_interacted"]

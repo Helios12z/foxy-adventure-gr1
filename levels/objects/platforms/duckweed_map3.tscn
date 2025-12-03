@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://gxf55px8txnb"]
+
+[ext_resource type="Texture2D" uid="uid://c4fera3wr5llm" path="res://asset/level_3_water_palace/platforms/duckweed.png" id="1_qx73m"]
+[ext_resource type="Script" uid="uid://cy12qa6qnb2ef" path="res://levels/objects/platforms/duckweed_map_3.gd" id="2_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qx73m"]
+size = Vector2(65, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ytbi7"]
+size = Vector2(33, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_abqxg"]
+size = Vector2(110, 23)
+
+[node name="DuckweedMap3" type="StaticBody2D"]
+script = ExtResource("2_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_qx73m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, -25.5)
+shape = SubResource("RectangleShape2D_qx73m")
+one_way_collision = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-6.5, -1)
+shape = SubResource("RectangleShape2D_ytbi7")
+one_way_collision = true
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="."]
+position = Vector2(32, -13)
+shape = SubResource("RectangleShape2D_ytbi7")
+one_way_collision = true
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="."]
+position = Vector2(-48, -24)
+shape = SubResource("RectangleShape2D_ytbi7")
+one_way_collision = true
+
+[node name="DetectArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+position = Vector2(-7, -17.5)
+shape = SubResource("RectangleShape2D_abqxg")

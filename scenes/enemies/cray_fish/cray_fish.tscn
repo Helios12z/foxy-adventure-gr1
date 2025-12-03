@@ -1,0 +1,202 @@
+[gd_scene load_steps=22 format=3 uid="uid://cfhmqw0q4i4lg"]
+
+[ext_resource type="Script" uid="uid://k8ftfowx2ndh" path="res://scenes/enemies/cray_fish/cray_fish.gd" id="1_nir6k"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_37vla"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_tf36u"]
+[ext_resource type="Texture2D" uid="uid://c14dr2fujn1pr" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_idle_1.png" id="4_l7ohy"]
+[ext_resource type="Texture2D" uid="uid://b6b7nitrr46m" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_attack_1.png" id="5_yd2tx"]
+[ext_resource type="Texture2D" uid="uid://be5wsmbe7uuti" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_attack_2.png" id="6_nir6k"]
+[ext_resource type="Texture2D" uid="uid://cva20k2attpw8" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_dead.png" id="7_37vla"]
+[ext_resource type="Texture2D" uid="uid://cffifopak6gb" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_hurt.png" id="8_tf36u"]
+[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="9_6rab2"]
+[ext_resource type="Texture2D" uid="uid://d0wjcftbmu7w5" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_move_1.png" id="9_wspda"]
+[ext_resource type="Script" uid="uid://bkm0htjnkf35e" path="res://scenes/enemies/cray_fish/walk.gd" id="10_vgapn"]
+[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_mjqi6"]
+[ext_resource type="Script" uid="uid://dotc7yktc812o" path="res://scenes/enemies/cray_fish/attack.gd" id="12_vxlka"]
+[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="13_ro2d7"]
+[ext_resource type="Script" uid="uid://coe5wqqdgro0y" path="res://scenes/enemies/cray_fish/chase.gd" id="14_pgjpf"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_l2joc"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_nyvw1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
+size = Vector2(31, 39)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lf3fj"]
+size = Vector2(32, 43)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jdvj0"]
+size = Vector2(39, 39)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ogm1e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_l7ohy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_yd2tx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_nir6k")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_37vla")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_tf36u")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_l7ohy")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_wspda")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[node name="CrayFish" type="CharacterBody2D"]
+scale = Vector2(1.4, 1.4)
+collision_layer = 8
+script = ExtResource("1_nir6k")
+bob_amplitude = 6.0
+bob_speed = 3.0
+coin_drop_count = 1
+max_health = 100
+metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 7.5)
+shape = SubResource("RectangleShape2D_t2fbi")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(0.714286, 8.57143)
+target_position = Vector2(37, 0)
+
+[node name="FrontRayCast2D2" type="RayCast2D" parent="Direction"]
+position = Vector2(5.96046e-08, 19.285715)
+target_position = Vector2(37, 0)
+
+[node name="DownRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(15, 0)
+target_position = Vector2(0, 28)
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_37vla")
+damage = 20
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(16, 5.5)
+shape = SubResource("RectangleShape2D_lf3fj")
+debug_color = Color(0.901445, 0.278962, 0.357004, 0.42)
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("3_tf36u")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(-0.5, 7.5)
+shape = SubResource("RectangleShape2D_jdvj0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+scale = Vector2(0.055, 0.055)
+sprite_frames = SubResource("SpriteFrames_ogm1e")
+animation = &"walk"
+autoplay = "walk"
+flip_h = true
+
+[node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
+modulate = Color(0.685657, 0.170201, 0.197746, 1)
+position = Vector2(-4.2574744e-08, 17.857143)
+target_position = Vector2(150, 0)
+collision_mask = 2
+
+[node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
+modulate = Color(0.219501, 0.219501, 0.219501, 1)
+position = Vector2(-0.71428573, 17.857143)
+target_position = Vector2(-150, 0)
+collision_mask = 2
+
+[node name="AttackScopeRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(0.714286, 9.28571)
+target_position = Vector2(34, 0)
+collision_mask = 4
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="DetectFrontRayCast2D2" type="RayCast2D" parent="Direction"]
+modulate = Color(0.685657, 0.170201, 0.197746, 1)
+position = Vector2(-4.25747e-08, -4.28571)
+target_position = Vector2(150, 0)
+collision_mask = 2
+
+[node name="DetectBackRayCast2D2" type="RayCast2D" parent="Direction"]
+modulate = Color(0.219501, 0.219501, 0.219501, 1)
+position = Vector2(-0.714286, -4.28571)
+target_position = Vector2(-150, 0)
+collision_mask = 2
+
+[node name="AttackScopeRayCast2D2" type="RayCast2D" parent="Direction"]
+position = Vector2(0.714286, -3.57143)
+target_position = Vector2(34, 0)
+collision_mask = 4
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("9_6rab2")
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("10_vgapn")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("11_mjqi6")
+
+[node name="Attack" type="Node" parent="States"]
+script = ExtResource("12_vxlka")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("13_ro2d7")
+
+[node name="Chase" type="Node" parent="States"]
+script = ExtResource("14_pgjpf")
+metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -22.0
+offset_top = -26.0
+offset_right = 838.0
+offset_bottom = 192.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("15_l2joc")
+texture_progress = ExtResource("16_nyvw1")

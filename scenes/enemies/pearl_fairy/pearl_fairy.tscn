@@ -1,0 +1,166 @@
+[gd_scene load_steps=25 format=3 uid="uid://fp8qfvpe8i5o"]
+
+[ext_resource type="Script" uid="uid://boxtx31pd7iur" path="res://scenes/enemies/pearl_fairy/pearl_fairy.gd" id="1_sx7rj"]
+[ext_resource type="Texture2D" uid="uid://cykpbcu10tcwr" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_1.png" id="2_0aroe"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="2_badou"]
+[ext_resource type="Texture2D" uid="uid://coi0t1oglo5a6" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_2.png" id="3_buft8"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_g6qhf"]
+[ext_resource type="Texture2D" uid="uid://cy5glcu5qswf1" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_3.png" id="4_hm4u3"]
+[ext_resource type="Texture2D" uid="uid://05bqkk1u0la6" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_4.png" id="5_yqgw4"]
+[ext_resource type="Texture2D" uid="uid://dnui08oiyy6va" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_dead.png" id="6_yk5d6"]
+[ext_resource type="Texture2D" uid="uid://dy5cvtod1c6ev" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_hurt.png" id="7_vcsxk"]
+[ext_resource type="Texture2D" uid="uid://cd482tbtyxx6y" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_idle_1.png" id="8_6gndb"]
+[ext_resource type="Texture2D" uid="uid://csrfle5u4mfnk" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_move.png" id="9_5kb7w"]
+[ext_resource type="Script" uid="uid://d0kfi7wfsxg3o" path="res://scripts/node2d_factory.gd" id="12_buft8"]
+[ext_resource type="PackedScene" uid="uid://p67fjwquhta0" path="res://scenes/enemies/pearl_fairy/pearl_fairy_bullet.tscn" id="13_hm4u3"]
+[ext_resource type="Script" uid="uid://36qjfyh3dc3q" path="res://scenes/enemies/pearl_fairy/attack.gd" id="20_attack"]
+[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="21_dead"]
+[ext_resource type="Script" uid="uid://db06i8pa3ygb2" path="res://scenes/enemies/pearl_fairy/hurt.gd" id="22_hurt_pf"]
+[ext_resource type="Script" uid="uid://dq5qvk413yg02" path="res://scenes/enemies/pearl_fairy/move.gd" id="23_move"]
+[ext_resource type="Script" uid="uid://dya3k2sck7j1y" path="res://scenes/enemies/pearl_fairy/idle.gd" id="24_idle"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="30_under"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="31_full"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vjvr3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0aroe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_buft8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_hm4u3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_yqgw4")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_yk5d6")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_vcsxk")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_6gndb")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_5kb7w")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_buft8"]
+radius = 36.666668
+height = 91.111115
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_buft8"]
+radius = 315.55557
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0aroe"]
+radius = 34.0
+height = 88.0
+
+[node name="PearlFairy" type="CharacterBody2D"]
+scale = Vector2(0.9, 0.9)
+collision_layer = 8
+script = ExtResource("1_sx7rj")
+coin_drop_count = 4
+movement_speed = 100.0
+attack_damage = 20
+max_health = 75
+metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_vjvr3")
+animation = &"attack"
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("2_badou")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(-4.4444447, 1.1111112)
+shape = SubResource("CapsuleShape2D_buft8")
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("3_g6qhf")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+
+[node name="MoveMarker2D" type="Marker2D" parent="Direction"]
+
+[node name="DetectPlayerArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/DetectPlayerArea2D"]
+shape = SubResource("CircleShape2D_buft8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_0aroe")
+
+[node name="Node2DFactory" type="Marker2D" parent="."]
+position = Vector2(37.77778, 0)
+script = ExtResource("12_buft8")
+product_packed_scene = ExtResource("13_hm4u3")
+target_container_name = &"Bullets"
+metadata/_custom_type_script = "uid://d0kfi7wfsxg3o"
+
+[node name="States" type="Node" parent="."]
+
+[node name="Attack" type="Node" parent="States"]
+script = ExtResource("20_attack")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("21_dead")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("22_hurt_pf")
+
+[node name="Move" type="Node" parent="States"]
+script = ExtResource("23_move")
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("24_idle")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -22.0
+offset_top = -26.0
+offset_right = 838.0
+offset_bottom = 192.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("30_under")
+texture_progress = ExtResource("31_full")

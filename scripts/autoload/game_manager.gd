@@ -18,7 +18,7 @@ var boss_defeated_by_stage: Dictionary = {}
 var chest_opened_by_stage: Dictionary = {}
 
 func _ready() -> void:
-	# Load checkpoint data when game starts
+	SaveSystem.delete_save_file()
 	load_checkpoint_data()
 		# Init inventory system
 	inventory_system = InvetorySystem.new()

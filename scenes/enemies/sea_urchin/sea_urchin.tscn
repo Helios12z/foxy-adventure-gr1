@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwkcsms33ukwt"]
+
+[ext_resource type="Texture2D" uid="uid://djcwncg2fkkjs" path="res://asset/level_3_water_palace/enemies/sea_urchin/sea_urchin.png" id="1_w1mtg"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_ipn6t"]
+[ext_resource type="Script" path="res://scenes/enemies/sea_urchin/sea_urchin.gd" id="3_script"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jpqfs"]
+radius = 11.0
+height = 33.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ksueb"]
+radius = 12.0
+height = 35.0
+
+[node name="SeaUrchin" type="StaticBody2D"]
+scale = Vector2(1.3, 1.3)
+collision_layer = 32
+collision_mask = 3
+script = ExtResource("3_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1, 9)
+scale = Vector2(0.045, 0.045)
+texture = ExtResource("1_w1mtg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 10)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_jpqfs")
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_ipn6t")
+damage = 50
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(-0.5, 10)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_ksueb")
