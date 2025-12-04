@@ -59,12 +59,13 @@ label_settings = SubResource("LabelSettings_rbs2k")
 [node name="Description" type="Label" parent="NinePatchRect"]
 layout_mode = 0
 offset_left = 83.0
-offset_top = 325.0
+offset_top = 309.0
 offset_right = 534.0
-offset_bottom = 549.0
+offset_bottom = 533.0
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("4_xrsek")
 text = "Foxy have just unlocked new skill! 
+                (take 50 mana)
 
           Press        to active this"
 autowrap_mode = 2

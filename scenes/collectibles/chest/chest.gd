@@ -17,6 +17,7 @@ func _ready() -> void:
 	
 func _on_interaction_available() -> void:
 	is_interacted = true
+	attempt_open_chest()
 
 func _on_interaction_unavailable() -> void:
 	is_interacted = false

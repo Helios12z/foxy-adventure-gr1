@@ -17,6 +17,7 @@ var is_opened: bool = false
 func _ready() -> void:
 	if interactive_area:
 		interactive_area.interacted.connect(_on_interacted)
+		interactive_area.interaction_available.connect(_on_player_entered)
 	
 	_sync_counts_array()
 	
@@ -35,6 +36,9 @@ func _sync_counts_array() -> void:
 		reward_counts.resize(reward_scenes.size())
 
 func _on_interacted() -> void:
+	attempt_open_chest()
+
+func _on_player_entered() -> void:
 	attempt_open_chest()
 
 func attempt_open_chest() -> void:
