@@ -45,7 +45,17 @@ func change_stage_with_loading(path: String):
 	var current_scene_path = _get_current_stage_path()
 
 	# Validate target scene path
-	if path.is_empty() or not FileAccess.file_exists(path):
+	if path.is_empty():
+		push_error("Invalid scene path: " + path)
+		return
+
+	# Handle both file paths and UIDs
+	var resolved_path = path
+	if path.begins_with("uid://"):
+		# For UIDs, we can't check file existence directly, but we can try to resolve
+		# The ResourceLoader will handle UID resolution during loading
+		pass
+	elif not FileAccess.file_exists(path):
 		push_error("Invalid scene path: " + path)
 		return
 

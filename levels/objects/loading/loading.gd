@@ -61,10 +61,13 @@ func _simulate_loading_progress():
 		push_error("No target scene path set for loading")
 		return
 
-	# Begin threaded loading request
-	var load_status = ResourceLoader.load_threaded_request(target_scene_path)
-	if load_status != OK:
-		push_error("Failed to start loading scene: " + target_scene_path)
+	# Use the correct Godot threaded loading pattern
+	print("Starting threaded load of: ", target_scene_path)
+
+	# Start threaded loading
+	var load_result = ResourceLoader.load_threaded_request(target_scene_path)
+	if load_result != OK:
+		push_error("Failed to start threaded load of: " + target_scene_path)
 		_on_loading_error()
 		return
 
@@ -74,31 +77,37 @@ func _simulate_loading_progress():
 
 	# Wait for loading to complete
 	while true:
-		var status = ResourceLoader.load_threaded_get_status(target_scene_path)
+		# Check loading status
 		var progress_array: Array = []
-
-		# Get actual loading progress
-		status = ResourceLoader.load_threaded_get_status(target_scene_path, progress_array)
+		var status = ResourceLoader.load_threaded_get_status(target_scene_path, progress_array)
 
 		if status == ResourceLoader.THREAD_LOAD_LOADED:
-			# Resource loaded, but ensure minimum visual duration
+			# Loading finished successfully
+			print("Scene fully loaded: ", target_scene_path)
+
+			# Get the loaded resource
+			var loaded_resource = ResourceLoader.load_threaded_get(target_scene_path)
+
+			# Ensure minimum visual duration
 			var elapsed_time = Time.get_ticks_msec() - start_time
 			if elapsed_time < min_duration:
-				# Continue showing loading screen for minimum duration
 				loading_bar.value = 100.0
 				loading_dots.text = "Finalizing..."
 				await get_tree().create_timer((min_duration - elapsed_time) / 1000.0).timeout
 
 			loading_bar.value = 100.0
 			loading_dots.text = "Loading Complete!"
-			_on_loading_complete()
+			_on_loading_complete_with_resource(loaded_resource)
 			break
+
 		elif status == ResourceLoader.THREAD_LOAD_FAILED:
+			# Error occurred during loading
 			push_error("Failed to load scene: " + target_scene_path)
 			_on_loading_error()
 			break
+
 		elif status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-			# Update progress bar with actual loading progress
+			# Still loading, update progress
 			var progress = progress_array[0] * 100.0 if progress_array.size() > 0 else 0.0
 			loading_bar.value = progress
 
@@ -106,17 +115,19 @@ func _simulate_loading_progress():
 			var dot_count = int(Time.get_ticks_msec() / 500) % 4
 			loading_dots.text = "Loading" + ".".repeat(dot_count)
 
-			# Wait for next frame
-			var tree = get_tree()
-			if tree:
-				await tree.process_frame
-			else:
-				break
+			# Wait for next frame to continue checking
+			await get_tree().process_frame
+
 		else:
 			# Unknown status, wait a bit and retry
+			print("Unknown loading status: ", status)
 			await get_tree().create_timer(0.1).timeout
 
 func _on_loading_complete():
+	# Legacy method - use the new method instead
+	_on_loading_complete_with_resource(null)
+
+func _on_loading_complete_with_resource(loaded_resource: Resource):
 	loading_complete = true
 	loading_bar.value = 100.0
 	loading_dots.text = "Loading Complete!"
@@ -125,21 +136,34 @@ func _on_loading_complete():
 
 	# Automatically transition to the target scene after a short delay
 	await get_tree().create_timer(1.0).timeout
-	_load_target_scene()
+	_load_target_scene_with_resource(loaded_resource)
 
 func _load_target_scene():
 	if target_scene_path.is_empty():
 		push_error("No target scene path set")
 		return
 
-	# Get the already loaded resource from threaded loading
-	var packed = ResourceLoader.load_threaded_get(target_scene_path)
+	# Fallback: synchronous load if no resource provided
+	var packed = ResourceLoader.load(target_scene_path)
 	if packed:
-		print("Loading scene: ", target_scene_path)
+		print("Loading scene (fallback): ", target_scene_path)
 		get_tree().change_scene_to_packed(packed)
 	else:
-		push_error("Could not get loaded target scene: " + target_scene_path)
+		push_error("Could not load target scene: " + target_scene_path)
 		_on_loading_error()
+
+func _load_target_scene_with_resource(loaded_resource: Resource):
+	if target_scene_path.is_empty():
+		push_error("No target scene path set")
+		return
+
+	# Use the pre-loaded resource from background loading
+	if loaded_resource:
+		print("Loading pre-loaded scene: ", target_scene_path)
+		get_tree().change_scene_to_packed(loaded_resource)
+	else:
+		# Fallback to the original method if no resource was provided
+		_load_target_scene()
 
 func _on_loading_error():
 	loading_dots.text = "Loading Failed!"
