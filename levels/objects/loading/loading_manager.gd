@@ -65,7 +65,7 @@ func get_content_for_transition(from_scene: String, to_scene: String) -> Diction
 
 		# Process the content to get actual image paths
 		var processed_content = transition_content.duplicate()
-		processed_content.images = _get_images_for_content(transition_key)
+		processed_content["images"] = _get_images_for_content(transition_key)
 
 		return processed_content
 
@@ -87,7 +87,7 @@ func get_content_for_scene(scene_path: String) -> Dictionary:
 
 	# Return default content if no specific content found
 	var default_content = loading_config.default_content.duplicate()
-	default_content.images = _get_default_images()
+	default_content["images"] = _get_default_images()
 	return default_content
 
 func _get_transition_key(from_scene: String, to_scene: String) -> String:

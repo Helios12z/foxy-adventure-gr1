@@ -184,11 +184,6 @@ func respawn_at_checkpoint() -> void:
 				player = p
 		_apply_checkpoint_inventory_only()
 		return
-		
-	# Can change stage if different but not implemented yet to test
-	#	change_stage(checkpoint_stage, "")
-	#	# Wait for scene to load
-	#	await get_tree().process_frame
 
 	if player == null:
 		var p := get_tree().current_scene.find_child("Player", true, false)
