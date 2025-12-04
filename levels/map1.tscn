@@ -672,18 +672,21 @@ popup_text_lines = Array[String](["Press \"Space\" when run fast to dash diagona
 popup_video_path = "res://asset/videos/dash_diagonal_tutorial.ogv"
 
 [node name="Music2" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("48_cjww2")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
 
 [node name="Music3" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("49_r8xm3")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("48_8dbd0")
 autoplay = true
 bus = &"Music"

@@ -19,6 +19,10 @@ func _enter() -> void:
 	if not obj.has_fire_gem:
 		change_state(fsm.states.idle)
 		return
+	# Kiểm tra mana (cần 100 mana = full cây)
+	if not obj.can_use_skill(100):
+		change_state(fsm.states.idle)
+		return
 	# Nếu đang cooldown hoặc đã có spirit, không làm gì cả
 	if on_cooldown:
 		change_state(fsm.states.idle)
@@ -27,6 +31,9 @@ func _enter() -> void:
 	if existing != null:
 		change_state(fsm.states.idle)
 		return
+
+	# Tiêu tốn 100 mana
+	obj.take_mana(100)
 
 	# Spawn Susanoo behind player
 	var spirit := susanoo_scene.instantiate()
