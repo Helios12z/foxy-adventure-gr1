@@ -41,23 +41,31 @@ func change_stage(stage_path: String, _target_portal_name: String = "") -> void:
 	get_tree().change_scene_to_file(stage_path) 
 
 func change_stage_with_loading(path: String):
-# Store current scene for transition context
+	# Store current scene for transition context
 	var current_scene_path = _get_current_stage_path()
 
-# Bước 1: chuyển sang loading scene
-	get_tree().change_scene_to_file("res://levels/objects/loading/loading.tscn")
-	await get_tree().process_frame  # refresh UI để "Loading..." hiện lên
+	# Validate target scene path
+	if path.is_empty() or not FileAccess.file_exists(path):
+		push_error("Invalid scene path: " + path)
+		return
 
-	# Bước 2: Wait a bit more for the scene to fully load
+	# Step 1: Change to loading scene
+	get_tree().change_scene_to_file("res://levels/objects/loading/loading.tscn")
+	await get_tree().process_frame  # Wait for scene to load
+
+	# Step 2: Ensure loading scene is fully loaded
 	await get_tree().process_frame
 
-	# Bước 3: Start the loading screen with transition context
+	# Step 3: Start the loading screen with transition context
 	var loading_screen = get_tree().current_scene
-	if loading_screen != null and loading_screen.has_method("start_loading"):
+	if loading_screen != null and loading_screen.has_method("start_loading_with_transition"):
 		loading_screen.start_loading_with_transition(current_scene_path, path)
+	else:
+		push_error("Loading scene not found or missing required method")
+		# Fallback: load scene directly without loading screen
+		get_tree().change_scene_to_file(path)
 
-	# The loading screen will handle the scene transition when complete
-	# No need to handle it here anymore
+	# The loading screen will handle the actual scene transition when complete
 
 # Helper function to get current scene path
 func _get_current_stage_path() -> String:

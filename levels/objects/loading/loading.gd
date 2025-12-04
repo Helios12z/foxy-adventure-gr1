@@ -56,29 +56,65 @@ func _setup_content():
 		background.texture = load(random_image)
 
 func _simulate_loading_progress():
-	var progress = 0.0
-	var loading_duration = loading_content.get("loading_duration", 2.5)
+	# Start actual threaded loading
+	if target_scene_path.is_empty():
+		push_error("No target scene path set for loading")
+		return
 
-	while progress < 100.0:
-		progress += (100.0 / loading_duration) * get_process_delta_time()
-		progress = min(progress, 100.0)
+	# Begin threaded loading request
+	var load_status = ResourceLoader.load_threaded_request(target_scene_path)
+	if load_status != OK:
+		push_error("Failed to start loading scene: " + target_scene_path)
+		_on_loading_error()
+		return
 
-		# Update loading bar
-		loading_bar.value = progress
+	# Track minimum visual duration to prevent flashing
+	var start_time = Time.get_ticks_msec()
+	var min_duration = loading_content.get("loading_duration", 2.0) * 1000  # Convert to milliseconds
 
-		# Update loading dots animation
-		var dot_count = int(Time.get_ticks_msec() / 500) % 4
-		loading_dots.text = "Loading" + ".".repeat(dot_count)
+	# Wait for loading to complete
+	while true:
+		var status = ResourceLoader.load_threaded_get_status(target_scene_path)
+		var progress_array: Array = []
 
-		# Safe await with null check
-		var tree = get_tree()
-		if tree:
-			await tree.process_frame
+		# Get actual loading progress
+		status = ResourceLoader.load_threaded_get_status(target_scene_path, progress_array)
+
+		if status == ResourceLoader.THREAD_LOAD_LOADED:
+			# Resource loaded, but ensure minimum visual duration
+			var elapsed_time = Time.get_ticks_msec() - start_time
+			if elapsed_time < min_duration:
+				# Continue showing loading screen for minimum duration
+				loading_bar.value = 100.0
+				loading_dots.text = "Finalizing..."
+				await get_tree().create_timer((min_duration - elapsed_time) / 1000.0).timeout
+
+			loading_bar.value = 100.0
+			loading_dots.text = "Loading Complete!"
+			_on_loading_complete()
+			break
+		elif status == ResourceLoader.THREAD_LOAD_FAILED:
+			push_error("Failed to load scene: " + target_scene_path)
+			_on_loading_error()
+			break
+		elif status == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			# Update progress bar with actual loading progress
+			var progress = progress_array[0] * 100.0 if progress_array.size() > 0 else 0.0
+			loading_bar.value = progress
+
+			# Update loading dots animation
+			var dot_count = int(Time.get_ticks_msec() / 500) % 4
+			loading_dots.text = "Loading" + ".".repeat(dot_count)
+
+			# Wait for next frame
+			var tree = get_tree()
+			if tree:
+				await tree.process_frame
+			else:
+				break
 		else:
-			# Fallback: continue without waiting (will run faster but still works)
-			pass
-
-	_on_loading_complete()
+			# Unknown status, wait a bit and retry
+			await get_tree().create_timer(0.1).timeout
 
 func _on_loading_complete():
 	loading_complete = true
@@ -96,10 +132,25 @@ func _load_target_scene():
 		push_error("No target scene path set")
 		return
 
-	# Load the scene
-	var packed = ResourceLoader.load(target_scene_path)
+	# Get the already loaded resource from threaded loading
+	var packed = ResourceLoader.load_threaded_get(target_scene_path)
 	if packed:
 		print("Loading scene: ", target_scene_path)
 		get_tree().change_scene_to_packed(packed)
 	else:
-		push_error("Could not load target scene: " + target_scene_path)
+		push_error("Could not get loaded target scene: " + target_scene_path)
+		_on_loading_error()
+
+func _on_loading_error():
+	loading_dots.text = "Loading Failed!"
+	continue_prompt.text = "Failed to load level. Returning to start..."
+	continue_prompt.modulate.a = 1.0
+
+	# Return to tutorial map as fallback
+	await get_tree().create_timer(3.0).timeout
+	var fallback_scene = "res://levels/tutorial/map0.tscn"
+	if FileAccess.file_exists(fallback_scene):
+		get_tree().change_scene_to_file(fallback_scene)
+	else:
+		# Last resort: restart the current scene
+		get_tree().reload_current_scene()
