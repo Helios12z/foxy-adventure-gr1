@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=4 uid="uid://p1noemh0cl3y"]
+[gd_scene load_steps=52 format=4 uid="uid://p1noemh0cl3y"]
 
 [ext_resource type="Script" uid="uid://6708u6d7r8dy" path="res://levels/tutorial/map_0.gd" id="1_7hlcu"]
 [ext_resource type="PackedScene" uid="uid://oplmtt8e4gwb" path="res://scenes/character/npcs/crystal-mauler.tscn" id="2_7hlcu"]
@@ -42,6 +42,8 @@
 [ext_resource type="Script" uid="uid://drheh2mmiw3id" path="res://levels/tutorial/tutorial_manager.gd" id="40_tutor"]
 [ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="41_lybv0"]
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="42_vaqrb"]
+[ext_resource type="AudioStream" uid="uid://bphupht8j5lpn" path="res://asset/sounds/Sea Waves - Sound Effect - Sound Effects.mp3" id="43_7ilwd"]
+[ext_resource type="AudioStream" uid="uid://dtl6nhxvi2mxk" path="res://asset/sounds/Winter Morning Ambience Sound Effect  Copyright Free Nature Sounds - Audio Wind.mp3" id="44_scw3o"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1h871"]
 animations = [{
@@ -173,8 +175,8 @@ camera_bottom_limit_y = -200.0
 comic_pages_paths = Array[String](["res://asset/comics/start_game/start_game_1.png", "res://asset/comics/start_game/start_game_2.png", "res://asset/comics/start_game/start_game_3.png", "res://asset/comics/start_game/start_game_4.png", "res://asset/comics/start_game/start_game_5.png", "res://asset/comics/start_game/start_game_6.png", "res://asset/comics/start_game/start_game_7.png", "res://asset/comics/start_game/start_game_8.png"])
 
 [node name="Crystal-mauler" parent="." instance=ExtResource("2_7hlcu")]
-position = Vector2(546, 70)
-scale = Vector2(1.5, 1.5)
+position = Vector2(545, 73)
+scale = Vector2(1.3, 1.3)
 
 [node name="Player" parent="." instance=ExtResource("3_ayhlk")]
 position = Vector2(-196, 48)
@@ -213,8 +215,8 @@ texture = ExtResource("6_lybv0")
 centered = false
 
 [node name="WaterSprite2D2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
-position = Vector2(1562, 737.885)
-scale = Vector2(24.125, 38.1322)
+position = Vector2(751, 737.885)
+scale = Vector2(85.81251, 38.1322)
 texture = ExtResource("7_vaqrb")
 
 [node name="WaterWave1" type="AnimatedSprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
@@ -504,3 +506,17 @@ is_cross_scene = true
 [node name="Node2" parent="." instance=ExtResource("36_21dun")]
 position = Vector2(1824, -60)
 key_text = "F"
+
+[node name="Music2" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("43_7ilwd")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
+
+[node name="Music3" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("44_scw3o")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
