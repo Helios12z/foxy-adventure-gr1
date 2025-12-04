@@ -3,10 +3,15 @@ extends InteractiveArea2D
 @export var coin_amount: int = 1
 @export var coin_id: String = ""
 @export var persistent: bool = true
+@export var fall_gravity: float = 980.0  # Trọng lực khi rơi tự do
+@export var max_fall_speed: float = 500.0  # Tốc độ rơi tối đa
 
 var is_collected: bool = false
 var is_flying: bool = false
 var just_landed: bool = false
+var is_grounded: bool = false
+var fall_velocity: float = 0.0
+var spawned_from_chest: bool = false  # Đánh dấu coin từ chest
 
 var t: float = 0.0
 var speed: float = 1.0
@@ -38,6 +43,9 @@ func fly_to(target_pos: Vector2, arc_height: float = -90.0, fly_speed: float = 1
 	is_flying = true
 	just_landed = false
 	is_collected = false
+	is_grounded = false
+	fall_velocity = 0.0
+	spawned_from_chest = true  # Đánh dấu là coin từ chest
 	t = 0.0
 	speed = fly_speed
 
@@ -55,6 +63,7 @@ func _process(delta: float) -> void:
 		if ray_down.is_colliding():
 			is_flying = false
 			just_landed = true
+			is_grounded = true
 
 			await get_tree().create_timer(0.15).timeout
 			just_landed = false
@@ -81,6 +90,20 @@ func _process(delta: float) -> void:
 		var r1 = q1.lerp(q2, t)
 
 		global_position = r0.lerp(r1, t)
+	
+	# Chỉ áp dụng trọng lực cho coin từ chest
+	elif spawned_from_chest and not is_grounded:
+		if ray_down.is_colliding():
+			is_grounded = true
+			fall_velocity = 0.0
+			# Điều chỉnh vị trí để coin đứng trên mặt đất
+			var collision_point = ray_down.get_collision_point()
+			global_position.y = collision_point.y - 4.0  # Nhích lên 2 pixel
+		else:
+			# Áp dụng trọng lực
+			fall_velocity += fall_gravity * delta
+			fall_velocity = min(fall_velocity, max_fall_speed)
+			global_position.y += fall_velocity * delta
 
 
 # ----------------------------------------------------

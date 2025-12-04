@@ -53,6 +53,9 @@ func _sync_counts_array() -> void:
 		reward_counts.resize(reward_scenes.size())
 
 
+func _on_player_entered() -> void:
+	attempt_open_chest()
+
 func attempt_open_chest() -> void:
 	if is_opened:
 		return
