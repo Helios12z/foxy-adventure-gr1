@@ -36,6 +36,7 @@ signal start_fight
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 @onready var target_lock_effect: AnimatedSprite2D = $Direction/TargetLockEffect
+@onready var sparkle_effect: AnimatedSprite2D = $Direction/SparkleEffect
 
 @export var phase2_threshold_ratio: float = 0.7
 
