@@ -8,7 +8,7 @@ signal start_fight
 @export var max_health_boss: int = 600
 @export var spike_damage: int = 70             
 @export var stun_time: float = 3.5 
-@export var beam_attack_duration: float = 1.5 
+@export var beam_attack_duration: float = 4.0 
 
 @export var bomb_scene: PackedScene
 @export var missile_scene: PackedScene
