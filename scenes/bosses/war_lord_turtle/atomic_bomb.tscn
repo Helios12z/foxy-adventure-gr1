@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dkn7qcm5bvygq" path="res://asset/war_lord_bullet/atomic_bomb.png" id="2_mnc1a"]
 [ext_resource type="Texture2D" uid="uid://c3dmv1j0f2q8e" path="res://asset/effects/explosion_effect_4.png" id="3_70o0l"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="4_8y1rt"]
-[ext_resource type="Texture2D" uid="uid://c5xcjmltcgmkv" path="res://asset/effects/warning_rect.png" id="4_s2d02"]
+[ext_resource type="Texture2D" uid="uid://dwrfws74b3olw" path="res://asset/effects/warning_rect.png" id="4_s2d02"]
 [ext_resource type="AudioStream" uid="uid://dljvr8m7he1rc" path="res://asset/sounds/war_lord_turtle_sound/huge_explosion.mp3" id="5_mnc1a"]
 [ext_resource type="AudioStream" uid="uid://duo5o2xixja7v" path="res://asset/sounds/war_lord_turtle_sound/bomb_idle.mp3" id="6_70o0l"]
 
@@ -173,25 +173,28 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_8y1rt"]
+atlas = ExtResource("4_s2d02")
+region = Rect2(9, 50, 506, 460)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_vmmhl"]
 atlas = ExtResource("4_s2d02")
-region = Rect2(0, 40, 512, 476)
+region = Rect2(515, 50, 506, 460)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_807v2"]
 atlas = ExtResource("4_s2d02")
-region = Rect2(512, 40, 512, 476)
+region = Rect2(9, 510, 506, 460)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sne0d"]
 atlas = ExtResource("4_s2d02")
-region = Rect2(0, 516, 512, 476)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_b4icu"]
-atlas = ExtResource("4_s2d02")
-region = Rect2(512, 516, 512, 476)
+region = Rect2(515, 510, 506, 460)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qapvm"]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8y1rt")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vmmhl")
 }, {
@@ -200,9 +203,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sne0d")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b4icu")
 }],
 "loop": true,
 "name": &"default",
@@ -228,11 +228,10 @@ autoplay = "default"
 frame = 14
 
 [node name="WarningRect" type="AnimatedSprite2D" parent="."]
-visible = false
 sprite_frames = SubResource("SpriteFrames_qapvm")
 autoplay = "default"
-frame = 3
-frame_progress = 0.92774093
+frame = 2
+frame_progress = 0.8522298
 
 [node name="HitArea2D" type="Area2D" parent="."]
 collision_layer = 0
