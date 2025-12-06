@@ -28,6 +28,8 @@ func _ready() -> void:
 	add_to_group("water_tornado")
 
 func _physics_process(delta: float) -> void:
+	if fsm == null or fsm.states == null: 
+		return 
 	super._physics_process(delta)
 	
 	_alive_time += delta
