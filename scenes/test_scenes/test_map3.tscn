@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://xg0xxg02357j"]
+[gd_scene load_steps=16 format=4 uid="uid://xg0xxg02357j"]
 
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_5wm4i"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="1_dksfx"]
@@ -14,16 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bkgoa6ay0om0g" path="res://levels/objects/platforms/moving_platform_path2_map3.tscn" id="12_hpg5y"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="13_3q5br"]
 [ext_resource type="PackedScene" uid="uid://gxf55px8txnb" path="res://levels/objects/platforms/duckweed_map3.tscn" id="13_c4r65"]
-[ext_resource type="Texture2D" uid="uid://db5h6kpavv7aj" path="res://asset/level_3_water_palace/background/platform_boss_water_guard_01.png" id="15_dksfx"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dksfx"]
-size = Vector2(1239.5, 29.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_w6hps"]
-size = Vector2(477, 20)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hpg5y"]
-size = Vector2(168, 9)
+[ext_resource type="PackedScene" uid="uid://72ullgkrurgm" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="15_dksfx"]
 
 [node name="TestPear" type="Node2D"]
 
@@ -96,89 +87,8 @@ position = Vector2(-907, 530)
 [node name="PearlFairy3" parent="." instance=ExtResource("3_ogswb")]
 position = Vector2(-723, 385)
 
-[node name="PlatformBossWaterGuard" type="Sprite2D" parent="."]
+[node name="PlatformBossWaterGuard" parent="." instance=ExtResource("15_dksfx")]
 position = Vector2(-623, 301)
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("15_dksfx")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="PlatformBossWaterGuard"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(2.25, -114.75)
-shape = SubResource("RectangleShape2D_dksfx")
-one_way_collision = true
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-6.5, -294)
-shape = SubResource("RectangleShape2D_w6hps")
-one_way_collision = true
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-6, -218)
-shape = SubResource("RectangleShape2D_w6hps")
-one_way_collision = true
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-6, -218)
-shape = SubResource("RectangleShape2D_w6hps")
-one_way_collision = true
-
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-529, -203.5)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-350, -220)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D7" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(341, -222)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D8" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(524, -200)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D9" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-269, 257)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D10" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(284, 272)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D11" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(162, 204)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D12" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(330, 210)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D13" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-137, 163)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D14" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-311, 93)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D15" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(-42, 34)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
-
-[node name="CollisionShape2D16" type="CollisionShape2D" parent="PlatformBossWaterGuard/StaticBody2D"]
-position = Vector2(72, 35)
-shape = SubResource("RectangleShape2D_hpg5y")
-one_way_collision = true
+[node name="PlatformBossWaterGuard2" parent="." instance=ExtResource("15_dksfx")]
+position = Vector2(537, 304)
