@@ -7,6 +7,12 @@ const SAME_LEVEL_THRESHOLD := 24.0  # tuỳ map mà chỉnh
 func get_vertical_diff_to_player(player: Node2D) -> float:
 	return player.global_position.y - obj.global_position.y
 
+func get_horizontal_distance_to_player() -> float:
+	var player = obj.get_player()
+	if player == null:
+		return INF
+	return abs(player.global_position.x - obj.global_position.x)
+
 # Tính mép gần nhất theo hướng player, dùng level_bounds của Hassasin
 func get_edge_x_towards_player(player: Node2D) -> float:
 	var lb: Rect2 = obj.level_bounds

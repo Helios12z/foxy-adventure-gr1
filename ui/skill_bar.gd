@@ -52,6 +52,7 @@ func _process(_dt: float) -> void:
 				_connect_susanoo(sus_state)
 	_update_susanoo_visibility()
 	_update_room_visibility()
+	_update_mana_availability()
 
 func _connect_player(p: Node) -> void:
 	if p.has_signal("dash_cooldown_started"):
@@ -180,3 +181,51 @@ func _format_decimal(v: float) -> String:
 func _format_integer(v: float) -> String:
 	var t := int(ceil(max(0.0, v)))
 	return str(t)
+
+func _update_mana_availability() -> void:
+	if player == null:
+		return
+	
+	# Kiểm tra mana cho Dash (cần 10 mana)
+	var dash_has_mana: bool = player.can_use_skill(10) if player.has_method("can_use_skill") else true
+	var dash_is_on_cooldown: bool = dash_label.visible  # Cooldown thì label hiển thị số
+	if not dash_has_mana and not dash_is_on_cooldown:
+		# Không đủ mana và không cooldown -> hiển thị overlay trắng đen
+		dash_overlay.visible = true
+		dash_icon.visible = false
+		dash_label.visible = false
+	elif dash_has_mana and not dash_is_on_cooldown:
+		# Đủ mana và không cooldown -> hiển thị bình thường
+		dash_overlay.visible = false
+		dash_icon.visible = true
+		dash_label.visible = false
+	
+	# Kiểm tra mana cho Susanoo (cần 100 mana)
+	if sus_container and sus_container.visible:
+		var has_mana: bool = player.can_use_skill(100) if player.has_method("can_use_skill") else true
+		var is_on_cooldown: bool = sus_label.visible  # Cooldown thì label hiển thị số
+		if not has_mana and not is_on_cooldown:
+			# Không đủ mana và không cooldown -> hiển thị overlay trắng đen
+			sus_overlay.visible = true
+			sus_icon.visible = false
+			sus_label.visible = false
+		elif has_mana and not is_on_cooldown:
+			# Đủ mana và không cooldown -> hiển thị bình thường
+			sus_overlay.visible = false
+			sus_icon.visible = true
+			sus_label.visible = false
+	
+	# Kiểm tra mana cho Room (cần 50 mana)
+	if room_container and room_container.visible:
+		var has_mana: bool = player.can_use_skill(50) if player.has_method("can_use_skill") else true
+		var is_on_cooldown: bool = room_label.visible  # Cooldown thì label hiển thị số
+		if not has_mana and not is_on_cooldown:
+			# Không đủ mana và không cooldown -> hiển thị overlay trắng đen
+			room_overlay.visible = true
+			room_icon.visible = false
+			room_label.visible = false
+		elif has_mana and not is_on_cooldown:
+			# Đủ mana và không cooldown -> hiển thị bình thường
+			room_overlay.visible = false
+			room_icon.visible = true
+			room_label.visible = false

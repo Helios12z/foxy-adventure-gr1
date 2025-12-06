@@ -585,6 +585,9 @@ position = Vector2(9309, -13)
 [node name="CloudPlatform11" parent="." instance=ExtResource("41_avipa")]
 position = Vector2(9885, -77)
 
+[node name="CloudPlatform12" parent="." instance=ExtResource("41_avipa")]
+position = Vector2(10067, -133)
+
 [node name="HitArea2D" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
@@ -637,6 +640,13 @@ popup_text_lines = Array[String](["When Foxy is on a wall, he can climb, and his
 popup_keys = Array[String]([">"])
 popup_video_path = "res://asset/videos/climb_tutorial.ogv"
 
+[node name="HackTutorial" parent="." instance=ExtResource("45_m12hn")]
+position = Vector2(12381, 27)
+popup_scene = ExtResource("46_ncpwn")
+popup_text_lines = Array[String](["Wasting time on attacking enemies? Use hack mode to quickly test through the level. (Good players won't do that)"])
+popup_keys = Array[String]([">"])
+popup_video_path = "res://asset/videos/hack_tutorial.ogv"
+
 [node name="Area2D" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(4453, 30)
 popup_scene = ExtResource("46_ncpwn")
@@ -661,22 +671,25 @@ popup_video_path = "res://asset/videos/hover_tutorial.ogv"
 [node name="Area2D4" parent="." instance=ExtResource("45_m12hn")]
 position = Vector2(10316, -196)
 popup_scene = ExtResource("46_ncpwn")
-popup_text_lines = Array[String](["Press \"Shift\" when run fast to dash diagonal"])
+popup_text_lines = Array[String](["Press \"Space\" when run fast to dash diagonal"])
 popup_video_path = "res://asset/videos/dash_diagonal_tutorial.ogv"
 
 [node name="Music2" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("48_cjww2")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
 
 [node name="Music3" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("49_r8xm3")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("48_8dbd0")
 autoplay = true
 bus = &"Music"
