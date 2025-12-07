@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://xg0xxg02357j"]
+[gd_scene load_steps=20 format=4 uid="uid://xg0xxg02357j"]
 
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_5wm4i"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="1_dksfx"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://c8w4kmcjs5wmu" path="res://asset/level_3_water_palace/background/layer_2.png" id="14_juiqu"]
 [ext_resource type="PackedScene" uid="uid://72ullgkrurgm" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="15_dksfx"]
 [ext_resource type="Texture2D" uid="uid://cfhl3s5dh27jq" path="res://asset/level_3_water_palace/background/background_layer_1.png" id="17_hpg5y"]
+[ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/gobin/gobin.tscn" id="18_c4r65"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ogswb"]
 size = Vector2(442.66663, 20)
@@ -53,6 +54,10 @@ position = Vector2(374, 300)
 
 [node name="Player" parent="." instance=ExtResource("3_soo0h")]
 position = Vector2(-203, 559)
+has_blade = true
+has_fire_gem = true
+has_water_paw_gem = true
+has_water_room_gem = true
 
 [node name="SerpentEel" parent="." instance=ExtResource("13_3q5br")]
 position = Vector2(-759, 530)
@@ -118,3 +123,21 @@ texture = ExtResource("17_hpg5y")
 position = Vector2(3032, 180)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("17_hpg5y")
+
+[node name="SerpentEel2" parent="." instance=ExtResource("13_3q5br")]
+position = Vector2(1643, 518)
+
+[node name="Gobin" parent="." instance=ExtResource("18_c4r65")]
+position = Vector2(1301, 519)
+
+[node name="CrayFish" parent="." instance=ExtResource("4_r2udy")]
+position = Vector2(2239, 520)
+
+[node name="GoldenCarp" parent="." instance=ExtResource("7_r2udy")]
+position = Vector2(2505, 523)
+
+[node name="PearlFairy2" parent="." instance=ExtResource("3_ogswb")]
+position = Vector2(2046, 518)
+
+[node name="PearlFairy3" parent="." instance=ExtResource("3_ogswb")]
+position = Vector2(-461, 379)
