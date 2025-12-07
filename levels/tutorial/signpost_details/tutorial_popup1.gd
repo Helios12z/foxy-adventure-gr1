@@ -172,10 +172,23 @@ func _update_content() -> void:
 			_video.stop()
 
 func _input(event: InputEvent) -> void:
-	# Đóng popup khi bấm phím bất kỳ hoặc click chuột
-	if visible and (event is InputEventKey and event.pressed and not event.echo):
-		close_popup()
-		get_viewport().set_input_as_handled()
+	if not visible:
+		return
+		
+	if event is InputEventKey and event.pressed and not event.echo:
+		# Navigation với phím mũi tên - không đóng popup
+		if event.keycode == KEY_LEFT:
+			_on_left_button_pressed()
+			get_viewport().set_input_as_handled()
+			return
+		elif event.keycode == KEY_RIGHT:
+			_on_right_button_pressed()
+			get_viewport().set_input_as_handled()
+			return
+		else:
+			# Đóng popup khi bấm phím bất kỳ khác (trừ mũi tên trái/phải)
+			close_popup()
+			get_viewport().set_input_as_handled()
 
 func _on_overlay_color_rect_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
@@ -186,18 +199,53 @@ func _on_close_texture_button_pressed() -> void:
 
 # Ghi đè hide để tự động resume game
 func close_popup() -> void:
-	# Đóng popup với hiệu ứng thu nhỏ và mờ dần, sau đó resume game
+	# Tìm vị trí của tutorial button trong HUD
+	var tutorial_button_pos := _get_tutorial_button_position()
+	
+	# Đóng popup với hiệu ứng hút về tutorial button
 	if _panel:
 		var t := create_tween()
-		t.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		t.tween_property(_panel, "scale", Vector2(0.6, 0.6), 0.16)
-		t.finished.connect(Callable(self, "_finalize_close"))
+		t.set_parallel(true)
+		t.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		
+		# Thu nhỏ panel
+		t.tween_property(_panel, "scale", Vector2(0.0, 0.0), 0.4)
+		
+		# Di chuyển panel về vị trí tutorial button
+		if tutorial_button_pos != Vector2.ZERO:
+			var target_pos = tutorial_button_pos - _panel.global_position
+			t.tween_property(_panel, "position", _panel.position + target_pos, 0.4)
+		
+		t.chain().tween_callback(Callable(self, "_finalize_close"))
 	else:
 		_finalize_close()
+		
+	# Fade overlay
 	if _overlay:
 		var to := create_tween()
 		to.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		to.tween_property(_overlay, "modulate:a", 0.0, 0.16)
+		to.tween_property(_overlay, "modulate:a", 0.0, 0.3)
+
+func _get_tutorial_button_position() -> Vector2:
+	# Tìm tutorial button trong scene tree
+	var tree := get_tree()
+	if not tree:
+		return Vector2.ZERO
+	
+	var root := tree.current_scene
+	if not root:
+		return Vector2.ZERO
+	
+	# Tìm HUD và tutorial button
+	var hud = root.find_child("HUD", true, false)
+	if not hud:
+		return Vector2.ZERO
+	
+	var tutorial_button = hud.find_child("TutorialTextureButton", true, false)
+	if tutorial_button and tutorial_button is Control:
+		return (tutorial_button as Control).global_position
+	
+	return Vector2.ZERO
 
 func _finalize_close() -> void:
 	visible = false
