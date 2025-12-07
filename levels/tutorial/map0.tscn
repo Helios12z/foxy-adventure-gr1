@@ -175,7 +175,7 @@ camera_bottom_limit_y = -200.0
 comic_pages_paths = Array[String](["res://asset/comics/start_game/start_game_1.png", "res://asset/comics/start_game/start_game_2.png", "res://asset/comics/start_game/start_game_3.png", "res://asset/comics/start_game/start_game_4.png", "res://asset/comics/start_game/start_game_5.png", "res://asset/comics/start_game/start_game_6.png", "res://asset/comics/start_game/start_game_7.png", "res://asset/comics/start_game/start_game_8.png"])
 
 [node name="Crystal-mauler" parent="." instance=ExtResource("2_7hlcu")]
-position = Vector2(545, 73)
+position = Vector2(1356, 68)
 scale = Vector2(1.3, 1.3)
 
 [node name="Player" parent="." instance=ExtResource("3_ayhlk")]
@@ -386,33 +386,41 @@ shape = SubResource("RectangleShape2D_imecc")
 [node name="KeyBoardKeyHints" type="Node2D" parent="."]
 
 [node name="Node" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(-71, -121)
+position = Vector2(-39, -109)
 key_text = "A"
 
 [node name="Node4" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(-8, -121)
+position = Vector2(24, -109)
 key_text = "D"
 
+[node name="Node7" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
+position = Vector2(585, -137)
+key_text = "W"
+
+[node name="Node8" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
+position = Vector2(652, -137)
+key_text = "↑"
+
 [node name="Node2" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(68, -57)
+position = Vector2(618, -80)
 key_text = "Space"
 custom_scale = Vector2(0.3, 0.07)
 
 [node name="Node3" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(138, -118)
-key_text = "<"
+position = Vector2(170, -106)
+key_text = "←"
 
 [node name="Node5" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(200, -118)
-key_text = ">"
+position = Vector2(232, -106)
+key_text = "→"
 
 [node name="Node6" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(545, -56)
+position = Vector2(1228, -72)
 scale = Vector2(0.8, 0.8)
 key_text = "F"
 
 [node name="EnemyHouse" parent="." instance=ExtResource("36_ytypm")]
-position = Vector2(1342, -51)
+position = Vector2(1823, -52)
 
 [node name="EnemyExitPoint" type="Marker2D" parent="."]
 position = Vector2(1776, 61)
@@ -429,82 +437,105 @@ script = ExtResource("40_tutor")
 [node name="Signposts" type="Node2D" parent="."]
 
 [node name="Area2D" parent="Signposts" instance=ExtResource("37_7hlcu")]
-position = Vector2(318, 28)
+position = Vector2(1029, 28)
 popup_scene = ExtResource("38_popup")
-popup_text_lines = Array[String](["Press F button for interacting with npc"])
+popup_text_lines = Array[String](["Press F button for interacting with npc, platform an d chest"])
 popup_keys = Array[String](["F"])
 popup_video_path = "res://asset/videos/interact_button_tutorial.ogv"
 
 [node name="Area2D2" parent="Signposts" instance=ExtResource("37_7hlcu")]
-position = Vector2(1106, 28)
+position = Vector2(1592, 28)
 popup_scene = ExtResource("38_popup")
-popup_text_lines = Array[String](["Press 'C' button to attack"])
+popup_text_lines = Array[String](["Press 'C' or 'Enter' button to attack"])
 popup_keys = Array[String](["C"])
 popup_video_path = "res://asset/videos/attack_tutorial.ogv"
 
 [node name="Label" type="Label" parent="."]
-offset_left = 449.0
-offset_top = -65.0
-offset_right = 519.0
-offset_bottom = -42.0
+offset_left = 1132.0
+offset_top = -81.0
+offset_right = 1202.0
+offset_bottom = -58.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "Press"
 
 [node name="Label3" type="Label" parent="."]
-offset_left = 1130.0
-offset_top = -202.0
-offset_right = 1200.0
-offset_bottom = -179.0
+offset_left = 1636.0
+offset_top = -212.0
+offset_right = 1706.0
+offset_bottom = -189.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "Press"
 
 [node name="Label5" type="Label" parent="."]
-offset_left = 1718.0
-offset_top = -67.0
-offset_right = 1788.0
-offset_bottom = -44.0
+offset_left = 2074.0
+offset_top = -55.0
+offset_right = 2144.0
+offset_bottom = -32.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "Press"
 
 [node name="Label4" type="Label" parent="."]
-offset_left = 1270.0
-offset_top = -209.0
-offset_right = 1555.0
-offset_bottom = -174.0
+offset_left = 1776.0
+offset_top = -219.0
+offset_right = 2061.0
+offset_bottom = -184.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "to attack and destroy enemies's house"
 autowrap_mode = 2
 
 [node name="Label6" type="Label" parent="."]
-offset_left = 1860.0
-offset_top = -77.0
-offset_right = 2145.0
-offset_bottom = -42.0
+offset_left = 2216.0
+offset_top = -65.0
+offset_right = 2501.0
+offset_bottom = -30.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "to teleport to the next stage"
 autowrap_mode = 2
 
 [node name="Label2" type="Label" parent="."]
-offset_left = 576.0
-offset_top = -73.0
-offset_right = 852.0
-offset_bottom = -19.0
+offset_left = 1259.0
+offset_top = -89.0
+offset_right = 1535.0
+offset_bottom = -35.0
 theme_override_fonts/font = ExtResource("41_lybv0")
 text = "to receive blade from Crystal Mauler
 "
 autowrap_mode = 2
 
+[node name="Label7" type="Label" parent="."]
+offset_left = -68.0
+offset_top = -166.0
+offset_right = 282.0
+offset_bottom = -112.0
+theme_override_fonts/font = ExtResource("41_lybv0")
+text = "Use the keys above to move
+"
+autowrap_mode = 2
+
+[node name="Label8" type="Label" parent="."]
+offset_left = 452.0
+offset_top = -207.0
+offset_right = 802.0
+offset_bottom = -153.0
+theme_override_fonts/font = ExtResource("41_lybv0")
+text = "Use the keys above to jump
+(Foxy can double jump)
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="Node" parent="." instance=ExtResource("36_21dun")]
-position = Vector2(1235, -191)
+position = Vector2(1741, -201)
 key_text = "C"
 
 [node name="Door" parent="." instance=ExtResource("42_vaqrb")]
-position = Vector2(1774, 70)
+position = Vector2(2221, 69)
 target_stage = "uid://65dl3olpohwm"
 is_cross_scene = true
 
 [node name="Node2" parent="." instance=ExtResource("36_21dun")]
-position = Vector2(1824, -60)
+position = Vector2(2180, -48)
 key_text = "F"
 
 [node name="Music2" type="AudioStreamPlayer" parent="."]
