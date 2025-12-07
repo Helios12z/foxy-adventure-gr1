@@ -5,6 +5,7 @@ extends EnemyCharacter
 # PearlAltar is inside PlatformBossWaterGuard -> StaticBody2D
 # Markers are in PlatformBossWaterGuard -> SpawnEnemyMarkder2D
 @export var spawn_marker_container_path: NodePath = "../../SpawnEnemyMarkder2D"
+@export var spawn_pearl_fairy_marker_container_path: NodePath = "../../SpawnPearlFairyMarker2D"
 
 const ENEMY_SCENES = {
 	"pearl_fairy": preload("res://scenes/enemies/pearl_fairy/pearl_fairy.tscn"),
@@ -54,22 +55,11 @@ func spawn_enemy() -> void:
 		var remaining = ["golden_carp", "serpent_eel", "cray_fish"]
 		enemy_scene = ENEMY_SCENES[remaining.pick_random()]
 	
-	var markers_container = get_node_or_null(spawn_marker_container_path)
+	var target_container_path = spawn_pearl_fairy_marker_container_path if is_pearl_fairy else spawn_marker_container_path
+	var markers_container = get_node_or_null(target_container_path)
+	
 	if markers_container and markers_container.get_child_count() > 0:
-		var markers = markers_container.get_children()
-		var available_markers = []
-		
-		if is_pearl_fairy:
-			for m in markers:
-				if m.name not in ["Marker2D", "Marker2D2", "Marker2D3"]:
-					available_markers.append(m)
-		else:
-			available_markers = markers
-			
-		if available_markers.is_empty():
-			available_markers = markers # Fallback if no markers left
-			
-		var marker = available_markers.pick_random()
+		var marker = markers_container.get_children().pick_random()
 		var enemy = enemy_scene.instantiate()
 		
 		# Add to group to track count
