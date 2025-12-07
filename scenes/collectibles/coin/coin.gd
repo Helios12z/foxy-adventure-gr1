@@ -23,6 +23,7 @@ var p3: Vector2
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var ray_down: RayCast2D = $RayCast2D
+@onready var coin_sfx: AudioStreamPlayer = $Coin
 
 
 func _ready() -> void:
@@ -114,11 +115,16 @@ func collect_coin() -> void:
 		return
 
 	is_collected = true   # <<-- CHỐT QUAN TRỌNG (chỉ nhặt 1 lần)
+	
+	# Dừng bay nếu đang bay
+	is_flying = false
+	just_landed = false
 
 	GameManager.inventory_system.add_coin(coin_amount)
 	if persistent and not coin_id.is_empty():
 		GameManager.mark_coin_collected(coin_id)
 
+	coin_sfx.play()  # Phát âm thanh ăn coin
 	sprite.play("disappearance")
 	await sprite.animation_finished
 	queue_free()
