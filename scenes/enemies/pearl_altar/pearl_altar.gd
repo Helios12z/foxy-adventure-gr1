@@ -16,6 +16,7 @@ const ENEMY_SCENES = {
 
 @onready var flicker_light: FlickerLight2D = $FlickerLight2D
 @onready var sprite: AnimatedSprite2D = $Direction/AnimatedSprite2D
+@onready var spawn_origin: Marker2D = $SpawnEnemyMarker2D
 @onready var spawn_timer: Timer = Timer.new()
 
 var base_scale: Vector2
@@ -66,20 +67,39 @@ func spawn_enemy() -> void:
 		enemy.add_to_group("spawned_minions")
 		
 		# Scale relative to the prefab's original scale to maintain consistency
-		# User requested 0.75 scale previously. 
-		# Multiplying ensures we don't distort enemies with different base scales.
 		enemy.scale *= 0.85
 		
 		# Add enemy to the current scene to be independent of the altar
 		var parent = get_tree().current_scene
 		if parent:
 			parent.add_child(enemy)
-			enemy.global_position = marker.global_position
 			
-			# Fix bug: Pearl Fairy flies to (0,0) because _ready() runs before we set position.
-			# Update initial_marker_pos manually after moving the enemy.
-			if "initial_marker_pos" in enemy:
-				enemy.initial_marker_pos = marker.global_position
+			# Start at altar's spawn point
+			var start_pos = spawn_origin.global_position if spawn_origin else global_position
+			enemy.global_position = start_pos
+			enemy.modulate.a = 0.0
+			
+			# Disable physics and hurt collision during spawn animation
+			enemy.set_physics_process(false)
+			if enemy.has_method("set_hurt_collision"):
+				enemy.set_hurt_collision(false)
+			
+			var target_pos = marker.global_position
+			
+			var t = create_tween()
+			t.set_parallel(true)
+			t.tween_property(enemy, "modulate:a", 1.0, 0.5)
+			t.tween_property(enemy, "global_position", target_pos, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			
+			t.chain().tween_callback(func():
+				if is_instance_valid(enemy):
+					enemy.set_physics_process(true)
+					if enemy.has_method("set_hurt_collision"):
+						enemy.set_hurt_collision(true)
+					# Fix Pearl Fairy home position
+					if "initial_marker_pos" in enemy:
+						enemy.initial_marker_pos = target_pos
+			)
 
 func trigger_spawn_effects() -> void:
 	if flicker_light:

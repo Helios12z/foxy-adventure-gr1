@@ -6,4 +6,5 @@ signal hurt(direction: Vector2, damage: float)
 
 # called when take damage
 func take_damage(direction: Vector2, damage: float):
+	print(damage)
 	hurt.emit(direction, damage)
