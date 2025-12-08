@@ -151,6 +151,7 @@ func control_room() -> bool:
 	
 func control_giant_mode() ->bool:
 	if Input.is_action_just_pressed("skill_giant") and obj.has_water_paw_gem and obj.can_use_giant and obj.can_use_skill(giant_mana):
+		obj.take_mana(giant_mana)
 		change_state(fsm.states.giant)
 		return true
 	return false

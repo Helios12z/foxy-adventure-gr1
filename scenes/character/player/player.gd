@@ -165,6 +165,8 @@ func _physics_process(delta: float) -> void:
 	
 
 func _process(_delta: float) -> void:
+	if $Timer/GiantDuration.is_stopped() == false:
+		print("Giant time left: ", $Timer/GiantDuration.time_left)
 	if dash_on_cooldown and dash_cooldown_timer != null:
 		dash_cooldown_updated.emit(dash_cooldown_timer.time_left)
 	if room_on_cooldown and room_cooldown_timer != null:
@@ -466,6 +468,14 @@ func activate_giant_form() -> void:
 	_orig_sprite = animated_sprite
 
 	# ----- APPLY GIANT MODE -----
+	is_giant_mode = true
+
+	set_physics_process(false)
+	animated_sprite.play("transform_giant")
+	await animated_sprite.animation_finished
+	set_physics_process(true)
+
+	print("Activate Giant Form for: ", giant_duration, " seconds")
 	resize_all_collisions()
 	has_blade = true
 	$Direction/HitArea2D.damage = giant_damage
@@ -500,6 +510,10 @@ func resize_all_collisions():
 	
 func inactive_giant_form():
 		# Reset sprite
+	set_physics_process(false)
+	animated_sprite.play("transform_normal")
+	await animated_sprite.animation_finished
+	set_physics_process(true)
 	is_giant_mode = false
 	if _orig_sprite != null:
 		set_animated_sprite(_orig_sprite)
@@ -538,4 +552,5 @@ func _on_giant_duration_timeout() -> void:
 
 
 func _on_giant_cool_down_timeout() -> void:
-	can_use_giant = false
+	can_use_giant = true
+	
