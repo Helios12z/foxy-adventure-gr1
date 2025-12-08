@@ -1,7 +1,7 @@
 class_name PlayerState
 extends FSMState
 
-@export var dash_mana = 10
+@export var dash_mana : int = 10
 
 #Control moving and changing state to run
 #Return true if moving
@@ -146,4 +146,11 @@ func control_room() -> bool:
 			obj.add_child(inst)
 			obj.start_room_cooldown()
 			return true
+	return false
+	
+func control_giant_mode() ->bool:
+	if Input.is_action_just_pressed("skill_giant"):
+		obj.is_giant_mode = true
+		change_state(fsm.states.giant)
+		return true
 	return false
