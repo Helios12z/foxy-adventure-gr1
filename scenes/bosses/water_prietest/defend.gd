@@ -23,23 +23,27 @@ func _update(delta: float) -> void:
 		obj.start_defend_cooldown()
 		change_state(fsm.states.idle)
 
-func should_block_damage(damage: int, attack_direction: Vector2) -> bool:
-	"""
-	Returns true if damage should be blocked, false if damage should be applied
-	"""
+func should_block_damage(attack_direction: Vector2) -> bool:
 	if not _is_blocking:
-		return false  # Not blocking yet
+		return false  # chưa vào phase block
 
-	# Check if attack is from front direction (can only block forward)
+	# Attack đi từ player -> boss
+	var facing_dir := 1 if not obj.animated_sprite_2d.flip_h else -1
+	var attack_dir = sign(attack_direction.x)
+
+	# Nếu đòn đánh từ phía trước mặt (hoặc gần như từ trước)
+	return attack_dir == facing_dir or attack_dir == 0
+
+func check_and_block_attack(hit_area: HitArea2D) -> bool:
+	if not _is_blocking:
+		return false
+
+	var attack_direction = obj.global_position - hit_area.global_position
 	var facing_dir = 1 if not obj.animated_sprite_2d.flip_h else -1
 	var attack_dir = sign(attack_direction.x)
 
-	# Block attacks from front (180 degree arc)
-	if attack_dir == facing_dir or attack_dir == 0:
-		# Play block effect/spark if needed
-		return true  # Damage blocked
-	else:
-		return false  # Take damage from behind/sides
+	return attack_dir == facing_dir or attack_dir == 0
+	# KHÔNG gọi flash ở đây nữa
 
 func _exit() -> void:
 	_is_blocking = false

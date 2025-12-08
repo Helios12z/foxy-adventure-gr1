@@ -183,6 +183,10 @@ func _on_atk1_frame_changed() -> void:
 	var current_frame = sprite.frame
 	var active = (current_frame == 2 or current_frame == 3)
 
+	# Play slash sound at frame 2 when attack becomes active
+	if current_frame == 2 and obj.slash:
+		obj.slash.play()
+
 	if obj.atk1_collision_shape_2d:
 		obj.atk1_collision_shape_2d.disabled = not active
 
@@ -281,11 +285,17 @@ func _on_atk2_frame_changed() -> void:
 	if frame == 2 or frame == 3:
 		if obj.atk1_collision_shape_2d:
 			obj.atk1_collision_shape_2d.disabled = false
+		# Play slash sound at first active frame
+		if frame == 2 and obj.slash:
+			obj.slash.play()
 
 	# Frame 4-5: tắt atk1, bật atk2 hit area 2D (right) bình thường
 	elif frame == 4 or frame == 5:
 		if obj.atk2_collision_shape_2d_right:
 			obj.atk2_collision_shape_2d_right.disabled = false
+		# Play slash sound at frame 4 when new attack starts
+		if frame == 4 and obj.slash:
+			obj.slash.play()
 
 	# Frame 7: bật atk2 hit area 2D (right) nhưng:
 	# - thu nhỏ chiều X còn 1/2, cắt nửa bên phải
@@ -301,11 +311,17 @@ func _on_atk2_frame_changed() -> void:
 			obj.atk2_collision_shape_2d_right.position = base_pos + Vector2(-base_size.x * 0.25, 0.0)
 
 			obj.atk2_collision_shape_2d_right.disabled = false
+		# Play slash sound at frame 7
+		if obj.slash:
+			obj.slash.play()
 
 	# Frame 9: bật atk2 hit area 2D2, chỉ tồn tại tại frame 9
 	elif frame == 9:
 		if obj.atk2_collision_shape_2d_left:
 			obj.atk2_collision_shape_2d_left.disabled = false
+		# Play slash sound at frame 9
+		if obj.slash:
+			obj.slash.play()
 
 	# Frame 14–17:
 	# - bật lại atk1 hit area 2D
@@ -322,6 +338,9 @@ func _on_atk2_frame_changed() -> void:
 			obj.atk1_collision_shape_2d.position = base_pos1 + Vector2(base_size1.x * 0.5, 0.0)
 
 			obj.atk1_collision_shape_2d.disabled = false
+		# Play slash sound at frame 14 when final attack starts
+		if frame == 14 and obj.slash:
+			obj.slash.play()
 
 func _on_atk2_anim_finished() -> void:
 	var sprite = obj.animated_sprite_2d
@@ -426,11 +445,17 @@ func _on_atk3_frame_changed() -> void:
 		if frame == 2 or frame == 3:
 			if obj.atk1_collision_shape_2d:
 				obj.atk1_collision_shape_2d.disabled = false
+		# Play slash sound at first active frame
+		if frame == 2 and obj.slash:
+			obj.slash.play()
 
 		# Frame 4-5: tắt atk1, bật atk2 hit area 2D (right) bình thường
 		elif frame == 4 or frame == 5:
 			if obj.atk2_collision_shape_2d_right:
 				obj.atk2_collision_shape_2d_right.disabled = false
+		# Play slash sound at frame 4
+		if frame == 4 and obj.slash:
+			obj.slash.play()
 
 		# Frame 7: bật atk2 hit area 2D (right) nhưng:
 		# - thu nhỏ chiều X còn 1/2, cắt nửa bên phải
@@ -446,11 +471,17 @@ func _on_atk3_frame_changed() -> void:
 				obj.atk2_collision_shape_2d_right.position = base_pos + Vector2(-base_size.x * 0.25, 0.0)
 
 				obj.atk2_collision_shape_2d_right.disabled = false
+		# Play slash sound at frame 7
+		if frame == 7 and obj.slash:
+			obj.slash.play()
 
 		# Frame 9: bật atk2 hit area 2D2, chỉ tồn tại tại frame 9
 		elif frame == 9:
 			if obj.atk2_collision_shape_2d_left:
 				obj.atk2_collision_shape_2d_left.disabled = false
+		# Play slash sound at frame 9
+		if frame == 9 and obj.slash:
+			obj.slash.play()
 
 		# Frame 14–16:
 		# - bật lại atk1 hit area 2D
@@ -467,6 +498,9 @@ func _on_atk3_frame_changed() -> void:
 				obj.atk1_collision_shape_2d.position = base_pos1 + Vector2(base_size1.x * 0.5, 0.0)
 
 				obj.atk1_collision_shape_2d.disabled = false
+		# Play slash sound at frame 14
+		if frame == 14 and obj.slash:
+			obj.slash.play()
 
 		return
 	# ----- HẾT PHẦN ĐẦU GIỐNG ATK2 -----
@@ -489,6 +523,9 @@ func _on_atk3_frame_changed() -> void:
 	if frame == 17:
 		if obj.atk3_collision_shape_2d:
 			obj.atk3_collision_shape_2d.disabled = false
+		# Play slash sound at frame 17
+		if obj.slash:
+			obj.slash.play()
 
 	# Frame 18: bật atk2 hit area 2D2 (left),
 	# dịch sang phải một chút và kéo dài xuống dưới theo trục Y (Y * 2)
@@ -503,6 +540,9 @@ func _on_atk3_frame_changed() -> void:
 			obj.atk2_collision_shape_2d_left.position = base_pos_left + Vector2(base_size_left.x * 0.25, base_size_left.y * 0.5)
 
 			obj.atk2_collision_shape_2d_left.disabled = false
+		# Play slash sound at frame 18
+		if obj.slash:
+			obj.slash.play()
 
 	# Frame 19-25: dùng atk2 hit area 2D (right) với biến đổi dần
 	elif frame >= 19 and frame <= 25:
@@ -528,6 +568,9 @@ func _on_atk3_frame_changed() -> void:
 			rect_right.size = size
 			obj.atk2_collision_shape_2d_right.position = pos
 			obj.atk2_collision_shape_2d_right.disabled = false
+		# Play slash sound at frame 19 when final attack sequence starts
+		if frame == 19 and obj.slash:
+			obj.slash.play()
 
 func _on_atk3_anim_finished() -> void:
 	var sprite = obj.animated_sprite_2d
@@ -603,6 +646,9 @@ func _on_atk_super_frame_changed() -> void:
 		if obj.atk_super_collision_shape_2d:
 			_reset_atk_shapes_to_base()  # Đảm bảo về vị trí gốc
 			obj.atk_super_collision_shape_2d.disabled = false
+		# Play slash sound at frame 5 when first super attack starts
+		if current_frame == 5 and obj.slash:
+			obj.slash.play()
 	# Frame 12: tắt hitbox
 	elif current_frame == 12:
 		if obj.atk_super_collision_shape_2d:
@@ -627,6 +673,9 @@ func _on_atk_super_frame_changed() -> void:
 			# Giữ vị trí đã di chuyển xuống (xuống một chút so với gốc)
 			obj.atk_super_collision_shape_2d.position = _atk_super_shape_base_position + Vector2(0, 20.0)
 			obj.atk_super_collision_shape_2d.disabled = false
+		# Play slash sound at frame 18 when second super attack starts
+		if current_frame == 18 and obj.slash:
+			obj.slash.play()
 	# Frame 30 trở đi: tắt hitbox
 	else:
 		if obj.atk_super_collision_shape_2d:
@@ -727,6 +776,9 @@ func _on_atk_air_frame_changed() -> void:
 			obj.atk1_collision_shape_2d.position = base_pos + Vector2(base_size.x, -base_size.y * 1.5)
 
 			obj.atk1_collision_shape_2d.disabled = false
+		# Play slash sound at frame 3 when air attack becomes active
+		if current_frame == 3 and obj.slash:
+			obj.slash.play()
 	else:
 		# Frame 6 trở đi: tắt hitbox
 		if obj.atk1_collision_shape_2d:

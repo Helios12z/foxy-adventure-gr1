@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="12_tqigs"]
 [ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="13_7sno5"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="14_y1l7a"]
-[ext_resource type="Script" uid="uid://f8dvykfeiiit" path="res://levels/boss_levels/water_prietress/boss_hud.gd" id="16_qntum"]
+[ext_resource type="Script" path="res://levels/boss_levels/water_prietress/boss_hud.gd" id="16_qntum"]
 [ext_resource type="AudioStream" uid="uid://d3fi3k7bfsfo4" path="res://asset/sounds/water_prietess/level_ambient.mp3" id="17_7sno5"]
 [ext_resource type="Script" uid="uid://beek7o2t13qa5" path="res://scenes/bosses/water_prietest/jump_marker_2d.gd" id="18_jump_marker"]
 
@@ -379,14 +379,13 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.773859, 0, 0, 1)
 theme_override_fonts/font = ExtResource("11_icah2")
 theme_override_font_sizes/font_size = 24
-text = "STRANGE FEMALE SOLDIER"
+text = "WATER PRIETESS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerHud" parent="CanvasLayer" instance=ExtResource("12_tqigs")]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("13_7sno5")]
-offset_bottom = 52.0
 
 [node name="CoinAndKeyContainer" parent="CanvasLayer" instance=ExtResource("14_y1l7a")]
 
