@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dak21nauag2o"
-path="res://.godot/imported/transform.png-b656c9384f18e32f44130b92214cf6c0.ctex"
+uid="uid://cspvupr6m0s6h"
+path="res://.godot/imported/hurt 6.png-d107c4eb8e230c2593bcdc89947019bb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/foxy/foxy/giant_foxy/transform.png"
-dest_files=["res://.godot/imported/transform.png-b656c9384f18e32f44130b92214cf6c0.ctex"]
+source_file="res://asset/foxy/foxy/giant_foxy/hurt 6.png"
+dest_files=["res://.godot/imported/hurt 6.png-d107c4eb8e230c2593bcdc89947019bb.ctex"]
 
 [params]
 

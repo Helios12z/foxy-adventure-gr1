@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckj10qydm6uv7"
-path="res://.godot/imported/jump_sprite_sheet.png-26f0afd6fe537389f216bb2d531b4ab8.ctex"
+uid="uid://b3io18rugiqqa"
+path="res://.godot/imported/jump_sprite_sheet (1)4.png-4ed2d07ad049bce58122c21a91e016a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/foxy/foxy/giant_foxy/jump_sprite_sheet.png"
-dest_files=["res://.godot/imported/jump_sprite_sheet.png-26f0afd6fe537389f216bb2d531b4ab8.ctex"]
+source_file="res://asset/foxy/foxy/giant_foxy/jump_sprite_sheet (1)4.png"
+dest_files=["res://.godot/imported/jump_sprite_sheet (1)4.png-4ed2d07ad049bce58122c21a91e016a1.ctex"]
 
 [params]
 

@@ -58,9 +58,9 @@ var room_cooldown_timer: Timer = null
 @export var giant_damage = 50
 @export var giant_speed_multiplier = 1.5
 @export var giant_jump_multiplier = 1.5
-@export var giant_cool_down = 30
 @export var max_health_giant_multiplier = 2
 @onready var is_giant_mode = false
+@onready var can_use_giant : bool = true
 @onready var body_collision: CollisionShape2D = $CollisionShape2D
 @onready var hit_collision: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 @onready var hurt_collision: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
@@ -76,6 +76,10 @@ var _orig_hurt_pos: Vector2
 var _orig_hit_pos: Vector2
 var _orig_sprite: Node = null
 var _orig_has_blade: bool 
+
+#timer
+@export var giant_duration = 30
+@export var giant_cool_down = 20
 
 #signal take_dame
 
@@ -472,26 +476,26 @@ func activate_giant_form() -> void:
 	movement_speed *= giant_speed_multiplier
 	jump_speed *= giant_jump_multiplier
 	set_animated_sprite($Direction/GiantAnimatedSprite2D)
-	$GiantCoolDown.start(giant_cool_down)
+	$Timer/GiantDuration.start(giant_duration)
 
 
 
 func resize_all_collisions():
 	# --- Body Collision (CapsuleShape2D) ---
 	var body_shape := body_collision.shape as CapsuleShape2D
-	body_shape.radius = 80
-	body_shape.height = 80
-	body_collision.position = Vector2(-9.0, 5.0)
+	body_shape.radius = 40
+	body_shape.height = 100
+	body_collision.position = Vector2(-11.0, -10.0)
 
 	# --- Hurt Collision (CapsuleShape2D) ---
 	var hurt_shape := hurt_collision.shape as CapsuleShape2D
-	hurt_shape.radius = 80
-	hurt_shape.height = 80
-	hurt_collision.position = Vector2(-9.0, 5.0)  # từ ảnh trước của bạn
+	hurt_shape.radius = 40
+	hurt_shape.height = 100
+	hurt_collision.position = Vector2(-11.0, -10.0)  # từ ảnh trước của bạn
 
 	# --- Hit Collision (RectangleShape2D) ---
 	var hit_shape := hit_collision.shape as RectangleShape2D
-	hit_shape.size = Vector2(120, 90)
+	hit_shape.size = Vector2(100, 90)
 	hit_collision.position = Vector2(38.0, -3.839)
 	
 func inactive_giant_form():
@@ -526,6 +530,12 @@ func inactive_giant_form():
 	var hit_shape := hit_collision.shape as RectangleShape2D
 	hit_shape.size = _orig_hit_shape_size
 	hit_collision.position = _orig_hit_pos
+	can_use_giant = false
+	$Timer/GiantCoolDown.start(giant_cool_down)
+
+func _on_giant_duration_timeout() -> void:
+	inactive_giant_form()
+
 
 func _on_giant_cool_down_timeout() -> void:
-	inactive_giant_form()
+	can_use_giant = false

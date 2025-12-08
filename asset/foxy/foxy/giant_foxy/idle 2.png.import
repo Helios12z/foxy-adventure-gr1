@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbj7o67nh5qwj"
-path="res://.godot/imported/Gemini_Generated_Image_1k3ajw1k3ajw1k3a1-removebg-preview-Sheet.png-5241e630e6252cc1674a9a67cc8a7e44.ctex"
+uid="uid://d1bc3tdw71fq5"
+path="res://.godot/imported/idle 2.png-4f002f89f4d890d73cdae058dbb520b4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/foxy/foxy/giant_foxy/Gemini_Generated_Image_1k3ajw1k3ajw1k3a1-removebg-preview-Sheet.png"
-dest_files=["res://.godot/imported/Gemini_Generated_Image_1k3ajw1k3ajw1k3a1-removebg-preview-Sheet.png-5241e630e6252cc1674a9a67cc8a7e44.ctex"]
+source_file="res://asset/foxy/foxy/giant_foxy/idle 2.png"
+dest_files=["res://.godot/imported/idle 2.png-4f002f89f4d890d73cdae058dbb520b4.ctex"]
 
 [params]
 

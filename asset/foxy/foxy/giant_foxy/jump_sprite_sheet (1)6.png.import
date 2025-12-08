@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3mmcrd5lbwhq"
-path="res://.godot/imported/hurt_giant.png-aec9fc95d27cc7f2965facfebf4cd5d1.ctex"
+uid="uid://64ypfon7rt0w"
+path="res://.godot/imported/jump_sprite_sheet (1)6.png-f8a5c9e3013771c7c770bbce9165fcc3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/foxy/foxy/giant_foxy/hurt_giant.png"
-dest_files=["res://.godot/imported/hurt_giant.png-aec9fc95d27cc7f2965facfebf4cd5d1.ctex"]
+source_file="res://asset/foxy/foxy/giant_foxy/jump_sprite_sheet (1)6.png"
+dest_files=["res://.godot/imported/jump_sprite_sheet (1)6.png-f8a5c9e3013771c7c770bbce9165fcc3.ctex"]
 
 [params]
 
