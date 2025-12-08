@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://xg0xxg02357j"]
+[gd_scene load_steps=20 format=4 uid="uid://xg0xxg02357j"]
 
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_5wm4i"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="1_dksfx"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://cfhl3s5dh27jq" path="res://asset/level_3_water_palace/background/background_layer_1.png" id="17_hpg5y"]
 [ext_resource type="PackedScene" uid="uid://dqrpvlvc54tyk" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_721lu"]
 [ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/gobin/gobin.tscn" id="18_c4r65"]
+[ext_resource type="PackedScene" uid="uid://nx0guycix2h4" path="res://scenes/enemies/turtle_light/turtle_light.tscn" id="19_721lu"]
 
 [node name="TestPear" type="Node2D"]
 script = ExtResource("1_hpg5y")
@@ -115,3 +116,6 @@ position = Vector2(2046, 518)
 [node name="WaterGoddessPlatform" parent="." instance=ExtResource("18_721lu")]
 position = Vector2(1142, 302)
 scale = Vector2(1, 1)
+
+[node name="TurtleLight" parent="." instance=ExtResource("19_721lu")]
+position = Vector2(-152, 538)
