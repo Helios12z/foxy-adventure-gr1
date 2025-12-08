@@ -479,8 +479,8 @@ func activate_giant_form() -> void:
 func resize_all_collisions():
 	# --- Body Collision (CapsuleShape2D) ---
 	var body_shape := body_collision.shape as CapsuleShape2D
-	body_shape.radius = 10
-	body_shape.height = 20
+	body_shape.radius = 80
+	body_shape.height = 80
 	body_collision.position = Vector2(-9.0, 5.0)
 
 	# --- Hurt Collision (CapsuleShape2D) ---

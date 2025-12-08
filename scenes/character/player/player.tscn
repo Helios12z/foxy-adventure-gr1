@@ -34,8 +34,6 @@
 [ext_resource type="Script" uid="uid://dpwira2jef5n4" path="res://scenes/character/player/states/water_paw.gd" id="47_waterpaw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkxg8"]
-radius = 2.456146
-height = 10.118551
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b1yw4"]
 radius = 29.76
@@ -313,11 +311,11 @@ movement_speed = 120.0
 max_health = 5000
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.999999, -13.129631)
-scale = Vector2(5.6999865, -3.3345423)
+position = Vector2(0, -12)
 shape = SubResource("CapsuleShape2D_rkxg8")
 
 [node name="HoverCollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(1, -6)
 shape = SubResource("CircleShape2D_b1yw4")
 disabled = true
@@ -383,6 +381,7 @@ position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_lcjji")
 
 [node name="HoverHurtArea2D" type="Area2D" parent="Direction"]
+visible = false
 self_modulate = Color(1, 0.407843, 0.266667, 1)
 collision_layer = 4
 collision_mask = 0
@@ -406,6 +405,7 @@ position = Vector2(17.9167, -15.5)
 shape = SubResource("RectangleShape2D_gfavw")
 
 [node name="PawHitArea2D" type="Area2D" parent="Direction"]
+visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("7_t4wjd")
@@ -416,6 +416,7 @@ shape = SubResource("RectangleShape2D_psaxl")
 disabled = true
 
 [node name="FallHurtArea2D" type="Area2D" parent="Direction"]
+visible = false
 collision_layer = 128
 collision_mask = 0
 script = ExtResource("10_68dt2")
@@ -427,6 +428,7 @@ shape = SubResource("RectangleShape2D_t4wjd")
 debug_color = Color(0.0608557, 0.0185072, 0.0127914, 0.42)
 
 [node name="MagnetArea2D" type="Area2D" parent="Direction"]
+visible = false
 collision_layer = 512
 collision_mask = 1024
 
