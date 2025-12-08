@@ -63,9 +63,10 @@ position = Vector2(208, 618)
 [node name="RoomBoundPointB" type="Marker2D" parent="World"]
 position = Vector2(1027, 138)
 
-[node name="BossPlatformController" type="Node2D" parent="World" node_paths=PackedStringArray("left_platform", "right_platform", "room_bound_point_a", "room_bound_point_b")]
+[node name="BossPlatformController" type="Node2D" parent="World" node_paths=PackedStringArray("rect_platform", "platforms", "left_platform", "right_platform", "room_bound_point_a", "room_bound_point_b")]
 script = ExtResource("2_7sno5")
 rect_platform = NodePath("RectPlatform")
+platforms = [NodePath("FloatingPlatform1"), NodePath("FloatingPlatform2"), NodePath("FloatingPlatform3"), NodePath("FloatingPlatform4"), NodePath("FloatingPlatform5")]
 left_platform = NodePath("LeftPlatform")
 right_platform = NodePath("RightPlatform")
 room_bound_point_a = NodePath("../RoomBoundPointA")
@@ -86,7 +87,7 @@ position = Vector2(868.25, 1909.25)
 shape = SubResource("RectangleShape2D_wnerh")
 
 [node name="LeftPlatform" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(90, 0)
+position = Vector2(258, -21)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/LeftPlatform"]
 
@@ -122,9 +123,9 @@ shape = SubResource("RectangleShape2D_qntum")
 position = Vector2(2366, 625)
 
 [node name="FloatingPlatform1" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(763, 244)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform1"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform1/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
@@ -143,6 +144,7 @@ position = Vector2(-151, -85)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform1/JumpMarker"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform1/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
@@ -152,9 +154,9 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform2" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(500, 300)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform2"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform2/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
@@ -173,6 +175,7 @@ position = Vector2(-151, -85)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform2/JumpMarker"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform2/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
@@ -182,9 +185,9 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform3" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(800, 250)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform3"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform3/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
@@ -203,6 +206,7 @@ position = Vector2(-151, -85)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform3/JumpMarker"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform3/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
@@ -212,9 +216,9 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(350, 400)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform4"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform4/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
@@ -233,6 +237,7 @@ position = Vector2(-151, -85)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform4/JumpMarker"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform4/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
@@ -242,9 +247,9 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(900, 350)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform5"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform5/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
@@ -263,6 +268,7 @@ position = Vector2(-151, -85)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform5/JumpMarker"]
+collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform5/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
@@ -319,7 +325,7 @@ texture = ExtResource("6_a2wmj")
 flip_v = true
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
-position = Vector2(-1279, 559)
+position = Vector2(-1164, 591)
 has_blade = true
 
 [node name="WaterPrietest" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("3_y7w5y")]

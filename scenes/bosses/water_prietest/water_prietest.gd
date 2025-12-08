@@ -6,7 +6,7 @@ signal into_phase2
 signal start_fight
 
 @export var spike_damage: int = 150 
-@export var max_health_boss: int = 2400
+@export var max_health_boss: int = 1000
 @export var boss_jump_speed: float = 420.0     
 @export var move_speed: float = 80.0
 @export var surf_speed: float = 100.0    
@@ -87,9 +87,6 @@ func _ready() -> void:
 	health = max_health
 
 	super._ready()
-
-	# Add to water_priestess group for platform controller to find
-	add_to_group("water_priestess")
 
 	if hit_area_2d:
 		hit_area_2d.damage = spike_damage

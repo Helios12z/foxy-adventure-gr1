@@ -1,4 +1,4 @@
-[gd_scene load_steps=201 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=202 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3donb"]
@@ -777,6 +777,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktdfs"]
+size = Vector2(13, 34.5)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_samf3"]
 size = Vector2(19, 36)
 
@@ -816,6 +819,17 @@ animation = &"atk_3"
 autoplay = "idle"
 frame = 26
 frame_progress = 1.0
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("152_altnt")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(0.5, -4.25)
+shape = SubResource("RectangleShape2D_ktdfs")
+debug_color = Color(0.5585858, 0.5607403, 0.019441742, 0.41960785)
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
 collision_layer = 16

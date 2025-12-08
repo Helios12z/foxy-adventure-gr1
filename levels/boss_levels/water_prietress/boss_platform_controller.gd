@@ -2,7 +2,6 @@ extends Node2D
 
 signal complete_moving_up
 
-# --------- Exported nodes & config ---------
 @export var rect_platform: Node2D
 @export var platforms: Array[Node2D] = []              # Các floating / phase 2 platforms
 @export var jump_markers: Array[JumpMarker2D] = []     # Marker để boss biết điểm nhảy
@@ -10,6 +9,9 @@ signal complete_moving_up
 @export var phase_2_start_delay: float = 0.0           # Nếu muốn delay trước khi phase 2 chạy
 @export var rise_height: float = 200.0
 @export var rise_time: float = 3.5
+
+@export_range(1, 10) var min_active_platforms: int = 2
+@export_range(1, 10) var max_active_platforms: int = 3
 
 # Main left/right platforms (biên map)
 @export var left_platform: Node2D
@@ -22,10 +24,11 @@ signal complete_moving_up
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 @onready var crack_sfx: AudioStreamPlayer2D = $"../../Sound/Craking"
 
+@onready var water_priestess: CharacterBody2D = $"../WaterPrietest"
+
 var is_phase_2_active: bool = false
 var current_platform_index: int = 0
 var sequence_timer: Timer
-var water_priestess: Node2D
 
 var _intro_done: bool = false
 var _phase2_started: bool = false
@@ -34,10 +37,10 @@ var _returned: bool = false
 # Lưu vị trí gốc của các platform phase 2
 var _platform_start_positions: Dictionary = {} # key = Node2D, value = Vector2
 
+var _safety_platforms: Array[Node2D] = []   # các platform đang được dùng làm "chân" cho boss & player
 
 func _ready() -> void:
-	# Tìm boss theo group
-	water_priestess = get_tree().get_first_node_in_group("water_priestess")
+	randomize()  # cho vị trí platform phase 2 random “thật” hơn
 
 	_store_platform_positions()
 	_setup_initial_platforms()
@@ -81,8 +84,7 @@ func _setup_initial_platforms() -> void:
 			platform.modulate.a = 1.0
 			_set_platform_collision(platform, false)
 
-	# Marker ban đầu: cho phép em quyết định
-	# Ở đây anh tắt hết, boss chỉ dùng marker khi platform đang active
+	# Marker ban đầu
 	for marker in jump_markers:
 		if marker:
 			marker.set_active(false)
@@ -164,12 +166,13 @@ func start_boss_intro() -> void:
 
 
 func _on_fight_start() -> void:
-	# Cho chút delay intro nếu cần
+	print("start fight")
 	await get_tree().create_timer(0.75).timeout
 	start_boss_intro()
 
 
 func _on_phase_2_start() -> void:
+	print("on phase 2 started")
 	if is_phase_2_active:
 		return
 
@@ -182,6 +185,7 @@ func _on_phase_2_start() -> void:
 
 
 func start_phase2_platforms() -> void:
+	print("platform started")
 	if _phase2_started:
 		return
 	_phase2_started = true
@@ -191,27 +195,34 @@ func start_phase2_platforms() -> void:
 	if crack_sfx:
 		crack_sfx.play(2.0)
 
-	# Rect platform "bị vỡ" – chỉ fade & tắt collision, không đụng tới left/right
+	# 1) Spawn 2 platform an toàn ngay lập tức
+	_activate_safety_platforms()
+
+	# 2) Rect platform "bị vỡ" – tắt collision ngay, chỉ còn visual
 	if rect_platform:
+		_set_platform_collision(rect_platform, false)
+
 		var tw_fade := create_tween()
 		tw_fade.tween_property(rect_platform, "modulate:a", 0.0, 1.0)
 		tw_fade.finished.connect(func ():
 			if rect_platform:
 				rect_platform.visible = false
-				_set_platform_collision(rect_platform, false)
 		)
 
-	# Kích hoạt các floating platform phase 2
+	# 3) Cho các platform còn lại "trồi lên" (KHÔNG đụng vào safety_platforms)
 	for i in range(platforms.size()):
 		var platform := platforms[i]
-		if platform and _platform_start_positions.has(platform):
+		if platform == null:
+			continue
+		if _safety_platforms.has(platform):
+			continue   # không tween lại các platform đang giữ boss / player
+
+		if _platform_start_positions.has(platform):
 			var start_pos: Vector2 = _platform_start_positions[platform]
 
-			# Hiện lên + enable collision
 			platform.visible = true
 			_set_platform_collision(platform, true)
 
-			# Cho nó đi lên từ dưới
 			platform.global_position = Vector2(start_pos.x, start_pos.y + rise_height)
 
 			var tw := create_tween()
@@ -227,29 +238,110 @@ func start_phase2_platforms() -> void:
 					emit_signal("complete_moving_up")
 					if crack_sfx:
 						crack_sfx.stop()
-					# Bắt đầu sequence đổi platform
-					current_platform_index = 0
+
+					# Sau khi trồi lên xong, chuẩn bị pattern (NHƯNG giữ nguyên safety platforms)
+					_prepare_phase2_platforms()
+
 					sequence_timer.wait_time = sequence_interval
 					sequence_timer.start()
 				)
 
+func _prepare_phase2_platforms() -> void:
+	# Tắt toàn bộ floating platforms TRỪ safety
+	for platform in platforms:
+		if platform and not _safety_platforms.has(platform):
+			_set_platform_inactive_immediate(platform)
 
-# ----------------- Sequence platforms -----------------
+	# Bật thêm một nhóm random để map phong phú hơn (không đụng safety)
+	_activate_random_platforms()
 
-func _on_sequence_timeout() -> void:
-	if not is_phase_2_active or platforms.is_empty():
+func _activate_safety_platforms() -> void:
+	_safety_platforms.clear()
+
+	var boss := water_priestess as Node2D
+	var player := get_tree().get_first_node_in_group("Player") as Node2D
+
+	print("SAFETY >> boss:", boss, " player:", player)
+
+	# Nếu không có boss & player thì fallback random
+	if boss == null and player == null:
+		print("SAFETY >> no boss & player, fallback random")
+		_activate_random_platforms()
 		return
 
-	# Deactivate platform hiện tại
-	if current_platform_index < platforms.size():
-		var platform := platforms[current_platform_index]
-		_deactivate_platform_with_markers(platform)
+	# Gom các target (thứ tự: boss rồi tới player)
+	var targets: Array[Node2D] = []
+	if boss:
+		targets.append(boss)
+	if player:
+		targets.append(player)
 
-	# Chuyển sang platform mới
-	current_platform_index = (current_platform_index + 1) % platforms.size()
+	# Lấy list platform còn dùng được
+	var available: Array[Node2D] = []
+	for p in platforms:
+		if p:
+			available.append(p)
 
-	var new_platform := platforms[current_platform_index]
-	_activate_platform_with_markers(new_platform)
+	if available.is_empty():
+		print("SAFETY >> no available platforms!")
+		return
+
+	# Bound theo room để không spawn ngoài map
+	var has_bounds := room_bound_point_a != null and room_bound_point_b != null
+	var min_x := -INF
+	var max_x := INF
+	if has_bounds:
+		var a := room_bound_point_a.global_position
+		var b := room_bound_point_b.global_position
+		min_x = min(a.x, b.x) + 8.0
+		max_x = max(a.x, b.x) - 8.0
+
+	var vertical_offset := 200.0  # platform nằm ngay dưới chân target
+
+	for t in targets:
+		if available.is_empty():
+			break
+
+		var plat: Node2D = available.pop_back()  # lấy platform cuối cho đơn giản
+
+		var px := t.global_position.x + 100
+		if has_bounds:
+			px = clamp(px, min_x, max_x)
+
+		var py := t.global_position.y + vertical_offset
+
+		plat.global_position = Vector2(px, py)
+		plat.visible = true
+		plat.modulate.a = 1.0
+		_set_platform_collision(plat, true)
+
+		if not _safety_platforms.has(plat):
+			_safety_platforms.append(plat)
+
+		print("SAFETY >> platform for ", t, " at: ", plat.global_position)
+
+		var markers := _get_markers_for_platform(plat)
+		for m in markers:
+			m.set_active(true)
+
+	print("SAFETY >> total safety platforms: ", _safety_platforms.size())
+	
+func _pop_closest_platform(available: Array[Node2D], target_pos: Vector2) -> Node2D:
+	var best_idx := -1
+	var best_dist := INF
+
+	for i in range(available.size()):
+		var d := available[i].global_position.distance_to(target_pos)
+		if d < best_dist:
+			best_dist = d
+			best_idx = i
+
+	if best_idx == -1:
+		return null
+
+	var res: Node2D = available[best_idx]
+	available.remove_at(best_idx)
+	return res
 
 
 func _activate_platform_with_markers(platform: Node2D) -> void:
@@ -295,10 +387,9 @@ func _move_platform_within_bounds(platform: Node2D) -> void:
 	var markers := _get_markers_for_platform(platform)
 	for marker in markers:
 		if marker:
-			# Keep marker relative offset but center it on the platform
 			marker.global_position = Vector2(
 				platform.global_position.x,
-				platform.global_position.y - 40  # Slightly above platform
+				platform.global_position.y - 40
 			)
 
 
@@ -306,12 +397,10 @@ func _deactivate_platform_with_markers(platform: Node2D) -> void:
 	if not platform:
 		return
 
-	# Tắt marker trước
 	var markers := _get_markers_for_platform(platform)
 	for marker in markers:
 		marker.set_active(false)
 
-	# Fade out
 	_set_platform_collision(platform, false)
 	var tw_out := create_tween()
 	tw_out.tween_property(platform, "modulate:a", 0.0, 0.5)
@@ -336,7 +425,6 @@ func return_platform_after_boss_dead() -> void:
 	if crack_sfx:
 		crack_sfx.play(2.0)
 
-	# Đưa các floating platform xuống rồi ẩn
 	if platforms.size() == 0:
 		_cleanup_after_return()
 		return
@@ -362,27 +450,22 @@ func _cleanup_after_return() -> void:
 	if crack_sfx:
 		crack_sfx.stop()
 
-	# Ẩn toàn bộ floating platforms
 	for plat in platforms:
 		if plat:
 			plat.visible = false
 			plat.modulate.a = 1.0
 			_set_platform_collision(plat, false)
 
-	# Tắt tất cả marker
 	for marker in jump_markers:
 		if marker:
 			marker.set_active(false)
 
-	# Khôi phục trạng thái "bình thường"
 	_restore_main_platforms()
 
 
 func _restore_main_platforms() -> void:
-	# Show left and right platforms
 	_show_side_platforms()
 
-	# Enable markers for side platforms
 	if left_platform:
 		var left_markers := _get_markers_for_platform(left_platform)
 		for marker in left_markers:
@@ -393,7 +476,6 @@ func _restore_main_platforms() -> void:
 		for marker in right_markers:
 			marker.set_active(true)
 
-	# Restore rect platform
 	if rect_platform:
 		rect_platform.visible = true
 		rect_platform.modulate.a = 1.0
@@ -401,7 +483,6 @@ func _restore_main_platforms() -> void:
 
 
 func setup_after_boss_dead_state() -> void:
-	# Không animation – dùng cho load scene sau khi boss đã chết
 	if sequence_timer:
 		sequence_timer.stop()
 
@@ -452,7 +533,7 @@ func _is_marker_near_platform(marker: JumpMarker2D, platform: Node2D) -> bool:
 		return false
 
 	var distance := marker.global_position.distance_to(platform.global_position)
-	return distance < 100.0 # Tùy map mà chỉnh
+	return distance < 100.0
 
 
 func get_active_markers() -> Array[JumpMarker2D]:
@@ -473,3 +554,52 @@ func force_deactivate_all_markers() -> void:
 	for marker in jump_markers:
 		if marker:
 			marker.set_active(false)
+
+
+func _set_platform_inactive_immediate(platform: Node2D) -> void:
+	if not platform:
+		return
+
+	var markers := _get_markers_for_platform(platform)
+	for marker in markers:
+		marker.set_active(false)
+
+	_set_platform_collision(platform, false)
+	platform.visible = false
+	platform.modulate.a = 0.0
+
+func _on_sequence_timeout() -> void:
+	if not is_phase_2_active or platforms.is_empty():
+		return
+
+	# Fade out toàn bộ platform đang active TRỪ safety
+	for platform in platforms:
+		if platform \
+		and platform.visible \
+		and platform.modulate.a > 0.05 \
+		and not _safety_platforms.has(platform):
+			_deactivate_platform_with_markers(platform)
+
+	# Bật lại một nhóm platform mới (không dùng safety)
+	_activate_random_platforms()
+
+
+func _activate_random_platforms() -> void:
+	var available: Array[Node2D] = []
+	for platform in platforms:
+		if platform and not _safety_platforms.has(platform):
+			available.append(platform)
+
+	if available.is_empty():
+		return
+
+	var min_count = clamp(min_active_platforms, 1, available.size())
+	var max_count = clamp(max_active_platforms, min_count, available.size())
+	var count := randi_range(min_count, max_count)
+
+	available.shuffle()
+
+	for i in range(count):
+		if i >= available.size():
+			break
+		_activate_platform_with_markers(available[i])
