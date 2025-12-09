@@ -63,10 +63,11 @@ position = Vector2(208, 618)
 [node name="RoomBoundPointB" type="Marker2D" parent="World"]
 position = Vector2(1027, 138)
 
-[node name="BossPlatformController" type="Node2D" parent="World" node_paths=PackedStringArray("rect_platform", "platforms", "left_platform", "right_platform", "room_bound_point_a", "room_bound_point_b")]
+[node name="BossPlatformController" type="Node2D" parent="World" node_paths=PackedStringArray("rect_platform", "platforms", "jump_markers", "left_platform", "right_platform", "room_bound_point_a", "room_bound_point_b")]
 script = ExtResource("2_7sno5")
 rect_platform = NodePath("RectPlatform")
 platforms = [NodePath("FloatingPlatform1"), NodePath("FloatingPlatform2"), NodePath("FloatingPlatform3"), NodePath("FloatingPlatform4"), NodePath("FloatingPlatform5")]
+jump_markers = [NodePath("FloatingPlatform1/JumpMarker"), NodePath("FloatingPlatform2/JumpMarker"), NodePath("FloatingPlatform3/JumpMarker"), NodePath("FloatingPlatform4/JumpMarker"), NodePath("FloatingPlatform5/JumpMarker")]
 left_platform = NodePath("LeftPlatform")
 right_platform = NodePath("RightPlatform")
 room_bound_point_a = NodePath("../RoomBoundPointA")
@@ -123,6 +124,7 @@ shape = SubResource("RectangleShape2D_qntum")
 position = Vector2(2366, 625)
 
 [node name="FloatingPlatform1" type="Node2D" parent="World/BossPlatformController"]
+position = Vector2(460, 542)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform1"]
 collision_mask = 10
@@ -154,6 +156,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform2" type="Node2D" parent="World/BossPlatformController"]
+position = Vector2(759, 543)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform2"]
 collision_mask = 10
@@ -185,6 +188,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform3" type="Node2D" parent="World/BossPlatformController"]
+position = Vector2(1028, 542)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform3"]
 collision_mask = 10
@@ -216,6 +220,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
+position = Vector2(886, 445)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform4"]
 collision_mask = 10
@@ -247,6 +252,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
+position = Vector2(633, 447)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform5"]
 collision_mask = 10
@@ -281,7 +287,7 @@ scale = Vector2(0.2, 0.2)
 
 [node name="ParallaxLayerFar" type="ParallaxLayer" parent="World/ParallaxBackground"]
 motion_scale = Vector2(0.001, 1)
-motion_mirroring = Vector2(1850, 0)
+motion_mirroring = Vector2(1850, 1380)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/ParallaxBackground/ParallaxLayerFar"]
 position = Vector2(558, 795)

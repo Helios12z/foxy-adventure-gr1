@@ -23,27 +23,32 @@ func _update(delta: float) -> void:
 		obj.start_defend_cooldown()
 		change_state(fsm.states.idle)
 
-func should_block_damage(attack_direction: Vector2) -> bool:
+func should_block_damage(_attack_direction: Vector2) -> bool:
 	if not _is_blocking:
-		return false  # chưa vào phase block
+		return false
 
-	# Attack đi từ player -> boss
+	var player = obj.get_player()
+	if player == null:
+		return false
+
+	# boss đang nhìn chiều nào
 	var facing_dir := 1 if not obj.animated_sprite_2d.flip_h else -1
-	var attack_dir = sign(attack_direction.x)
+	# hướng từ boss tới player
+	var attack_dir = sign(player.global_position.x - obj.global_position.x)
 
-	# Nếu đòn đánh từ phía trước mặt (hoặc gần như từ trước)
-	return attack_dir == facing_dir or attack_dir == 0
+	return attack_dir == facing_dir
 
 func check_and_block_attack(hit_area: HitArea2D) -> bool:
 	if not _is_blocking:
 		return false
 
-	var attack_direction = obj.global_position - hit_area.global_position
-	var facing_dir = 1 if not obj.animated_sprite_2d.flip_h else -1
-	var attack_dir = sign(attack_direction.x)
+	var facing_dir := 1 if not obj.animated_sprite_2d.flip_h else -1
+	var attack_dir := 0
 
-	return attack_dir == facing_dir or attack_dir == 0
-	# KHÔNG gọi flash ở đây nữa
+	if hit_area:
+		attack_dir = sign(hit_area.global_position.x - obj.global_position.x)
+
+	return attack_dir == facing_dir
 
 func _exit() -> void:
 	_is_blocking = false

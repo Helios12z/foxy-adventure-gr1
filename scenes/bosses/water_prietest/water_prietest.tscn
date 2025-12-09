@@ -778,7 +778,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktdfs"]
-size = Vector2(13, 34.5)
+size = Vector2(8, 34.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_samf3"]
 size = Vector2(19, 36)
@@ -827,7 +827,7 @@ script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(0.5, -4.25)
+position = Vector2(1, -4.25)
 shape = SubResource("RectangleShape2D_ktdfs")
 debug_color = Color(0.5585858, 0.5607403, 0.019441742, 0.41960785)
 

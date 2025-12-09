@@ -8,6 +8,7 @@ signal start_fight
 @export var spike_damage: int = 150 
 @export var max_health_boss: int = 1000
 @export var boss_jump_speed: float = 420.0     
+@export var attack_range: float = 180.0
 @export var move_speed: float = 80.0
 @export var surf_speed: float = 100.0    
 @export var air_horizontal_speed: float = 60.0
@@ -24,7 +25,7 @@ signal start_fight
 @export var defend_windup_time: float = 0.3
 @export var defend_duration: float = 1.0
 @export var defend_cooldown: float = 3.0
-@export var attack_prepare_time: float = 5
+@export var attack_prepare_time: float = 2.5
 @export var roll_escape_distance: float = 35.0
 @export var roll_same_level_threshold: float = 32.0  
 
@@ -118,8 +119,6 @@ func _physics_process(delta: float) -> void:
 	if fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.surf: 
 		_update_facing()
 	_detect_player()
-	
-	_try_roll_if_player_too_close()
 
 	super._physics_process(delta)
 	_keep_inside_room_and_avoid_fall()
@@ -130,7 +129,6 @@ func _init_hurt_area() -> void:
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
-	# Don't take damage during phase 2 transition
 	if _phase2_transition_running:
 		return
 
@@ -139,19 +137,48 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 		if roll_state.has_method("has_invincibility") and roll_state.has_invincibility():
 			return
 
+	_note_damage_hit()
+
+	if _took_consecutive_damage():
+		var on_ground = (
+			fsm.current_state == fsm.states.idle
+			or fsm.current_state == fsm.states.walk
+			or fsm.current_state == fsm.states.surf
+		)
+
+		if on_ground:
+			var choice := randf()
+			if can_defend and choice < 0.5:
+				# Chọn defend
+				start_defend_cooldown()
+				fsm.change_state(fsm.states.defend)
+			else:
+				# Chọn roll
+				if fsm.states.roll != null:
+					fsm.change_state(fsm.states.roll)
+
+			_recent_damage_times.clear()
+			return
+
+	# 4. Đang ở defend -> thử block
+	var should_block := false
 	if fsm.current_state == fsm.states.defend:
 		var defend_state = fsm.current_state
-		if defend_state.has_method("should_block_damage") and defend_state.should_block_damage(_dir):
-			flash_hurt(0.1, 1, Color.CYAN)
-			return
+		if defend_state and defend_state.has_method("should_block_damage"):
+			should_block = defend_state.should_block_damage(_dir)
+
+	if should_block:
+		# Block thành công
+		flash_hurt(0.1, 1, Color.CYAN)
+		start_defend_cooldown()
+		return
+
+	# Ensure flash happens before damage
+	if not should_block:
+		flash_hurt(0.25, 3)
 
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
-	_note_damage_hit()
-	
-	if fsm.current_state != fsm.states.idle or fsm.current_state != fsm.states.walk or fsm.current_state != fsm.states.surf:
-		if fsm.current_state != fsm.states.defend: 
-			flash_hurt(0.25, 3)
 
 	if health <= 0.0:
 		if fsm and fsm.current_state != fsm.states.dead:
@@ -165,13 +192,14 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 		_start_phase2_transition()
 		return
 
-	if _took_consecutive_damage():
-		if fsm.current_state == fsm.states.walk and fsm.current_state != fsm.states.dead:
-			fsm.change_state(fsm.states.roll)
-		_recent_damage_times.clear()
-		return 
+	var on_ground_simple = (
+		fsm.current_state == fsm.states.idle
+		or fsm.current_state == fsm.states.walk
+		or fsm.current_state == fsm.states.surf
+	)
 
-	if fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.surf:
+	if on_ground_simple:
+		flash_hurt(0.25, 3)
 		fsm.change_state(fsm.states.hurt)
 
 func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
@@ -380,40 +408,6 @@ func _keep_inside_room_and_avoid_fall() -> void:
 			if is_on_floor() and fsm and fsm.current_state != fsm.states.roll:
 				fsm.change_state(fsm.states.roll)
 
-func _try_roll_if_player_too_close() -> void:
-	if fsm == null:
-		return
-
-	if fsm.current_state in [
-		fsm.states.roll,
-		fsm.states.defend,
-		fsm.states.cast_into_phase_2
-	]:
-		return
-
-	var player := get_player()
-	if player == null:
-		return
-
-	if not is_on_floor():
-		return
-
-	if not (fsm.current_state in [fsm.states.idle, fsm.states.walk, fsm.states.surf, fsm.states.atk_1]):
-		return
-
-	var dy = abs(player.global_position.y - global_position.y)
-	if dy > roll_same_level_threshold:
-		return
-
-	var dist = abs(player.global_position.x - global_position.x)
-	if dist > roll_escape_distance:
-		return
-
-	var facing_dir := 1 if not animated_sprite_2d.flip_h else -1
-	var player_dir = sign(player.global_position.x - global_position.x)
-	if player_dir != 0 and player_dir == facing_dir:
-		fsm.change_state(fsm.states.roll)
-
 func _start_phase2_transition() -> void:
 	if _phase2_transition_running:
 		return
@@ -447,3 +441,43 @@ func _finish_phase2_transition() -> void:
 	# Stop phase 1 music, play phase 2 music
 	if boss_music:
 		boss_music.stop()
+		
+func _get_boss_platform_controller() -> Node:
+	var stage = GameManager.current_stage
+	if stage == null:
+		return null
+
+	# chỉnh path này theo scene level của bạn nếu khác
+	if stage.has_node("World/BossPlatformController"):
+		return stage.get_node("World/BossPlatformController")
+	return null
+
+func is_player_on_floating_platform() -> bool:
+	var player = get_player()
+	if player == null:
+		return false
+
+	var controller = _get_boss_platform_controller()
+	if controller == null or not controller.has_method("get_active_markers"):
+		return false
+
+	var markers: Array = controller.get_active_markers()
+	for m in markers:
+		if m and m.global_position.distance_to(player.global_position) <= 40.0:
+			return true
+	return false
+
+func is_player_on_rect_platform() -> bool:
+	if not in_phase2:
+		return false
+
+	var player = get_player()
+	if player == null:
+		return false
+
+	# Nếu không đứng gần bất kỳ floating marker nào → coi như đang ở rect
+	if is_player_on_floating_platform():
+		return false
+
+	# Có thể refine thêm theo level_bounds.y nếu cần
+	return true

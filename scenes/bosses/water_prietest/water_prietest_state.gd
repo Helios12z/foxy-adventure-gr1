@@ -1,7 +1,7 @@
 extends EnemyState
 class_name WaterPrietestState
 
-const SAME_LEVEL_THRESHOLD := 24.0  # tuỳ map mà chỉnh
+const SAME_LEVEL_THRESHOLD := 48.0  # tuỳ map mà chỉnh - increased for better attack detection
 
 var _atk1_windup_done: bool = false
 var _atk1_windup_waiting: bool = false
