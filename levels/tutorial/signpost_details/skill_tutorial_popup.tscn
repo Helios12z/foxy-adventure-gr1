@@ -1,0 +1,118 @@
+[gd_scene load_steps=10 format=3 uid="uid://cb64vaex5bwuw"]
+
+[ext_resource type="Script" uid="uid://b4gqdv4tl3bgg" path="res://levels/tutorial/signpost_details/tutorial_popup.gd" id="1_kpnfw"]
+[ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="2_uxaua"]
+[ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="3_3ev2c"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="4_1gq5t"]
+[ext_resource type="Texture2D" uid="uid://cx1m1wxkbipxh" path="res://asset/ui/close_button.png" id="5_552tl"]
+[ext_resource type="Texture2D" uid="uid://bv7tyyseapdis" path="res://asset/ui/player/susanoo_avatar1.png" id="6_3ev2c"]
+[ext_resource type="Texture2D" uid="uid://dnqaqj0su1l0b" path="res://asset/ui/player/room_avatar1.png" id="7_1gq5t"]
+[ext_resource type="Texture2D" uid="uid://b6snm2lb4borl" path="res://asset/ui/player/giant_avatar1.png" id="8_552tl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rbs2k"]
+
+[node name="TutorialPopup" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kpnfw")
+
+[node name="OverlayColorRect" type="ColorRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0.0117647, 0.0352941, 0.85098)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(160, 96)
+layout_mode = 0
+offset_left = 268.0
+offset_top = 109.0
+offset_right = 859.0
+offset_bottom = 529.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_uxaua")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Label7" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 403.0
+offset_right = 470.0
+offset_bottom = 457.0
+theme_override_colors/font_color = Color(1, 1, 0.24705882, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_3ev2c")
+text = "
+Press any key to close"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Label" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 17.0
+offset_right = 294.0
+offset_bottom = 40.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("4_1gq5t")
+text = "TUTORIAL"
+label_settings = SubResource("LabelSettings_rbs2k")
+
+[node name="Description" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 36.862
+offset_top = 272.736
+offset_right = 557.862
+offset_bottom = 496.736
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("3_3ev2c")
+text = "Defeat the boss and earn legendary skills"
+autowrap_mode = 2
+
+[node name="CloseTextureButton" type="TextureButton" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 566.0
+offset_top = -17.0
+offset_right = 580.0
+offset_bottom = -2.0
+scale = Vector2(3, 3)
+toggle_mode = true
+texture_normal = ExtResource("5_552tl")
+texture_pressed = ExtResource("5_552tl")
+texture_hover = ExtResource("5_552tl")
+texture_disabled = ExtResource("5_552tl")
+texture_focused = ExtResource("5_552tl")
+
+[node name="SusanooAvatar1" type="Sprite2D" parent="NinePatchRect"]
+position = Vector2(112.862, 189.736)
+scale = Vector2(0.228, 0.228)
+texture = ExtResource("6_3ev2c")
+
+[node name="RoomAvatar1" type="Sprite2D" parent="NinePatchRect"]
+position = Vector2(281.862, 187.736)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_1gq5t")
+
+[node name="GiantAvatar1" type="Sprite2D" parent="NinePatchRect"]
+position = Vector2(463.862, 189.736)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("8_552tl")
+
+[connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]
+[connection signal="pressed" from="NinePatchRect/CloseTextureButton" to="." method="_on_close_texture_button_pressed"]
