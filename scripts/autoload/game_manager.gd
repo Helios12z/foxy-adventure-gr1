@@ -1,5 +1,9 @@
 extends Node
 
+# Hack mode
+signal hack_mode_changed(enabled)
+var hack_mode_enabled: bool = false
+
 #target portal name is the name of the portal to which the player will be teleported
 var target_portal_name: String = ""
 # Checkpoint system variables
@@ -7,7 +11,7 @@ var current_checkpoint_id: String = ""
 var checkpoint_data: Dictionary = {}
 
 var current_stage: Node = null
-var player: Player = null
+var player: CharacterBody2D = null
 
 # collected coin by stage
 var collected_coins_by_stage: Dictionary = {}
@@ -26,6 +30,10 @@ func _ready() -> void:
 	add_child(inventory_system)
 	pass
 
+func toggle_hack_mode() -> void:
+	hack_mode_enabled = not hack_mode_enabled
+	hack_mode_changed.emit(hack_mode_enabled)
+
 #change stage by path and target portal name
 func change_stage(stage_path: String, _target_portal_name: String = "") -> void:
 	target_portal_name = _target_portal_name
@@ -33,18 +41,59 @@ func change_stage(stage_path: String, _target_portal_name: String = "") -> void:
 	get_tree().change_scene_to_file(stage_path) 
 
 func change_stage_with_loading(path: String):
-# Bước 1: chuyển sang loading scene
-	get_tree().change_scene_to_file("res://levels/objects/loading/loading.tscn")
-	await get_tree().process_frame  # refresh UI để "Loading..." hiện lên
+	# Store current scene for transition context
+	var current_scene_path = _get_current_stage_path()
 
-	# Bước 2: load scene mới (blocking nhưng UI đã hiện)
-	var packed = ResourceLoader.load(path)
+	# Validate target scene path
+	if path.is_empty():
+		push_error("Invalid scene path: " + path)
+		return
 
-	# Bước 3: chuyển thật sự qua map mới
-	if packed:
-		get_tree().change_scene_to_packed(packed)
+	# Handle both file paths and UIDs
+	var resolved_path = path
+	if path.begins_with("uid://"):
+		# For UIDs, we can't check file existence directly, but we can try to resolve
+		# The ResourceLoader will handle UID resolution during loading
+		pass
+	elif not FileAccess.file_exists(path):
+		push_error("Invalid scene path: " + path)
+		return
+
+	# Start loading as an overlay that persists across scene changes
+	_start_persistent_loading(current_scene_path, path)
+
+func _start_persistent_loading(from_scene: String, to_scene: String):
+	# Create a CanvasLayer to ensure the loading overlay appears on top of everything
+	var canvas_layer = CanvasLayer.new()
+	canvas_layer.layer = 128  # High layer number to be on top
+	get_tree().root.add_child(canvas_layer)
+
+	# Create persistent loading overlay as a child of the CanvasLayer
+	var loading_overlay = preload("res://levels/objects/loading/loading.tscn").instantiate()
+	canvas_layer.add_child(loading_overlay)
+
+	# Make it fill the entire screen
+	loading_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+	# Start the loading process
+	if loading_overlay.has_method("start_loading_with_transition"):
+		loading_overlay.start_loading_with_transition(from_scene, to_scene)
 	else:
-		push_error("Could not load stage: " + path)
+		push_error("Loading overlay missing required method")
+		loading_overlay.queue_free()
+		get_tree().change_scene_to_file(to_scene)
+
+# Helper function to get current scene path
+func _get_current_stage_path() -> String:
+	var s := get_tree().current_scene
+	if s and s.scene_file_path != "":
+		return s.scene_file_path
+
+	# Fallback: use current stage if have
+	if current_stage and current_stage.scene_file_path != "":
+		return current_stage.scene_file_path
+
+	return ""
 
 #call from dialogic
 func call_from_dialogic(msg:String = ""):
@@ -135,13 +184,17 @@ func respawn_at_checkpoint() -> void:
 	var checkpoint_stage = checkpoint_info.get("stage_path", "")
 	
 	if current_stage.scene_file_path != checkpoint_stage and not checkpoint_stage.is_empty():
+		if not is_instance_valid(player):
+			var p := get_tree().current_scene.find_child("Player", true, false)
+			if p is Player:
+				player = p
+		_apply_checkpoint_inventory_only()
 		return
-		
-	# Can change stage if different but not implemented yet to test
-	#	change_stage(checkpoint_stage, "")
-	#	# Wait for scene to load
-	#	await get_tree().process_frame
 
+	if player == null:
+		var p := get_tree().current_scene.find_child("Player", true, false)
+		if p is Player:
+			player = p
 	if player != null:
 		var player_state: Dictionary = checkpoint_info.get("player_state")
 		if player_state == null:
@@ -249,17 +302,6 @@ func update_current_checkpoint_player_state(updates: Dictionary, create_if_missi
 	checkpoint_data[chk_id] = checkpoint_info
 	save_checkpoint_data()
 	
-func _get_current_stage_path() -> String:
-	var s := get_tree().current_scene
-	if s and s.scene_file_path != "":
-		return s.scene_file_path
-
-	# Fallback: use current stage if have
-	if current_stage and current_stage.scene_file_path != "":
-		return current_stage.scene_file_path
-
-	return ""
-
 func mark_coin_collected(coin_id: String) -> void:
 	var stage_path := _get_current_stage_path()
 	if stage_path.is_empty():
@@ -343,3 +385,7 @@ func is_chest_opened(stage_path: String = "") -> bool:
 	if stage_path.is_empty():
 		return false
 	return bool(chest_opened_by_stage.get(stage_path, false))
+
+# Loading screen completion callback
+func finish_loading() -> void:
+	pass

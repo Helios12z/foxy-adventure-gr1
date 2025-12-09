@@ -9,7 +9,7 @@ func _enter():
 	obj.set_hurt_collision(false)
 	obj.disable_check_player_in_sight()
 	obj.drop_coins()
-
+	
 
 func _update(delta):
 	if update_timer(delta):

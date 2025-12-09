@@ -108,13 +108,13 @@ tile_set = ExtResource("1_i0g7a")
 position = Vector2(1566, 576)
 
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
-position = Vector2(-49, 556)
+position = Vector2(-325, 548)
 has_blade = true
 max_health = 1000
 
 [node name="WarLordTurtle" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_7dedx")]
 position = Vector2(652, 541)
-max_health_boss = 2350
+max_health_boss = 2000
 phase2_threshold_ratio = 0.68
 bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
@@ -167,8 +167,8 @@ texture = ExtResource("7_hgx5j")
 flip_v = true
 
 [node name="LeavesParticle" type="GPUParticles2D" parent="World"]
-position = Vector2(450, 321)
-scale = Vector2(2, 2)
+position = Vector2(654, 383)
+scale = Vector2(4, 2)
 amount = 50
 texture = ExtResource("10_wcg3s")
 lifetime = 5.0
@@ -267,6 +267,7 @@ vertical_alignment = 1
 [node name="CoinAndKeyContainer" parent="CanvasLayer/CanvasLayer" instance=ExtResource("13_wcg3s")]
 
 [node name="Sound" type="Node2D" parent="."]
+position = Vector2(687, 573)
 
 [node name="Craking" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("16_x24gd")

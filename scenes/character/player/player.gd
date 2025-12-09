@@ -16,10 +16,12 @@ var _base_movement_speed: float = 0.0
 var _base_gravity: float = 0.0
 var _base_max_jump_count: int = 0
 var decorator_manager: DecoratorManager = null
+var hack_mode: HackMode = null
 @export var has_blade: bool = false
 @export var has_fire_gem: bool = false
 @export var has_water_paw_gem: bool = false
 @export var has_water_room_gem: bool = false
+@export var max_able_jump = 2
 @export var max_jump_count = 2
 @export var max_mana : int = 100
 var mana : int 
@@ -51,6 +53,34 @@ var room_cooldown_timer: Timer = null
 @onready var jump_sound = $Jump
 @onready var attack_sound = $Attack
 @onready var dash_sound = $Dash
+
+#giant_mode
+@export var giant_damage = 50
+@export var giant_speed_multiplier = 1.5
+@export var giant_jump_multiplier = 1.5
+@export var max_health_giant_multiplier = 2
+@onready var is_giant_mode = false
+@onready var can_use_giant : bool = true
+@onready var body_collision: CollisionShape2D = $CollisionShape2D
+@onready var hit_collision: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
+@onready var hurt_collision: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
+var _orig_max_health: int
+var _orig_jump_speed: float
+var _orig_attack_damage: float
+var _orig_movement_speed: float
+var _orig_body_shape: CapsuleShape2D
+var _orig_hurt_shape: CapsuleShape2D
+var _orig_hit_shape_size: Vector2
+var _orig_body_pos: Vector2
+var _orig_hurt_pos: Vector2
+var _orig_hit_pos: Vector2
+var _orig_sprite: Node = null
+var _orig_has_blade: bool 
+
+#timer
+@export var giant_duration = 30
+@export var giant_cool_down = 20
+
 #signal take_dame
 
 var _last_left_press_ms: int = -100000
@@ -89,6 +119,8 @@ func _ready() -> void:
 	decorator_manager = DecoratorManager.new()
 	decorator_manager.initialize(self)
 	add_child(decorator_manager)
+	hack_mode = HackMode.new()
+	add_child(hack_mode)
 	if has_blade:
 		collected_blade()
 	if has_fire_gem:
@@ -110,6 +142,10 @@ func _ready() -> void:
 	_base_movement_speed = movement_speed
 	_base_gravity = gravity
 	_base_max_jump_count = max_jump_count
+
+	if not GameManager.is_connected("hack_mode_changed", Callable(self, "_on_hack_mode_changed")):
+		GameManager.connect("hack_mode_changed", Callable(self, "_on_hack_mode_changed"))
+	_on_hack_mode_changed(GameManager.hack_mode_enabled)
 	
 	# --- Tạo timer tự regen mana ---
 	mana_regen_timer = Timer.new()
@@ -129,12 +165,16 @@ func _physics_process(delta: float) -> void:
 	
 
 func _process(_delta: float) -> void:
+	if $Timer/GiantDuration.is_stopped() == false:
+		print("Giant time left: ", $Timer/GiantDuration.time_left)
 	if dash_on_cooldown and dash_cooldown_timer != null:
 		dash_cooldown_updated.emit(dash_cooldown_timer.time_left)
 	if room_on_cooldown and room_cooldown_timer != null:
 		room_cooldown_updated.emit(room_cooldown_timer.time_left)
 
 func _apply_safe_zone_mods() -> void:
+	if is_giant_mode:
+		return  # không overwrite stats khi đang giant
 	if invincible_zone:
 		# tốc độ moving x1.5
 		movement_speed = _base_movement_speed * 1.5
@@ -157,6 +197,11 @@ func can_jump() -> bool:
 		return true
 	return max_jump_count > 0
 
+func consume_jump() -> void:
+	if invincible_zone or GameManager.hack_mode_enabled:
+		return
+	max_jump_count -= 1
+
 func set_detect_and_hurt_collsion(enable: bool):
 	$Direction/HurtArea2D/CollisionShape2D.disabled = not enable
 	set_collision_layer_value(2,enable)
@@ -165,7 +210,16 @@ func set_hit_collision(enabled):
 	$Direction/HitArea2D/CollisionShape2D.disabled = not enabled
 
 func reset_jump_count() -> void:
-	max_jump_count = 2
+	if GameManager.hack_mode_enabled:
+		max_jump_count = 99999
+	else:
+		max_jump_count = _base_max_jump_count
+
+func adjust_after_wall_jump() -> void:
+	reset_jump_count()
+	if GameManager.hack_mode_enabled:
+		return
+	max_jump_count = 1
 
 func collected_blade() -> void:
 	has_blade = true
@@ -329,6 +383,18 @@ func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
 		fsm.change_state(fsm.states.hurt)
 		
 
+func _on_hack_mode_changed(enabled: bool) -> void:
+	if enabled:
+		hack_mode.apply(self)
+	else:
+		hack_mode.remove(self)
+
+func activate_hack_mode() -> void:
+	hack_mode.apply(self)
+
+func deactivate_hack_mode() -> void:
+	hack_mode.remove(self)
+
 func get_movement_speed():
 	if decorator_manager != null:
 		return decorator_manager.get_effective_movement_speed()
@@ -337,7 +403,7 @@ func get_movement_speed():
 		
 func get_jump_speed():
 	if decorator_manager != null:
-		decorator_manager.get_effective_jump_speed()
+		return decorator_manager.get_effective_jump_speed()
 	return jump_speed
 	
 func speed_up(multiplier: float, duration: float) -> void:
@@ -372,3 +438,119 @@ func _on_mana_regen_timeout() -> void:
 	# chỉ regen nếu chưa full
 	if mana < max_mana:
 		charge_mana(mana_regen_amount)
+		
+# giant_foxy
+func activate_giant_form() -> void:
+	# ----- SAVE ORIGINAL STATES -----
+	is_giant_mode = true
+	_orig_jump_speed = jump_speed
+	_orig_attack_damage = $Direction/HitArea2D.damage
+	_orig_movement_speed = movement_speed
+	_orig_has_blade = has_blade
+	_orig_max_health = max_health
+
+	# Save original body collision
+	var body_shape := body_collision.shape as CapsuleShape2D
+	_orig_body_shape = body_shape.duplicate()
+	_orig_body_pos = body_collision.position
+
+	# Save original hurt collision
+	var hurt_shape := hurt_collision.shape as CapsuleShape2D
+	_orig_hurt_shape = hurt_shape.duplicate()
+	_orig_hurt_pos = hurt_collision.position
+
+	# Save original hitbox
+	var hit_shape := hit_collision.shape as RectangleShape2D
+	_orig_hit_shape_size = hit_shape.size
+	_orig_hit_pos = hit_collision.position
+
+	# Save sprite
+	_orig_sprite = animated_sprite
+
+	# ----- APPLY GIANT MODE -----
+	is_giant_mode = true
+
+	set_physics_process(false)
+	animated_sprite.play("transform_giant")
+	await animated_sprite.animation_finished
+	set_physics_process(true)
+
+	print("Activate Giant Form for: ", giant_duration, " seconds")
+	resize_all_collisions()
+	has_blade = true
+	$Direction/HitArea2D.damage = giant_damage
+	
+	max_health *= max_health_giant_multiplier
+	health = (health * 100 / _orig_max_health) * max_health / 100
+	emit_signal("hp_changed", health, max_health)
+	movement_speed *= giant_speed_multiplier
+	jump_speed *= giant_jump_multiplier
+	set_animated_sprite($Direction/GiantAnimatedSprite2D)
+	$Timer/GiantDuration.start(giant_duration)
+
+
+
+func resize_all_collisions():
+	# --- Body Collision (CapsuleShape2D) ---
+	var body_shape := body_collision.shape as CapsuleShape2D
+	body_shape.radius = 40
+	body_shape.height = 100
+	body_collision.position = Vector2(-11.0, -10.0)
+
+	# --- Hurt Collision (CapsuleShape2D) ---
+	var hurt_shape := hurt_collision.shape as CapsuleShape2D
+	hurt_shape.radius = 40
+	hurt_shape.height = 100
+	hurt_collision.position = Vector2(-11.0, -10.0)  # từ ảnh trước của bạn
+
+	# --- Hit Collision (RectangleShape2D) ---
+	var hit_shape := hit_collision.shape as RectangleShape2D
+	hit_shape.size = Vector2(100, 90)
+	hit_collision.position = Vector2(38.0, -3.839)
+	
+func inactive_giant_form():
+		# Reset sprite
+	set_physics_process(false)
+	animated_sprite.play("transform_normal")
+	await animated_sprite.animation_finished
+	set_physics_process(true)
+	is_giant_mode = false
+	if _orig_sprite != null:
+		set_animated_sprite(_orig_sprite)
+
+	# Reset stats
+	has_blade = _orig_has_blade
+	jump_speed = _orig_jump_speed
+	$Direction/HitArea2D.damage = _orig_attack_damage
+	movement_speed = _orig_movement_speed
+	health = min((health * 100/max_health) * _orig_max_health /100, _orig_max_health)
+	max_health = _orig_max_health
+	emit_signal("hp_changed", health, max_health)
+
+
+	# Reset Body Collision
+	var body_shape := body_collision.shape as CapsuleShape2D
+	body_shape.radius = _orig_body_shape.radius
+	body_shape.height = _orig_body_shape.height
+	body_collision.position = _orig_body_pos
+
+	# Reset Hurt Collision
+	var hurt_shape := hurt_collision.shape as CapsuleShape2D
+	hurt_shape.radius = _orig_hurt_shape.radius
+	hurt_shape.height = _orig_hurt_shape.height
+	hurt_collision.position = _orig_hurt_pos
+
+	# Reset Hit Collision
+	var hit_shape := hit_collision.shape as RectangleShape2D
+	hit_shape.size = _orig_hit_shape_size
+	hit_collision.position = _orig_hit_pos
+	can_use_giant = false
+	$Timer/GiantCoolDown.start(giant_cool_down)
+
+func _on_giant_duration_timeout() -> void:
+	inactive_giant_form()
+
+
+func _on_giant_cool_down_timeout() -> void:
+	can_use_giant = true
+	

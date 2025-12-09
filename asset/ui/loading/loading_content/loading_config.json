@@ -1,0 +1,60 @@
+{
+	"default_content": {
+		"tips": [
+			"Beware the power of what dwell deep...",
+			"Explore carefully to find secrets..."
+		],
+		"area_name": "Unknown Lands",
+		"loading_duration": 2.0
+	},
+	"area_content": {
+		"island": {
+			"area_name": "The Island",
+			"tips": [
+				"The island holds many secrets and dangerous creatures...",
+				"Your true adventure begins now...",
+				"Explore carefully - dangers lurk in every shadow..."
+			],
+			"loading_duration": 2.5
+		},
+		"king_crab": {
+			"area_name": "King Crab Arena",
+			"tips": [
+				"Beware the power of the island protector...",
+				"Stay behind the king crab to avoid its devastating claw sweep...",
+				"Running can keep you safe from destruction..."
+			],
+			"loading_duration": 3.0
+		},
+		"dark_forest": {
+			"area_name": "The Dark Forest",
+			"tips": [
+				"The dark forest holds greater mysteries than the island shores...",
+				"The forest spirits remember all who pass through...",
+				"Hidden paths often reveal valuable treasures...",
+				"Listen carefully - the forest whispers ancient secrets..."
+			],
+			"loading_duration": 2.5
+		},
+		"war_lord_turtle": {
+			"area_name": "War Lord Turtle Domain",
+			"tips": [
+				"Deep inside the dark forest, lies the existence of despair...",
+				"The wanderer holds artifacts that can destroy anything in one blow...",
+				"Jumping backward can help sometimes...",
+				"Always pay attention to the blowing..."
+			],
+			"loading_duration": 3.5
+		},
+		"tutorial": {
+			"area_name": "The Starting Shore",
+			"tips": [
+				"Welcome to your grand adventure...",
+				"Master the basic controls before facing greater challenges...",
+				"The island holds many secrets waiting to be discovered...",
+				"Your journey begins with a single step forward..."
+			],
+			"loading_duration": 2.0
+		}
+	}
+}

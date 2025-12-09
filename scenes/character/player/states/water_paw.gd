@@ -10,6 +10,12 @@ func _enter() -> void:
 	if not obj.has_water_paw_gem:
 		change_state(fsm.states.idle)
 		return
+	# Kiểm tra mana (cần 50 mana = nửa cây)
+	if not obj.can_use_skill(50):
+		change_state(fsm.states.idle)
+		return
+	# Tiêu tốn 50 mana
+	obj.take_mana(50)
 	# Load scene lazily
 	if paw_scene == null:
 		paw_scene = load("res://scenes/skills/room_paw/water_paw.tscn") as PackedScene
