@@ -123,6 +123,7 @@ func _on_player_landed(body: Node) -> void:
 	# Enable coral spikes when player reaches platforms (only once)
 	if not _camera_triggered:
 		_enable_coral_spikes()
+		_hide_all_bubbles()
 
 	# Only trigger once across all platforms
 	if _camera_triggered:
@@ -196,3 +197,45 @@ func _enable_coral_spikes() -> void:
 			print("[UpwardPlatform] ✓ Enabled coral spike: %s" % child.name)
 
 	print("[UpwardPlatform] ✓ Enabled %d coral spikes!" % spike_count)
+
+
+func _hide_all_bubbles() -> void:
+	"""Hide all bubbles when player reaches the top"""
+	print("[UpwardPlatform] Hiding all bubbles (using Group 'BubblePlatform')...")
+	
+	var bubbles = get_tree().get_nodes_in_group("BubblePlatform")
+	
+	# Fallback if group is empty (just in case)
+	if bubbles.is_empty():
+		print("[UpwardPlatform] ✗ No nodes found in group 'BubblePlatform'")
+		print("[UpwardPlatform] Attempting fallback search under 'Platforms'...")
+		
+		var platforms_node = get_tree().current_scene.find_child("Platforms", true, false)
+		if not platforms_node:
+			platforms_node = get_tree().current_scene.get_node_or_null("Platforms")
+			
+		if platforms_node:
+			for child in platforms_node.get_children():
+				if "Bubble" in child.name:
+					child.visible = false
+					if child is StaticBody2D:
+						var collision = child.get_node_or_null("CollisionShape2D")
+						if collision:
+							collision.set_deferred("disabled", true)
+					print("[UpwardPlatform] ✓ Hidden bubble (fallback): %s" % child.name)
+		else:
+			print("[UpwardPlatform] ✗ Platforms node not found for fallback")
+		return
+
+	# Hide all bubbles found in group
+	for bubble in bubbles:
+		# Hide visual
+		bubble.visible = false
+		
+		# Disable collision
+		if bubble is StaticBody2D:
+			var collision = bubble.get_node_or_null("CollisionShape2D")
+			if collision:
+				collision.set_deferred("disabled", true)
+		
+		print("[UpwardPlatform] ✓ Hidden bubble: %s" % bubble.name)
