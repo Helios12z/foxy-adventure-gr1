@@ -117,7 +117,7 @@ func _update(delta: float) -> void:
 	# MOVEMENT + AIR CONTROL
 	# --------------------------------------------------
 	control_jump()
-
+	control_use_potion()
 	if wall_jump_timer > 0.0:
 		wall_jump_timer -= delta
 	else:

@@ -4,9 +4,13 @@ class_name InvetorySystem
 signal coin_changed(new_amount: int)
 signal item_collected(item_type: String, amount: int)
 signal key_changed(new_amount: int)
+signal heal_potion_changed(new_amount: int)
+signal mana_potion_changed(new_amount: int)
 
 var coins: int = 0
 var keys: int = 0
+var heal_potions: int = 0
+var mana_potions: int = 0
 
 func _ready() -> void:
 	pass
@@ -25,6 +29,21 @@ func add_key(_amount: int = 1) -> void:
 	GameManager.update_inventory_in_checkpoint()
 	print("Collected ", _amount, " key Total: ", keys)
 	
+func add_heal_potion(amount: int = 1) -> void:
+	heal_potions += amount
+	heal_potion_changed.emit(heal_potions)
+	item_collected.emit("heal_postion",amount)
+	GameManager.update_inventory_in_checkpoint()
+	print("Collected ", amount, " heal potions Total: ", heal_potions)
+	
+func add_mana_potion(amount: int = 1) -> void:
+	mana_potions += amount
+	mana_potion_changed.emit(mana_potions)
+	item_collected.emit("mana_postion",amount)
+	GameManager.update_inventory_in_checkpoint()
+	print("Collected ", amount, " mana potions Total: ", mana_potions)
+	
+	
 func use_key() -> bool:
 	if has_key():
 		keys -= 1
@@ -34,21 +53,54 @@ func use_key() -> bool:
 		return true
 	return false
 	
-	
+func use_heal_potion() -> bool:
+	if has_heal_potion():
+		heal_potions -= 1
+		heal_potion_changed.emit(heal_potions)
+		if Engine.has_singleton("GameManager"):
+			GameManager.update_inventory_in_checkpoint()
+		return true
+	return false
+
+func use_mana_potion() -> bool:
+	if has_mana_potion():
+		mana_potions -= 1
+		mana_potion_changed.emit(mana_potions)
+		if Engine.has_singleton("GameManager"):
+			GameManager.update_inventory_in_checkpoint()
+		return true
+	return false
+
 
 func has_key() -> bool:
 	return keys > 0	
+	
+func has_heal_potion() -> bool:
+	var a = heal_potions
+	return heal_potions > 0
+	
+func has_mana_potion() -> bool:
+	var a = mana_potions
+	return mana_potions > 0
 
 func get_gold() -> int:
 	return coins
 
 func get_keys() -> int:
 	return keys
+
+func get_heal_potions() -> int:
+	return heal_potions
+	
+func get_mana_potions() -> int:
+	return mana_potions
 	
 func save_data() -> Dictionary:
 	return {
 		"coins": coins,
-		"keys" : keys
+		"keys" : keys,
+		"heal_potions": heal_potions,
+		"mana_potions": mana_potions
 	}
 
 	

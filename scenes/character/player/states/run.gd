@@ -114,6 +114,8 @@ func _update(delta: float) -> void:
 	
 	if control_jump():
 		return
+	if control_use_potion():
+		return
 
 
 func _exit() -> void:

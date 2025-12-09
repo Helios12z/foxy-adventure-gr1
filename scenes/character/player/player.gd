@@ -87,6 +87,10 @@ var _last_left_press_ms: int = -100000
 var _last_right_press_ms: int = -100000
 
 
+var inventory: InvetorySystem
+const HEAL_SHADER = preload("res://scenes/character/player/shaders/heal.gdshader")
+
+
 func get_run_speed() -> float:
 	
 	return movement_speed * run_speed_multiplier
@@ -154,6 +158,8 @@ func _ready() -> void:
 	mana_regen_timer.autostart = true
 	mana_regen_timer.timeout.connect(_on_mana_regen_timeout)
 	add_child(mana_regen_timer)
+	var gm = get_tree().get_root().get_node("GameManager")
+	inventory = gm.get_node("InventorySystem")
 	
 func _physics_process(delta: float) -> void:
 	# Apply safe-zone modifiers before physics so gravity uses updated value
@@ -317,6 +323,12 @@ func _on_invulnerable_timeout() -> void:
 # Dash gating helpers
 func can_dash() -> bool:
 	return (not dash_on_cooldown) and (dash_chain_count < dash_chain_max)
+
+func can_heal() -> bool:
+	return health < max_health
+
+func can_charge_mana() -> bool:
+	return mana < max_mana
 
 func register_dash_started() -> void:
 	dash_chain_count += 1
@@ -553,4 +565,36 @@ func _on_giant_duration_timeout() -> void:
 
 func _on_giant_cool_down_timeout() -> void:
 	can_use_giant = true
-	
+
+func use_heal_potion(amount: int):
+	if inventory.has_heal_potion():
+		heal(amount)
+		inventory.use_heal_potion()
+
+		var sprite := animated_sprite
+		if sprite == null:
+			return
+
+		# Store original material
+		var original_material = sprite.material
+
+		# Create and assign heal material
+		var heal_material = ShaderMaterial.new()
+		heal_material.shader = HEAL_SHADER
+		heal_material.set_shader_parameter("flash_color", Color(0.0, 1.0, 0.0, 1.0)) # Green
+		sprite.material = heal_material
+
+		var tween := create_tween()
+		
+		# Flash up and down
+		tween.tween_property(heal_material, "shader_parameter/flash_modifier", 1.0, 0.12)
+		tween.tween_property(heal_material, "shader_parameter/flash_modifier", 0.0, 0.18)
+		
+		# Restore original material
+		tween.tween_callback(func(): sprite.material = original_material)
+
+		# Scale pulse (separate tween for simplicity)
+		var current_scale = $Direction.scale
+		var tween_scale = create_tween()
+		tween_scale.tween_property($Direction, "scale", current_scale * 1.1, 0.1)
+		tween_scale.tween_property($Direction, "scale", current_scale, 0.1)

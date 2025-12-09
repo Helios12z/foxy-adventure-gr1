@@ -29,6 +29,7 @@ func _update(_delta: float) -> void:
 
 	control_jump()
 	#Control moving
+	control_use_potion()
 	control_moving(_delta)
 	control_attack()
 	#If not on floor change to fall

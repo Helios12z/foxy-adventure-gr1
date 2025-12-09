@@ -80,13 +80,10 @@ animations = [{
 }]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4qvgp"]
-load_path = "res://.godot/imported/big1.png-edc349c0a2bf31022bb76f6ffe11289f.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qlnx3"]
-load_path = "res://.godot/imported/big2.png-3b800b5f3316b2f991ecc1b8a8cd09e8.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nakkr"]
-load_path = "res://.godot/imported/big3.png-477ec69fb1d7f440a45ce7262de2ed87.ctex"
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ibcdq"]
 animations = [{
@@ -103,7 +100,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("11_w3kqy")
 }],
-"loop": false,
+"loop": true,
 "name": &"attack",
 "speed": 8.0
 }, {
@@ -119,7 +116,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("26_tjeaw")
 }],
-"loop": true,
+"loop": false,
 "name": &"fall",
 "speed": 5.0
 }, {
@@ -179,7 +176,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("26_tjeaw")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 5.0
 }, {
@@ -286,7 +283,6 @@ overshoot_px = 60.0
 position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-visible = false
 light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
@@ -294,14 +290,12 @@ sprite_frames = ExtResource("2_v051h")
 animation = &"transform_normal"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-visible = false
 light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 sprite_frames = ExtResource("3_i0j1t")
 animation = &"transform_giant"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-visible = false
 light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
@@ -309,7 +303,6 @@ sprite_frames = ExtResource("4_68dt2")
 animation = &"transform_giant"
 
 [node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-visible = false
 light_mask = 2
 scale = Vector2(0.07, 0.07)
 sprite_frames = SubResource("SpriteFrames_gfavw")
@@ -318,7 +311,7 @@ animation = &"hover"
 [node name="GiantAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_ibcdq")
-animation = &"transform_normal"
+animation = &"walk"
 autoplay = "walk"
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]

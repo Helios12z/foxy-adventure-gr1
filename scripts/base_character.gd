@@ -138,3 +138,20 @@ func can_wall_slide() -> bool:
 
 func wall_slide(delta: float) -> void:
 	velocity.y = min(velocity.y, wall_slide_speed)
+
+func set_sprite_modulate(color: Color) -> void:
+	if animated_sprite:
+		animated_sprite.modulate = color
+
+func reset_sprite_modulate() -> void:
+	if animated_sprite:
+		animated_sprite.modulate = Color(1,1,1,1)
+
+func tween_sprite_modulate(from_color: Color, to_color: Color, duration: float):
+	if not animated_sprite:
+		return null
+
+	animated_sprite.modulate = from_color
+	var tween = create_tween()
+	tween.tween_property(animated_sprite, "modulate", to_color, duration)
+	return tween
