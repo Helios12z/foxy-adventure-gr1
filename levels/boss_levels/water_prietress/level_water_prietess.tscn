@@ -1,9 +1,11 @@
-[gd_scene load_steps=31 format=3 uid="uid://kv02hvhfsd8k"]
+[gd_scene load_steps=34 format=3 uid="uid://kv02hvhfsd8k"]
 
 [ext_resource type="Script" uid="uid://nfys250tpsyv" path="res://levels/boss_levels/water_prietress/level_water_prietess.gd" id="1_uutcu"]
+[ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="2_4si3a"]
 [ext_resource type="Script" uid="uid://dl74muxrjkc5p" path="res://levels/boss_levels/water_prietress/boss_platform_controller.gd" id="2_7sno5"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="2_wc5ch"]
 [ext_resource type="Texture2D" uid="uid://o357kuf0dh8l" path="res://asset/level_3_water_palace/background/pillar_layer_2.png" id="3_25jq8"]
+[ext_resource type="PackedScene" uid="uid://dgwlv5lvkntgn" path="res://scenes/enemies/golden_carp/golden_carp.tscn" id="3_kibuc"]
 [ext_resource type="Texture2D" uid="uid://b5fy41hv0lq7q" path="res://asset/level_3_water_palace/platforms/moving_platform_water.png" id="3_qntum"]
 [ext_resource type="PackedScene" uid="uid://sciyw0j5f5yo" path="res://scenes/bosses/water_prietest/water_prietest.tscn" id="3_y7w5y"]
 [ext_resource type="Texture2D" uid="uid://xlv1dv6exq3" path="res://asset/level_3_water_palace/background/platform_boss_water_guard.png" id="4_qntum"]
@@ -38,6 +40,9 @@ size = Vector2(156.5, 47)
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
 radius = 32.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kibuc"]
+size = Vector2(277, 664)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_8nokj"]
 atlas = ExtResource("10_uutcu")
 region = Rect2(106, 355, 1087, 33)
@@ -52,8 +57,15 @@ atlas = ExtResource("10_uutcu")
 region = Rect2(106, 227, 1087, 33)
 margin = Rect2(30, 55, 40, 80)
 
-[node name="LevelWaterPrietess" type="Node2D"]
+[node name="LevelWaterPrietess" type="Node2D" node_paths=PackedStringArray("fight_trigger_area", "prewave_spawn_markers", "boss_bg_marker", "boss_land_marker", "boss_parallax_layer")]
 script = ExtResource("1_uutcu")
+serpent_eel_scene = ExtResource("2_4si3a")
+golden_carp_scene = ExtResource("3_kibuc")
+fight_trigger_area = NodePath("World/Area2D")
+prewave_spawn_markers = [NodePath("World/SpawnPoint1"), NodePath("World/SpawnPoint2"), NodePath("World/SpawnPoint3"), NodePath("World/SpawnPoint4")]
+boss_bg_marker = NodePath("World/BossBackgroundStandPoint")
+boss_land_marker = NodePath("World/BossLandingPoint")
+boss_parallax_layer = NodePath("World/ParallaxBackground/ParallaxLayerFront")
 
 [node name="World" type="Node2D" parent="."]
 
@@ -77,6 +89,7 @@ room_bound_point_b = NodePath("../RoomBoundPointB")
 position = Vector2(-261, -1220)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/RectPlatform"]
+collision_mask = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/RectPlatform/StaticBody2D"]
 position = Vector2(868.4998, 1889)
@@ -220,7 +233,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(886, 445)
+position = Vector2(887, 359)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform4"]
 collision_mask = 10
@@ -252,7 +265,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(633, 447)
+position = Vector2(607, 358)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform5"]
 collision_mask = 10
@@ -331,7 +344,7 @@ texture = ExtResource("6_a2wmj")
 flip_v = true
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
-position = Vector2(-1164, 591)
+position = Vector2(-117, 558)
 has_blade = true
 
 [node name="WaterPrietest" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("3_y7w5y")]
@@ -340,6 +353,32 @@ bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
 
 [node name="Chest" parent="World" instance=ExtResource("10_tqigs")]
+
+[node name="Area2D" type="Area2D" parent="World"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Area2D"]
+position = Vector2(591.5, 410)
+shape = SubResource("RectangleShape2D_kibuc")
+
+[node name="SpawnPoint1" type="Marker2D" parent="World"]
+position = Vector2(909, 570)
+
+[node name="SpawnPoint2" type="Marker2D" parent="World"]
+position = Vector2(832, 569)
+
+[node name="SpawnPoint3" type="Marker2D" parent="World"]
+position = Vector2(759, 569)
+
+[node name="SpawnPoint4" type="Marker2D" parent="World"]
+position = Vector2(681, 569)
+
+[node name="BossBackgroundStandPoint" type="Marker2D" parent="World"]
+position = Vector2(1049, 77)
+
+[node name="BossLandingPoint" type="Marker2D" parent="World"]
+position = Vector2(574, 586)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

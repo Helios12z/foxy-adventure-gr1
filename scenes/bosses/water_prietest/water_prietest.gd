@@ -7,7 +7,7 @@ signal start_fight
 
 @export var spike_damage: int = 150 
 @export var max_health_boss: int = 1000
-@export var boss_jump_speed: float = 420.0     
+@export var boss_jump_speed: float = 500.0     
 @export var attack_range: float = 180.0
 @export var move_speed: float = 80.0
 @export var surf_speed: float = 100.0    
@@ -36,17 +36,22 @@ var can_attack: bool = true
 var attack_cooldown_timer: float = 0.0
 var can_defend: bool = true
 var defend_cooldown_timer: float = 0.0
-
 var _phase2_transition_running: bool = false
 var _original_time_scale: float = 1.0
+var _phase2_ai_timer: float = 0.0
+var force_phase2_ground_jump: bool = false
 
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D
+@export var rect_platform: Node2D
 
 # Platform jumping system
 @export var jump_detection_range: float = 300.0
 @export var max_jump_distance: float = 200.0
 @export var jump_height_tolerance: float = 100.0
+
+@export var phase2_time_on_ground: Vector2 = Vector2(1.5, 3.0)    
+@export var phase2_time_on_platform: Vector2 = Vector2(1.5, 3.0)  
 
 var jump_markers: Array[JumpMarker2D] = []
 var current_jump_marker: JumpMarker2D = null
@@ -63,6 +68,7 @@ var target_jump_marker: JumpMarker2D = null
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 @onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
 @onready var slash: AudioStreamPlayer2D = $Sound/Slash
+@onready var water_slash: AudioStreamPlayer2D = $Sound/WaterSlash
 
 enum MoveMode {
 	MOVE_NONE,
@@ -122,6 +128,9 @@ func _physics_process(delta: float) -> void:
 
 	super._physics_process(delta)
 	_keep_inside_room_and_avoid_fall()
+	
+	if in_phase2 and seen_player and not _phase2_transition_running:
+		_update_phase2_platform_brain(delta)
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -481,3 +490,55 @@ func is_player_on_rect_platform() -> bool:
 
 	# Có thể refine thêm theo level_bounds.y nếu cần
 	return true
+
+func is_on_floating_platform() -> bool:
+	# chỉ quan tâm khi boss đứng trên sàn
+	if not is_on_floor():
+		return false
+	if rect_platform == null:
+		return false
+
+	return global_position.y < rect_platform.global_position.y - 16.0
+
+func _update_phase2_platform_brain(delta: float) -> void:
+	_phase2_ai_timer -= delta
+	if _phase2_ai_timer > 0.0:
+		return
+
+	var player := get_player()
+	if player == null:
+		return
+
+	var boss_on_platform := is_on_floating_platform()
+	var player_on_platform := is_player_on_floating_platform()
+
+	# Chỉ trigger khi đang ở state “đứng được” – tránh phá giữa lúc đang roll / hurt...
+	var cur = fsm.current_state
+	var can_decide = (
+		cur == fsm.states.idle or
+		cur == fsm.states.walk or
+		cur == fsm.states.surf
+	)
+	if not can_decide:
+		return
+
+	if boss_on_platform:
+		# ---- BOSS ĐANG Ở TRÊN FLOATING PLATFORM ----
+		if not player_on_platform:
+			# Player ở dưới rect → sau 1 khoảng ngắn boss nhảy xuống
+			force_phase2_ground_jump = true
+
+			fsm.change_state(fsm.states.jump)
+			_phase2_ai_timer = randf_range(phase2_time_on_ground.x, phase2_time_on_ground.y)
+		else:
+			# Cả hai cùng ở trên platform
+			# 50% nhảy sang platform khác, 50% nhảy xuống luôn (tuỳ bạn chỉnh)
+			force_phase2_ground_jump = randf() < 0.5
+			fsm.change_state(fsm.states.jump)
+			_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
+	else:
+		# ---- BOSS ĐANG Ở DƯỚI (RECT PLATFORM) ----
+		# Thỉnh thoảng nhảy lên trên để đổi nhịp combat
+		force_phase2_ground_jump = false
+		fsm.change_state(fsm.states.jump)
+		_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)

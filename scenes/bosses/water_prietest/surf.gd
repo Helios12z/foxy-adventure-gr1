@@ -1,7 +1,4 @@
-# States/Surf.gd
 extends WaterPrietestState
-
-@export var surf_speed: float = 120.0  # nhanh hơn walk cho phase 2
 
 func _enter() -> void:
 	obj.change_animation("surf")
@@ -33,7 +30,7 @@ func _update(delta: float) -> void:
 	if not obj.can_attack:
 		if in_attack_height:
 			var dir = sign(player.global_position.x - obj.global_position.x)
-			obj.velocity.x = dir * surf_speed
+			obj.velocity.x = dir * obj.surf_speed
 		else:
 			if obj.move_mode == obj.MoveMode.MOVE_NONE:
 				decide_move_mode_towards_player()
@@ -55,7 +52,7 @@ func _update(delta: float) -> void:
 				else:
 					change_state(fsm.states.jump)
 			else:
-				obj.velocity.x = dir * surf_speed
+				obj.velocity.x = dir * obj.surf_speed
 		return
 
 	# --------- PHASE 2 ATTACK PATTERNS (CHỈ KHI VỪA TẦM) ---------
@@ -101,4 +98,4 @@ func _update(delta: float) -> void:
 		else:
 			change_state(fsm.states.jump)
 	else:
-		obj.velocity.x = dir * surf_speed
+		obj.velocity.x = dir * obj.surf_speed
