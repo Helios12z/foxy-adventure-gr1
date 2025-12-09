@@ -231,7 +231,7 @@ var inv_cooldown_timer: Timer = null
 func start_invulnerability(duration: float = 2.0) -> void:
 	if inv_cooldown_timer and inv_cooldown_timer.time_left > 0:
 		return  # đang inv, không reset
-	is_invulnerable = true
+	is_invulnerable = true 
 	set_collision_mask_value(6,true)
 	set_collision_layer_value(2,false)
 	_start_blink_effect()
