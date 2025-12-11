@@ -29,7 +29,6 @@ func _update(_delta: float) -> void:
 
 	control_jump()
 	#Control moving
-	control_use_potion()
 	control_moving(_delta)
 	control_attack()
 	control_heal_potion()

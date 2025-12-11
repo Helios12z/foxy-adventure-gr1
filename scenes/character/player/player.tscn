@@ -137,12 +137,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4qvgp"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qlnx3"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nakkr"]
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_ibcdq"]
 animations = [{
 "frames": [{
@@ -279,7 +273,6 @@ collision_layer = 2
 script = ExtResource("1_puv7k")
 dash_chain_cooldown = 1.0
 run_speed_multiplier = 2.1
-giant_duration = 10
 movement_speed = 120.0
 max_health = 5000
 

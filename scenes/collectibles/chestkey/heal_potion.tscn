@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://0maiw8wy2gul"]
 
 [ext_resource type="Script" uid="uid://cu6wv2oowhpx6" path="res://scenes/collectibles/chestkey/heal_potion.gd" id="1_ghb0w"]
-[ext_resource type="Texture2D" uid="uid://cmy016ckrux7t" path="res://asset/level_3_water_palace/objects/potions/health_potion.png" id="2_ghb0w"]
+[ext_resource type="Texture2D" uid="uid://cpwlp7ufxlrsf" path="res://asset/level_3_water_palace/objects/potions/heal_potion.png" id="2_ue43n"]
 [ext_resource type="Texture2D" uid="uid://dygsiw7ox020x" path="res://asset/chest_key/effects/sparks_4.png" id="13_uxavv"]
 [ext_resource type="Texture2D" uid="uid://c3cu0smeo0kbu" path="res://asset/chest_key/effects/sparks_5.png" id="14_364ba"]
 [ext_resource type="Texture2D" uid="uid://dufcenpce4hx8" path="res://asset/chest_key/effects/sparks_6.png" id="15_5snfa"]
@@ -15,7 +15,7 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_ghb0w")
+"texture": ExtResource("2_ue43n")
 }],
 "loop": true,
 "name": &"appearance",
@@ -63,7 +63,7 @@ script = ExtResource("1_ghb0w")
 position = Vector2(0, 5)
 scale = Vector2(0.02, 0.02)
 sprite_frames = SubResource("SpriteFrames_e7x3q")
-animation = &"disappearance"
+animation = &"appearance"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)

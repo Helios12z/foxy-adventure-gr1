@@ -614,43 +614,6 @@ func _on_giant_duration_timeout() -> void:
 func _on_giant_cooldown_timeout() -> void:
 	can_use_giant = true
 
-func use_heal_potion(amount: int):
-	if inventory.has_heal_potion():
-		heal(amount)
-		inventory.use_heal_potion()
-
-		var sprite := animated_sprite
-		if sprite == null:
-			return
-
-		# Store original material
-		var original_material = sprite.material
-
-		# Create and assign heal material
-		var heal_material = ShaderMaterial.new()
-		heal_material.shader = HEAL_SHADER
-		heal_material.set_shader_parameter("flash_color", Color(0.0, 1.0, 0.0, 1.0)) # Green
-		sprite.material = heal_material
-
-		var tween := create_tween()
-		
-		# Flash up and down
-		tween.tween_property(heal_material, "shader_parameter/flash_modifier", 1.0, 0.12)
-		tween.tween_property(heal_material, "shader_parameter/flash_modifier", 0.0, 0.18)
-		
-		# Restore original material
-		tween.tween_callback(func(): sprite.material = original_material)
-
-		# Scale pulse (separate tween for simplicity)
-		var current_scale = $Direction.scale
-		var tween_scale = create_tween()
-		tween_scale.tween_property($Direction, "scale", current_scale * 1.1, 0.1)
-		tween_scale.tween_property($Direction, "scale", current_scale, 0.1)
-	giant_on_cooldown = false
-	giant_cooldown_finished.emit()
-	
-func can_heal() -> bool:
-	return health < max_health
 
 func use_heal_potion(amount: int) -> void:
 	if GameManager.inventory_system.use_heal_potion():

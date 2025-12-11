@@ -43,20 +43,6 @@ func use_heal_potion() -> bool:
 		return true
 	return false
 	
-func add_heal_potion(amount: int = 1) -> void:
-	heal_potions += amount
-	heal_potion_changed.emit(heal_potions)
-	item_collected.emit("heal_postion",amount)
-	GameManager.update_inventory_in_checkpoint()
-	print("Collected ", amount, " heal potions Total: ", heal_potions)
-	
-func add_mana_potion(amount: int = 1) -> void:
-	mana_potions += amount
-	mana_potion_changed.emit(mana_potions)
-	item_collected.emit("mana_postion",amount)
-	GameManager.update_inventory_in_checkpoint()
-	print("Collected ", amount, " mana potions Total: ", mana_potions)
-	
 	
 func use_key() -> bool:
 	if has_key():
@@ -73,14 +59,6 @@ func has_heal_potion() -> bool:
 func has_key() -> bool:
 	return keys > 0	
 	
-func has_heal_potion() -> bool:
-	var a = heal_potions
-	return heal_potions > 0
-	
-func has_mana_potion() -> bool:
-	var a = mana_potions
-	return mana_potions > 0
-
 func get_gold() -> int:
 	return coins
 
