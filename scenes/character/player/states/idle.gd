@@ -32,6 +32,7 @@ func _update(_delta: float) -> void:
 	control_use_potion()
 	control_moving(_delta)
 	control_attack()
+	control_heal_potion()
 	#If not on floor change to fall
 	if not obj.is_on_floor():
 		change_state(fsm.states.fall)

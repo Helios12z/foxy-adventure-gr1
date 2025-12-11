@@ -3,24 +3,26 @@
 [ext_resource type="Script" uid="uid://cx2feeo4je1ed" path="res://screens/game_screen/coin_and_key_container.gd" id="1_uy4ab"]
 [ext_resource type="Texture2D" uid="uid://dtwnvoh5jfgsn" path="res://asset/coin/coin/01.png" id="2_c8ou4"]
 [ext_resource type="Texture2D" uid="uid://b5cij2cyi3jah" path="res://asset/chest_key/key/key_1.png" id="3_rbm8k"]
-[ext_resource type="Texture2D" uid="uid://cpwlp7ufxlrsf" path="res://asset/level_3_water_palace/objects/potions/heal_potion.png" id="4_rbm8k"]
+[ext_resource type="Texture2D" uid="uid://cmy016ckrux7t" path="res://asset/level_3_water_palace/objects/potions/health_potion.png" id="4_c8ou4"]
 
-[node name="InventoryContainer" type="HBoxContainer"]
-custom_minimum_size = Vector2(200, 30)
+[node name="InventoryContainner" type="HBoxContainer"]
+custom_minimum_size = Vector2(300, 30)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -156.0
-offset_top = 30.0
-offset_right = 164.0
-offset_bottom = 60.0
+offset_left = -126.0
+offset_top = 10.0
+offset_right = 174.0
+offset_bottom = 40.0
 grow_horizontal = 2
-size_flags_vertical = 4
+scale = Vector2(0.8, 0.8)
 theme_override_constants/separation = 50
+alignment = 1
 script = ExtResource("1_uy4ab")
 
 [node name="CoinContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+alignment = 1
 
 [node name="CoinIcon" type="TextureRect" parent="CoinContainer"]
 layout_mode = 2
@@ -33,6 +35,7 @@ layout_mode = 2
 
 [node name="KeyContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+alignment = 1
 
 [node name="KeyIcon" type="TextureRect" parent="KeyContainer"]
 layout_mode = 2
@@ -44,10 +47,11 @@ layout_mode = 2
 
 [node name="HealContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+alignment = 1
 
 [node name="HealIcon" type="TextureRect" parent="HealContainer"]
 layout_mode = 2
-texture = ExtResource("4_rbm8k")
+texture = ExtResource("4_c8ou4")
 expand_mode = 2
 
 [node name="HealLabel" type="Label" parent="HealContainer"]

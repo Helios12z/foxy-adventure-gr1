@@ -14,11 +14,11 @@ func _ready():
 
 	inventory.coin_changed.connect(_on_coin_changed)
 	inventory.key_changed.connect(_on_key_change)
-	inventory.heal_potion_changed.connect(_on_heal_potion_changed)
+	inventory.heal_potion_changed.connect(_on_heal_change)
 
 	coin_label.text = str(inventory.get_gold())
 	key_label.text = str(inventory.get_keys())
-	heal_label.text = str(inventory.get_heal_potions())
+	heal_label.text = str(inventory.get_heal_potion())
 
 
 
@@ -31,5 +31,5 @@ func _on_coin_changed(new_amount: int) -> void:
 func _on_key_change(new_amount: int) -> void:
 	key_label.text = str(new_amount)
 	
-func _on_heal_potion_changed(new_amount: int) -> void:
+func _on_heal_change(new_amount: int) -> void:
 	heal_label.text = str(new_amount)

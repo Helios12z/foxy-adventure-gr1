@@ -3,8 +3,7 @@ extends FSMState
 
 @export var dash_mana : int = 10
 @export var giant_mana : int = 100
-@export var heal_potion_amount : int = 20
-
+@export var heal_amount : int = 20
 #Control moving and changing state to run
 #Return true if moving
 #Add friction and acceleration effects
@@ -156,8 +155,8 @@ func control_giant_mode() ->bool:
 		return true
 	return false
 
-func control_use_potion() -> bool:
+func control_heal_potion() -> bool:
 	if Input.is_action_just_pressed("use_heal_potion") and obj.can_heal():
-		obj.use_heal_potion(heal_potion_amount)
+		obj.use_heal_potion(heal_amount) 
 		return true
 	return false
