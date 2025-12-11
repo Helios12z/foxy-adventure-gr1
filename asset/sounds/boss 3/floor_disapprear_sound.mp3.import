@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b4i1r1henutxw"
+path="res://.godot/imported/floor_disapprear_sound.mp3-02d00f6b66b505dc4e62b963a0d183cd.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/floor_disapprear_sound.mp3"
+dest_files=["res://.godot/imported/floor_disapprear_sound.mp3-02d00f6b66b505dc4e62b963a0d183cd.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

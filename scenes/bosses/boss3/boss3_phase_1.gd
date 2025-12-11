@@ -26,8 +26,9 @@ func _transition_to_phase2() -> void:
 	print("[Boss3 Phase1] ===== TRANSITIONING TO PHASE 2 =====")
 	_running = false  # Stop current pattern
 
-	# Make boss invulnerable immediately
+	# Make boss invulnerable immediately AND show BlingBling
 	obj.set_invulnerable(true)
+	obj.set_blingbling_effect(true)
 
 	# Time slowdown effect
 	print("[Boss3 Phase1] Slowing down time...")
@@ -53,7 +54,8 @@ func _transition_to_phase2() -> void:
 
 
 func _run_pattern() -> void:
-	await get_tree().process_frame
+	# Small delay before starting the pattern loop
+	await get_tree().create_timer(1.0).timeout
 
 	while _running and obj.health > obj.max_health * phase2_health_threshold:
 		# Move to random non-adjacent anchor before skill

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bh4ochdlw6djq"]
+[gd_scene load_steps=14 format=3 uid="uid://bh4ochdlw6djq"]
 
 [ext_resource type="Texture2D" uid="uid://cujqsdbiao23s" path="res://asset/level_3_water_palace/water_goddess/skills/water_bullet_idle_1.png" id="1_4gkum"]
 [ext_resource type="Script" uid="uid://c72tkboltkbl1" path="res://scenes/bosses/boss3/water_ball.gd" id="1_dnvde"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c42enfmfok7ni" path="res://asset/level_3_water_palace/water_goddess/skills/water_bullet_move_3.png" id="7_dnvde"]
 [ext_resource type="Texture2D" uid="uid://bhko00tuq1pax" path="res://asset/level_3_water_palace/water_goddess/skills/water_bullet_move_4.png" id="8_yy8ti"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="9_jslva"]
+[ext_resource type="AudioStream" uid="uid://bf8iu4jtyu7oj" path="res://asset/sounds/boss 3/water_ball_move_sound.mp3" id="11_yy8ti"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5guc8"]
 animations = [{
@@ -78,7 +79,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dnvde"]
-radius = 17.0
+radius = 13.0
 
 [node name="WaterBall" type="Node2D"]
 script = ExtResource("1_dnvde")
@@ -97,5 +98,8 @@ script = ExtResource("9_jslva")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
-position = Vector2(0, 1)
+position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_dnvde")
+
+[node name="WaterBallMoveSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_yy8ti")

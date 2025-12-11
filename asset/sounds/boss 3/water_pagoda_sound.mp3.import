@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cegije2dlrxb8"
+path="res://.godot/imported/water_pagoda_sound.mp3-b240948427bf7c8a38d3fdd3038c24ea.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/water_pagoda_sound.mp3"
+dest_files=["res://.godot/imported/water_pagoda_sound.mp3-b240948427bf7c8a38d3fdd3038c24ea.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

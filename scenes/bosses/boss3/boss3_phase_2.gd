@@ -29,6 +29,7 @@ func _transition_to_phase3() -> void:
 
 	# Make boss invulnerable immediately
 	obj.set_invulnerable(true)
+	obj.set_blingbling_effect(false)
 
 	# Remove all phase 2 projectiles/skills from the arena
 	print("[Boss3 Phase2] Cancelling all remaining phase 2 skills...")

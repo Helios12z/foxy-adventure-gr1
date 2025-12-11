@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cqb2yqx4l5p8k"]
+
+[ext_resource type="Shader" path="res://scenes/bosses/boss3/red_outline.gdshader" id="1_outline_shader"]
+
+[resource]
+shader = ExtResource("1_outline_shader")
+shader_parameter/outline_color = Color(1, 0, 0, 1)
+shader_parameter/outline_width = 2.0
+shader_parameter/show_outline = false

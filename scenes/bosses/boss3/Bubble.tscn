@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdjyxenddcpp7"]
+[gd_scene load_steps=7 format=3 uid="uid://bdjyxenddcpp7"]
 
-[ext_resource type="Script" path="res://scenes/bosses/boss3/bubble.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bddhw5rylnwi0" path="res://scenes/bosses/boss3/bubble.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cincmtu37bgnm" path="res://asset/level_3_water_palace/platforms/bubble_pad_1.png" id="1_u6hc4"]
 [ext_resource type="Texture2D" uid="uid://bt4hbmdxwikq3" path="res://asset/level_3_water_palace/platforms/bubble_pad_2.png" id="2_xwvft"]
+[ext_resource type="AudioStream" uid="uid://bidpmr0tf46e7" path="res://asset/sounds/boss 3/bbexplode_sound.mp3" id="4_11vn7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_11vn7"]
 radius = 19.235384
@@ -38,3 +39,6 @@ shape = SubResource("CircleShape2D_11vn7")
 position = Vector2(-0.9999999, 1.9999995)
 scale = Vector2(0.0900879, 0.0900879)
 sprite_frames = SubResource("SpriteFrames_b2hmv")
+
+[node name="BBExplodeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_11vn7")

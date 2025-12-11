@@ -5,6 +5,8 @@ extends Node2D
 @onready var hurt_area: HurtArea2D = $HurtArea2D
 @onready var hit_collision: CollisionShape2D = $HitArea2D/CollisionShape2D
 @onready var hurt_collision: CollisionShape2D = $HurtArea2D/CollisionShape2D
+@onready var rising_sound: AudioStreamPlayer = $WaterColumnRisingSound
+@onready var break_sound: AudioStreamPlayer = $WaterColumnBreakSound
 
 @export var damage: int = 20  # Damage to player on contact
 @export var max_health: int = 4  # Takes 4 hits to break
@@ -70,6 +72,10 @@ func _rise_animation() -> void:
 	# Play upward animation
 	anim.play("upward")
 
+	# Play rising sound when column starts rising
+	if rising_sound:
+		rising_sound.play()
+
 	# Gradually grow collision shapes during rise
 	var tween = create_tween()
 	tween.set_parallel(true)
@@ -122,13 +128,28 @@ func _break() -> void:
 	is_active = false
 	print("[WaterColumn] Breaking!")
 
-	# Disable collision
+	# Disable collision immediately
 	hit_area.set_deferred("monitoring", false)
 	hit_area.set_deferred("monitorable", false)
+	hurt_area.set_deferred("monitoring", false)
+	hurt_area.set_deferred("monitorable", false)
+
+	# Play break sound when column is destroyed
+	var sound_duration := 0.0
+	if break_sound and break_sound.stream:
+		break_sound.play()
+		sound_duration = break_sound.stream.get_length()
+		print("[WaterColumn] Playing break sound (duration: %.2fs)" % sound_duration)
 
 	# Fade out and destroy
 	var tween = create_tween()
 	tween.tween_property(anim, "modulate:a", 0.0, 0.3)
 	await tween.finished
+
+	# Wait for sound to finish before destroying node
+	if sound_duration > 0.3:
+		var remaining_time = sound_duration - 0.3
+		await get_tree().create_timer(remaining_time).timeout
+		print("[WaterColumn] Sound finished, destroying node")
 
 	queue_free()

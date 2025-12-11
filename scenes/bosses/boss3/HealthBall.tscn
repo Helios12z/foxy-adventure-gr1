@@ -14,10 +14,13 @@
 [ext_resource type="Texture2D" uid="uid://co18xpnd87084" path="res://asset/level_3_water_palace/water_goddess/skills/ice_ball_11.png" id="12_v2p7x"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="13_0wqxb"]
 [ext_resource type="Script" uid="uid://jhlbcu3dx2hg" path="res://scenes/bosses/boss3/health_ball.gd" id="13_health_ball"]
-[ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="14_shader"]
+[ext_resource type="Shader" path="res://scenes/bosses/boss3/red_outline.gdshader" id="14_shader"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_health"]
 shader = ExtResource("14_shader")
+shader_parameter/outline_color = Color(1, 0, 0, 1)
+shader_parameter/outline_width = 2.0
+shader_parameter/show_outline = true
 shader_parameter/flash_amount = 0.0
 shader_parameter/flash_color = Color(1, 1, 1, 1)
 
