@@ -19,28 +19,17 @@ signal start_fight
 @export var atk1_windup_time: float = 1.25
 @export var atk2_windup_time: float = 1.0
 @export var atk3_windup_time: float = 0.75
-@export var atk_super_windup_time: float = 0.5
+@export var atk_super_windup_time: float = 0.75
 @export var atk_air_windup_time: float = 0.8
 @export var defend_range: float = 80.0
-@export var defend_cooldown: float = 6.0
+@export var defend_cooldown: float = 7.0
 @export var attack_prepare_time: float = 2.5
 @export var roll_escape_distance: float = 35.0
 @export var roll_same_level_threshold: float = 32.0
-@export var roll_cooldown: float = 6.0  
+@export var roll_cooldown: float = 7.0  
 
-@export var retaliate_damage_window_seconds: float = 6.0 
-@export var retaliate_combo_hits: int = 3 
-
-var can_attack: bool = true
-var attack_cooldown_timer: float = 0.0
-var can_defend: bool = true
-var defend_cooldown_timer: float = 0.0
-var can_roll: bool = true
-var roll_cooldown_timer: float = 0.0
-var _phase2_transition_running: bool = false
-var _original_time_scale: float = 1.0
-var _phase2_ai_timer: float = 0.0
-var force_phase2_ground_jump: bool = false
+@export var retaliate_damage_window_seconds: float = 4.0 
+@export var retaliate_combo_hits: int = 8 
 
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D
@@ -54,6 +43,17 @@ var force_phase2_ground_jump: bool = false
 @export var phase2_time_on_ground: Vector2 = Vector2(1.5, 3.0)    
 @export var phase2_time_on_platform: Vector2 = Vector2(1.5, 3.0)  
 
+var can_attack: bool = true
+var attack_cooldown_timer: float = 0.0
+var can_defend: bool = true
+var defend_cooldown_timer: float = 0.0
+var can_roll: bool = true
+var roll_cooldown_timer: float = 0.0
+var _phase2_transition_running: bool = false
+var _original_time_scale: float = 1.0
+var _phase2_ai_timer: float = 0.0
+var force_phase2_ground_jump: bool = false
+
 var jump_markers: Array[JumpMarker2D] = []
 var current_jump_marker: JumpMarker2D = null
 var target_jump_marker: JumpMarker2D = null
@@ -65,6 +65,7 @@ var target_jump_marker: JumpMarker2D = null
 @onready var atk2_collision_shape_2d_left: CollisionShape2D = $Direction/Atk2HitArea2D2/CollisionShape2D
 @onready var atk3_collision_shape_2d: CollisionShape2D = $Direction/Atk3HitArea2D/CollisionShape2D
 @onready var atk_super_collision_shape_2d: CollisionShape2D = $Direction/AtkSuperHitArea2D/CollisionShape2D
+@onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 @onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
@@ -141,6 +142,8 @@ func _physics_process(delta: float) -> void:
 		
 	if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
 		animated_sprite_2d.speed_scale = 1.0
+	
+	print(fsm.current_state)
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):

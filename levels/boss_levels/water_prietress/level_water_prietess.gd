@@ -7,7 +7,8 @@ extends Node2D
 @export var prewave_spawn_markers: Array[Marker2D] = []     
 @export var boss_bg_marker: Marker2D                       
 @export var boss_land_marker: Marker2D                      
-@export var boss_intro_jump_height: float = 220.0           
+@export var boss_intro_jump_height: float = 220.0        
+@export var phase2_minion_respawn_cooldown: float = 5.0   
 @export var boss_parallax_layer: ParallaxLayer    
 
 @onready var boss_hud: Control = $CanvasLayer/BossHUD
@@ -24,6 +25,10 @@ var _prewave_started: bool = false
 var _prewave_enemies_left: int = 0
 var _boss_intro_started: bool = false
 var _boss_in_parallax: bool = false
+
+var _phase2_minion_mode: bool = false
+var _phase2_minion_respawn_timer: float = 0.0
+var _phase2_minion_count: int = 0
 
 func _enter_tree() -> void:
 	GameManager.current_stage = self
@@ -55,14 +60,16 @@ func _process(_delta: float) -> void:
 		var parallax_transform := boss_parallax_layer.get_global_transform()
 		var local_pos := parallax_transform.affine_inverse() * target_global
 		boss.position = local_pos
+	
+	_update_phase2_minions(_delta)
 		
 func _on_boss_start_fight() -> void:
 	boss_hud._on_boss_start_fighting()
 	await get_tree().create_timer(0.75).timeout
 
 func _on_boss_died() -> void:
+	_phase2_minion_mode = false
 	boss_platform_controller.return_platform_after_boss_dead()
-	
 	var fall_time = boss_platform_controller.rise_time
 	await get_tree().create_timer(fall_time + 1.25).timeout
 	_spawn_chest()
@@ -239,6 +246,9 @@ func _setup_boss_alive_state() -> void:
 
 	if not boss.start_fight.is_connected(_on_boss_start_fight):
 		boss.start_fight.connect(_on_boss_start_fight)
+		
+	if not boss.into_phase2.is_connected(_on_boss_into_phase2):
+		boss.into_phase2.connect(_on_boss_into_phase2)
 
 func _place_boss_idle_in_background() -> void:
 	if boss_bg_marker:
@@ -291,3 +301,82 @@ func _setup_boss_defeated_state() -> void:
 			var anim := chest.get_node("AnimatedSprite2D") as AnimatedSprite2D
 			if chest_opened:
 				anim.play("open")
+				
+func _on_boss_into_phase2() -> void:
+	_phase2_minion_mode = true
+	_phase2_minion_respawn_timer = 0.0
+	_phase2_minion_count = 0
+	_spawn_phase2_minions_if_needed()
+
+func _update_phase2_minions(delta: float) -> void:
+	if not _phase2_minion_mode:
+		return
+
+	if not is_instance_valid(boss):
+		return
+
+	if _phase2_minion_count >= 4:
+		return
+
+	if _phase2_minion_respawn_timer > 0.0:
+		_phase2_minion_respawn_timer -= delta
+		return
+
+	_spawn_phase2_minions_if_needed()
+	
+func _spawn_phase2_minions_if_needed() -> void:
+	var needed := 4 - _phase2_minion_count
+	if needed <= 0:
+		return
+
+	var world := get_node_or_null("World") as Node2D
+	if world == null:
+		world = self
+
+	var candidate_scenes: Array[PackedScene] = [
+		serpent_eel_scene,
+		serpent_eel_scene,
+		golden_carp_scene,
+		golden_carp_scene
+	]
+
+	var marker_count := prewave_spawn_markers.size()
+	var spawned := 0
+
+	for i in range(candidate_scenes.size()):
+		if spawned >= needed:
+			break
+
+		var scene := candidate_scenes[i]
+		if scene == null:
+			continue
+
+		var enemy := scene.instantiate() as Node2D
+		if enemy == null:
+			continue
+
+		world.add_child(enemy)
+		enemy.visible = true
+		if "modulate" in enemy:
+			enemy.modulate = Color(1, 1, 1, 1)
+		enemy.z_index = 0
+
+		var marker: Marker2D = null
+		if marker_count > 0:
+			marker = prewave_spawn_markers[i % marker_count]
+		if marker:
+			enemy.global_position = marker.global_position
+
+		_register_phase2_minion(enemy)
+		spawned += 1
+		
+func _register_phase2_minion(enemy: Node) -> void:
+	_phase2_minion_count += 1
+	enemy.tree_exited.connect(_on_phase2_minion_died.bind(enemy))
+
+func _on_phase2_minion_died(_enemy: Node) -> void:
+	_phase2_minion_count -= 1
+	if _phase2_minion_count < 0:
+		_phase2_minion_count = 0
+	if _phase2_minion_count < 4 and _phase2_minion_respawn_timer <= 0.0:
+		_phase2_minion_respawn_timer = phase2_minion_respawn_cooldown

@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://kv02hvhfsd8k"]
+[gd_scene load_steps=37 format=3 uid="uid://kv02hvhfsd8k"]
 
 [ext_resource type="Script" uid="uid://nfys250tpsyv" path="res://levels/boss_levels/water_prietress/level_water_prietess.gd" id="1_uutcu"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="2_4si3a"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://levels/boss_levels/water_prietress/boss_hud.gd" id="16_qntum"]
 [ext_resource type="AudioStream" uid="uid://d3fi3k7bfsfo4" path="res://asset/sounds/water_prietess/level_ambient.mp3" id="17_7sno5"]
 [ext_resource type="Script" uid="uid://beek7o2t13qa5" path="res://scenes/bosses/water_prietest/jump_marker_2d.gd" id="18_jump_marker"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="19_xb6hn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wnerh"]
 size = Vector2(953.5, 141.5)
@@ -43,6 +44,9 @@ radius = 32.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kibuc"]
 size = Vector2(277, 664)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6d03a"]
+size = Vector2(1650, 664)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8nokj"]
 atlas = ExtResource("10_uutcu")
@@ -391,6 +395,18 @@ position = Vector2(681, 569)
 
 [node name="BossLandingPoint" type="Marker2D" parent="World"]
 position = Vector2(574, 586)
+
+[node name="HitArea2D" type="Area2D" parent="World"]
+collision_layer = 0
+collision_mask = 20
+script = ExtResource("19_xb6hn")
+damage = 99999
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/HitArea2D"]
+position = Vector2(584, 1102)
+shape = SubResource("RectangleShape2D_6d03a")
+debug_color = Color(0.8645528, 0.2529613, 0.639173, 0.41960785)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

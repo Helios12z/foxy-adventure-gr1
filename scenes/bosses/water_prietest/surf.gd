@@ -47,10 +47,12 @@ func _update(delta: float) -> void:
 			var dir = sign(target_x - obj.global_position.x)
 			if abs(target_x - obj.global_position.x) <= 4.0 and obj.move_mode != obj.MoveMode.MOVE_CHASE_SAME_LEVEL:
 				obj.velocity.x = 0.0
-				if dy > 0.0:
-					change_state(fsm.states.fall)
-				else:
-					change_state(fsm.states.jump)
+				# In phase 2, if boss is on floating platform, don't immediately fall/jump just because player is below
+				if not obj.in_phase2 or not obj.is_on_floating_platform():
+					if dy > 0.0:
+						change_state(fsm.states.fall)
+					else:
+						change_state(fsm.states.jump)
 			else:
 				obj.velocity.x = dir * obj.surf_speed
 		return
@@ -93,9 +95,12 @@ func _update(delta: float) -> void:
 
 	if abs(target_x - obj.global_position.x) <= 4.0 and obj.move_mode != obj.MoveMode.MOVE_CHASE_SAME_LEVEL:
 		obj.velocity.x = 0.0
-		if dy > 0.0:
-			change_state(fsm.states.fall)
-		else:
-			change_state(fsm.states.jump)
+		# In phase 2, if boss is on floating platform, don't immediately fall/jump just because player is below
+		# Let the phase 2 platform brain handle movement decisions instead
+		if not obj.in_phase2 or not obj.is_on_floating_platform():
+			if dy > 0.0:
+				change_state(fsm.states.fall)
+			else:
+				change_state(fsm.states.jump)
 	else:
 		obj.velocity.x = dir * obj.surf_speed

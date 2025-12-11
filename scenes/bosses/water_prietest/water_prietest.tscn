@@ -510,7 +510,7 @@ animations = [{
 "texture": ExtResource("96_6gnxb")
 }],
 "loop": false,
-"name": &"atk_sp",
+"name": &"atk_super",
 "speed": 10.0
 }, {
 "frames": [{
@@ -816,8 +816,10 @@ shape = SubResource("RectangleShape2D_nk125")
 material = SubResource("ShaderMaterial_p2we0")
 position = Vector2(0, -50)
 sprite_frames = SubResource("SpriteFrames_ed6l8")
-animation = &"atk_air"
+animation = &"atk_super"
 autoplay = "idle"
+frame = 31
+frame_progress = 1.0
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
 collision_layer = 0
