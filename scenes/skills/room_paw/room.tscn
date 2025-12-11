@@ -42,9 +42,11 @@ self_modulate = Color(1, 1, 1, 0.294118)
 scale = Vector2(0.025, 0.025)
 script = ExtResource("6_room_script")
 enemy_move_time = 1.2
-bullet_flash_duration = 0.35
+bullet_flash_duration = 0.55
+bullet_flash_scale = 1.6
 enemy_flash_scale = 1.5
 enemy_flash_duration = 0.32
+skill_level = 3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0.556863)
@@ -67,7 +69,7 @@ shape = SubResource("CircleShape2D_a4pj6")
 
 [node name="BulletDetectArea2D" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 10
+collision_mask = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BulletDetectArea2D"]
 shape = SubResource("CircleShape2D_g2ljb")

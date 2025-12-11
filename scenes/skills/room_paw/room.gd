@@ -26,6 +26,9 @@ extends Node2D
 @export var player_flicker_amplitude: float = 0.8 # biên độ nhấp nháy (0..1)
 @export var player_flicker_speed: float = 3.0     # tốc độ nhấp nháy (waves/sec)
 
+@export var skill_level: int = 1
+@export var heal_percentage: float = 0.35
+
 var player: Player = null
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var area: Area2D = $Area2D
@@ -56,8 +59,17 @@ func _ready() -> void:
 	global_position = player.global_position
 	scale.x = abs(scale.x) * float(player.direction)
 
-	# heal 3 (không thay đổi hurt ở đây; sẽ gate theo Area2D)
-	player.health = min(player.max_health, player.health + 3)
+	# Set room level on player
+	player.room_level = skill_level
+
+	# Heal logic based on level
+	if skill_level >= 2:
+		var heal_amount = int(player.max_health * heal_percentage)
+		player.heal(heal_amount)
+	else:
+		# L1: Heal 3 HP (Legacy)
+		player.health = min(player.max_health, player.health + 3)
+		player.emit_signal("hp_changed", player.health, player.max_health)
 
 	# lấy node hiển thị của player để nhấp nháy mềm
 	player_display_item = _find_display_item(player)
@@ -214,10 +226,16 @@ func _cleanup() -> void:
 	for e in captured_enemies:
 		_release_body(e)
 	for b in captured_bullets:
-		_release_body(b)
+		if skill_level >= 3:
+			# Force destroy immediately if skill ended while dissolving
+			if is_instance_valid(b):
+				b.queue_free()
+		else:
+			_release_body(b)
 	# restore player damage reception
 	if player:
 		player.invincible_zone = false
+		player.room_level = 0
 		# Khôi phục độ sáng ban đầu cho player nếu có áp dụng flicker
 		if player_display_item:
 			(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
@@ -234,6 +252,11 @@ func _consider_capture(body: Node) -> void:
 	# Never capture the player
 	if body is Player:
 		return
+		
+	# Skip capture if body is in Boss group
+	if body.is_in_group("Boss"):
+		return
+		
 	# Enemy capture: EnemyCharacter or CharacterBody2D on enemy layer
 	if body is EnemyCharacter or (body is CharacterBody2D and ( (body as CharacterBody2D).get_collision_layer_value(2) or (body as CharacterBody2D).get_collision_layer_value(4) )):
 		if captured_enemies.has(body):
@@ -283,18 +306,39 @@ func _on_bullet_entered(body: Node) -> void:
 	# Tuyệt đối không bắt Player hay Enemy bằng bullet area
 	if body is Player or body is EnemyCharacter:
 		return
-	# Chỉ nhận viên đạn trên layer 4
+		
+	# Skip if body is a Boss (e.g. WarLordTurtle body parts if they are on bullet layer)
+	if body.is_in_group("Boss") or body.is_in_group("boss"):
+		return
+	# Chỉ nhận viên đạn trên layer 4 (Enemy Bullet) hoặc Layer 8 (Special Bullet)
+	# PearlFairyBullet and WarLord detection relied on layers, not Group names.
 	var is_bullet := false
 	if body is CharacterBody2D:
-		is_bullet = (body as CharacterBody2D).get_collision_layer_value(4)
+		is_bullet = (body as CharacterBody2D).get_collision_layer_value(4) or (body as CharacterBody2D).get_collision_layer_value(8)
 	elif body is RigidBody2D:
-		is_bullet = (body as RigidBody2D).get_collision_layer_value(4)
+		is_bullet = (body as RigidBody2D).get_collision_layer_value(4) or (body as RigidBody2D).get_collision_layer_value(8)
 	else:
 		is_bullet = false
 	if not is_bullet:
 		return
 	if captured_bullets.has(body):
 		return
+
+	# Level 3: Disappear and destroy
+	if skill_level >= 3:
+		captured_bullets.append(body) # Track it so we can force-kill on cleanup
+		if body is Node2D:
+			_prepare_bullet(body) # Disable it first
+			var n2 := body as Node2D
+			# Dissolve then free
+			_apply_dissolve_appear(n2, bullet_flash_duration, func(): 
+				if is_instance_valid(n2):
+					n2.queue_free()
+			, bullet_flash_scale)
+		else:
+			body.queue_free()
+		return
+
 	captured_bullets.append(body)
 	_prepare_bullet(body)
 	# Áp dụng dissolve tại vị trí hiện tại (vùng flash mở rộng), chờ xong rồi teleport tới marker
@@ -326,7 +370,7 @@ func _apply_dissolve_appear(node: Node2D, duration: float = 0.15, on_done: Calla
 	var spr: CanvasItem = _find_display_item(node)
 	if spr == null:
 		return
-	var shader := load("res://resources/effects/dissolve_anime.gdshader")
+	var shader := load("res://resources/effects/gold_ash_dissolve.gdshader")
 	if shader == null:
 		return
 	var mat := ShaderMaterial.new()
@@ -379,11 +423,18 @@ func _apply_dissolve_appear(node: Node2D, duration: float = 0.15, on_done: Calla
 	else:
 		# Áp dụng trực tiếp nếu không thể tạo overlay
 		spr.material = mat
+	# Nếu tạo được overlay, ẩn sprite gốc đi vì overlay sẽ thay thế visual
+	if overlay_spr != null:
+		spr.visible = false
+	
 	var tw := create_tween()
 	tw.tween_method(func(p): mat.set_shader_parameter("progress", p), 0.0, 1.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tw.finished
+	
 	if overlay_spr != null and is_instance_valid(overlay_spr):
 		overlay_spr.queue_free()
+	# Không cần khôi phục spr.visible vì đối tượng thường sẽ bị queue_free ngay sau đó bởi on_done
+	
 	elif spr != null and is_instance_valid(spr):
 		spr.material = null
 	if on_done.is_valid():

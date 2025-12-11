@@ -28,7 +28,7 @@ func _ready() -> void:
 	_rng.randomize()
 
 	# Disable built-in position smoothing - we handle smoothing manually
-	position_smoothing_enabled = false
+	position_smoothing_enabled = true
 	print("[Camera] _ready: disabled built-in smoothing, enabled=%s, is_current=%s" % [enabled, is_current()])
 
 	# Resolve target

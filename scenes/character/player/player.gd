@@ -194,10 +194,12 @@ func _process(_delta: float) -> void:
 	if giant_on_cooldown and giant_cooldown_timer != null:
 		giant_cooldown_updated.emit(giant_cooldown_timer.time_left)
 
+var room_level: int = 0
+
 func _apply_safe_zone_mods() -> void:
 	if is_giant_mode:
 		return  # không overwrite stats khi đang giant
-	if invincible_zone:
+	if invincible_zone and room_level >= 2:
 		# tốc độ moving x1.5
 		movement_speed = _base_movement_speed * 1.5
 		# trọng lực giảm 25%
@@ -215,12 +217,12 @@ func can_attack() -> bool:
 	return has_blade
 	
 func can_jump() -> bool:
-	if invincible_zone:
+	if invincible_zone and room_level >= 2:
 		return true
 	return max_jump_count > 0
 
 func consume_jump() -> void:
-	if invincible_zone or GameManager.hack_mode_enabled:
+	if (invincible_zone and room_level >= 2) or GameManager.hack_mode_enabled:
 		return
 	max_jump_count -= 1
 
@@ -291,7 +293,19 @@ func load_state(data: Dictionary) -> void:
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	#take_dame.emit()
 	if invincible_zone:
+		# Level 3: Immune to all damage
+		if room_level >= 3:
+			return
+		
+		# Level 1-2: Take damage but NO KNOCKBACK
+		if !is_invulnerable:
+			take_damage(_damage)
+			start_invulnerability()
+			if health <= 0:
+				fsm.change_state(fsm.states.dead)
+			# Do NOT enter hurt state (avoids knockback)
 		return
+
 	if !is_invulnerable: 
 		fsm.current_state.take_damage(_damage)
 		if(health <= 0):
