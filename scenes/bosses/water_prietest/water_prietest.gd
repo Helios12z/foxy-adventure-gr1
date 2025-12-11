@@ -22,20 +22,21 @@ signal start_fight
 @export var atk_super_windup_time: float = 0.5
 @export var atk_air_windup_time: float = 0.8
 @export var defend_range: float = 80.0
-@export var defend_windup_time: float = 0.3
-@export var defend_duration: float = 1.0
-@export var defend_cooldown: float = 3.0
+@export var defend_cooldown: float = 6.0
 @export var attack_prepare_time: float = 2.5
 @export var roll_escape_distance: float = 35.0
-@export var roll_same_level_threshold: float = 32.0  
+@export var roll_same_level_threshold: float = 32.0
+@export var roll_cooldown: float = 6.0  
 
-@export var retaliate_damage_window_seconds: float = 6.0 #6 seconds
-@export var retaliate_combo_hits: int = 3  #3 hits
+@export var retaliate_damage_window_seconds: float = 6.0 
+@export var retaliate_combo_hits: int = 3 
 
 var can_attack: bool = true
 var attack_cooldown_timer: float = 0.0
 var can_defend: bool = true
 var defend_cooldown_timer: float = 0.0
+var can_roll: bool = true
+var roll_cooldown_timer: float = 0.0
 var _phase2_transition_running: bool = false
 var _original_time_scale: float = 1.0
 var _phase2_ai_timer: float = 0.0
@@ -117,6 +118,9 @@ func _physics_process(delta: float) -> void:
 	# Update defend cooldown
 	update_defend_cooldown(delta)
 
+	# Update roll cooldown
+	update_roll_cooldown(delta)
+
 	# Update attack cooldown
 	update_attack_cooldown(delta)
 
@@ -126,11 +130,17 @@ func _physics_process(delta: float) -> void:
 		_update_facing()
 	_detect_player()
 
+	# Check for player attack input and react proactively
+	_check_player_attack_input()
+
 	super._physics_process(delta)
 	_keep_inside_room_and_avoid_fall()
 	
 	if in_phase2 and seen_player and not _phase2_transition_running:
 		_update_phase2_platform_brain(delta)
+		
+	if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
+		animated_sprite_2d.speed_scale = 1.0
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -138,53 +148,37 @@ func _init_hurt_area() -> void:
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
-	if _phase2_transition_running:
-		return
-
-	if fsm.current_state == fsm.states.roll:
-		var roll_state = fsm.current_state
-		if roll_state.has_method("has_invincibility") and roll_state.has_invincibility():
-			return
-
-	_note_damage_hit()
-
-	if _took_consecutive_damage():
-		var on_ground = (
+	var on_ground = (
 			fsm.current_state == fsm.states.idle
 			or fsm.current_state == fsm.states.walk
 			or fsm.current_state == fsm.states.surf
 		)
-
-		if on_ground:
-			var choice := randf()
-			if can_defend and choice < 0.5:
-				# Chọn defend
-				start_defend_cooldown()
-				fsm.change_state(fsm.states.defend)
-			else:
-				# Chọn roll
-				if fsm.states.roll != null:
-					fsm.change_state(fsm.states.roll)
-
-			_recent_damage_times.clear()
-			return
-
-	# 4. Đang ở defend -> thử block
-	var should_block := false
-	if fsm.current_state == fsm.states.defend:
-		var defend_state = fsm.current_state
-		if defend_state and defend_state.has_method("should_block_damage"):
-			should_block = defend_state.should_block_damage(_dir)
-
-	if should_block:
-		# Block thành công
-		flash_hurt(0.1, 1, Color.CYAN)
-		start_defend_cooldown()
+	
+	if _phase2_transition_running:
 		return
 
-	# Ensure flash happens before damage
-	if not should_block:
-		flash_hurt(0.25, 3)
+	if fsm.current_state == fsm.states.roll: 
+		return
+
+	_note_damage_hit()
+
+	if _took_consecutive_damage():
+		var choice := randf()
+		if can_defend and choice < 0.7:
+			start_defend_cooldown()
+			fsm.change_state(fsm.states.defend)
+		else:
+			start_roll_cooldown()
+			fsm.change_state(fsm.states.roll)
+		_recent_damage_times.clear()
+		return
+
+	var should_block := false
+	if fsm.current_state == fsm.states.defend:
+		should_block = fsm.current_state.should_block_damage(_dir)
+
+	if should_block:
+		return
 
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
@@ -201,15 +195,10 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 		_start_phase2_transition()
 		return
 
-	var on_ground_simple = (
-		fsm.current_state == fsm.states.idle
-		or fsm.current_state == fsm.states.walk
-		or fsm.current_state == fsm.states.surf
-	)
-
-	if on_ground_simple:
-		flash_hurt(0.25, 3)
+	if on_ground:
 		fsm.change_state(fsm.states.hurt)
+	else: 
+		flash_hurt()
 
 func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
 	var mat := animated_sprite_2d.material as ShaderMaterial
@@ -379,7 +368,17 @@ func update_attack_cooldown(delta: float) -> void:
 func start_attack_cooldown() -> void:
 	can_attack = false
 	attack_cooldown_timer = attack_prepare_time
-	
+
+func update_roll_cooldown(delta: float) -> void:
+	if roll_cooldown_timer > 0:
+		roll_cooldown_timer -= delta
+		if roll_cooldown_timer <= 0:
+			can_roll = true
+
+func start_roll_cooldown() -> void:
+	can_roll = false
+	roll_cooldown_timer = roll_cooldown
+
 func clamp_x_to_room(x: float) -> float:
 	var lb: Rect2 = level_bounds
 	if lb.size.x == 0.0:
@@ -542,3 +541,37 @@ func _update_phase2_platform_brain(delta: float) -> void:
 		force_phase2_ground_jump = false
 		fsm.change_state(fsm.states.jump)
 		_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
+
+func _check_player_attack_input() -> void:
+	# Only react to player attacks if boss is in a state that can defend/roll
+	if not seen_player or _phase2_transition_running:
+		return
+
+	# Check if player pressed attack button
+	if Input.is_action_just_pressed("attack"):
+		var player = get_player()
+		if not player:
+			return
+
+		var distance_to_player = _distance_to_player()
+
+		if distance_to_player <= attack_range * 1.5:
+			var should_use_defend = false
+			var should_use_roll = false
+
+			if can_defend and defend_cooldown_timer <= 0:
+				var player_dir = sign(player.global_position.x - global_position.x)
+				var facing_dir = 1 if not animated_sprite_2d.flip_h else -1
+
+				if player_dir == facing_dir and distance_to_player <= defend_range:
+					should_use_defend = true
+
+			if not should_use_defend and can_roll and roll_cooldown_timer <= 0:
+				should_use_roll = true
+
+			if should_use_defend:
+				start_defend_cooldown()
+				fsm.change_state(fsm.states.defend)
+			elif should_use_roll:
+				start_roll_cooldown()
+				fsm.change_state(fsm.states.roll)

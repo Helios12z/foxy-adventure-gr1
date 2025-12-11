@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://kv02hvhfsd8k"]
+[gd_scene load_steps=35 format=3 uid="uid://kv02hvhfsd8k"]
 
 [ext_resource type="Script" uid="uid://nfys250tpsyv" path="res://levels/boss_levels/water_prietress/level_water_prietess.gd" id="1_uutcu"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="2_4si3a"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cw41ooeg3pxq1" path="res://levels/objects/checkpoint/checkpoint.tscn" id="5_enfxh"]
 [ext_resource type="PackedScene" uid="uid://cg88ymtkt485w" path="res://levels/objects/door/door_map3.tscn" id="5_wnerh"]
 [ext_resource type="Texture2D" uid="uid://ds0nmx20m3qxs" path="res://asset/level_3_water_palace/background/layer_2 (2).png" id="6_a2wmj"]
+[ext_resource type="Texture2D" uid="uid://dkoeobk6q8e8j" path="res://asset/level_3_water_palace/background/platform_boss_water_guard_02.png" id="6_kibuc"]
 [ext_resource type="Texture2D" uid="uid://buj4r0ifcl0q6" path="res://asset/level_3_water_palace/tileset/floating_platform.png" id="6_qntum"]
 [ext_resource type="PackedScene" uid="uid://dcyxh7eep8web" path="res://scenes/objects/chest.tscn" id="10_tqigs"]
 [ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="10_uutcu"]
@@ -29,10 +30,10 @@
 size = Vector2(953.5, 141.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4si3a"]
-size = Vector2(1241, 20)
+size = Vector2(627, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qntum"]
-size = Vector2(1240, 20)
+size = Vector2(620, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(156.5, 47)
@@ -63,7 +64,7 @@ serpent_eel_scene = ExtResource("2_4si3a")
 golden_carp_scene = ExtResource("3_kibuc")
 fight_trigger_area = NodePath("World/Area2D")
 prewave_spawn_markers = [NodePath("World/SpawnPoint1"), NodePath("World/SpawnPoint2"), NodePath("World/SpawnPoint3"), NodePath("World/SpawnPoint4")]
-boss_bg_marker = NodePath("World/BossBackgroundStandPoint")
+boss_bg_marker = NodePath("World/ParallaxBackground/ParallaxLayerFront/BossBackgroundStandPoint")
 boss_land_marker = NodePath("World/BossLandingPoint")
 boss_parallax_layer = NodePath("World/ParallaxBackground/ParallaxLayerFront")
 
@@ -101,20 +102,22 @@ position = Vector2(868.25, 1909.25)
 shape = SubResource("RectangleShape2D_wnerh")
 
 [node name="LeftPlatform" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(258, -21)
+position = Vector2(221, -21)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/LeftPlatform"]
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/LeftPlatform/StaticBody2D"]
-position = Vector2(-836, 756)
-texture = ExtResource("4_qntum")
+position = Vector2(-528, 800)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_kibuc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/LeftPlatform/StaticBody2D"]
-position = Vector2(-833.5, 648)
+position = Vector2(-526.5, 648)
 shape = SubResource("RectangleShape2D_4si3a")
 
 [node name="Door" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_wnerh")]
-position = Vector2(-1424, 637)
+position = Vector2(-527, 637)
+scale = Vector2(0.7, 0.7)
 
 [node name="Checkpoint" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_enfxh")]
 position = Vector2(-300, 622)
@@ -124,17 +127,19 @@ position = Vector2(-300, 622)
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/RightPlatform"]
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/RightPlatform/StaticBody2D"]
-position = Vector2(1776, 744)
+position = Vector2(1466, 687)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_qntum")
 region_enabled = true
 region_rect = Rect2(15, 3, 1253, 792)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/RightPlatform/StaticBody2D"]
-position = Vector2(1776, 636)
+position = Vector2(1466, 636)
 shape = SubResource("RectangleShape2D_qntum")
 
 [node name="Door" parent="World/BossPlatformController/RightPlatform" instance=ExtResource("5_wnerh")]
-position = Vector2(2366, 625)
+position = Vector2(1463, 624)
+scale = Vector2(0.7, 0.7)
 
 [node name="FloatingPlatform1" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(460, 542)
@@ -145,6 +150,7 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform1/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
 shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform1"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -177,6 +183,7 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform2/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
 shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform2"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -209,6 +216,7 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform3/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
 shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform3"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -241,6 +249,7 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform4/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
 shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform4"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -273,6 +282,7 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform5/StaticBody2D"]
 position = Vector2(-148.25, -64.5)
 shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform5"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -323,6 +333,7 @@ scale = Vector2(0.4765625, 0.6220703)
 texture = ExtResource("3_25jq8")
 
 [node name="ParallaxLayerMid" type="ParallaxLayer" parent="World/ParallaxBackground"]
+modulate = Color(0.60933006, 0.6093301, 0.60933006, 1)
 motion_scale = Vector2(0.3, 1)
 motion_mirroring = Vector2(1000, 0)
 
@@ -331,6 +342,7 @@ position = Vector2(531, 504)
 texture = ExtResource("5_25jq8")
 
 [node name="ParallaxLayerFront" type="ParallaxLayer" parent="World/ParallaxBackground"]
+modulate = Color(0.75398374, 0.7539839, 0.7539837, 1)
 motion_scale = Vector2(0.5, 1)
 motion_mirroring = Vector2(1000, 0)
 
@@ -342,6 +354,9 @@ texture = ExtResource("6_a2wmj")
 position = Vector2(488, 1274)
 texture = ExtResource("6_a2wmj")
 flip_v = true
+
+[node name="BossBackgroundStandPoint" type="Marker2D" parent="World/ParallaxBackground/ParallaxLayerFront"]
+position = Vector2(447, 461)
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
 position = Vector2(-117, 558)
@@ -373,9 +388,6 @@ position = Vector2(759, 569)
 
 [node name="SpawnPoint4" type="Marker2D" parent="World"]
 position = Vector2(681, 569)
-
-[node name="BossBackgroundStandPoint" type="Marker2D" parent="World"]
-position = Vector2(1049, 77)
 
 [node name="BossLandingPoint" type="Marker2D" parent="World"]
 position = Vector2(574, 586)

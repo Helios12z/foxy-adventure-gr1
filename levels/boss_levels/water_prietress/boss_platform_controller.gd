@@ -132,6 +132,7 @@ func _on_phase_2_start() -> void:
 
 
 func start_phase2_platforms() -> void:
+	print("start phase 2 platforms")
 	if _phase2_started:
 		return
 	_phase2_started = true
@@ -143,7 +144,7 @@ func start_phase2_platforms() -> void:
 
 	for platform in platforms:
 		platform.visible = true
-		platform.modulate.a = 0.0
+		platform.modulate.a = 1.0
 		_set_platform_collision(platform, true)
 
 	for marker in jump_markers:

@@ -172,9 +172,7 @@ func _on_atk1_frame_changed() -> void:
 
 		await obj.get_tree().create_timer(obj.atk1_windup_time).timeout
 
-		# tránh lỗi nếu trong lúc chờ đã đổi state/animation
-		if is_instance_valid(sprite) and sprite.animation == "atk_1":
-			sprite.speed_scale = 1.0
+		sprite.speed_scale = 1.0
 
 		_atk1_windup_done = true
 		_atk1_windup_waiting = false
@@ -262,8 +260,7 @@ func _on_atk2_frame_changed() -> void:
 
 		await obj.get_tree().create_timer(obj.atk2_windup_time).timeout
 
-		if is_instance_valid(sprite) and sprite.animation == "atk_2":
-			sprite.speed_scale = 1.0
+		sprite.speed_scale = 1.0
 
 		_atk2_windup_done = true
 		_atk2_windup_waiting = false

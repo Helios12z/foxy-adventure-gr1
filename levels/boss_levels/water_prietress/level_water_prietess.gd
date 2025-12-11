@@ -23,6 +23,7 @@ extends Node2D
 var _prewave_started: bool = false
 var _prewave_enemies_left: int = 0
 var _boss_intro_started: bool = false
+var _boss_in_parallax: bool = false
 
 func _enter_tree() -> void:
 	GameManager.current_stage = self
@@ -30,9 +31,9 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not GameManager.respawn_at_portal():
 		GameManager.respawn_at_checkpoint()
-	
+
 	ambient.play(2.0)
-	
+
 	var boss_defeated := GameManager.is_boss_defeated()
 
 	if boss_defeated:
@@ -47,6 +48,13 @@ func _ready() -> void:
 				fight_trigger_area.collision_mask = (player_body as PhysicsBody2D).collision_layer
 
 		_setup_boss_alive_state()
+
+func _process(_delta: float) -> void:
+	if _boss_in_parallax and boss_bg_marker and boss and boss.get_parent() == boss_parallax_layer:
+		var target_global := boss_bg_marker.global_position
+		var parallax_transform := boss_parallax_layer.get_global_transform()
+		var local_pos := parallax_transform.affine_inverse() * target_global
+		boss.position = local_pos
 		
 func _on_boss_start_fight() -> void:
 	boss_hud._on_boss_start_fighting()
@@ -154,7 +162,8 @@ func _start_boss_intro_jump() -> void:
 			var gp := boss.global_position
 			boss_parallax_layer.remove_child(boss)
 			world.add_child(boss)
-			boss.global_position = gp          
+			boss.global_position = gp
+			_boss_in_parallax = false 
 	)
 
 	tw.tween_property(
@@ -241,15 +250,17 @@ func _place_boss_idle_in_background() -> void:
 			if old_parent:
 				old_parent.remove_child(boss)
 			boss_parallax_layer.add_child(boss)
-			boss.global_position = gp
+			var parallax_transform := boss_parallax_layer.get_global_transform()
+			var local_pos := parallax_transform.affine_inverse() * gp
+			boss.position = local_pos
+			_boss_in_parallax = true
 		else:
 			boss.global_position = target_global
+			_boss_in_parallax = false
 
 	boss.modulate.a = 1.0
 	boss.set_physics_process(false)
 	boss.change_animation("idle")
-
-	print("Boss placed in background at", boss.global_position, "parent:", boss.get_parent())
 
 func _setup_boss_defeated_state() -> void:
 	if is_instance_valid(boss):
