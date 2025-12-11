@@ -76,6 +76,7 @@ var giant_cooldown_timer: Timer = null
 @onready var body_collision: CollisionShape2D = $CollisionShape2D
 @onready var hit_collision: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 @onready var hurt_collision: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
+@onready var effect_sprite: AnimatedSprite2D = $Direction/HealEffect
 var _orig_max_health: int
 var _orig_jump_speed: float
 var _orig_attack_damage: float
@@ -512,11 +513,6 @@ func activate_giant_form() -> void:
 	# ----- APPLY GIANT MODE -----
 	is_giant_mode = true
 
-	set_physics_process(false)
-	animated_sprite.play("transform_giant")
-	await animated_sprite.animation_finished
-	set_physics_process(true)
-
 	print("Activate Giant Form for: ", giant_duration, " seconds")
 	resize_all_collisions()
 	has_blade = true
@@ -552,10 +548,6 @@ func resize_all_collisions():
 	
 func inactive_giant_form():
 		# Reset sprite
-	set_physics_process(false)
-	animated_sprite.play("transform_normal")
-	await animated_sprite.animation_finished
-	set_physics_process(true)
 	is_giant_mode = false
 	if _orig_sprite != null:
 		set_animated_sprite(_orig_sprite)
@@ -597,4 +589,18 @@ func _on_giant_cooldown_timeout() -> void:
 	can_use_giant = true
 	giant_on_cooldown = false
 	giant_cooldown_finished.emit()
+	
+func can_heal() -> bool:
+	return health < max_health
+
+func use_heal_potion(amount: int) -> void:
+	if GameManager.inventory_system.use_heal_potion():
+		heal(amount)
+		play_heal_effect()
+		
+func play_heal_effect():
+	effect_sprite.visible = true
+	effect_sprite.play("heal")
+	await effect_sprite.animation_finished
+	effect_sprite.visible = false	
 	

@@ -211,6 +211,7 @@ func respawn_at_checkpoint() -> void:
 		if inventory_data != null:
 			inventory_system.coins = inventory_data["coins"]
 			inventory_system.keys = inventory_data["keys"]
+			inventory_system.heal_potions = inventory_data["heal_potions"]
 
 #check if there is a checkpoint
 func has_checkpoint() -> bool:

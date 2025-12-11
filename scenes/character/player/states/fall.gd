@@ -105,6 +105,7 @@ func _update(delta: float) -> void:
 	# MOVEMENT
 	# --------------------------------------------------
 	control_jump()
+	control_heal_potion()
 	var is_moving := control_moving(delta)
 
 
