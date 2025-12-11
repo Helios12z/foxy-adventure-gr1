@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hit_area: HitArea2D = $HitArea2D
+@onready var move_sound: AudioStreamPlayer = $WaterBallMoveSound
 
 @export var damage: int = 30
 @export var idle_duration: float = 1.0  # How long to idle before moving
@@ -60,6 +61,11 @@ func start_moving() -> void:
 	# Initialize speed based on whether we're accelerating
 	if use_acceleration:
 		current_speed = move_speed * 0.3  # Start at 30% of base speed
+
+	# Play move sound when ball starts moving
+	if move_sound:
+		move_sound.play()
+
 	sprite.play("start_move")
 	await sprite.animation_finished
 	sprite.play("move")

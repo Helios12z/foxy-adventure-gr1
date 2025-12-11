@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bxyqkrqge3p77"
+path="res://.godot/imported/boss_atk3_sound.mp3-f13df5b4f296294e5434641ccbd456ec.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/boss_atk3_sound.mp3"
+dest_files=["res://.godot/imported/boss_atk3_sound.mp3-f13df5b4f296294e5434641ccbd456ec.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

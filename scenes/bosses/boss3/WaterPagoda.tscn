@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bum03fyn8ydr5"]
+[gd_scene load_steps=12 format=3 uid="uid://bum03fyn8ydr5"]
 
 [ext_resource type="Texture2D" uid="uid://bdar7eweuuade" path="res://asset/level_3_water_palace/water_goddess/skills/ice_pagoda_01.png" id="1_76pwl"]
 [ext_resource type="Script" uid="uid://bmk5x11h8leum" path="res://scenes/bosses/boss3/water_pagoda.gd" id="1_urbwv"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cyacnhblq786o" path="res://asset/level_3_water_palace/water_goddess/skills/ice_pagoda_slash_02.png" id="5_xsj63"]
 [ext_resource type="Texture2D" uid="uid://bwowou41rl5td" path="res://asset/level_3_water_palace/water_goddess/skills/ice_pagoda_slash_03.png" id="6_8vk1x"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="8_b2xuf"]
+[ext_resource type="AudioStream" uid="uid://cegije2dlrxb8" path="res://asset/sounds/boss 3/water_pagoda_sound.mp3" id="9_b2xuf"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_uou11"]
 animations = [{
@@ -63,3 +64,6 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 position = Vector2(0, -56)
 shape = SubResource("ConvexPolygonShape2D_urbwv")
 debug_color = Color(0.93744016, 0.2288306, 0.2745176, 0.41960785)
+
+[node name="WaterPagodaSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_b2xuf")

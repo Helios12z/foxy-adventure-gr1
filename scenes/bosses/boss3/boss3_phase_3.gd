@@ -80,6 +80,12 @@ func _run_pattern_phase3() -> void:
 			return
 	print("[Boss3 Phase3] ✓ Player reached platforms! Starting skills...")
 
+	# Delay 1.5s before turning on UltimateBlingBling
+	await get_tree().create_timer(1.5).timeout
+	
+	# Turn on Ultimate BlingBling for the first time
+	obj.set_ultimate_blingbling_effect(true)
+
 	while _running and obj.health > 0:
 		# Wait a bit before spawning next ball
 		await get_tree().create_timer(1.5).timeout
@@ -508,6 +514,7 @@ func _enter_vulnerable_state() -> void:
 
 	# Turn OFF invulnerability when boss comes down to anchor 1
 	obj.set_invulnerable(false)
+	obj.set_ultimate_blingbling_effect(false)
 
 	obj.sprite.play("idle")
 
@@ -539,10 +546,14 @@ func _end_vulnerable_state() -> void:
 
 	# Turn ON invulnerability when boss goes back up to anchor 5
 	obj.set_invulnerable(true)
+	obj.set_ultimate_blingbling_effect(true)
 
 
 func _handle_death() -> void:
 	print("[Boss3 Phase3] ========== BOSS DEFEATED ==========")
+
+	# Play battle end music
+	obj.play_battle_end_music()
 
 	# Stop the running pattern IMMEDIATELY
 	_running = false
@@ -626,12 +637,16 @@ func _play_phase3_transition() -> void:
 	obj.sprite.play("idle")
 	print("[Boss3 Phase3] Switched to phase 3 sprite")
 
-	# 4. Wait 0.5s then turn on BlingBling
+	# Start Phase 3 music transition (don't await - let it play in background)
+	obj.start_phase3_music()
+	print("[Boss3 Phase3] Phase 3 music transition started")
+
+	# 4. Wait 0.5s (BlingBling suppressed per requirements)
 	await get_tree().create_timer(0.5).timeout
-	if obj.blingbling_sprite:
-		obj.blingbling_sprite.visible = true
-		obj.blingbling_sprite.play("default")
-		print("[Boss3 Phase3] ✓ BlingBling animation enabled")
+	# if obj.blingbling_sprite:
+	# 	obj.blingbling_sprite.visible = true
+	# 	obj.blingbling_sprite.play("default")
+	# 	print("[Boss3 Phase3] ✓ BlingBling animation enabled")
 
 	# Small pause before floor breaks
 	await get_tree().create_timer(0.5).timeout
@@ -1261,6 +1276,10 @@ func _show_bubbles_and_platforms() -> void:
 	# Restore normal time
 	Engine.time_scale = 1.0
 	print("[Boss3 Phase3] ⏱ Time restored to normal")
+
+	# Play show bubbles sound right before bubbles appear (not during slowdown)
+	if obj.show_bubbles_sound:
+		obj.show_bubbles_sound.play()
 
 	# Find Platforms parent and collect all bubbles and platforms
 	var platforms_parent = _find_node_by_name(get_tree().current_scene, "Platforms")

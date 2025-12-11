@@ -14,7 +14,28 @@ signal intro_finished
 @onready var phase3_sprite: AnimatedSprite2D = $Direction/AnimatedSprite2DPhase3
 @onready var dead_sprite: AnimatedSprite2D = $Direction/AnimatedSprite2DDead
 @onready var blingbling_sprite: AnimatedSprite2D = $Direction/BlingBling
+@onready var ultimate_blingbling_sprite: AnimatedSprite2D = $Direction/UltimateBlingBling
 @onready var hurt_area: HurtArea2D = $Direction/HurtArea2D
+
+# Audio players for boss 3 sounds
+@onready var hurt_sound: AudioStreamPlayer = $HurtSound
+@onready var hurt_change_phase_sound: AudioStreamPlayer = $HurtChangePhaseSound
+@onready var laugh_sound: AudioStreamPlayer = $LaughSound
+@onready var show_bubbles_sound: AudioStreamPlayer = $ShowBubblesSound
+@onready var tornado_sound: AudioStreamPlayer = $TornadoSound
+@onready var water_eruption_sound: AudioStreamPlayer = $WaterEruptionSound
+@onready var water_laser_prepare_sound: AudioStreamPlayer = $WaterLaserPrepareSound
+@onready var water_laser_sound: AudioStreamPlayer = $WaterLaserSound
+@onready var boss_atk1_sound: AudioStreamPlayer = $BossAtk1Sound
+@onready var boss_atk2_sound: AudioStreamPlayer = $BossAtk2Sound
+@onready var boss_atk3_sound: AudioStreamPlayer = $BossAtk3Sound
+
+@onready var boss_intro_sound: AudioStreamPlayer = $BossIntroSound
+@onready var boss_phase12_loop_sound: AudioStreamPlayer = $BossPhase12LoopSound
+@onready var boss_phase3_intro_sound: AudioStreamPlayer = $BossPhase3IntroSound
+@onready var boss_phase3_loop_sound: AudioStreamPlayer = $BossPhase3LoopSound
+@onready var battle_end_sound: AudioStreamPlayer = $BattleEndSound
+
 var anchors: Array[Node2D] = []
 var _flash_tw: Tween
 @export var anchor_move_time := 0.5
@@ -24,6 +45,9 @@ var _flash_tw: Tween
 func _ready() -> void:
 	gravity = 0
 	super._ready()
+	
+	# Boss starts immortal during intro
+	is_invulnerable = true
 
 	await get_tree().process_frame
 	_init_anchors_from_room()
@@ -38,12 +62,23 @@ func _ready() -> void:
 	# Hide BlingBling sprite initially
 	if blingbling_sprite:
 		blingbling_sprite.visible = false
+	
+	# Hide UltimateBlingBling sprite initially
+	if ultimate_blingbling_sprite:
+		ultimate_blingbling_sprite.visible = false
 
 	# Connect hurt signal BEFORE intro so boss can take damage during intro
 	hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 	print("[Boss3] HurtArea connected, ready to take damage")
 
+	# Set eruption sound reference on all water eruptions
+	_setup_eruption_sounds()
+
 	await _play_intro()
+	
+	# Boss becomes vulnerable after intro
+	is_invulnerable = false
+	
 	fsm = FSM.new(self, $States, $States/Phase1)
 
 var is_invulnerable: bool = false  # Can be set by states to make boss invulnerable
@@ -59,6 +94,10 @@ func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 	print("[Boss3] Health after damage: %d / %d" % [health, max_health])
 	emit_signal("health_changed", health, max_health)
 	flash_hurt(0.2, 1)
+
+	# Play hurt sound
+	if hurt_sound:
+		hurt_sound.play()
 
 func flash_hurt(duration := 0.25, blinks := 1, color := Color(1.0, 1.0, 1.0, 1.0)) -> void:
 	# Always get material from current sprite (not cached)
@@ -100,6 +139,11 @@ func _play_intro() -> void:
 	sprite.visible = false
 	appears_sprite.visible = true
 
+	# Play boss intro music
+	if boss_intro_sound:
+		boss_intro_sound.play()
+		print("[Boss3] Playing intro music")
+
 	appears_sprite.play("appears")
 	print("[Boss3] Intro appears START")
 
@@ -112,6 +156,10 @@ func _play_intro() -> void:
 	appears_sprite.visible = false
 	sprite.visible = true
 	sprite.play("idle")
+
+	# Start monitoring intro music to seamlessly transition to loop
+	if boss_intro_sound and boss_intro_sound.stream:
+		_start_intro_music_monitor()
 
 	# Emit signal that intro is finished
 	emit_signal("intro_finished")
@@ -149,6 +197,16 @@ func _init_anchors_from_room() -> void:
 
 	if anchors.size() < 5:
 		push_warning("Boss3: anchors.size() = %d (<5), kiem tra room" % anchors.size())
+
+## Setup eruption sound reference on all water eruption nodes
+func _setup_eruption_sounds() -> void:
+	for w in get_tree().get_nodes_in_group("WaterEruption"):
+		if w.has_method("set"):
+			w.eruption_sound = water_eruption_sound
+	for w in get_tree().get_nodes_in_group("WaterEruption2"):
+		if w.has_method("set"):
+			w.eruption_sound = water_eruption_sound
+	print("[Boss3] Setup eruption sounds on all water eruption nodes")
 
 
 
@@ -227,15 +285,122 @@ func switch_sprite(new_sprite: AnimatedSprite2D) -> void:
 	print("[Boss3] Switched to sprite: %s" % new_sprite.name)
 
 func set_invulnerable(invuln: bool) -> void:
-	"""Set boss invulnerability and toggle BlingBling sprite"""
+	"""Set boss invulnerability status"""
 	is_invulnerable = invuln
 
-	if blingbling_sprite:
-		blingbling_sprite.visible = invuln
-		if invuln:
-			blingbling_sprite.play("default")
+	print("[Boss3] Invulnerable set to: %s" % invuln)
 
-	print("[Boss3] Invulnerable: %s, BlingBling: %s" % [invuln, invuln])
+func set_blingbling_effect(show: bool) -> void:
+	"""Control the BlingBling sprite visibility explicitly"""
+	if blingbling_sprite:
+		blingbling_sprite.visible = show
+		if show:
+			blingbling_sprite.play("default")
+		else:
+			blingbling_sprite.stop()
+	print("[Boss3] BlingBling effect: %s" % show)
+
+func set_ultimate_blingbling_effect(show: bool) -> void:
+	"""Control the UltimateBlingBling sprite visibility explicitly"""
+	if ultimate_blingbling_sprite:
+		ultimate_blingbling_sprite.visible = show
+		if show:
+			ultimate_blingbling_sprite.play("default")
+		else:
+			ultimate_blingbling_sprite.stop()
+	print("[Boss3] UltimateBlingBling effect: %s" % show)
+
+## Monitor intro music and start loop music before it ends (seamless transition)
+func _start_intro_music_monitor() -> void:
+	if not boss_intro_sound or not boss_intro_sound.stream:
+		return
+	
+	# Get the length of the intro music
+	var intro_length = boss_intro_sound.stream.get_length()
+	# Start loop music 2.5 seconds before intro ends
+	var wait_time = intro_length - 2.5
+	
+	print("[Boss3] Intro music length: %.2fs, will start loop at %.2fs" % [intro_length, wait_time])
+	
+	# Wait until near the end of intro
+	await get_tree().create_timer(wait_time).timeout
+	
+	# Start Phase 1/2 loop music
+	if boss_phase12_loop_sound:
+		boss_phase12_loop_sound.play()
+		# Enable looping by connecting to finished signal
+		if not boss_phase12_loop_sound.finished.is_connected(_on_phase12_loop_finished):
+			boss_phase12_loop_sound.finished.connect(_on_phase12_loop_finished)
+		print("[Boss3] Playing Phase 1/2 loop music (seamless transition)")
+
+## Loop Phase 1/2 music when it finishes
+func _on_phase12_loop_finished() -> void:
+	if boss_phase12_loop_sound and not boss_phase12_loop_sound.playing:
+		boss_phase12_loop_sound.play()
+
+## Loop Phase 3 music when it finishes
+func _on_phase3_loop_finished() -> void:
+	if boss_phase3_loop_sound and not boss_phase3_loop_sound.playing:
+		boss_phase3_loop_sound.play()
+
+## Transition to Phase 3 music (called by Phase 3 state)
+func start_phase3_music() -> void:
+	print("[Boss3] Transitioning to Phase 3 music")
+	
+	# Stop Phase 1/2 loop music
+	if boss_phase12_loop_sound and boss_phase12_loop_sound.playing:
+		boss_phase12_loop_sound.stop()
+		print("[Boss3] Stopped Phase 1/2 loop music")
+	
+	# Play Phase 3 intro music
+	if boss_phase3_intro_sound:
+		boss_phase3_intro_sound.play()
+		print("[Boss3] Playing Phase 3 intro music")
+		
+		# Start monitoring to seamlessly transition to loop
+		_start_phase3_music_monitor()
+
+## Monitor Phase 3 intro music and start loop music before it ends (seamless transition)
+func _start_phase3_music_monitor() -> void:
+	if not boss_phase3_intro_sound or not boss_phase3_intro_sound.stream:
+		return
+	
+	# Get the length of the Phase 3 intro music
+	var intro_length = boss_phase3_intro_sound.stream.get_length()
+	# Start loop music 0.5 seconds before intro ends
+	var wait_time = intro_length - 0.5
+	
+	print("[Boss3] Phase 3 intro length: %.2fs, will start loop at %.2fs" % [intro_length, wait_time])
+	
+	# Wait until near the end of intro
+	await get_tree().create_timer(wait_time).timeout
+	
+	# Start Phase 3 loop music
+	if boss_phase3_loop_sound:
+		boss_phase3_loop_sound.play()
+		# Enable looping by connecting to finished signal
+		if not boss_phase3_loop_sound.finished.is_connected(_on_phase3_loop_finished):
+			boss_phase3_loop_sound.finished.connect(_on_phase3_loop_finished)
+		print("[Boss3] Playing Phase 3 loop music (seamless transition)")
+
+## Play battle end music when boss dies
+func play_battle_end_music() -> void:
+	print("[Boss3] Playing battle end music")
+	
+	# Stop all other music
+	if boss_intro_sound and boss_intro_sound.playing:
+		boss_intro_sound.stop()
+	if boss_phase12_loop_sound and boss_phase12_loop_sound.playing:
+		boss_phase12_loop_sound.stop()
+	if boss_phase3_intro_sound and boss_phase3_intro_sound.playing:
+		boss_phase3_intro_sound.stop()
+	if boss_phase3_loop_sound and boss_phase3_loop_sound.playing:
+		boss_phase3_loop_sound.stop()
+	
+	# Play battle end music
+	if battle_end_sound:
+		battle_end_sound.play()
+		print("[Boss3] Battle end music started")
 
 # ===========================
 # SKILL 1: WATER ERUPTION WAVE (anchor 1 - center high)
@@ -254,6 +419,7 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 	# TELEGRAPH
 	_log_skill("EruptionWave", "TELEGRAPH_START")
 	sprite.play("atk_1")
+	if boss_atk1_sound: boss_atk1_sound.play()
 	await get_tree().create_timer(0.6).timeout
 	_log_skill("EruptionWave", "TELEGRAPH_END")
 
@@ -262,25 +428,52 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 	# ACTIVE
 	_log_skill("EruptionWave", "ACTIVE_START")
 
+	# Track if sound has been played (for behaviors 1-3 where multiple eruptions play at once)
+	var sound_played := false
+
 	if behavior == 1:
 		# BEHAVIOR 1: Play only WaterEruption (type 1)
 		for w in get_tree().get_nodes_in_group("WaterEruption"):
 			if w.has_method("play"):
+				# Only first eruption plays sound to avoid overlapping
+				if not sound_played:
+					w.eruption_sound = water_eruption_sound
+					sound_played = true
+				else:
+					w.eruption_sound = null
 				w.play()
 
 	elif behavior == 2:
 		# BEHAVIOR 2: Play only WaterEruption2 (type 2)
 		for w in get_tree().get_nodes_in_group("WaterEruption2"):
 			if w.has_method("play"):
+				# Only first eruption plays sound to avoid overlapping
+				if not sound_played:
+					w.eruption_sound = water_eruption_sound
+					sound_played = true
+				else:
+					w.eruption_sound = null
 				w.play()
 
 	elif behavior == 3:
 		# BEHAVIOR 3: Play randomly mixed (both types at once)
 		for w in get_tree().get_nodes_in_group("WaterEruption"):
 			if w.has_method("play") and randf() > 0.5:
+				# Only first eruption plays sound to avoid overlapping
+				if not sound_played:
+					w.eruption_sound = water_eruption_sound
+					sound_played = true
+				else:
+					w.eruption_sound = null
 				w.play()
 		for w in get_tree().get_nodes_in_group("WaterEruption2"):
 			if w.has_method("play") and randf() > 0.5:
+				# Only first eruption plays sound to avoid overlapping
+				if not sound_played:
+					w.eruption_sound = water_eruption_sound
+					sound_played = true
+				else:
+					w.eruption_sound = null
 				w.play()
 
 	else:  # behavior == 4
@@ -297,11 +490,12 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 
 			print("[Boss3] Direction: %s" % ("left-to-right" if left_to_right else "right-to-left"))
 
-			# Play sequentially
+			# Play sequentially - each eruption plays its own sound
 			for i in children.size():
 				var w = children[i]
 				print("[Boss3] Playing eruption %d at x=%d" % [i, w.global_position.x])
 				if w.has_method("play"):
+					w.eruption_sound = water_eruption_sound
 					w.play()
 				await get_tree().create_timer(0.15).timeout
 		else:
@@ -338,16 +532,17 @@ func do_water_pagoda() -> void:
 
 ## Internal pagoda function with behavior parameter
 func _do_water_pagoda_internal(behavior: int) -> void:
+	if not player:
+		print("[Boss3] WaterPagoda: no player, skip")
+		return
+
 	_log_skill("WaterPagoda", "BEHAVIOR_%d" % behavior)
 
 	# Boss telegraph
 	_log_skill("WaterPagoda", "BOSS_TELEGRAPH")
 	sprite.play("atk_2")
+	if boss_atk2_sound: boss_atk2_sound.play()
 	await get_tree().create_timer(0.3).timeout
-
-	if not player:
-		print("[Boss3] WaterPagoda: no player, skip")
-		return
 
 	if behavior == 1:
 		# BEHAVIOR 1: Tracking pagodas - follow player's position 1-3 times
@@ -510,9 +705,13 @@ func do_water_ball() -> void:
 
 ## Internal water ball function with behavior parameter
 func _do_water_ball_internal(behavior: int) -> void:
+	if not player:
+		return
+
 	# TELEGRAPH: Boss charges up
 	_log_skill("WaterBall", "TELEGRAPH_START")
 	sprite.play("atk_3")
+	if boss_atk3_sound: boss_atk3_sound.play()
 	await get_tree().create_timer(0.4).timeout
 	_log_skill("WaterBall", "TELEGRAPH_END")
 
@@ -608,12 +807,16 @@ func do_water_ball_orbit() -> void:
 
 ## Internal water ball orbit function with behavior parameter
 func _do_water_ball_orbit_internal(behavior: int) -> void:
+	if not player:
+		return
+
 	_log_skill("WaterBallOrbit", "MOVE_TO_ANCHOR_1")
 	await move_to_anchor(1) # CenterHigh
 
 	# TELEGRAPH
 	_log_skill("WaterBallOrbit", "TELEGRAPH_START")
 	sprite.play("atk_3")
+	if boss_atk3_sound: boss_atk3_sound.play()
 	await get_tree().create_timer(0.4).timeout
 	_log_skill("WaterBallOrbit", "TELEGRAPH_END")
 
@@ -699,12 +902,16 @@ func do_water_ball_cluster() -> void:
 
 ## Internal water ball cluster function with behavior parameter
 func _do_water_ball_cluster_internal(behavior: int) -> void:
+	if not player:
+		return
+
 	_log_skill("WaterBallCluster", "MOVE_TO_ANCHOR_0")
 	await move_to_anchor(0) # LeftHigh
 
 	# TELEGRAPH
 	_log_skill("WaterBallCluster", "TELEGRAPH_START")
 	sprite.play("atk_3")
+	if boss_atk3_sound: boss_atk3_sound.play()
 	await get_tree().create_timer(0.4).timeout
 	_log_skill("WaterBallCluster", "TELEGRAPH_END")
 
@@ -822,6 +1029,7 @@ func _do_water_column_internal(behavior: int) -> void:
 	# TELEGRAPH
 	_log_skill("WaterColumn", "TELEGRAPH_START")
 	sprite.play("atk_2")
+	if boss_atk2_sound: boss_atk2_sound.play()
 	await get_tree().create_timer(0.5).timeout
 	_log_skill("WaterColumn", "TELEGRAPH_END")
 
@@ -918,8 +1126,13 @@ func _do_water_tornado_internal(behavior: int) -> void:
 	# TELEGRAPH
 	_log_skill("WaterTornado", "TELEGRAPH_START")
 	sprite.play("atk_1")
+	if boss_atk1_sound: boss_atk1_sound.play()
 	await get_tree().create_timer(0.6).timeout
 	_log_skill("WaterTornado", "TELEGRAPH_END")
+
+	# Play tornado sound
+	if tornado_sound:
+		tornado_sound.play()
 
 	_log_skill("WaterTornado", "BEHAVIOR_%d" % behavior)
 
@@ -1023,6 +1236,9 @@ func do_water_laser_radiance_phase3_ultimate() -> void:
 
 ## Internal water laser function with behavior parameter
 func _do_water_laser_radiance_internal(behavior: int) -> void:
+	if not player:
+		return
+
 	_log_skill("WaterLaserRadiance", "MOVE_TO_ANCHOR_5")
 	await move_to_anchor(5)  # Top center anchor
 
@@ -1032,14 +1248,25 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 	# TELEGRAPH: Boss charges energy
 	_log_skill("WaterLaserRadiance", "TELEGRAPH_START")
 	sprite.play("atk_1")
+	if boss_atk1_sound: boss_atk1_sound.play()
+
+	# Wait for physics to settle completely before locking position
 	await get_tree().create_timer(0.8).timeout
+	await get_tree().process_frame  # Ensure physics frame completes
+	await get_tree().process_frame  # Extra frame for stability
+
 	_log_skill("WaterLaserRadiance", "TELEGRAPH_END")
 
 	# CREATE LASER CONTAINER (this will rotate as a whole)
 	# Add to scene root instead of boss to prevent flip affecting lasers
+	# IMPORTANT: Lock position to prevent tracking player - capture position AFTER physics settles
+	var fixed_laser_position = global_position  # Snapshot position - do not update
 	var laser_container = Node2D.new()
+	laser_container.global_position = fixed_laser_position  # Set position BEFORE adding to tree
+	laser_container.top_level = true  # Completely independent from parent transformations
 	get_tree().current_scene.add_child(laser_container)
-	laser_container.global_position = global_position
+	laser_container.set_physics_process(false)  # Disable physics to prevent any movement
+	laser_container.set_process(false)  # Disable process to prevent any updates
 
 	# ALWAYS 4 ATTACKS with different laser counts
 	var attack_configs = [
@@ -1069,6 +1296,14 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 			var laser = WaterLaserScene.instantiate()
 			laser_container.add_child(laser)
 
+			# Pass sound reference (only first laser will play to avoid overlap)
+			if i == 0:
+				laser.prepare_sound = water_laser_prepare_sound
+				laser.attack_sound = water_laser_sound
+			else:
+				laser.prepare_sound = null
+				laser.attack_sound = null
+
 			# Position laser at angle (evenly distributed around circle)
 			var angle = (i / float(laser_count)) * TAU
 			laser.rotation = angle
@@ -1078,14 +1313,16 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 		# PREPARE: All lasers show faintly
 		_log_skill("WaterLaserRadiance", "ATTACK_%d_PREPARE" % (attack_idx + 1))
 		for laser in lasers:
-			laser.set_prepare()
+			if is_instance_valid(laser):
+				laser.set_prepare()
 
 		await get_tree().create_timer(1.2).timeout
 
 		# ATTACK (SHOOT): All lasers become bright and deal damage
 		_log_skill("WaterLaserRadiance", "ATTACK_%d_SHOOT" % (attack_idx + 1))
 		for laser in lasers:
-			laser.set_attack()
+			if is_instance_valid(laser):
+				laser.set_attack()
 
 		# If this attack has water balls, spawn them during laser attack
 		if config.waterball:
@@ -1124,7 +1361,8 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 
 			# Immediately set lasers to prepare state (faint) while rotating
 			for laser in lasers:
-				laser.set_prepare()
+				if is_instance_valid(laser):
+					laser.set_prepare()
 
 			# Rotate by a fraction of the gap between lasers
 			var rotation_amount = (TAU / laser_count) * 0.5  # Half-step rotation
@@ -1143,7 +1381,7 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 	_log_skill("WaterLaserRadiance", "FINISH")
 
 	for laser in laser_container.get_children():
-		if laser.has_method("fade_out"):
+		if is_instance_valid(laser) and laser.has_method("fade_out"):
 			laser.fade_out()
 
 	await get_tree().create_timer(0.4).timeout
@@ -1174,12 +1412,22 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 	# TELEGRAPH
 	_log_skill("WaterLaserPhase2", "TELEGRAPH_START")
 	sprite.play("atk_1")
+	if boss_atk1_sound: boss_atk1_sound.play()
+
+	# Wait for physics to settle completely before locking position
 	await get_tree().create_timer(0.8).timeout
+	await get_tree().process_frame  # Ensure physics frame completes
+	await get_tree().process_frame  # Extra frame for stability
 
 	# CREATE LASER CONTAINER
+	# IMPORTANT: Lock position to prevent tracking player - capture position AFTER physics settles
+	var fixed_laser_position = global_position  # Snapshot position - do not update
 	var laser_container = Node2D.new()
+	laser_container.global_position = fixed_laser_position  # Set position BEFORE adding to tree
+	laser_container.top_level = true  # Completely independent from parent transformations
 	get_tree().current_scene.add_child(laser_container)
-	laser_container.global_position = global_position
+	laser_container.set_physics_process(false)  # Disable physics to prevent any movement
+	laser_container.set_process(false)  # Disable process to prevent any updates
 
 	# Attack pattern: 1-2-2-2
 	var attack_sequence = [attack1, attack2, attack3, attack4]
@@ -1207,24 +1455,36 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 		for i in laser_count:
 			var laser = WaterLaserScene.instantiate()
 			laser_container.add_child(laser)
+
+			# Pass sound reference (only first laser will play to avoid overlap)
+			if i == 0:
+				laser.prepare_sound = water_laser_prepare_sound
+				laser.attack_sound = water_laser_sound
+			else:
+				laser.prepare_sound = null
+				laser.attack_sound = null
+
 			var angle = (i / float(laser_count)) * TAU
 			laser.rotation = angle
 			lasers.append(laser)
 
 		# PREPARE
 		for laser in lasers:
-			laser.set_prepare()
+			if is_instance_valid(laser):
+				laser.set_prepare()
 		await get_tree().create_timer(1.2).timeout
 
 		# ATTACK
 		for laser in lasers:
-			laser.set_attack()
+			if is_instance_valid(laser):
+				laser.set_attack()
 		await get_tree().create_timer(1.0).timeout
 
 		# ROTATE
 		if attack_idx < 3:
 			for laser in lasers:
-				laser.set_prepare()
+				if is_instance_valid(laser):
+					laser.set_prepare()
 
 			var rotation_amount = (TAU / laser_count) * 0.5
 			var tween = create_tween()
@@ -1235,7 +1495,7 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 
 	# FINISH
 	for laser in laser_container.get_children():
-		if laser.has_method("fade_out"):
+		if is_instance_valid(laser) and laser.has_method("fade_out"):
 			laser.fade_out()
 	await get_tree().create_timer(0.4).timeout
 	laser_container.queue_free()
@@ -1247,14 +1507,14 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 	# Re-enable boss flip
 	_disable_flip = false
 
-	# Re-enable boss flip
-	_disable_flip = false
-
 
 # ===========================
 # PHASE 3 ULTIMATE LASER - Complex version (attacks 3-4 with water balls)
 # ===========================
 func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4: int) -> void:
+	if not player:
+		return
+
 	_log_skill("WaterLaserUltimate", "MOVE_TO_ANCHOR_5")
 	await move_to_anchor(5)
 
@@ -1264,12 +1524,22 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 	# TELEGRAPH
 	_log_skill("WaterLaserUltimate", "TELEGRAPH_START")
 	sprite.play("atk_1")
+	if boss_atk1_sound: boss_atk1_sound.play()
+
+	# Wait for physics to settle completely before locking position
 	await get_tree().create_timer(0.8).timeout
+	await get_tree().process_frame  # Ensure physics frame completes
+	await get_tree().process_frame  # Extra frame for stability
 
 	# CREATE LASER CONTAINER
+	# IMPORTANT: Lock position to prevent tracking player - capture position AFTER physics settles
+	var fixed_laser_position = global_position  # Snapshot position - do not update
 	var laser_container = Node2D.new()
+	laser_container.global_position = fixed_laser_position  # Set position BEFORE adding to tree
+	laser_container.top_level = true  # Completely independent from parent transformations
 	get_tree().current_scene.add_child(laser_container)
-	laser_container.global_position = global_position
+	laser_container.set_physics_process(false)  # Disable physics to prevent any movement
+	laser_container.set_process(false)  # Disable process to prevent any updates
 
 	# Attack pattern: 3-4-3-4
 	var attack_sequence = [attack1, attack2, attack3, attack4]
@@ -1297,18 +1567,29 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 		for i in laser_count:
 			var laser = WaterLaserScene.instantiate()
 			laser_container.add_child(laser)
+
+			# Pass sound reference (only first laser will play to avoid overlap)
+			if i == 0:
+				laser.prepare_sound = water_laser_prepare_sound
+				laser.attack_sound = water_laser_sound
+			else:
+				laser.prepare_sound = null
+				laser.attack_sound = null
+
 			var angle = (i / float(laser_count)) * TAU
 			laser.rotation = angle
 			lasers.append(laser)
 
 		# PREPARE
 		for laser in lasers:
-			laser.set_prepare()
+			if is_instance_valid(laser):
+				laser.set_prepare()
 		await get_tree().create_timer(1.2).timeout
 
 		# ATTACK + WATER BALLS
 		for laser in lasers:
-			laser.set_attack()
+			if is_instance_valid(laser):
+				laser.set_attack()
 
 		# Spawn 8 water balls
 		_log_skill("WaterLaserUltimate", "ATTACK_%d_WATERBALL" % (attack_idx + 1))
@@ -1335,7 +1616,8 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 		# ROTATE
 		if attack_idx < 3:
 			for laser in lasers:
-				laser.set_prepare()
+				if is_instance_valid(laser):
+					laser.set_prepare()
 
 			var rotation_amount = (TAU / laser_count) * 0.5
 			var tween = create_tween()
@@ -1346,7 +1628,7 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 
 	# FINISH
 	for laser in laser_container.get_children():
-		if laser.has_method("fade_out"):
+		if is_instance_valid(laser) and laser.has_method("fade_out"):
 			laser.fade_out()
 	await get_tree().create_timer(0.4).timeout
 	laser_container.queue_free()

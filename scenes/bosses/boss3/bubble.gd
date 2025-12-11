@@ -5,6 +5,7 @@ extends StaticBody2D
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var bbexplode_sound: AudioStreamPlayer = $BBExplodeSound
 
 var infinite_cycle_enabled: bool = false
 var cycling: bool = false
@@ -73,6 +74,10 @@ func _run_infinite_cycle() -> void:
 	if animated_sprite and animated_sprite.sprite_frames.has_animation("explode"):
 		animated_sprite.play("explode")
 		print("[Bubble] Playing explode animation")
+
+	# Play bubble explode sound
+	if bbexplode_sound:
+		bbexplode_sound.play()
 
 	# Wait a moment for explode animation then hide
 	await get_tree().create_timer(0.3).timeout

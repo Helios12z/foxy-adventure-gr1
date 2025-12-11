@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dp2rm6pfknlg4"
+path="res://.godot/imported/hurt_change_phase_sound.mp3-b0f531b1cc4cbaacb44ed67bdc7e51e1.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/hurt_change_phase_sound.mp3"
+dest_files=["res://.godot/imported/hurt_change_phase_sound.mp3-b0f531b1cc4cbaacb44ed67bdc7e51e1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

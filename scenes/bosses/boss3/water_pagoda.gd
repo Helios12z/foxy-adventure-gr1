@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hit: HitArea2D       = $HitArea2D
+@onready var pagoda_sound: AudioStreamPlayer = $WaterPagodaSound
 
 @export var telegraph_time := 0.6  # thời gian cho player thấy "appears" để né
 @export var active_time    := 0.4  # thời gian hitbox mở khi "slash"
@@ -43,6 +44,11 @@ func _run_sequence() -> void:
 	# ACTIVE: chuyển sang anim "slash", bật hitbox
 	print("[WaterPagoda] ACTIVE_START (slash)")
 	anim.play("slash")
+
+	# Play pagoda sound when attacking
+	if pagoda_sound:
+		pagoda_sound.play()
+
 	hit.set_deferred("monitoring", true)
 	hit.set_deferred("monitorable", true)
 

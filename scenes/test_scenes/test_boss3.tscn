@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://bhwnd0dvsqev8"]
+[gd_scene load_steps=35 format=4 uid="uid://bhwnd0dvsqev8"]
 
 [ext_resource type="Script" uid="uid://4ch8ctjqh6tg" path="res://scenes/test_scenes/level_boss_3.gd" id="1_aeh5d"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_aystw"]
@@ -25,6 +25,11 @@
 [ext_resource type="PackedScene" uid="uid://deauakn2u0vau" path="res://scenes/bosses/boss3/UpwardPlatform.tscn" id="22_g0ari"]
 [ext_resource type="Script" uid="uid://cuny6i8se13vl" path="res://scenes/bosses/boss3/phase_3_camera.gd" id="23_phase3cam"]
 [ext_resource type="PackedScene" uid="uid://bdjyxenddcpp7" path="res://scenes/bosses/boss3/Bubble.tscn" id="24_vggod"]
+[ext_resource type="AudioStream" uid="uid://eds17v5qb4u5" path="res://asset/sounds/boss 3/battle end music.mp3" id="26_xoqag"]
+[ext_resource type="AudioStream" uid="uid://cpefwogjd2wwo" path="res://asset/sounds/boss 3/loop_phase12_boss.mp3" id="27_u6av4"]
+[ext_resource type="AudioStream" uid="uid://r6u743a3xnm" path="res://asset/sounds/boss 3/intro_boss.mp3" id="28_c8nuj"]
+[ext_resource type="AudioStream" uid="uid://cpfcumn7ayffy" path="res://asset/sounds/boss 3/loop_phase_3.mp3" id="29_focve"]
+[ext_resource type="AudioStream" uid="uid://cnkhat6iqkbph" path="res://asset/sounds/boss 3/intro_boss_phase_3.mp3" id="30_dotdf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hv7ei"]
 atlas = ExtResource("12_aeh5d")
@@ -331,7 +336,7 @@ position = Vector2(736, -223)
 position = Vector2(-105, 716)
 
 [node name="Column3" parent="." instance=ExtResource("18_2pftl")]
-position = Vector2(-104, 247)
+position = Vector2(-110, 247)
 
 [node name="ColumnSpike" parent="." groups=["ColumnSpike"] instance=ExtResource("21_y5yu7")]
 visible = false
@@ -387,7 +392,7 @@ position = Vector2(692, 348.83002)
 position = Vector2(751, 348.83002)
 
 [node name="Column" parent="." instance=ExtResource("18_2pftl")]
-position = Vector2(-103, -221)
+position = Vector2(-110, -221)
 
 [node name="Platforms" type="Node2D" parent="."]
 position = Vector2(0, -765)
@@ -441,3 +446,20 @@ camera_top_limit = -330.0
 camera_zoom_level = 1.3
 
 [node name="Creeps" type="Node2D" parent="."]
+
+[node name="BattleEndMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("26_xoqag")
+
+[node name="LoopPhase12Boss" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("27_u6av4")
+parameters/looping = true
+
+[node name="IntroBoss" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("28_c8nuj")
+
+[node name="LoopPhase3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("29_focve")
+parameters/looping = true
+
+[node name="IntroBossPhase3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("30_dotdf")

@@ -9,11 +9,17 @@ enum State { PREPARE, ATTACK }
 @onready var hit_area: Area2D = $Area2D
 @onready var collision: CollisionShape2D = $Area2D/CollisionShape2D
 
+# Sounds will be set from parent laser container
+var prepare_sound: AudioStreamPlayer = null
+var attack_sound: AudioStreamPlayer = null
+
 var current_state: State = State.PREPARE
 var laser_length: float = 1200.0  # How far the laser reaches
 var damage: float = 15.0
 var damage_cooldown: float = 0.0  # Prevent multiple hits per frame
 var last_damaged_time: float = 0.0
+var _prepare_sound_played: bool = false  # Track if prepare sound was played
+var _attack_sound_played: bool = false   # Track if attack sound was played
 
 # Visual properties
 var prepare_width: float = 12.0  # Wider prepare
@@ -66,6 +72,13 @@ func _on_area_entered(area: Area2D) -> void:
 
 func set_prepare() -> void:
 	current_state = State.PREPARE
+	_prepare_sound_played = false  # Reset prepare sound flag
+	_attack_sound_played = false   # Reset attack sound flag for next attack
+
+	# Play prepare sound (only once, first laser only)
+	if prepare_sound and not _prepare_sound_played:
+		prepare_sound.play()
+		_prepare_sound_played = true
 
 	# Animate to prepare state
 	var tween = create_tween()
@@ -79,6 +92,11 @@ func set_prepare() -> void:
 
 func set_attack() -> void:
 	current_state = State.ATTACK
+
+	# Play attack sound only once per attack phase (avoid overlaps from multiple lasers)
+	if attack_sound and not _attack_sound_played:
+		attack_sound.play()
+		_attack_sound_played = true
 
 	# Animate to attack state - much thicker!
 	var tween = create_tween()

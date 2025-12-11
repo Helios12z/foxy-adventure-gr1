@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bidpmr0tf46e7"
+path="res://.godot/imported/bbexplode_sound.mp3-bac8ffff5eb3266401c57b38b3355584.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/bbexplode_sound.mp3"
+dest_files=["res://.godot/imported/bbexplode_sound.mp3-bac8ffff5eb3266401c57b38b3355584.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

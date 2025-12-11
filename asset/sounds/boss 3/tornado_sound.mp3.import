@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c3x7nhp8neroa"
+path="res://.godot/imported/tornado_sound.mp3-88a193b02e2cb37712fa7167929c3acd.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/tornado_sound.mp3"
+dest_files=["res://.godot/imported/tornado_sound.mp3-88a193b02e2cb37712fa7167929c3acd.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

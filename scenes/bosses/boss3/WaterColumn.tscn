@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b7wnd0dvsqewa"]
+[gd_scene load_steps=17 format=3 uid="uid://b7wnd0dvsqewa"]
 
 [ext_resource type="Script" uid="uid://bu00gx4x4yt3l" path="res://scenes/bosses/boss3/water_column.gd" id="1_column"]
 [ext_resource type="Texture2D" uid="uid://dvumjiagtqooo" path="res://asset/level_3_water_palace/water_goddess/skills/ice_pillar_01.png" id="2_pillar1"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://di42ffto5q878" path="res://asset/level_3_water_palace/water_goddess/skills/Gemini_Generated_Image_rig4w1rig4w1rig4-Photoroom5.png" id="7_j8bdg"]
 [ext_resource type="Texture2D" uid="uid://dxjdi1w8nu1dd" path="res://asset/level_3_water_palace/water_goddess/skills/Gemini_Generated_Image_rig4w1rig4w1rig4-Photoroom6.png" id="8_ft4ny"]
 [ext_resource type="Texture2D" uid="uid://ddxi85cf4jlb8" path="res://asset/level_3_water_palace/water_goddess/skills/Gemini_Generated_Image_rig4w1rig4w1rig4-Photoroom7.png" id="9_jnfg2"]
+[ext_resource type="AudioStream" uid="uid://dxdvuc86pq7oa" path="res://asset/sounds/boss 3/water_column_break_sound.mp3" id="12_q16c0"]
+[ext_resource type="AudioStream" uid="uid://df12s54cyyncx" path="res://asset/sounds/boss 3/water_column_rising_sound.mp3" id="13_j8bdg"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_column"]
 animations = [{
@@ -89,3 +91,10 @@ metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 position = Vector2(-1.5, -57.625)
 shape = SubResource("RectangleShape2D_4jenr")
 debug_color = Color(0.8002721, 0.30596814, 0.7328849, 0.41960785)
+
+[node name="WaterColumnBreakSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_q16c0")
+
+[node name="WaterColumnRisingSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_j8bdg")
+volume_db = -4.415

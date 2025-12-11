@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://re6868gimj8d"
+path="res://.godot/imported/water_eruption_sound.mp3-1e7ebd0893ebad1ffa56f426188780e1.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/water_eruption_sound.mp3"
+dest_files=["res://.godot/imported/water_eruption_sound.mp3-1e7ebd0893ebad1ffa56f426188780e1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

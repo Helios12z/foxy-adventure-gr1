@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bmdk6ttgdvj55"
+path="res://.godot/imported/water_laser_sound.mp3-0e5a895af7ad6e3159be5d74331b3036.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/water_laser_sound.mp3"
+dest_files=["res://.godot/imported/water_laser_sound.mp3-0e5a895af7ad6e3159be5d74331b3036.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
