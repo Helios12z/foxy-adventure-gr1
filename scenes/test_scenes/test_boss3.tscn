@@ -78,7 +78,7 @@ has_blade = true
 
 [node name="Boss3" parent="." instance=ExtResource("3_gtfhx")]
 position = Vector2(329, -135)
-boss3_max_health = 1000
+boss3_max_health = 1500
 player_path = NodePath("../Player")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -87,7 +87,7 @@ enabled = false
 tile_set = ExtResource("1_aystw")
 
 [node name="Skills" type="Node2D" parent="."]
-position = Vector2(0, 7)
+position = Vector2(0, 8)
 
 [node name="WaterEruptions" type="Node2D" parent="Skills"]
 position = Vector2(0, 16)

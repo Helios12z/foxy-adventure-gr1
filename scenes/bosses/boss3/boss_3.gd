@@ -317,8 +317,8 @@ func _start_intro_music_monitor() -> void:
 	
 	# Get the length of the intro music
 	var intro_length = boss_intro_sound.stream.get_length()
-	# Start loop music 2.5 seconds before intro ends
-	var wait_time = intro_length - 2.5
+	# Start loop music 3.5 seconds before intro ends
+	var wait_time = intro_length - 3.5
 	
 	print("[Boss3] Intro music length: %.2fs, will start loop at %.2fs" % [intro_length, wait_time])
 	
@@ -367,8 +367,8 @@ func _start_phase3_music_monitor() -> void:
 	
 	# Get the length of the Phase 3 intro music
 	var intro_length = boss_phase3_intro_sound.stream.get_length()
-	# Start loop music 0.5 seconds before intro ends
-	var wait_time = intro_length - 0.5
+	# Start loop music 0.8 seconds before intro ends
+	var wait_time = intro_length - 0.8
 	
 	print("[Boss3] Phase 3 intro length: %.2fs, will start loop at %.2fs" % [intro_length, wait_time])
 	
@@ -554,8 +554,11 @@ func _do_water_pagoda_internal(behavior: int) -> void:
 			get_tree().current_scene.add_child(pagoda)
 			pagoda.add_to_group("WaterPagoda")  # Add to group for cleanup
 
-			# Spawn at player's CURRENT position
-			var spawn_pos = Vector2(player.global_position.x, 16)
+			# Spawn at player's CURRENT position (clamped to arena bounds)
+			var arena_left = 50
+			var arena_right = 550
+			var spawn_x = clamp(player.global_position.x, arena_left, arena_right)
+			var spawn_pos = Vector2(spawn_x, 16)
 			pagoda.cast_at(spawn_pos)
 
 			# Wait before spawning next tracking pagoda
@@ -575,9 +578,12 @@ func _do_water_pagoda_internal(behavior: int) -> void:
 			get_tree().current_scene.add_child(pagoda)
 			pagoda.add_to_group("WaterPagoda")  # Add to group for cleanup
 
-			# Spawn around player's X position with some variation
+			# Spawn around player's X position with some variation (clamped to arena bounds)
+			var arena_left = -50
+			var arena_right = 640
 			var offset_range = 100  # Random offset left/right from player
 			var spawn_x = player.global_position.x + randf_range(-offset_range, offset_range)
+			spawn_x = clamp(spawn_x, arena_left, arena_right)
 			var spawn_pos = Vector2(spawn_x, spawn_height)
 
 			# Set initial position at top
@@ -1593,9 +1599,9 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 
 		# Spawn 8 water balls
 		_log_skill("WaterLaserUltimate", "ATTACK_%d_WATERBALL" % (attack_idx + 1))
-		var ball_count = 7
+		var ball_count = 6
 		var floor_y = 16
-		var vertical_spacing = 80
+		var vertical_spacing = 90
 
 		for i in ball_count:
 			var ball = WaterBallScene.instantiate()
