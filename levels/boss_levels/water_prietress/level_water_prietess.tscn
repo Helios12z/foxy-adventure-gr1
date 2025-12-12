@@ -473,6 +473,6 @@ vertical_alignment = 1
 [node name="Ambient" type="AudioStreamPlayer2D" parent="Sound"]
 position = Vector2(555, 385)
 stream = ExtResource("17_7sno5")
-volume_db = 10.0
+volume_db = 6.0
 bus = &"SFX"
 parameters/looping = true

@@ -1,7 +1,7 @@
 extends EnemyState
 class_name WaterPrietestState
 
-const SAME_LEVEL_THRESHOLD := 48.0  # tuỳ map mà chỉnh - increased for better attack detection
+const SAME_LEVEL_THRESHOLD := 48.0  #increased for better attack detection
 
 var _atk1_windup_done: bool = false
 var _atk1_windup_waiting: bool = false
@@ -109,11 +109,10 @@ func _ensure_atk_shapes_cached() -> void:
 		_atk2_left_shape_base_size = rect3.size
 		_atk2_left_shape_base_position = obj.atk2_collision_shape_2d_left.position
 
-	if obj.atk_super_collision_shape_2d and obj.atk_super_collision_shape_2d.shape is RectangleShape2D:
-		var rect4 := obj.atk_super_collision_shape_2d.shape as RectangleShape2D
-		_atk_super_shape_base_size = rect4.size
+	if obj.atk_super_collision_shape_2d and obj.atk_super_collision_shape_2d.shape is CircleShape2D:
+		var circle := obj.atk_super_collision_shape_2d.shape as CircleShape2D
+		_atk_super_shape_base_size = Vector2(circle.radius * 2.0, circle.radius * 2.0)
 		_atk_super_shape_base_position = obj.atk_super_collision_shape_2d.position
-
 
 func _reset_atk_shapes_to_base() -> void:
 	if obj.atk1_collision_shape_2d and obj.atk1_collision_shape_2d.shape is RectangleShape2D:
@@ -131,9 +130,9 @@ func _reset_atk_shapes_to_base() -> void:
 		rect3.size = _atk2_left_shape_base_size
 		obj.atk2_collision_shape_2d_left.position = _atk2_left_shape_base_position
 
-	if obj.atk_super_collision_shape_2d and obj.atk_super_collision_shape_2d.shape is RectangleShape2D:
-		var rect4 := obj.atk_super_collision_shape_2d.shape as RectangleShape2D
-		rect4.size = _atk_super_shape_base_size
+	if obj.atk_super_collision_shape_2d and obj.atk_super_collision_shape_2d.shape is CircleShape2D:
+		var circle := obj.atk_super_collision_shape_2d.shape as CircleShape2D
+		circle.radius = _atk_super_shape_base_size.x * 0.5
 		obj.atk_super_collision_shape_2d.position = _atk_super_shape_base_position
 
 func do_atk1() -> void:
@@ -577,7 +576,6 @@ func _on_atk3_anim_finished() -> void:
 	if sprite.animation != "atk_3":
 		return
 
-	# Tắt toàn bộ hitbox
 	if obj.atk1_collision_shape_2d:
 		obj.atk1_collision_shape_2d.disabled = true
 	if obj.atk2_collision_shape_2d_right:
@@ -607,7 +605,6 @@ func do_atk_super() -> void:
 	if sprite == null:
 		return
 
-	# reset trạng thái windup mỗi lần dùng atk_super
 	_atk_super_windup_done = false
 	_atk_super_windup_waiting = false
 	sprite.speed_scale = 1.0
@@ -615,7 +612,6 @@ func do_atk_super() -> void:
 	_ensure_atk_shapes_cached()
 	_reset_atk_shapes_to_base()
 
-	# Disable super hitbox initially
 	if obj.atk_super_collision_shape_2d:
 		obj.atk_super_collision_shape_2d.disabled = true
 
@@ -630,76 +626,99 @@ func _on_atk_super_frame_changed() -> void:
 	if sprite == null:
 		return
 
-	# Nếu không còn ở animation atk_sp thì tắt hitbox và thôi
-	if sprite.animation != "atk_sp":
+	if sprite.animation != "atk_super":
 		if obj.atk_super_collision_shape_2d:
 			obj.atk_super_collision_shape_2d.disabled = true
+		if obj.atk2_collision_shape_2d_right:
+			obj.atk2_collision_shape_2d_right.disabled = true
 		return
 
 	var current_frame = sprite.frame
 
-	# Frames 5-11: bật hitbox super ở vị trí gốc
 	if current_frame >= 5 and current_frame <= 11:
 		if obj.atk_super_collision_shape_2d:
-			_reset_atk_shapes_to_base()  # Đảm bảo về vị trí gốc
+			_reset_atk_shapes_to_base()
 			obj.atk_super_collision_shape_2d.disabled = false
-		# Play slash sound at frame 5 when first super attack starts
 		if current_frame == 5 and obj.slash:
 			obj.slash.play()
-	# Frame 12: tắt hitbox
+
 	elif current_frame == 12:
 		if obj.atk_super_collision_shape_2d:
 			obj.atk_super_collision_shape_2d.disabled = true
-	# Frames 13-16: di chuyển hitbox xuống dưới
+
 	elif current_frame >= 13 and current_frame <= 16:
-		if obj.atk_super_collision_shape_2d and obj.atk_super_collision_shape_2d.shape is RectangleShape2D:
-			var rect := obj.atk_super_collision_shape_2d.shape as RectangleShape2D
-			rect.size = _atk_super_shape_base_size
-			# Di chuyển xuống một chút so với vị trí gốc
+		if obj.atk_super_collision_shape_2d:
 			obj.atk_super_collision_shape_2d.position = _atk_super_shape_base_position + Vector2(0, 20.0)
 			obj.atk_super_collision_shape_2d.disabled = true
-	# Frame 17: tắt hitbox
+
 	elif current_frame == 17:
 		if obj.atk_super_collision_shape_2d:
 			obj.atk_super_collision_shape_2d.disabled = true
-	# Frames 18-29: bật lại hitbox ở vị trí đã di chuyển xuống
-	elif current_frame >= 18 and current_frame <= 29:
-		if obj.atk_super_collision_shape_2d and obj.atk_super_collision_shape_2d.shape is RectangleShape2D:
-			var rect := obj.atk_super_collision_shape_2d.shape as RectangleShape2D
-			rect.size = _atk_super_shape_base_size
-			# Giữ vị trí đã di chuyển xuống (xuống một chút so với gốc)
-			obj.atk_super_collision_shape_2d.position = _atk_super_shape_base_position + Vector2(0, 20.0)
-			obj.atk_super_collision_shape_2d.disabled = false
-		# Play slash sound at frame 18 when second super attack starts
-		if current_frame == 18 and obj.slash:
-			obj.slash.play()
-	# Frame 30 trở đi: tắt hitbox
+
 	else:
 		if obj.atk_super_collision_shape_2d:
 			obj.atk_super_collision_shape_2d.disabled = true
+
+	if obj.atk2_collision_shape_2d_right and obj.atk2_collision_shape_2d_right.shape is RectangleShape2D:
+		var rect2 := obj.atk2_collision_shape_2d_right.shape as RectangleShape2D
+		var base_size := _atk2_right_shape_base_size
+		var base_pos := _atk2_right_shape_base_position
+
+		rect2.size = base_size
+		obj.atk2_collision_shape_2d_right.position = base_pos
+		obj.atk2_collision_shape_2d_right.disabled = true
+
+		if current_frame == 12:
+			rect2.size = Vector2(base_size.x * 2.0, base_size.y)
+			obj.atk2_collision_shape_2d_right.position = base_pos + Vector2(base_size.x * 0.5, 0.0)
+			obj.atk2_collision_shape_2d_right.disabled = false
+
+		elif current_frame >= 13 and current_frame <= 16:
+			rect2.size = Vector2(base_size.x * 2.0, base_size.y * 2.0)
+			var pos_x := base_pos.x + base_size.x * 0.5
+			var pos_y := base_pos.y - base_size.y * 0.5
+			obj.atk2_collision_shape_2d_right.position = Vector2(pos_x, pos_y)
+			obj.atk2_collision_shape_2d_right.disabled = false
+
+		elif current_frame == 17:
+			obj.atk2_collision_shape_2d_right.disabled = true
+
+		elif current_frame == 21:
+			rect2.size = Vector2(base_size.x * 2.0, base_size.y * 2.0)
+			var pos_x2 := base_pos.x + base_size.x * 0.5
+			var pos_y2 := base_pos.y - base_size.y * 0.5
+			obj.atk2_collision_shape_2d_right.position = Vector2(pos_x2, pos_y2)
+			obj.atk2_collision_shape_2d_right.disabled = false
+
+		elif current_frame >= 22 and current_frame <= 29:
+			var new_height := base_size.y
+			var pos_x3 := base_pos.x + base_size.x * 0.5
+			var pos_y3 := base_pos.y - base_size.y + base_size.y * 1.25
+
+			rect2.size = Vector2(base_size.x * 2.0, new_height)
+			obj.atk2_collision_shape_2d_right.position = Vector2(pos_x3, pos_y3)
+			obj.atk2_collision_shape_2d_right.disabled = false
+
+		elif current_frame == 30:
+			obj.atk2_collision_shape_2d_right.disabled = true
 
 func _on_atk_super_anim_finished() -> void:
 	var sprite = obj.animated_sprite_2d
 	if sprite == null:
 		return
 
-	# Chỉ xử lý nếu vừa xong animation atk_sp
-	if sprite.animation != "atk_sp":
+	if sprite.animation != "atk_super":
 		return
 
-	# Tắt hitbox super
 	if obj.atk_super_collision_shape_2d:
 		obj.atk_super_collision_shape_2d.disabled = true
 
-	# đảm bảo trả speed_scale + state về bình thường
 	sprite.speed_scale = 1.0
 	_atk_super_windup_done = false
 	_atk_super_windup_waiting = false
 
-	# Trả kích thước hitbox về base cho lần cast sau
 	_reset_atk_shapes_to_base()
 
-	# Ngắt signal để tránh bị call nhiều lần
 	if sprite.frame_changed.is_connected(_on_atk_super_frame_changed):
 		sprite.frame_changed.disconnect(_on_atk_super_frame_changed)
 
@@ -714,7 +733,6 @@ func do_atk_air() -> void:
 	if sprite == null:
 		return
 
-	# reset trạng thái windup mỗi lần dùng atk_air
 	_atk_air_windup_done = false
 	_atk_air_windup_waiting = false
 	sprite.speed_scale = 1.0
@@ -722,7 +740,6 @@ func do_atk_air() -> void:
 	_ensure_atk_shapes_cached()
 	_reset_atk_shapes_to_base()
 
-	# Disable atk1 hitbox initially
 	if obj.atk1_collision_shape_2d:
 		obj.atk1_collision_shape_2d.disabled = true
 

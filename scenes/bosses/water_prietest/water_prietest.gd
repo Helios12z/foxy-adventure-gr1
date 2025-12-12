@@ -8,7 +8,7 @@ signal start_fight
 @export var spike_damage: int = 150 
 @export var max_health_boss: int = 1000
 @export var boss_jump_speed: float = 500.0     
-@export var attack_range: float = 180.0
+@export var attack_range: float = 140.0
 @export var move_speed: float = 80.0
 @export var surf_speed: float = 100.0    
 @export var air_horizontal_speed: float = 60.0
@@ -66,9 +66,11 @@ var target_jump_marker: JumpMarker2D = null
 @onready var atk3_collision_shape_2d: CollisionShape2D = $Direction/Atk3HitArea2D/CollisionShape2D
 @onready var atk_super_collision_shape_2d: CollisionShape2D = $Direction/AtkSuperHitArea2D/CollisionShape2D
 @onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
-
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
-@onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
+
+@onready var phase_1: AudioStreamPlayer2D = $Sound/Phase1
+@onready var phase_2_intro: AudioStreamPlayer2D = $Sound/Phase2Intro
+@onready var phase_2: AudioStreamPlayer2D = $Sound/Phase2
 @onready var slash: AudioStreamPlayer2D = $Sound/Slash
 @onready var water_slash: AudioStreamPlayer2D = $Sound/WaterSlash
 
@@ -104,6 +106,8 @@ func _ready() -> void:
 	_update_level_bounds_from_markers()
 	_init_jump_markers()
 	_disable_hit_collisionshape()
+	
+	phase_2_intro.finished.connect(_on_phase_2_intro_finished)
 
 	fsm = FSM.new(self, $States, $States/Idle)
 	
@@ -260,7 +264,7 @@ func _detect_player()->void:
 	if _distance_to_player()<=280:
 		seen_player = true
 		emit_signal("start_fight") 
-		boss_music.play()
+		phase_1.play()
 			
 func _update_level_bounds_from_markers() -> void:
 	if bound_point_a == null or bound_point_b == null:
@@ -449,9 +453,8 @@ func _finish_phase2_transition() -> void:
 	# Emit phase 2 signal
 	emit_signal("into_phase2")
 
-	# Stop phase 1 music, play phase 2 music
-	if boss_music:
-		boss_music.stop()
+	phase_1.stop()
+	phase_2_intro.play()
 		
 func _get_boss_platform_controller() -> Node:
 	var stage = GameManager.current_stage
@@ -546,11 +549,9 @@ func _update_phase2_platform_brain(delta: float) -> void:
 		_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
 
 func _check_player_attack_input() -> void:
-	# Only react to player attacks if boss is in a state that can defend/roll
 	if not seen_player or _phase2_transition_running:
 		return
 
-	# Check if player pressed attack button
 	if Input.is_action_just_pressed("attack"):
 		var player = get_player()
 		if not player:
@@ -558,7 +559,7 @@ func _check_player_attack_input() -> void:
 
 		var distance_to_player = _distance_to_player()
 
-		if distance_to_player <= attack_range * 1.5:
+		if distance_to_player <= attack_range:
 			var should_use_defend = false
 			var should_use_roll = false
 
@@ -578,3 +579,7 @@ func _check_player_attack_input() -> void:
 			elif should_use_roll:
 				start_roll_cooldown()
 				fsm.change_state(fsm.states.roll)
+				
+func _on_phase_2_intro_finished() -> void:
+	if in_phase2 and phase_2 and not phase_2.playing:
+		phase_2.play()

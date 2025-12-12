@@ -63,11 +63,11 @@ func _update(delta: float) -> void:
 		obj.start_attack_cooldown()
 
 		var attack_chance = randf()
-		if attack_chance < 0.1:
+		if attack_chance < 0.15:
 			change_state(fsm.states.atk_1)
-		elif attack_chance < 0.4:
+		elif attack_chance < 0.35:
 			change_state(fsm.states.atk_2)
-		elif attack_chance < 0.7:
+		elif attack_chance < 0.6:
 			change_state(fsm.states.atk_3)
 		else:
 			change_state(fsm.states.atk_super)

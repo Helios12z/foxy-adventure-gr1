@@ -1,4 +1,4 @@
-[gd_scene load_steps=203 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=205 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3donb"]
@@ -188,9 +188,11 @@
 [ext_resource type="Script" uid="uid://b8usx670g1vsm" path="res://scenes/bosses/water_prietest/phase_2_windup.gd" id="185_bboxk"]
 [ext_resource type="Script" uid="uid://dgvne3nt5k0ia" path="res://scenes/bosses/water_prietest/surf.gd" id="186_pyckh"]
 [ext_resource type="Script" uid="uid://belugcidxb8jf" path="res://scenes/bosses/water_prietest/walk.gd" id="187_gbqh0"]
-[ext_resource type="AudioStream" uid="uid://d0d203cd5p73l" path="res://asset/sounds/water_prietess_sound/boss_music.mp3" id="188_i0py4"]
 [ext_resource type="Script" uid="uid://dbxaxhs0hiq7a" path="res://scenes/bosses/water_prietest/cast_into_phase_2.gd" id="189_ktdfs"]
+[ext_resource type="AudioStream" uid="uid://8fkhndgglr5v" path="res://asset/water_prietest/phase1.mp3" id="190_514da"]
 [ext_resource type="AudioStream" uid="uid://vrfc845cqvtl" path="res://asset/sounds/water_prietess_sound/slash.mp3" id="190_p2we0"]
+[ext_resource type="AudioStream" uid="uid://cvu5ag64m4eiq" path="res://asset/water_prietest/phase2_intro.mp3" id="191_xjnxp"]
+[ext_resource type="AudioStream" uid="uid://cym1bxq13ndmb" path="res://asset/water_prietest/phase2_loop.mp3" id="192_dhjuf"]
 [ext_resource type="AudioStream" uid="uid://dwvnobdvwjj4i" path="res://asset/sounds/water_prietess_sound/water_splash.mp3" id="192_y8wfg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nk125"]
@@ -819,7 +821,6 @@ sprite_frames = SubResource("SpriteFrames_ed6l8")
 animation = &"atk_super"
 autoplay = "idle"
 frame = 31
-frame_progress = 1.0
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
 collision_layer = 0
@@ -889,12 +890,15 @@ shape = SubResource("CapsuleShape2D_gbqh0")
 debug_color = Color(0, 0.13333334, 0.7372549, 0.41960785)
 
 [node name="AtkSuperHitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/AtkSuperHitArea2D"]
 position = Vector2(57.5, -55)
 shape = SubResource("CircleShape2D_i0py4")
+debug_color = Color(0.893849, 0.00022698462, 0.7845825, 0.41960785)
 
 [node name="States" type="Node" parent="."]
 
@@ -951,9 +955,20 @@ script = ExtResource("189_ktdfs")
 
 [node name="Sound" type="Node2D" parent="."]
 
-[node name="BossMusic" type="AudioStreamPlayer2D" parent="Sound"]
-stream = ExtResource("188_i0py4")
+[node name="Phase1" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("190_514da")
 volume_db = 10.0
+bus = &"Music"
+parameters/looping = true
+
+[node name="Phase2Intro" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("191_xjnxp")
+volume_db = 5.0
+bus = &"Music"
+
+[node name="Phase2" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("192_dhjuf")
+volume_db = 5.0
 bus = &"Music"
 parameters/looping = true
 
