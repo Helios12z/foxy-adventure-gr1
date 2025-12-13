@@ -35,7 +35,7 @@ func _update(delta: float) -> void:
 			var dir = sign(target_x - obj.global_position.x)
 			if abs(target_x - obj.global_position.x) <= 4.0:
 				obj.velocity.x = 0.0
-				change_state(fsm.states.jumpstate)
+				if not obj.is_on_floating_platform(): change_state(fsm.states.jumpstate)
 			else:
 				obj.velocity.x = dir * obj.surf_speed
 		return
@@ -66,10 +66,6 @@ func _update(delta: float) -> void:
 			target_x = player.global_position.x
 
 	var dir = sign(target_x - obj.global_position.x)
-
-	if randf() < 0.25 and not obj.is_on_floating_platform():
-		change_state(fsm.states.jumpstate)
-		return
 
 	if abs(target_x - obj.global_position.x) <= 4.0:
 		obj.velocity.x = 0.0

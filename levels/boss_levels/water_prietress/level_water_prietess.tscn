@@ -365,6 +365,9 @@ position = Vector2(447, 461)
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
 position = Vector2(-117, 558)
 has_blade = true
+has_fire_gem = true
+has_water_paw_gem = true
+has_water_room_gem = true
 
 [node name="WaterPrietest" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("3_y7w5y")]
 position = Vector2(421, 485)

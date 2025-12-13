@@ -17,7 +17,6 @@ func _enter() -> void:
 	obj.change_animation("roll")
 	_has_invincibility = true
 
-	# Play roll sound
 	if obj.roll:
 		obj.roll.play()
 
@@ -94,9 +93,10 @@ func _enter() -> void:
 
 	obj.change_direction(_roll_direction)
 
-
 func _update(delta: float) -> void:
 	_elapsed += delta
+	
+	obj._update_facing()
 
 	obj.velocity.x = _roll_direction * obj.roll_speed
 
@@ -130,7 +130,6 @@ func _finish_roll() -> void:
 	obj.velocity.x = 0.0
 	change_state(fsm.states.idle)
 
-
 func _about_to_fall_off_edge() -> bool:
 	var ray_length := 50.0
 	var ray_direction := Vector2(_roll_direction, 1.0).normalized()
@@ -145,11 +144,9 @@ func _about_to_fall_off_edge() -> bool:
 	var result := space_state.intersect_ray(query)
 	return result.is_empty()
 
-
 func _exit() -> void:
 	_has_invincibility = false
 	obj.velocity.x = 0.0
-
 
 func has_invincibility() -> bool:
 	return _has_invincibility

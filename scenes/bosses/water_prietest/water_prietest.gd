@@ -79,6 +79,7 @@ var target_jump_marker: JumpMarker2D = null
 @onready var jump_sound: AudioStreamPlayer2D = $Sound/Jump
 @onready var roll: AudioStreamPlayer2D = $Sound/Roll
 @onready var defend: AudioStreamPlayer2D = $Sound/Defend
+@onready var phase_2_talk: AudioStreamPlayer2D = $Sound/Phase2Talk
 
 enum MoveMode {
 	MOVE_NONE,
@@ -130,8 +131,6 @@ func _physics_process(delta: float) -> void:
 	update_roll_cooldown(delta)
 	update_attack_cooldown(delta)
 
-	if fsm != null: fsm._update(delta)
-
 	if fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.surf: 
 		_update_facing()
 	_detect_player()
@@ -146,9 +145,6 @@ func _physics_process(delta: float) -> void:
 		
 	if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
 		animated_sprite_2d.speed_scale = 1.0
-	
-	print(fsm.current_state)
-	print("is on floor:", is_on_floor())
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -463,6 +459,8 @@ func _start_phase2_transition() -> void:
 
 func _finish_phase2_transition() -> void:
 	Engine.time_scale = 1.0
+	
+	phase_2_talk.play()
 
 	in_phase2 = true
 	_phase2_transition_running = false
@@ -554,7 +552,7 @@ func _update_phase2_platform_brain(delta: float) -> void:
 		_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
 
 func _check_player_attack_input() -> void:
-	if not seen_player or _phase2_transition_running:
+	if not seen_player or _phase2_transition_running or fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
 		return
 
 	if Input.is_action_just_pressed("attack"):

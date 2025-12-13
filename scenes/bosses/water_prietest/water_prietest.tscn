@@ -1,4 +1,4 @@
-[gd_scene load_steps=208 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=207 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3donb"]
@@ -164,7 +164,6 @@
 [ext_resource type="Script" uid="uid://bcsssihdl2g2r" path="res://scenes/bosses/water_prietest/jump.gd" id="156_l5lxe"]
 [ext_resource type="Texture2D" uid="uid://cqe13eldb6ff7" path="res://asset/water_prietest/surf/surf_6.png" id="157_lj8qf"]
 [ext_resource type="Script" uid="uid://dsjsihs611j7r" path="res://scenes/bosses/water_prietest/fall.gd" id="157_ym30o"]
-[ext_resource type="Script" uid="uid://c17d25emfxkex" path="res://scenes/bosses/water_prietest/run.gd" id="158_cootd"]
 [ext_resource type="Texture2D" uid="uid://c4wtpkx3usqyh" path="res://asset/water_prietest/surf/surf_7.png" id="158_srv6a"]
 [ext_resource type="Texture2D" uid="uid://pibk4o01vgc2" path="res://asset/water_prietest/surf/surf_8.png" id="159_yk4bp"]
 [ext_resource type="Texture2D" uid="uid://c0v3kndf0q8f6" path="res://asset/water_prietest/walk/walk_1.png" id="160_rhe6i"]
@@ -185,7 +184,6 @@
 [ext_resource type="Script" uid="uid://d2c06c2e4ocoy" path="res://scenes/bosses/water_prietest/roll.gd" id="181_spm2m"]
 [ext_resource type="Script" uid="uid://rqlnopwgspi0" path="res://scenes/bosses/water_prietest/hurt.gd" id="183_6cqs2"]
 [ext_resource type="Script" uid="uid://chi7fvld2woeg" path="res://scenes/bosses/water_prietest/dead.gd" id="184_bu7ft"]
-[ext_resource type="Script" uid="uid://b8usx670g1vsm" path="res://scenes/bosses/water_prietest/phase_2_windup.gd" id="185_bboxk"]
 [ext_resource type="Script" uid="uid://dgvne3nt5k0ia" path="res://scenes/bosses/water_prietest/surf.gd" id="186_pyckh"]
 [ext_resource type="Script" uid="uid://belugcidxb8jf" path="res://scenes/bosses/water_prietest/walk.gd" id="187_gbqh0"]
 [ext_resource type="Script" uid="uid://dbxaxhs0hiq7a" path="res://scenes/bosses/water_prietest/cast_into_phase_2.gd" id="189_ktdfs"]
@@ -197,6 +195,7 @@
 [ext_resource type="AudioStream" uid="uid://y38eh2uffch1" path="res://asset/sounds/water_prietess_sound/jump.wav" id="195_xjnxp"]
 [ext_resource type="AudioStream" uid="uid://d33w0liqmm4fb" path="res://asset/sounds/water_prietess_sound/roll.wav" id="196_dhjuf"]
 [ext_resource type="AudioStream" uid="uid://bli3d1axw47x2" path="res://asset/sounds/water_prietess_sound/defend.mp3" id="197_dmvcu"]
+[ext_resource type="AudioStream" uid="uid://g3kwsn8tyiu" path="res://asset/sounds/water_prietess_sound/phase2_talk.mp3" id="198_7ipbc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nk125"]
 size = Vector2(19, 36)
@@ -935,17 +934,11 @@ script = ExtResource("157_ym30o")
 [node name="Roll" type="Node" parent="States"]
 script = ExtResource("181_spm2m")
 
-[node name="Run" type="Node" parent="States"]
-script = ExtResource("158_cootd")
-
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("183_6cqs2")
 
 [node name="Dead" type="Node" parent="States"]
 script = ExtResource("184_bu7ft")
-
-[node name="Phase2_Windup" type="Node" parent="States"]
-script = ExtResource("185_bboxk")
 
 [node name="Surf" type="Node" parent="States"]
 script = ExtResource("186_pyckh")
@@ -999,4 +992,9 @@ bus = &"SFX"
 [node name="Defend" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("197_dmvcu")
 volume_db = 10.0
+bus = &"SFX"
+
+[node name="Phase2Talk" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("198_7ipbc")
+volume_db = 5.0
 bus = &"SFX"
