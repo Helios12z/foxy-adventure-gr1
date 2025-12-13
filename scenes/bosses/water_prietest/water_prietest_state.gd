@@ -1,11 +1,17 @@
 extends EnemyState
 class_name WaterPrietestState
 
-const SAME_LEVEL_THRESHOLD := 40.0
+const SAME_LEVEL_THRESHOLD := 10.0
+const DROP_UNDER_X := 12.0
+const DROP_EDGE_OUT := 12.0
+const NAV_EPS_X := 6.0
 
 var _jump_target_x: float = 0.0
 var _jump_dir_x: int = 0
 var _has_reached_peak: bool = false
+var _drop_active := false
+var _drop_x := 0.0
+var _drop_force_x := 0.0
 
 var _atk_shapes_cached: bool = false
 var _atk1_shape_base_size: Vector2
@@ -506,29 +512,39 @@ func _marker_for_pos(pos: Vector2) -> JumpMarker2D:
 		var jm := m as JumpMarker2D
 		if jm == null or not jm.is_active:
 			continue
+
 		var half := jm.platform_size * 0.5
 		var dx = abs(pos.x - jm.global_position.x)
+
 		var dy = abs(pos.y - jm.global_position.y)
-		if dx <= half.x and dy <= half.y + 64.0:
+		var y_tol = max(half.y, 10.0) + 12.0   
+
+		if dx <= half.x and dy <= y_tol:
 			var score = dx + dy * 2.0
 			if score < best_score:
 				best_score = score
 				best = jm
 	return best
 
+func _boss_marker() -> JumpMarker2D:
+	return _marker_for_pos(obj.global_position)
+
+func _player_marker(p: Node2D) -> JumpMarker2D:
+	return _marker_for_pos(p.global_position) if p else null
+
 func _same_platform(player: Node2D) -> bool:
 	if player == null:
 		return false
 
-	if obj.is_player_on_rect_platform():
-		return not obj.is_on_floating_platform()
+	var bm := _boss_marker()
+	var pm := _player_marker(player)
 
-	if obj.is_on_floating_platform():
-		var a := _marker_for_pos(obj.global_position)
-		var b := _marker_for_pos(player.global_position)
-		return a != null and b != null and a.get_parent() == b.get_parent()
+	if bm == null and pm == null:
+		return true
+	if bm == null or pm == null:
+		return false
 
-	return abs(player.global_position.y - obj.global_position.y) <= SAME_LEVEL_THRESHOLD
+	return bm.get_parent() == pm.get_parent()
 
 func _dijkstra_next(from: JumpMarker2D, to: JumpMarker2D) -> JumpMarker2D:
 	if from == null or to == null or from == to:
@@ -576,16 +592,19 @@ func control_move(speed: float, attack_table: Array, _on_reach: Callable, _use_e
 		return
 
 	if obj.in_phase2 and not _same_platform(p):
-		if obj.is_on_floating_platform() and obj.is_player_on_rect_platform():
+		var bm := _boss_marker()
+		var pm := _player_marker(p)
+
+		if bm != null and pm == null:
 			obj.force_phase2_ground_jump = true
+
 		change_state(fsm.states.jumpstate)
 		return
 
 	var same_level = abs(p.global_position.y - obj.global_position.y) <= SAME_LEVEL_THRESHOLD
 	var in_range = abs(p.global_position.x - obj.global_position.x) <= obj.attack_range
-	var can_strike = same_level and in_range
 
-	if obj.can_attack and can_strike:
+	if obj.can_attack and same_level and in_range:
 		obj.velocity.x = 0.0
 		obj.start_attack_cooldown()
 		_choose_attack_from_table(attack_table)
@@ -612,11 +631,12 @@ func control_jump_enter(extra_jump_height: float = 24.0) -> void:
 
 	if obj.in_phase2 and obj.force_phase2_ground_jump:
 		var target := obj.global_position
-		target.x = obj.clamp_x_to_room(target.x)
+		target.x = obj.clamp_x_to_room(_drop_force_x if _drop_force_x != 0.0 else target.x)
 		if obj.rect_platform:
 			target.y = obj.rect_platform.global_position.y - 16.0
 		_perform_jump_to_position(target, 0.0)
 		obj.force_phase2_ground_jump = false
+		_drop_force_x = 0.0
 		return
 
 	var from := _marker_for_pos(obj.global_position)
@@ -624,10 +644,28 @@ func control_jump_enter(extra_jump_height: float = 24.0) -> void:
 	var next := _dijkstra_next(from, to) if (from and to) else (to if to else null)
 
 	if next:
-		_perform_jump_to_position(next.global_position, extra_jump_height)
+		_perform_jump_to_position(next.global_position, 0.0)
 		return
 
 	_fallback_jump_to_player(p, extra_jump_height)
+	
+func _plan_drop_edge(from: JumpMarker2D, p: Node2D) -> void:
+	var half_x := from.platform_size.x * 0.5
+	var cx := from.global_position.x
+	var left := cx - half_x - DROP_EDGE_OUT
+	var right := cx + half_x + DROP_EDGE_OUT
+
+	var dxp := p.global_position.x - obj.global_position.x
+	var dir = sign(dxp)
+
+	if abs(dxp) <= DROP_UNDER_X:
+		dir = 1 if obj.global_position.x >= cx else -1
+	if dir == 0:
+		dir = 1
+
+	_drop_x = obj.clamp_x_to_room(right if dir > 0 else left)
+	_drop_force_x = _drop_x
+	_drop_active = true
 
 func control_jump_update(delta: float, land_state_phase2, land_state_normal) -> void:
 	if not _has_reached_peak and obj.velocity.y >= 0.0:
@@ -747,7 +785,6 @@ func _adjust_fall_horizontal_movement() -> void:
 		var dir_x = sign(target_x - obj.global_position.x)
 		obj.velocity.x = dir_x * obj.air_horizontal_speed
 
-
 func _update_current_jump_marker() -> void:
 	var nearest_marker = obj.get_nearest_jump_marker()
 	if nearest_marker:
@@ -757,13 +794,7 @@ func _update_current_jump_marker() -> void:
 		else:
 			obj.current_jump_marker = null
 
-func _try_air_attack(
-	max_dist: float,
-	max_vertical_diff: float,
-	require_player_below: bool,
-	chance: float,
-	only_phase2: bool
-) -> void:
+func _try_air_attack(max_dist: float, max_vertical_diff: float, require_player_below: bool, chance: float, only_phase2: bool) -> void:
 	if only_phase2 and not obj.in_phase2:
 		return
 

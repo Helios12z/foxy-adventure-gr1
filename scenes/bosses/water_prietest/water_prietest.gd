@@ -41,9 +41,6 @@ signal start_fight
 @export var max_jump_distance: float = 200.0
 @export var jump_height_tolerance: float = 100.0
 
-@export var phase2_time_on_ground: Vector2 = Vector2(1.5, 3.0)    
-@export var phase2_time_on_platform: Vector2 = Vector2(1.5, 3.0)  
-
 var can_attack: bool = true
 var attack_cooldown_timer: float = 0.0
 var can_defend: bool = true
@@ -52,7 +49,6 @@ var can_roll: bool = true
 var roll_cooldown_timer: float = 0.0
 var _phase2_transition_running: bool = false
 var _original_time_scale: float = 1.0
-var _phase2_ai_timer: float = 0.0
 var force_phase2_ground_jump: bool = false
 
 var jump_markers: Array[JumpMarker2D] = []
@@ -121,31 +117,18 @@ func _physics_process(delta: float) -> void:
 	update_defend_cooldown(delta)
 	update_roll_cooldown(delta)
 	update_attack_cooldown(delta)
+	_detect_player()
 
 	if fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.surf: 
 		_update_facing()
-	_detect_player()
 
 	_check_player_attack_input()
 
 	super._physics_process(delta)
 	_keep_inside_room_and_avoid_fall()
-	
-	if in_phase2 and seen_player and not _phase2_transition_running:
-		_update_phase2_platform_brain(delta)
 		
 	if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
 		animated_sprite_2d.speed_scale = 1.0
-		
-	if in_phase2 and seen_player and not _phase2_transition_running:
-		if is_on_floating_platform() and is_player_on_rect_platform():
-			var cur = fsm.current_state
-			var can_interrupt = (cur == fsm.states.idle or cur == fsm.states.walk or cur == fsm.states.surf)
-			if can_interrupt:
-				force_phase2_ground_jump = true
-				fsm.change_state(fsm.states.jumpstate)
-				# reset timer để không bị brain đổi state lung tung ngay sau khi rơi xuống
-				_phase2_ai_timer = randf_range(phase2_time_on_ground.x, phase2_time_on_ground.y)
 		
 	print(fsm.current_state)
 
@@ -251,8 +234,11 @@ func _update_facing() -> void:
 	if p == null:
 		return
 
-	var dir_x := -1 if p.global_position.x < global_position.x else 1
-	change_direction(dir_x)
+	var dx := p.global_position.x - global_position.x
+	if abs(dx) <= 10:
+		return
+
+	change_direction(1 if dx > 0.0 else -1)
 	
 func _detect_player()->void:
 	if seen_player: return
@@ -469,62 +455,6 @@ func _get_boss_platform_controller() -> Node:
 		return stage.get_node("World/BossPlatformController")
 	return null
 
-func is_player_on_floating_platform() -> bool:
-	var player = get_player()
-	if player == null:
-		return false
-
-	var controller = _get_boss_platform_controller()
-	if controller == null or not controller.has_method("get_active_markers"):
-		return false
-
-	var markers: Array = controller.get_active_markers()
-	for m in markers:
-		if m and m.global_position.distance_to(player.global_position) <= 40.0:
-			return true
-	return false
-
-func is_on_floating_platform() -> bool:
-	if not is_on_floor():
-		return false
-	if rect_platform == null:
-		return false
-
-	return global_position.y < rect_platform.global_position.y - 16.0
-
-func _update_phase2_platform_brain(delta: float) -> void:
-	_phase2_ai_timer -= delta
-	if _phase2_ai_timer > 0.0:
-		return
-
-	var player := get_player()
-	if player == null:
-		return
-
-	var boss_on_platform := is_on_floating_platform()
-	var player_on_platform := is_player_on_floating_platform()
-
-	var cur = fsm.current_state
-	var can_decide = (
-		cur == fsm.states.idle or
-		cur == fsm.states.walk or
-		cur == fsm.states.surf
-	)
-	if not can_decide:
-		return
-
-	if boss_on_platform:
-		if not player_on_platform:
-			force_phase2_ground_jump = true
-			fsm.change_state(fsm.states.jumpstate)
-			_phase2_ai_timer = randf_range(phase2_time_on_ground.x, phase2_time_on_ground.y)
-		else:
-			_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
-	else:
-		force_phase2_ground_jump = false
-		fsm.change_state(fsm.states.jumpstate)
-		_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
-
 func _check_player_attack_input() -> void:
 	if not seen_player or _phase2_transition_running or fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.atk_2 or fsm.current_state == fsm.states.atk_3 or fsm.current_state == fsm.states.atk_super or fsm.current_state == fsm.states.atk_air:
 		return
@@ -560,16 +490,26 @@ func _check_player_attack_input() -> void:
 func _on_phase_2_intro_finished() -> void:
 	if in_phase2 and phase_2 and not phase_2.playing:
 		phase_2.play()
-		
-func is_player_on_rect_platform() -> bool:
-	if not in_phase2:
-		return false
+	
+func get_marker_at_pos(pos: Vector2) -> JumpMarker2D:
+	if jump_markers.is_empty():
+		return null
 
-	var player = get_player()
-	if player == null:
-		return false
+	var best: JumpMarker2D = null
+	var best_score := INF
 
-	if is_player_on_floating_platform():
-		return false
+	for m in jump_markers:
+		if m == null or not m.is_active:
+			continue
 
-	return true
+		var half := m.platform_size * 0.5
+		var dx = abs(pos.x - m.global_position.x)
+		var dy = abs(pos.y - m.global_position.y)
+
+		if dx <= half.x and dy <= half.y + 64.0:
+			var score = dx + dy * 2.0
+			if score < best_score:
+				best_score = score
+				best = m
+
+	return best

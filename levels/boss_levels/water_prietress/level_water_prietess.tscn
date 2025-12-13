@@ -233,7 +233,7 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(882, 462)
+position = Vector2(883, 447)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform4"]
 collision_mask = 10
@@ -262,7 +262,7 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(598, 460)
+position = Vector2(601, 447)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform5"]
 collision_mask = 10
