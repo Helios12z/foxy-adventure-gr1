@@ -433,7 +433,9 @@ func _apply_dissolve_appear(node: Node2D, duration: float = 0.15, on_done: Calla
 	
 	if overlay_spr != null and is_instance_valid(overlay_spr):
 		overlay_spr.queue_free()
-	# Không cần khôi phục spr.visible vì đối tượng thường sẽ bị queue_free ngay sau đó bởi on_done
+		# Khôi phục sprite gốc nếu đối tượng không bị hủy
+		if is_instance_valid(spr) and spr != null:
+			spr.visible = true
 	
 	elif spr != null and is_instance_valid(spr):
 		spr.material = null
