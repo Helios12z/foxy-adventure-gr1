@@ -25,13 +25,13 @@ func _enter():
 
 	# Offset Direction node forward (moves sprite and hitbox)
 	if obj.is_right():
-		direction_node.position.x = original_direction_offset.x + forward_offset
+		direction_node.position = Vector2(original_direction_offset.x + forward_offset, original_direction_offset.y)
 		# Compensate hurt area backward to keep it in correct position
-		hurt_area.position.x = original_hurt_offset.x - forward_offset
+		hurt_area.position = Vector2(original_hurt_offset.x - forward_offset, original_hurt_offset.y)
 	else:
-		direction_node.position.x = original_direction_offset.x - forward_offset
-		# Compensate hurt area backward to keep it in correct position
-		hurt_area.position.x = original_hurt_offset.x + forward_offset
+		direction_node.position = Vector2(original_direction_offset.x - forward_offset, original_direction_offset.y)
+		# Compensate hurt area backward (note: Direction.scale.x = -1 when facing left, so sign is inverted)
+		hurt_area.position = Vector2(original_hurt_offset.x - forward_offset, original_hurt_offset.y)
 
 	if obj.is_giant_mode:
 		timer = 0.5
