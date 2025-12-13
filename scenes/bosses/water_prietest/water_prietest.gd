@@ -66,6 +66,9 @@ var target_jump_marker: JumpMarker2D = null
 @onready var atk3_collision_shape_2d: CollisionShape2D = $Direction/Atk3HitArea2D/CollisionShape2D
 @onready var atk_super_collision_shape_2d: CollisionShape2D = $Direction/AtkSuperHitArea2D/CollisionShape2D
 @onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
+@onready var hurt_collision_shape_2d: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 
 @onready var phase_1: AudioStreamPlayer2D = $Sound/Phase1
@@ -73,6 +76,9 @@ var target_jump_marker: JumpMarker2D = null
 @onready var phase_2: AudioStreamPlayer2D = $Sound/Phase2
 @onready var slash: AudioStreamPlayer2D = $Sound/Slash
 @onready var water_slash: AudioStreamPlayer2D = $Sound/WaterSlash
+@onready var jump_sound: AudioStreamPlayer2D = $Sound/Jump
+@onready var roll: AudioStreamPlayer2D = $Sound/Roll
+@onready var defend: AudioStreamPlayer2D = $Sound/Defend
 
 enum MoveMode {
 	MOVE_NONE,
@@ -120,13 +126,8 @@ func _disable_hit_collisionshape()->void:
 		atk_super_collision_shape_2d.disabled = true 
 
 func _physics_process(delta: float) -> void:
-	# Update defend cooldown
 	update_defend_cooldown(delta)
-
-	# Update roll cooldown
 	update_roll_cooldown(delta)
-
-	# Update attack cooldown
 	update_attack_cooldown(delta)
 
 	if fsm != null: fsm._update(delta)
@@ -135,7 +136,6 @@ func _physics_process(delta: float) -> void:
 		_update_facing()
 	_detect_player()
 
-	# Check for player attack input and react proactively
 	_check_player_attack_input()
 
 	super._physics_process(delta)
@@ -148,6 +148,7 @@ func _physics_process(delta: float) -> void:
 		animated_sprite_2d.speed_scale = 1.0
 	
 	print(fsm.current_state)
+	print("is on floor:", is_on_floor())
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -309,6 +310,24 @@ func get_nearest_jump_marker() -> JumpMarker2D:
 			nearest = marker
 
 	return nearest
+	
+func get_nearest_jump_marker_to_position(pos: Vector2) -> JumpMarker2D:
+	if jump_markers.is_empty():
+		return null
+
+	var nearest: JumpMarker2D = null
+	var min_distance := INF
+
+	for marker in jump_markers:
+		if not marker or not marker.is_active:
+			continue
+
+		var d := pos.distance_to(marker.global_position)
+		if d < min_distance:
+			min_distance = d
+			nearest = marker
+
+	return nearest
 
 func get_best_jump_marker_to_player() -> JumpMarker2D:
 	var player = get_player()
@@ -443,14 +462,11 @@ func _start_phase2_transition() -> void:
 	tw.tween_callback(Callable(self, "_finish_phase2_transition"))
 
 func _finish_phase2_transition() -> void:
-	# Restore normal time scale
 	Engine.time_scale = 1.0
 
-	# Set phase 2 flag
 	in_phase2 = true
 	_phase2_transition_running = false
 
-	# Emit phase 2 signal
 	emit_signal("into_phase2")
 
 	phase_1.stop()
@@ -461,7 +477,6 @@ func _get_boss_platform_controller() -> Node:
 	if stage == null:
 		return null
 
-	# chỉnh path này theo scene level của bạn nếu khác
 	if stage.has_node("World/BossPlatformController"):
 		return stage.get_node("World/BossPlatformController")
 	return null
@@ -489,15 +504,12 @@ func is_player_on_rect_platform() -> bool:
 	if player == null:
 		return false
 
-	# Nếu không đứng gần bất kỳ floating marker nào → coi như đang ở rect
 	if is_player_on_floating_platform():
 		return false
 
-	# Có thể refine thêm theo level_bounds.y nếu cần
 	return true
 
 func is_on_floating_platform() -> bool:
-	# chỉ quan tâm khi boss đứng trên sàn
 	if not is_on_floor():
 		return false
 	if rect_platform == null:
@@ -517,7 +529,6 @@ func _update_phase2_platform_brain(delta: float) -> void:
 	var boss_on_platform := is_on_floating_platform()
 	var player_on_platform := is_player_on_floating_platform()
 
-	# Chỉ trigger khi đang ở state “đứng được” – tránh phá giữa lúc đang roll / hurt...
 	var cur = fsm.current_state
 	var can_decide = (
 		cur == fsm.states.idle or
@@ -528,24 +539,18 @@ func _update_phase2_platform_brain(delta: float) -> void:
 		return
 
 	if boss_on_platform:
-		# ---- BOSS ĐANG Ở TRÊN FLOATING PLATFORM ----
 		if not player_on_platform:
-			# Player ở dưới rect → sau 1 khoảng ngắn boss nhảy xuống
 			force_phase2_ground_jump = true
-
-			fsm.change_state(fsm.states.jump)
+			# Only jump if we need to get to ground, not if we're already on platform
+			fsm.change_state(fsm.states.jumpstate)
 			_phase2_ai_timer = randf_range(phase2_time_on_ground.x, phase2_time_on_ground.y)
 		else:
-			# Cả hai cùng ở trên platform
-			# 50% nhảy sang platform khác, 50% nhảy xuống luôn (tuỳ bạn chỉnh)
-			force_phase2_ground_jump = randf() < 0.5
-			fsm.change_state(fsm.states.jump)
+			# Both boss and player on platforms - don't force jumps
+			# Let the surf state handle movement naturally
 			_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
 	else:
-		# ---- BOSS ĐANG Ở DƯỚI (RECT PLATFORM) ----
-		# Thỉnh thoảng nhảy lên trên để đổi nhịp combat
 		force_phase2_ground_jump = false
-		fsm.change_state(fsm.states.jump)
+		fsm.change_state(fsm.states.jumpstate)
 		_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
 
 func _check_player_attack_input() -> void:

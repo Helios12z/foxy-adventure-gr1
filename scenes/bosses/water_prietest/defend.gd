@@ -5,6 +5,7 @@ var _is_blocking: bool = false
 func _enter() -> void:
 	_is_blocking = true
 	obj.velocity.x = 0.0
+	obj.defend.play()
 	obj.change_animation("defend")
 
 func _update(delta: float) -> void:
@@ -18,6 +19,7 @@ func _update(delta: float) -> void:
 
 	if not sprite.is_playing():
 		_is_blocking = false
+		obj.defend.stop()
 		obj.start_defend_cooldown()
 		change_state(fsm.states.idle)
 
@@ -49,3 +51,4 @@ func check_and_block_attack(hit_area: HitArea2D) -> bool:
 func _exit() -> void:
 	_is_blocking = false
 	obj.velocity.x = 0.0
+	obj.defend.stop()

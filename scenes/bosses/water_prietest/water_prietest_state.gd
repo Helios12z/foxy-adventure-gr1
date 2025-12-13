@@ -20,6 +20,11 @@ var _atk2_right_shape_base_position: Vector2
 var _atk2_left_shape_base_size: Vector2
 var _atk2_left_shape_base_position: Vector2
 
+var _body_shapes_cached: bool = false
+var _hit_shape_base_position: Vector2
+var _hurt_shape_base_position: Vector2
+var _body_shape_base_position: Vector2
+
 var _atk_super_windup_done: bool = false
 var _atk_super_windup_waiting: bool = false
 var _atk_air_windup_done: bool = false
@@ -28,7 +33,6 @@ var _atk_air_windup_waiting: bool = false
 var _atk_super_shape_base_size: Vector2
 var _atk_super_shape_base_position: Vector2
 
-# Chênh lệch theo trục Y (player - boss)
 func get_vertical_diff_to_player(player: Node2D) -> float:
 	return player.global_position.y - obj.global_position.y
 
@@ -38,56 +42,13 @@ func get_horizontal_distance_to_player() -> float:
 		return INF
 	return abs(player.global_position.x - obj.global_position.x)
 
-# Tính mép gần nhất theo hướng player, dùng level_bounds của Hassasin
-func get_edge_x_towards_player(player: Node2D) -> float:
-	var lb: Rect2 = obj.level_bounds
-	# Nếu chưa set bound thì cho chạy thẳng tới player
-	if lb.size.x == 0.0:
-		return player.global_position.x
-
-	var left_edge := lb.position.x
-	var right_edge := lb.position.x + lb.size.x
-	var player_on_right := player.global_position.x > obj.global_position.x
-
-	return right_edge if player_on_right else left_edge
-
-# Logic QUYẾT ĐỊNH move_mode + move_target_x
 func decide_move_mode_towards_player() -> void:
 	var player = obj.get_player()
 	if player == null:
 		return
 
-	var dy := get_vertical_diff_to_player(player)
-	var abs_dy = abs(dy)
-
-	# Check if we should use jump markers (phase 2 or when platforms exist)
-	var should_use_jump_markers = obj.in_phase2 and not obj.jump_markers.is_empty()
-
-	if abs_dy <= SAME_LEVEL_THRESHOLD:
-		# Cùng mặt phẳng
-		obj.move_mode = obj.MoveMode.MOVE_CHASE_SAME_LEVEL
-		obj.move_target_x = player.global_position.x
-	else:
-		# Khác mặt phẳng: check if we should use jump markers
-		if should_use_jump_markers:
-			# Use jump marker system for intelligent navigation
-			var best_marker = obj.get_best_jump_marker_to_player()
-			if best_marker:
-				obj.move_mode = obj.MoveMode.MOVE_GO_EDGE_FOR_JUMP
-				obj.move_target_x = best_marker.global_position.x
-				return
-
-		# Fallback to original edge-based logic
-		var edge_x := get_edge_x_towards_player(player)
-
-		if dy > 0.0:
-			# Player ở DƯỚI → chuẩn bị chạy tới mép rồi FALL
-			obj.move_mode = obj.MoveMode.MOVE_GO_EDGE_FOR_FALL
-		else:
-			# Player ở TRÊN → chuẩn bị chạy tới mép rồi JUMP
-			obj.move_mode = obj.MoveMode.MOVE_GO_EDGE_FOR_JUMP
-
-		obj.move_target_x = edge_x
+	obj.move_mode = obj.MoveMode.MOVE_CHASE_SAME_LEVEL
+	obj.move_target_x = player.global_position.x
 		
 func _ensure_atk_shapes_cached() -> void:
 	if _atk_shapes_cached:
@@ -140,7 +101,6 @@ func do_atk1() -> void:
 	if sprite == null:
 		return
 
-	# reset trạng thái windup mỗi lần dùng atk1
 	_atk1_windup_done = false
 	_atk1_windup_waiting = false
 	sprite.speed_scale = 1.0
@@ -157,30 +117,31 @@ func _on_atk1_frame_changed() -> void:
 	if sprite == null:
 		return
 
-	# Nếu không còn ở animation atk_1 thì tắt hitbox và thôi
 	if sprite.animation != "atk_1":
 		if obj.atk1_collision_shape_2d:
 			obj.atk1_collision_shape_2d.disabled = true
+		_reset_body_shapes_to_base()
 		return
 
-	# --- WINDUP 1.25s TẠI FRAME 1 ---
-	if sprite.frame == 1 and not _atk1_windup_done and not _atk1_windup_waiting:
+	var current_frame = sprite.frame
+
+	if current_frame == 1 and not _atk1_windup_done and not _atk1_windup_waiting:
 		_atk1_windup_waiting = true
-		# dừng animation tại frame 1
 		sprite.speed_scale = 0.0
 
 		await obj.get_tree().create_timer(obj.atk1_windup_time).timeout
 
 		sprite.speed_scale = 1.0
-
 		_atk1_windup_done = true
 		_atk1_windup_waiting = false
-	# --- HẾT PHẦN WINDUP ---
 
-	var current_frame = sprite.frame
+	if current_frame == 2:
+		_shift_body_shapes(12)
+	elif current_frame == 5:
+		_reset_body_shapes_to_base()
+
 	var active = (current_frame == 2 or current_frame == 3)
 
-	# Play slash sound at frame 2 when attack becomes active
 	if current_frame == 2 and obj.slash:
 		obj.slash.play()
 
@@ -192,20 +153,18 @@ func _on_atk1_anim_finished() -> void:
 	if sprite == null:
 		return
 
-	# Chỉ xử lý nếu vừa xong animation atk_1
 	if sprite.animation != "atk_1":
 		return
 
-	# Tắt hitbox
 	if obj.atk1_collision_shape_2d:
 		obj.atk1_collision_shape_2d.disabled = true
 
-	# đảm bảo trả speed_scale + state về bình thường
 	sprite.speed_scale = 1.0
 	_atk1_windup_done = false
 	_atk1_windup_waiting = false
+	
+	_reset_body_shapes_to_base()
 
-	# Ngắt signal để tránh bị call nhiều lần
 	if sprite.frame_changed.is_connected(_on_atk1_frame_changed):
 		sprite.frame_changed.disconnect(_on_atk1_frame_changed)
 
@@ -238,8 +197,8 @@ func _on_atk2_frame_changed() -> void:
 	if sprite == null:
 		return
 
-	# Nếu không còn ở animation atk_2 thì tắt all hitbox liên quan
 	if sprite.animation != "atk_2":
+		_reset_body_shapes_to_base()
 		if obj.atk1_collision_shape_2d:
 			obj.atk1_collision_shape_2d.disabled = true
 		if obj.atk2_collision_shape_2d_right:
@@ -337,6 +296,22 @@ func _on_atk2_frame_changed() -> void:
 		# Play slash sound at frame 14 when final attack starts
 		if frame == 14 and obj.slash:
 			obj.slash.play()
+			
+		# --- BODY SHIFT CHO ATK2 ---
+	_ensure_body_shapes_cached()
+
+	if frame == 2:
+		# dịch sang phải một chút, giữ từ frame 2 → 8
+		_shift_body_shapes(12)
+	elif frame == 9:
+		# trả về vị trí gốc
+		_reset_body_shapes_to_base()
+	elif frame == 14:
+		# lần thứ hai: dịch sang phải (giữ tới 18)
+		_shift_body_shapes(12)
+	elif frame == 19:
+		# trả lại vị trí gốc
+		_reset_body_shapes_to_base()
 
 func _on_atk2_anim_finished() -> void:
 	var sprite = obj.animated_sprite_2d
@@ -361,6 +336,7 @@ func _on_atk2_anim_finished() -> void:
 
 	# Trả kích thước hitbox về base cho lần cast sau
 	_reset_atk_shapes_to_base()
+	_reset_body_shapes_to_base()
 
 	# Ngắt signal để tránh bị gọi nhiều lần
 	if sprite.frame_changed.is_connected(_on_atk2_frame_changed):
@@ -498,14 +474,20 @@ func _on_atk3_frame_changed() -> void:
 		if frame == 14 and obj.slash:
 			obj.slash.play()
 
-		return
-	# ----- HẾT PHẦN ĐẦU GIỐNG ATK2 -----
+		_ensure_body_shapes_cached()
 
-	# ----- PHẦN SAU: LOGIC RIÊNG CỦA ATK3 (FRAME >= 17) -----
+		if frame == 2:
+			_shift_body_shapes(12)
+		elif frame == 9:
+			_reset_body_shapes_to_base()
+		elif frame == 14:
+			_shift_body_shapes(12)
+		# -----------------------------------------------
+		return
+		
 	_ensure_atk_shapes_cached()
 	_reset_atk_shapes_to_base()
 
-	# Tắt hết trước
 	if obj.atk1_collision_shape_2d:
 		obj.atk1_collision_shape_2d.disabled = true
 	if obj.atk2_collision_shape_2d_right:
@@ -514,33 +496,32 @@ func _on_atk3_frame_changed() -> void:
 		obj.atk2_collision_shape_2d_left.disabled = true
 	if obj.atk3_collision_shape_2d:
 		obj.atk3_collision_shape_2d.disabled = true
+		
+	_ensure_body_shapes_cached()
+	if frame == 19:
+		_shift_body_shapes(20)
+	elif frame == 23:
+		_shift_body_shapes(12)
+	elif frame == 25:
+		_reset_body_shapes_to_base()
 
-	# Frame 17: bật atk3 hit area 2D (1 frame)
 	if frame == 17:
 		if obj.atk3_collision_shape_2d:
 			obj.atk3_collision_shape_2d.disabled = false
-		# Play slash sound at frame 17
 		if obj.slash:
 			obj.slash.play()
 
-	# Frame 18: bật atk2 hit area 2D2 (left),
-	# dịch sang phải một chút và kéo dài xuống dưới theo trục Y (Y * 2)
 	elif frame == 18:
 		if obj.atk2_collision_shape_2d_left and obj.atk2_collision_shape_2d_left.shape is RectangleShape2D:
 			var rect_left := obj.atk2_collision_shape_2d_left.shape as RectangleShape2D
 			var base_size_left := _atk2_left_shape_base_size
 			var base_pos_left := _atk2_left_shape_base_position
-
 			rect_left.size = Vector2(base_size_left.x, base_size_left.y * 2.0)
-			# dịch sang phải + kéo xuống
 			obj.atk2_collision_shape_2d_left.position = base_pos_left + Vector2(base_size_left.x * 0.25, base_size_left.y * 0.5)
-
 			obj.atk2_collision_shape_2d_left.disabled = false
-		# Play slash sound at frame 18
 		if obj.slash:
 			obj.slash.play()
 
-	# Frame 19-25: dùng atk2 hit area 2D (right) với biến đổi dần
 	elif frame >= 19 and frame <= 25:
 		if obj.atk2_collision_shape_2d_right and obj.atk2_collision_shape_2d_right.shape is RectangleShape2D:
 			var rect_right := obj.atk2_collision_shape_2d_right.shape as RectangleShape2D
@@ -551,11 +532,9 @@ func _on_atk3_frame_changed() -> void:
 			var pos := base_pos_r
 
 			if frame == 20:
-				# Dịch sang phải + thu hẹp chiều rộng
 				size.x = base_size_r.x * 0.7
 				pos.x += base_size_r.x * 0.25
 			elif frame >= 21:
-				# Chiều rộng bình thường, nâng chiều cao lên phía trên theo trục Y
 				size.x = base_size_r.x
 				pos.x += base_size_r.x * 1.25
 				size.y = base_size_r.y * 2.0
@@ -564,9 +543,10 @@ func _on_atk3_frame_changed() -> void:
 			rect_right.size = size
 			obj.atk2_collision_shape_2d_right.position = pos
 			obj.atk2_collision_shape_2d_right.disabled = false
-		# Play slash sound at frame 19 when final attack sequence starts
 		if frame == 19 and obj.slash:
 			obj.slash.play()
+		if frame == 21 and obj.water_slash:
+			obj.water_slash.play()
 
 func _on_atk3_anim_finished() -> void:
 	var sprite = obj.animated_sprite_2d
@@ -590,6 +570,7 @@ func _on_atk3_anim_finished() -> void:
 	_atk3_windup_waiting = false
 
 	_reset_atk_shapes_to_base()
+	_reset_body_shapes_to_base()
 
 	if sprite.frame_changed.is_connected(_on_atk3_frame_changed):
 		sprite.frame_changed.disconnect(_on_atk3_frame_changed)
@@ -643,6 +624,7 @@ func _on_atk_super_frame_changed() -> void:
 			obj.slash.play()
 
 	elif current_frame == 12:
+		if obj.water_slash: obj.water_slash.play()
 		if obj.atk_super_collision_shape_2d:
 			obj.atk_super_collision_shape_2d.disabled = true
 
@@ -754,7 +736,6 @@ func _on_atk_air_frame_changed() -> void:
 	if sprite == null:
 		return
 
-	# Nếu không còn ở animation atk_air thì tắt hitbox và thôi
 	if sprite.animation != "atk_air":
 		if obj.atk1_collision_shape_2d:
 			obj.atk1_collision_shape_2d.disabled = true
@@ -762,39 +743,29 @@ func _on_atk_air_frame_changed() -> void:
 
 	var current_frame = sprite.frame
 
-	# --- WINDUP tại frame 2 ---
 	if current_frame == 2 and not _atk_air_windup_done and not _atk_air_windup_waiting:
 		_atk_air_windup_waiting = true
 		sprite.speed_scale = 0.0
 
 		await obj.get_tree().create_timer(obj.atk_air_windup_time).timeout
 
-		# tránh lỗi nếu trong lúc chờ đã đổi state/animation
 		if is_instance_valid(sprite) and sprite.animation == "atk_air":
 			sprite.speed_scale = 1.0
 
 		_atk_air_windup_done = true
 		_atk_air_windup_waiting = false
-	# --- Hết windup ---
-
-	# Frames 3-5: bật atk1 hitbox với kích thước mở rộng
+		
 	if current_frame >= 3 and current_frame <= 5:
 		if obj.atk1_collision_shape_2d and obj.atk1_collision_shape_2d.shape is RectangleShape2D:
 			var rect := obj.atk1_collision_shape_2d.shape as RectangleShape2D
 			var base_size := _atk1_shape_base_size
 			var base_pos := _atk1_shape_base_position
-
-			# Mở rộng rất nhiều theo trục Y (lên trên) và trục X (sang phải)
-			rect.size = Vector2(base_size.x * 3.0, base_size.y * 4.0)
-			# Giữ mép trái, kéo dài lên trên và sang phải
+			rect.size = Vector2(base_size.x * 1.5, base_size.y * 1.75)
 			obj.atk1_collision_shape_2d.position = base_pos + Vector2(base_size.x, -base_size.y * 1.5)
-
 			obj.atk1_collision_shape_2d.disabled = false
-		# Play slash sound at frame 3 when air attack becomes active
 		if current_frame == 3 and obj.slash:
 			obj.slash.play()
 	else:
-		# Frame 6 trở đi: tắt hitbox
 		if obj.atk1_collision_shape_2d:
 			obj.atk1_collision_shape_2d.disabled = true
 
@@ -803,28 +774,52 @@ func _on_atk_air_anim_finished() -> void:
 	if sprite == null:
 		return
 
-	# Chỉ xử lý nếu vừa xong animation atk_air
 	if sprite.animation != "atk_air":
 		return
 
-	# Tắt hitbox atk1
 	if obj.atk1_collision_shape_2d:
 		obj.atk1_collision_shape_2d.disabled = true
 
-	# đảm bảo trả speed_scale + state về bình thường
 	sprite.speed_scale = 1.0
 	_atk_air_windup_done = false
 	_atk_air_windup_waiting = false
 
-	# Trả kích thước hitbox về base cho lần cast sau
 	_reset_atk_shapes_to_base()
 
-	# Ngắt signal để tránh bị call nhiều lần
 	if sprite.frame_changed.is_connected(_on_atk_air_frame_changed):
 		sprite.frame_changed.disconnect(_on_atk_air_frame_changed)
 
 	if sprite.animation_finished.is_connected(_on_atk_air_anim_finished):
 		sprite.animation_finished.disconnect(_on_atk_air_anim_finished)
 
-	if obj.fsm:
-		obj.fsm.change_state(obj.fsm.states.idle)
+	change_state(fsm.previous_state)
+
+func _ensure_body_shapes_cached() -> void:
+	if _body_shapes_cached:
+		return
+	_body_shapes_cached = true
+	if obj.hit_collision_shape_2d:
+		_hit_shape_base_position = obj.hit_collision_shape_2d.position
+	if obj.hurt_collision_shape_2d:
+		_hurt_shape_base_position = obj.hurt_collision_shape_2d.position
+	if obj.collision_shape_2d:
+		_body_shape_base_position = obj.collision_shape_2d.position
+
+func _shift_body_shapes(offset_x: float) -> void:
+	_ensure_body_shapes_cached()
+	if obj.hit_collision_shape_2d:
+		obj.hit_collision_shape_2d.position = _hit_shape_base_position + Vector2(offset_x, 0.0)
+	if obj.hurt_collision_shape_2d:
+		obj.hurt_collision_shape_2d.position = _hurt_shape_base_position + Vector2(offset_x, 0.0)
+	if obj.collision_shape_2d:
+		obj.collision_shape_2d.position = _body_shape_base_position + Vector2(offset_x, 0.0)
+
+func _reset_body_shapes_to_base() -> void:
+	if not _body_shapes_cached:
+		return
+	if obj.hit_collision_shape_2d:
+		obj.hit_collision_shape_2d.position = _hit_shape_base_position
+	if obj.hurt_collision_shape_2d:
+		obj.hurt_collision_shape_2d.position = _hurt_shape_base_position
+	if obj.collision_shape_2d:
+		obj.collision_shape_2d.position = _body_shape_base_position

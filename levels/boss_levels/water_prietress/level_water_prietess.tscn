@@ -23,7 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="13_7sno5"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="14_y1l7a"]
 [ext_resource type="Script" path="res://levels/boss_levels/water_prietress/boss_hud.gd" id="16_qntum"]
-[ext_resource type="AudioStream" uid="uid://d3fi3k7bfsfo4" path="res://asset/sounds/water_prietess/level_ambient.mp3" id="17_7sno5"]
+[ext_resource type="AudioStream" uid="uid://d3fi3k7bfsfo4" path="res://asset/sounds/water_prietess_sound/level_ambient.mp3" id="17_7sno5"]
 [ext_resource type="Script" uid="uid://beek7o2t13qa5" path="res://scenes/bosses/water_prietest/jump_marker_2d.gd" id="18_jump_marker"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="19_xb6hn"]
 
@@ -146,7 +146,7 @@ position = Vector2(1463, 624)
 scale = Vector2(0.7, 0.7)
 
 [node name="FloatingPlatform1" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(460, 542)
+position = Vector2(448, 561)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform1"]
 collision_mask = 10
@@ -179,7 +179,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform2" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(759, 543)
+position = Vector2(751, 564)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform2"]
 collision_mask = 10
@@ -212,7 +212,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform3" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(1028, 542)
+position = Vector2(1029, 564)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform3"]
 collision_mask = 10
@@ -245,7 +245,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(887, 359)
+position = Vector2(882, 462)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform4"]
 collision_mask = 10
@@ -278,7 +278,7 @@ modulate = Color(0, 1, 0, 0.5)
 scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(607, 358)
+position = Vector2(598, 460)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform5"]
 collision_mask = 10
@@ -398,7 +398,7 @@ position = Vector2(574, 586)
 
 [node name="HitArea2D" type="Area2D" parent="World"]
 collision_layer = 0
-collision_mask = 20
+collision_mask = 148
 script = ExtResource("19_xb6hn")
 damage = 99999
 metadata/_custom_type_script = "uid://bss631ltk5rcm"

@@ -17,6 +17,10 @@ func _enter() -> void:
 	obj.change_animation("roll")
 	_has_invincibility = true
 
+	# Play roll sound
+	if obj.roll:
+		obj.roll.play()
+
 	_roll_start_x = obj.global_position.x
 	_roll_start_y = obj.global_position.y
 	_elapsed = 0.0
@@ -124,11 +128,7 @@ func _update(delta: float) -> void:
 func _finish_roll() -> void:
 	_has_invincibility = false
 	obj.velocity.x = 0.0
-
-	if obj.in_phase2 and fsm and fsm.previous_state and fsm.previous_state != self and fsm.previous_state != fsm.states.dead:
-		change_state(fsm.previous_state)
-	else:
-		change_state(fsm.states.idle)
+	change_state(fsm.states.idle)
 
 
 func _about_to_fall_off_edge() -> bool:
