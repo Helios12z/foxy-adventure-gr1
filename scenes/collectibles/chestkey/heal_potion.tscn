@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://0maiw8wy2gul"]
+[gd_scene load_steps=13 format=3 uid="uid://caerpr6ajbb3y"]
 
 [ext_resource type="Script" uid="uid://cu6wv2oowhpx6" path="res://scenes/collectibles/chestkey/heal_potion.gd" id="1_ghb0w"]
 [ext_resource type="Texture2D" uid="uid://cpwlp7ufxlrsf" path="res://asset/level_3_water_palace/objects/potions/heal_potion.png" id="2_ue43n"]

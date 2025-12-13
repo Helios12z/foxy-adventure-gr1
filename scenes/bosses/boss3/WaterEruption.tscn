@@ -60,6 +60,7 @@ collision_mask = 4
 monitoring = false
 monitorable = false
 script = ExtResource("6_gjccl")
+damage = 15
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="HitArea2D"]
