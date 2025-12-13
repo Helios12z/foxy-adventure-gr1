@@ -58,6 +58,7 @@ frame_progress = 0.67785996
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("8_b2xuf")
+damage = 20
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]

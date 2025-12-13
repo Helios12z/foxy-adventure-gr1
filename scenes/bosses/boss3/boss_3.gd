@@ -1274,47 +1274,45 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 	laser_container.set_physics_process(false)  # Disable physics to prevent any movement
 	laser_container.set_process(false)  # Disable process to prevent any updates
 
-	# ALWAYS 4 ATTACKS with different laser counts
+	# ALWAYS 4 ATTACKS with same laser count - reuse lasers
 	var attack_configs = [
-		{"lasers": 6, "waterball": false, "waterball_dir": 0},  # Attack 1: 6 lasers
-		{"lasers": 7, "waterball": false, "waterball_dir": 0},  # Attack 2: 7 lasers
-		{"lasers": 8, "waterball": true, "waterball_dir": 1},   # Attack 3: 8 lasers + left to right
-		{"lasers": 8, "waterball": true, "waterball_dir": 2}    # Attack 4: 8 lasers + right to left
+		{"waterball": false, "waterball_dir": 0},  # Attack 1: no water balls
+		{"waterball": false, "waterball_dir": 0},  # Attack 2: no water balls
+		{"waterball": true, "waterball_dir": 1},   # Attack 3: water balls left to right
+		{"waterball": true, "waterball_dir": 2}    # Attack 4: water balls right to left
 	]
+
+	# SPAWN LASERS ONCE - use 8 lasers for all attacks
+	var laser_count = 8
+	var lasers: Array = []
+
+	_log_skill("WaterLaserRadiance", "SPAWNING_%d_LASERS" % laser_count)
+
+	for i in laser_count:
+		var laser = WaterLaserScene.instantiate()
+		laser_container.add_child(laser)
+
+		# Pass sound reference (only first laser will play to avoid overlap)
+		if i == 0:
+			laser.prepare_sound = water_laser_prepare_sound
+			laser.attack_sound = water_laser_sound
+		else:
+			laser.prepare_sound = null
+			laser.attack_sound = null
+
+		# Position laser at angle (evenly distributed around circle)
+		var angle = (i / float(laser_count)) * TAU
+		laser.rotation = angle
+
+		lasers.append(laser)
 
 	_log_skill("WaterLaserRadiance", "STARTING_4_ATTACKS")
 
-	# ATTACK LOOP
+	# ATTACK LOOP - reuse the same lasers
 	for attack_idx in 4:
 		var config = attack_configs[attack_idx]
-		var laser_count = config.lasers
 
-		_log_skill("WaterLaserRadiance", "ATTACK_%d_WITH_%d_LASERS" % [attack_idx + 1, laser_count])
-
-		# Clear previous lasers
-		for child in laser_container.get_children():
-			child.queue_free()
-		await get_tree().process_frame
-
-		# SPAWN LASERS for this attack
-		var lasers: Array = []
-		for i in laser_count:
-			var laser = WaterLaserScene.instantiate()
-			laser_container.add_child(laser)
-
-			# Pass sound reference (only first laser will play to avoid overlap)
-			if i == 0:
-				laser.prepare_sound = water_laser_prepare_sound
-				laser.attack_sound = water_laser_sound
-			else:
-				laser.prepare_sound = null
-				laser.attack_sound = null
-
-			# Position laser at angle (evenly distributed around circle)
-			var angle = (i / float(laser_count)) * TAU
-			laser.rotation = angle
-
-			lasers.append(laser)
+		_log_skill("WaterLaserRadiance", "ATTACK_%d" % (attack_idx + 1))
 
 		# PREPARE: All lasers show faintly
 		_log_skill("WaterLaserRadiance", "ATTACK_%d_PREPARE" % (attack_idx + 1))
@@ -1365,7 +1363,7 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 		if attack_idx < 3:  # Don't rotate after last attack
 			_log_skill("WaterLaserRadiance", "ATTACK_%d_ROTATE" % (attack_idx + 1))
 
-			# Immediately set lasers to prepare state (faint) while rotating
+			# Set lasers to prepare state (faint) while rotating
 			for laser in lasers:
 				if is_instance_valid(laser):
 					laser.set_prepare()
@@ -1435,44 +1433,31 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 	laser_container.set_physics_process(false)  # Disable physics to prevent any movement
 	laser_container.set_process(false)  # Disable process to prevent any updates
 
-	# Attack pattern: 1-2-2-2
-	var attack_sequence = [attack1, attack2, attack3, attack4]
+	# SPAWN LASERS ONCE - use 7 lasers for all attacks
+	var laser_count = 7
+	var lasers: Array = []
 
-	# Config for attacks 1 and 2
-	var attack_configs = {
-		1: {"lasers": 6},
-		2: {"lasers": 7}
-	}
+	_log_skill("WaterLaserPhase2", "SPAWNING_%d_LASERS" % laser_count)
 
+	for i in laser_count:
+		var laser = WaterLaserScene.instantiate()
+		laser_container.add_child(laser)
+
+		# Pass sound reference (only first laser will play to avoid overlap)
+		if i == 0:
+			laser.prepare_sound = water_laser_prepare_sound
+			laser.attack_sound = water_laser_sound
+		else:
+			laser.prepare_sound = null
+			laser.attack_sound = null
+
+		var angle = (i / float(laser_count)) * TAU
+		laser.rotation = angle
+		lasers.append(laser)
+
+	# ATTACK LOOP - reuse the same lasers
 	for attack_idx in 4:
-		var attack_num = attack_sequence[attack_idx]
-		var config = attack_configs[attack_num]
-		var laser_count = config.lasers
-
-		_log_skill("WaterLaserPhase2", "ATTACK_%d_WITH_%d_LASERS" % [attack_idx + 1, laser_count])
-
-		# Clear previous lasers
-		for child in laser_container.get_children():
-			child.queue_free()
-		await get_tree().process_frame
-
-		# Spawn lasers
-		var lasers: Array = []
-		for i in laser_count:
-			var laser = WaterLaserScene.instantiate()
-			laser_container.add_child(laser)
-
-			# Pass sound reference (only first laser will play to avoid overlap)
-			if i == 0:
-				laser.prepare_sound = water_laser_prepare_sound
-				laser.attack_sound = water_laser_sound
-			else:
-				laser.prepare_sound = null
-				laser.attack_sound = null
-
-			var angle = (i / float(laser_count)) * TAU
-			laser.rotation = angle
-			lasers.append(laser)
+		_log_skill("WaterLaserPhase2", "ATTACK_%d" % (attack_idx + 1))
 
 		# PREPARE
 		for laser in lasers:
@@ -1488,6 +1473,7 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 
 		# ROTATE
 		if attack_idx < 3:
+			# Set lasers to prepare state (faint) while rotating
 			for laser in lasers:
 				if is_instance_valid(laser):
 					laser.set_prepare()
@@ -1547,44 +1533,43 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 	laser_container.set_physics_process(false)  # Disable physics to prevent any movement
 	laser_container.set_process(false)  # Disable process to prevent any updates
 
-	# Attack pattern: 3-4-3-4
+	# Attack pattern: 3-4-3-4 (alternating water ball directions)
 	var attack_sequence = [attack1, attack2, attack3, attack4]
 
-	# Config for attacks 3 and 4 (8 lasers + water balls)
+	# Config for attacks 3 and 4 (water ball directions)
 	var attack_configs = {
-		3: {"lasers": 8, "waterball_dir": 1},  # Left to right
-		4: {"lasers": 8, "waterball_dir": 2}   # Right to left
+		3: {"waterball_dir": 1},  # Left to right
+		4: {"waterball_dir": 2}   # Right to left
 	}
 
+	# SPAWN LASERS ONCE - use 8 lasers for all attacks
+	var laser_count = 8
+	var lasers: Array = []
+
+	_log_skill("WaterLaserUltimate", "SPAWNING_%d_LASERS" % laser_count)
+
+	for i in laser_count:
+		var laser = WaterLaserScene.instantiate()
+		laser_container.add_child(laser)
+
+		# Pass sound reference (only first laser will play to avoid overlap)
+		if i == 0:
+			laser.prepare_sound = water_laser_prepare_sound
+			laser.attack_sound = water_laser_sound
+		else:
+			laser.prepare_sound = null
+			laser.attack_sound = null
+
+		var angle = (i / float(laser_count)) * TAU
+		laser.rotation = angle
+		lasers.append(laser)
+
+	# ATTACK LOOP - reuse the same lasers
 	for attack_idx in 4:
 		var attack_num = attack_sequence[attack_idx]
 		var config = attack_configs[attack_num]
-		var laser_count = config.lasers
 
-		_log_skill("WaterLaserUltimate", "ATTACK_%d_WITH_%d_LASERS" % [attack_idx + 1, laser_count])
-
-		# Clear previous lasers
-		for child in laser_container.get_children():
-			child.queue_free()
-		await get_tree().process_frame
-
-		# Spawn lasers
-		var lasers: Array = []
-		for i in laser_count:
-			var laser = WaterLaserScene.instantiate()
-			laser_container.add_child(laser)
-
-			# Pass sound reference (only first laser will play to avoid overlap)
-			if i == 0:
-				laser.prepare_sound = water_laser_prepare_sound
-				laser.attack_sound = water_laser_sound
-			else:
-				laser.prepare_sound = null
-				laser.attack_sound = null
-
-			var angle = (i / float(laser_count)) * TAU
-			laser.rotation = angle
-			lasers.append(laser)
+		_log_skill("WaterLaserUltimate", "ATTACK_%d" % (attack_idx + 1))
 
 		# PREPARE
 		for laser in lasers:
@@ -1621,6 +1606,7 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 
 		# ROTATE
 		if attack_idx < 3:
+			# Set lasers to prepare state (faint) while rotating
 			for laser in lasers:
 				if is_instance_valid(laser):
 					laser.set_prepare()
