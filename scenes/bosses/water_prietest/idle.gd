@@ -12,8 +12,6 @@ func _update(_delta: float) -> void:
 	if player == null:
 		return
 
-	decide_move_mode_towards_player()
-
 	if obj.in_phase2:
 		change_state(fsm.states.surf)
 	else:

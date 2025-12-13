@@ -174,10 +174,6 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform1/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform1/JumpMarker"]
-modulate = Color(0, 1, 0, 0.5)
-scale = Vector2(0.2, 0.2)
-
 [node name="FloatingPlatform2" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(751, 564)
 
@@ -206,10 +202,6 @@ collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform2/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
-
-[node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform2/JumpMarker"]
-modulate = Color(0, 1, 0, 0.5)
-scale = Vector2(0.2, 0.2)
 
 [node name="FloatingPlatform3" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(1029, 564)
@@ -240,10 +232,6 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform3/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform3/JumpMarker"]
-modulate = Color(0, 1, 0, 0.5)
-scale = Vector2(0.2, 0.2)
-
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(882, 462)
 
@@ -273,10 +261,6 @@ collision_mask = 10
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform4/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform4/JumpMarker"]
-modulate = Color(0, 1, 0, 0.5)
-scale = Vector2(0.2, 0.2)
-
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(598, 460)
 
@@ -305,10 +289,6 @@ collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform5/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
-
-[node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform5/JumpMarker"]
-modulate = Color(0, 1, 0, 0.5)
-scale = Vector2(0.2, 0.2)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="World"]
 

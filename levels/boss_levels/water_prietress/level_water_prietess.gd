@@ -60,8 +60,6 @@ func _process(_delta: float) -> void:
 		var parallax_transform := boss_parallax_layer.get_global_transform()
 		var local_pos := parallax_transform.affine_inverse() * target_global
 		boss.position = local_pos
-	
-	_update_phase2_minions(_delta)
 		
 func _on_boss_start_fight() -> void:
 	boss_hud._on_boss_start_fighting()
@@ -303,80 +301,4 @@ func _setup_boss_defeated_state() -> void:
 				anim.play("open")
 				
 func _on_boss_into_phase2() -> void:
-	_phase2_minion_mode = true
-	_phase2_minion_respawn_timer = 0.0
-	_phase2_minion_count = 0
-	_spawn_phase2_minions_if_needed()
-
-func _update_phase2_minions(delta: float) -> void:
-	if not _phase2_minion_mode:
-		return
-
-	if not is_instance_valid(boss):
-		return
-
-	if _phase2_minion_count >= 4:
-		return
-
-	if _phase2_minion_respawn_timer > 0.0:
-		_phase2_minion_respawn_timer -= delta
-		return
-
-	_spawn_phase2_minions_if_needed()
-	
-func _spawn_phase2_minions_if_needed() -> void:
-	var needed := 4 - _phase2_minion_count
-	if needed <= 0:
-		return
-
-	var world := get_node_or_null("World") as Node2D
-	if world == null:
-		world = self
-
-	var candidate_scenes: Array[PackedScene] = [
-		serpent_eel_scene,
-		serpent_eel_scene,
-		golden_carp_scene,
-		golden_carp_scene
-	]
-
-	var marker_count := prewave_spawn_markers.size()
-	var spawned := 0
-
-	for i in range(candidate_scenes.size()):
-		if spawned >= needed:
-			break
-
-		var scene := candidate_scenes[i]
-		if scene == null:
-			continue
-
-		var enemy := scene.instantiate() as Node2D
-		if enemy == null:
-			continue
-
-		world.add_child(enemy)
-		enemy.visible = true
-		if "modulate" in enemy:
-			enemy.modulate = Color(1, 1, 1, 1)
-		enemy.z_index = 0
-
-		var marker: Marker2D = null
-		if marker_count > 0:
-			marker = prewave_spawn_markers[i % marker_count]
-		if marker:
-			enemy.global_position = marker.global_position
-
-		_register_phase2_minion(enemy)
-		spawned += 1
-		
-func _register_phase2_minion(enemy: Node) -> void:
-	_phase2_minion_count += 1
-	enemy.tree_exited.connect(_on_phase2_minion_died.bind(enemy))
-
-func _on_phase2_minion_died(_enemy: Node) -> void:
-	_phase2_minion_count -= 1
-	if _phase2_minion_count < 0:
-		_phase2_minion_count = 0
-	if _phase2_minion_count < 4 and _phase2_minion_respawn_timer <= 0.0:
-		_phase2_minion_respawn_timer = phase2_minion_respawn_cooldown
+	pass

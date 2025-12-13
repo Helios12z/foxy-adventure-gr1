@@ -5,6 +5,7 @@ signal boss_died
 signal into_phase2
 signal start_fight
 
+@export var roll_peak_height: float = 30.0
 @export var spike_damage: int = 150 
 @export var max_health_boss: int = 1000
 @export var boss_jump_speed: float = 500.0     
@@ -81,16 +82,6 @@ var target_jump_marker: JumpMarker2D = null
 @onready var defend: AudioStreamPlayer2D = $Sound/Defend
 @onready var phase_2_talk: AudioStreamPlayer2D = $Sound/Phase2Talk
 
-enum MoveMode {
-	MOVE_NONE,
-	MOVE_CHASE_SAME_LEVEL,
-	MOVE_GO_EDGE_FOR_FALL,
-	MOVE_GO_EDGE_FOR_JUMP,
-}
-
-var move_mode: int = MoveMode.MOVE_NONE
-var move_target_x: float = 0.0
-
 var seen_player: bool = false 
 var _flash_tw: Tween
 var in_phase2: bool = false
@@ -145,6 +136,18 @@ func _physics_process(delta: float) -> void:
 		
 	if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
 		animated_sprite_2d.speed_scale = 1.0
+		
+	if in_phase2 and seen_player and not _phase2_transition_running:
+		if is_on_floating_platform() and is_player_on_rect_platform():
+			var cur = fsm.current_state
+			var can_interrupt = (cur == fsm.states.idle or cur == fsm.states.walk or cur == fsm.states.surf)
+			if can_interrupt:
+				force_phase2_ground_jump = true
+				fsm.change_state(fsm.states.jumpstate)
+				# reset timer để không bị brain đổi state lung tung ngay sau khi rơi xuống
+				_phase2_ai_timer = randf_range(phase2_time_on_ground.x, phase2_time_on_ground.y)
+		
+	print(fsm.current_state)
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -168,11 +171,9 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 
 	if _took_consecutive_damage():
 		var choice := randf()
-		if can_defend and choice < 0.7:
-			start_defend_cooldown()
+		if choice < 0.7:
 			fsm.change_state(fsm.states.defend)
 		else:
-			start_roll_cooldown()
 			fsm.change_state(fsm.states.roll)
 		_recent_damage_times.clear()
 		return
@@ -224,17 +225,14 @@ func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -
 func _now_secs() -> float:
 	return Time.get_ticks_msec() / 1000.0
 
-
 func _prune_damage_times(now_secs: float) -> void:
 	while _recent_damage_times.size() > 0 and now_secs - _recent_damage_times[0] > retaliate_damage_window_seconds:
 		_recent_damage_times.remove_at(0)
-
 
 func _note_damage_hit() -> void:
 	var now := _now_secs()
 	_recent_damage_times.append(now)
 	_prune_damage_times(now)
-
 
 func _took_consecutive_damage() -> bool:
 	var now := _now_secs()
@@ -340,7 +338,6 @@ func get_best_jump_marker_to_player() -> JumpMarker2D:
 		var distance_to_player = marker.global_position.distance_to(player.global_position)
 		var distance_to_boss = global_position.distance_to(marker.global_position)
 
-		# Score considers both distances and priority
 		var score = distance_to_player + (distance_to_boss * 0.5) - (marker.jump_priority * 20.0)
 		if not marker.is_safe_spot:
 			score += 50.0
@@ -359,16 +356,13 @@ func should_defend() -> bool:
 	if not player:
 		return false
 
-	# Check if player is in defend range and facing us
 	var distance = _distance_to_player()
 	if distance > defend_range:
 		return false
 
-	# Check if we're facing the player (can only defend forward)
 	var player_dir = sign(player.global_position.x - global_position.x)
 	var facing_dir = 1 if not animated_sprite_2d.flip_h else -1
 
-	# Only defend if we're facing the player
 	return player_dir == facing_dir
 
 func update_defend_cooldown(delta: float) -> void:
@@ -407,7 +401,6 @@ func clamp_x_to_room(x: float) -> float:
 		return x
 	return clamp(x, lb.position.x, lb.position.x + lb.size.x)
 
-
 func _keep_inside_room_and_avoid_fall() -> void:
 	var lb: Rect2 = level_bounds
 	if lb.size.x == 0.0:
@@ -420,7 +413,6 @@ func _keep_inside_room_and_avoid_fall() -> void:
 	var out_left := pos.x < left
 	var out_right := pos.x > right
 
-	# 1) Nếu đã vượt bound → snap lại, rồi roll cho an toàn
 	if out_left or out_right:
 		pos.x = clamp(pos.x, left, right)
 		global_position = pos
@@ -429,11 +421,9 @@ func _keep_inside_room_and_avoid_fall() -> void:
 			fsm.change_state(fsm.states.roll)
 		return
 
-	# 2) Vẫn trong room nhưng sắp tới mép mà còn tiếp tục đi theo hướng đó
 	var dir_x = sign(velocity.x)
 	if dir_x != 0:
 		var ahead_x = pos.x + dir_x * 32.0
-		# Gần mép bound + một tí buffer
 		if ahead_x <= left + 8.0 or ahead_x >= right - 8.0:
 			if is_on_floor() and fsm and fsm.current_state != fsm.states.roll:
 				fsm.change_state(fsm.states.roll)
@@ -494,19 +484,6 @@ func is_player_on_floating_platform() -> bool:
 			return true
 	return false
 
-func is_player_on_rect_platform() -> bool:
-	if not in_phase2:
-		return false
-
-	var player = get_player()
-	if player == null:
-		return false
-
-	if is_player_on_floating_platform():
-		return false
-
-	return true
-
 func is_on_floating_platform() -> bool:
 	if not is_on_floor():
 		return false
@@ -539,12 +516,9 @@ func _update_phase2_platform_brain(delta: float) -> void:
 	if boss_on_platform:
 		if not player_on_platform:
 			force_phase2_ground_jump = true
-			# Only jump if we need to get to ground, not if we're already on platform
 			fsm.change_state(fsm.states.jumpstate)
 			_phase2_ai_timer = randf_range(phase2_time_on_ground.x, phase2_time_on_ground.y)
 		else:
-			# Both boss and player on platforms - don't force jumps
-			# Let the surf state handle movement naturally
 			_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
 	else:
 		force_phase2_ground_jump = false
@@ -552,7 +526,7 @@ func _update_phase2_platform_brain(delta: float) -> void:
 		_phase2_ai_timer = randf_range(phase2_time_on_platform.x, phase2_time_on_platform.y)
 
 func _check_player_attack_input() -> void:
-	if not seen_player or _phase2_transition_running or fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
+	if not seen_player or _phase2_transition_running or fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.atk_2 or fsm.current_state == fsm.states.atk_3 or fsm.current_state == fsm.states.atk_super or fsm.current_state == fsm.states.atk_air:
 		return
 
 	if Input.is_action_just_pressed("attack"):
@@ -586,3 +560,16 @@ func _check_player_attack_input() -> void:
 func _on_phase_2_intro_finished() -> void:
 	if in_phase2 and phase_2 and not phase_2.playing:
 		phase_2.play()
+		
+func is_player_on_rect_platform() -> bool:
+	if not in_phase2:
+		return false
+
+	var player = get_player()
+	if player == null:
+		return false
+
+	if is_player_on_floating_platform():
+		return false
+
+	return true
