@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=4 uid="uid://dq7eu5p47t8gv"]
+[gd_scene load_steps=60 format=4 uid="uid://dq7eu5p47t8gv"]
 
 [ext_resource type="Script" uid="uid://bc533aj17vrv5" path="res://levels/map_2.gd" id="1_68p3w"]
 [ext_resource type="TileSet" uid="uid://swi381ypjdht" path="res://asset/forest/tileset_2.tres" id="3_gpada"]
@@ -32,7 +32,8 @@
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="20_nljfo"]
 [ext_resource type="AudioStream" uid="uid://c5uy78jxcl7ar" path="res://asset/sounds/Free Thunder Sound Effect  No Copyright - Friendly Free Sounds.mp3" id="21_4tdrg"]
 [ext_resource type="AudioStream" uid="uid://canhx8yq8bj6v" path="res://asset/sounds/Rain.mp3" id="23_vobq5"]
-[ext_resource type="Script" uid="uid://ti88f8njefc6" path="res://levels/objects/audio_zone.gd" id="24_durtq"]
+[ext_resource type="Script" path="res://levels/objects/audio_zone.gd" id="24_durtq"]
+[ext_resource type="Texture2D" uid="uid://clyana8poctkp" path="res://asset/forest/background/turtle_gate.png" id="34_yd5fx"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
 blend_mode = 1
@@ -501,6 +502,11 @@ shape = SubResource("RectangleShape2D_durtq")
 stream = ExtResource("23_vobq5")
 bus = &"SFX"
 parameters/looping = true
+
+[node name="TurtleGate" type="Sprite2D" parent="."]
+position = Vector2(9392.001, 6)
+scale = Vector2(0.28125, 0.28125)
+texture = ExtResource("34_yd5fx")
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]
