@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://kv02hvhfsd8k"]
+[gd_scene load_steps=38 format=3 uid="uid://kv02hvhfsd8k"]
 
 [ext_resource type="Script" uid="uid://nfys250tpsyv" path="res://levels/boss_levels/water_prietress/level_water_prietess.gd" id="1_uutcu"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="2_4si3a"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://levels/boss_levels/water_prietress/boss_hud.gd" id="16_qntum"]
 [ext_resource type="AudioStream" uid="uid://d3fi3k7bfsfo4" path="res://asset/sounds/water_prietess_sound/level_ambient.mp3" id="17_7sno5"]
 [ext_resource type="Script" uid="uid://beek7o2t13qa5" path="res://scenes/bosses/water_prietest/jump_marker_2d.gd" id="18_jump_marker"]
+[ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="19_6d03a"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="19_xb6hn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wnerh"]
@@ -366,6 +367,8 @@ bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
 
 [node name="Chest" parent="World" instance=ExtResource("10_tqigs")]
+reward_scenes = Array[PackedScene]([ExtResource("19_6d03a")])
+reward_counts = Array[int]([20])
 
 [node name="Area2D" type="Area2D" parent="World"]
 collision_layer = 0

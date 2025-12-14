@@ -8,7 +8,6 @@ extends Node2D
 @export var boss_bg_marker: Marker2D                       
 @export var boss_land_marker: Marker2D                      
 @export var boss_intro_jump_height: float = 220.0        
-@export var phase2_minion_respawn_cooldown: float = 5.0   
 @export var boss_parallax_layer: ParallaxLayer    
 
 @onready var boss_hud: Control = $CanvasLayer/BossHUD
@@ -25,10 +24,6 @@ var _prewave_started: bool = false
 var _prewave_enemies_left: int = 0
 var _boss_intro_started: bool = false
 var _boss_in_parallax: bool = false
-
-var _phase2_minion_mode: bool = false
-var _phase2_minion_respawn_timer: float = 0.0
-var _phase2_minion_count: int = 0
 
 func _enter_tree() -> void:
 	GameManager.current_stage = self
@@ -66,10 +61,8 @@ func _on_boss_start_fight() -> void:
 	await get_tree().create_timer(0.75).timeout
 
 func _on_boss_died() -> void:
-	_phase2_minion_mode = false
 	boss_platform_controller.return_platform_after_boss_dead()
-	var fall_time = boss_platform_controller.rise_time
-	await get_tree().create_timer(fall_time + 1.25).timeout
+	await get_tree().create_timer(2.25).timeout
 	_spawn_chest()
 
 func _on_fight_trigger_body_entered(body: Node) -> void:

@@ -19,10 +19,10 @@ signal complete_moving_up
 @onready var water_priestess: CharacterBody2D = $"../WaterPrietest"
 
 var is_phase_2_active: bool = false
-
 var _intro_done: bool = false
 var _phase2_started: bool = false
 var _returned: bool = false
+var _col_cache := {}
 
 func _ready() -> void:
 	randomize()
@@ -30,13 +30,11 @@ func _ready() -> void:
 	_connect_boss_signals()
 
 func _setup_initial_platforms() -> void:
-	# Rect platform phase 1
 	if rect_platform:
 		rect_platform.visible = true
 		rect_platform.modulate.a = 1.0
 		_set_platform_collision(rect_platform, true)
 
-	# Side platforms 
 	if left_platform:
 		left_platform.visible = true
 		left_platform.modulate.a = 1.0
@@ -47,14 +45,12 @@ func _setup_initial_platforms() -> void:
 		right_platform.modulate.a = 1.0
 		_set_platform_collision(right_platform, true)
 
-	# Floating platforms phase 2
 	for platform in platforms:
 		if platform:
 			platform.visible = false
 			platform.modulate.a = 0.0
 			_set_platform_collision(platform, false)
 
-	# Tắt marker ban đầu
 	for marker in jump_markers:
 		if marker:
 			marker.set_active(false)
@@ -91,15 +87,19 @@ func _hide_side_platforms() -> void:
 func _show_side_platforms() -> void:
 	if left_platform:
 		left_platform.visible = true
-		left_platform.modulate.a = 0.0
+		if left_platform is CanvasItem:
+			(left_platform as CanvasItem).modulate.a = 0.0
 		_set_platform_collision(left_platform, true)
+
 		var tw_left := create_tween()
 		tw_left.tween_property(left_platform, "modulate:a", 1.0, 0.5)
 
 	if right_platform:
 		right_platform.visible = true
-		right_platform.modulate.a = 0.0
+		if right_platform is CanvasItem:
+			(right_platform as CanvasItem).modulate.a = 0.0
 		_set_platform_collision(right_platform, true)
+
 		var tw_right := create_tween()
 		tw_right.tween_property(right_platform, "modulate:a", 1.0, 0.5)
 
@@ -130,7 +130,6 @@ func _on_phase_2_start() -> void:
 
 	start_phase2_platforms()
 
-
 func start_phase2_platforms() -> void:
 	print("start phase 2 platforms")
 	if _phase2_started:
@@ -159,7 +158,13 @@ func return_platform_after_boss_dead() -> void:
 	if _returned:
 		return
 	_returned = true
+	_return_after_boss_freed()
 
+func _return_after_boss_freed() -> void:
+	# Đợi boss queue_free xong (tree_exited / instance invalid)
+	await _wait_boss_freed(6.0)
+
+	# Sau khi boss biến mất khỏi scene mới bắt đầu dọn platform
 	if camera:
 		camera.camera_shake(0.4, 24)
 	if crack_sfx:
@@ -167,16 +172,25 @@ func return_platform_after_boss_dead() -> void:
 
 	_cleanup_after_return()
 
-
-func _cleanup_after_return() -> void:
 	if crack_sfx:
 		crack_sfx.stop()
 
+func _cleanup_after_return() -> void:
 	for plat in platforms:
 		if plat:
 			plat.visible = false
-			plat.modulate.a = 0.0
+			if plat is CanvasItem:
+				(plat as CanvasItem).modulate.a = 0.0
 			_set_platform_collision(plat, false)
+
+	for marker in jump_markers:
+		if marker:
+			marker.set_active(false)
+
+	is_phase_2_active = false
+	_phase2_started = false
+
+	_show_side_platforms()
 
 	for marker in jump_markers:
 		if marker:
@@ -202,6 +216,19 @@ func setup_after_boss_dead_state() -> void:
 	_phase2_started = false
 	_returned = false
 	
+func _cache_col(obj2d: CollisionObject2D) -> void:
+	var id := obj2d.get_instance_id()
+	if _col_cache.has(id):
+		return
+	_col_cache[id] = {"layer": obj2d.collision_layer, "mask": obj2d.collision_mask}
+
+func _restore_col(obj2d: CollisionObject2D) -> void:
+	var id := obj2d.get_instance_id()
+	if not _col_cache.has(id):
+		return
+	obj2d.collision_layer = _col_cache[id].layer
+	obj2d.collision_mask  = _col_cache[id].mask
+
 func _set_platform_collision(root: Node, enabled: bool) -> void:
 	if root == null:
 		return
@@ -209,11 +236,22 @@ func _set_platform_collision(root: Node, enabled: bool) -> void:
 	if "collision_enabled" in root:
 		root.collision_enabled = enabled
 
+	if root is CollisionObject2D:
+		var co := root as CollisionObject2D
+		_cache_col(co)
+		if enabled:
+			_restore_col(co)
+		else:
+			co.collision_layer = 0
+			co.collision_mask  = 0
+
+	if root is CollisionShape2D:
+		(root as CollisionShape2D).disabled = not enabled
+	elif root is CollisionPolygon2D:
+		(root as CollisionPolygon2D).disabled = not enabled
+
 	for child in root.get_children():
-		if child is CollisionShape2D or child is CollisionPolygon2D:
-			child.disabled = not enabled
-		elif child.get_child_count() > 0:
-			_set_platform_collision(child, enabled)
+		_set_platform_collision(child, enabled)
 
 func _get_markers_for_platform(platform: Node2D) -> Array[JumpMarker2D]:
 	var associated_markers: Array[JumpMarker2D] = []
@@ -242,3 +280,12 @@ func force_deactivate_all_markers() -> void:
 	for marker in jump_markers:
 		if marker:
 			marker.set_active(false)
+			
+func _wait_boss_freed(timeout_sec: float = 5.0) -> void:
+	if water_priestess == null:
+		return
+
+	var t := 0.0
+	while is_instance_valid(water_priestess) and t < timeout_sec:
+		await get_tree().process_frame
+		t += 1.0 / max(1.0, Engine.get_frames_per_second())
