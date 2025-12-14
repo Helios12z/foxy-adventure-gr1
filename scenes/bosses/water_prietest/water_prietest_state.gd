@@ -1,17 +1,21 @@
 extends EnemyState
 class_name WaterPrietestState
 
-const SAME_LEVEL_THRESHOLD := 10.0
+const SAME_LEVEL_THRESHOLD = 50.0
 const DROP_UNDER_X := 12.0
 const DROP_EDGE_OUT := 12.0
 const NAV_EPS_X := 6.0
+const MARKER_Y_UP_PAD := 10.0     
+const MARKER_Y_DOWN_PAD := 40.0   
+const MARKER_Y_CAP := 70.0     
+const MARKER_X_PAD := 10.0
 
 var _jump_target_x: float = 0.0
-var _jump_dir_x: int = 0
 var _has_reached_peak: bool = false
 var _drop_active := false
 var _drop_x := 0.0
 var _drop_force_x := 0.0
+var _last_move_dir_x: int = 1
 
 var _atk_shapes_cached: bool = false
 var _atk1_shape_base_size: Vector2
@@ -508,22 +512,34 @@ func _all_markers() -> Array:
 func _marker_for_pos(pos: Vector2) -> JumpMarker2D:
 	var best: JumpMarker2D = null
 	var best_score := INF
-	for m in _all_markers():
+
+	for m in obj.jump_markers:
 		var jm := m as JumpMarker2D
 		if jm == null or not jm.is_active:
 			continue
 
-		var half := jm.platform_size * 0.5
+		var half = jm.platform_size * 0.5
 		var dx = abs(pos.x - jm.global_position.x)
+		var dy = pos.y - jm.global_position.y  # có dấu
 
-		var dy = abs(pos.y - jm.global_position.y)
-		var y_tol = max(half.y, 10.0) + 12.0   
+		var x_tol = max(half.x, 16.0) + MARKER_X_PAD
 
-		if dx <= half.x and dy <= y_tol:
-			var score = dx + dy * 2.0
-			if score < best_score:
-				best_score = score
-				best = jm
+		var base_y = max(half.y, 10.0)
+		var y_up = min(base_y + MARKER_Y_UP_PAD, MARKER_Y_CAP)
+		var y_down = min(base_y + MARKER_Y_DOWN_PAD, MARKER_Y_CAP)
+
+		if dx > x_tol:
+			continue
+		if dy < -y_up:
+			continue
+		if dy > y_down:
+			continue
+
+		var score = dx + abs(dy) * 2.0
+		if score < best_score:
+			best_score = score
+			best = jm
+
 	return best
 
 func _boss_marker() -> JumpMarker2D:
@@ -566,9 +582,10 @@ func _dijkstra_next(from: JumpMarker2D, to: JumpMarker2D) -> JumpMarker2D:
 		for nb in cur.connected_markers:
 			if nb == null or not nb.is_active:
 				continue
-			var w = cur.global_position.distance_to(nb.global_position) \
-				- nb.jump_priority * 20.0 \
-				+ (50.0 if not nb.is_safe_spot else 0.0)
+			var w = cur.global_position.distance_to(nb.global_position)
+			w += (50.0 if not nb.is_safe_spot else 0.0)
+			w -= nb.jump_priority * 20.0
+			w = max(1.0, w) 
 
 			var nd = dist.get(cur, INF) + w
 			if nd < dist.get(nb, INF):
@@ -592,14 +609,9 @@ func control_move(speed: float, attack_table: Array, _on_reach: Callable, _use_e
 		return
 
 	if obj.in_phase2 and not _same_platform(p):
-		var bm := _boss_marker()
-		var pm := _player_marker(p)
-
-		if bm != null and pm == null:
-			obj.force_phase2_ground_jump = true
-
-		change_state(fsm.states.jumpstate)
-		return
+		if p.global_position.y < obj.global_position.y and _player_marker(p) != null:
+			change_state(fsm.states.jumpstate)
+			return
 
 	var same_level = abs(p.global_position.y - obj.global_position.y) <= SAME_LEVEL_THRESHOLD
 	var in_range = abs(p.global_position.x - obj.global_position.x) <= obj.attack_range
@@ -610,7 +622,17 @@ func control_move(speed: float, attack_table: Array, _on_reach: Callable, _use_e
 		_choose_attack_from_table(attack_table)
 		return
 
-	obj.velocity.x = sign(p.global_position.x - obj.global_position.x) * speed
+	var dx = p.global_position.x - obj.global_position.x
+	var dir_x = sign(dx)
+
+	if dir_x == 0:
+		dir_x = _last_move_dir_x
+		if dir_x == 0:
+			dir_x = 1 if not obj.animated_sprite_2d.flip_h else -1
+	else:
+		_last_move_dir_x = dir_x
+
+	obj.velocity.x = float(dir_x) * speed
 
 func _choose_attack_from_table(attack_table: Array) -> void:
 	var r := randf()
@@ -628,26 +650,20 @@ func _choose_attack_from_table(attack_table: Array) -> void:
 func control_jump_enter(extra_jump_height: float = 24.0) -> void:
 	_has_reached_peak = false
 	var p = obj.get_player()
-
-	if obj.in_phase2 and obj.force_phase2_ground_jump:
-		var target := obj.global_position
-		target.x = obj.clamp_x_to_room(_drop_force_x if _drop_force_x != 0.0 else target.x)
-		if obj.rect_platform:
-			target.y = obj.rect_platform.global_position.y - 16.0
-		_perform_jump_to_position(target, 0.0)
-		obj.force_phase2_ground_jump = false
-		_drop_force_x = 0.0
+	if p == null:
+		change_state(fsm.states.idle)
 		return
 
 	var from := _marker_for_pos(obj.global_position)
-	var to := _marker_for_pos(p.global_position) if p else null
-	var next := _dijkstra_next(from, to) if (from and to) else (to if to else null)
+	var to := _marker_for_pos(p.global_position)
 
-	if next:
-		_perform_jump_to_position(next.global_position, 0.0)
-		return
+	if from != null and to != null:
+		var next := _dijkstra_next(from, to)
+		if next != null:
+			_perform_jump_to_position(next.global_position, 0.0)
+			return
 
-	_fallback_jump_to_player(p, extra_jump_height)
+	_fallback_jump_to_player(p, 0)
 	
 func _plan_drop_edge(from: JumpMarker2D, p: Node2D) -> void:
 	var half_x := from.platform_size.x * 0.5
@@ -700,7 +716,7 @@ func _fallback_jump_to_player(player: Node2D, extra_jump_height: float) -> void:
 			target_pos.x = clamp(target_pos.x, lb.position.x, lb.position.x + lb.size.x)
 
 	_jump_target_x = target_pos.x
-	_perform_jump_to_position(target_pos, extra_jump_height)
+	_perform_jump_to_position(target_pos, 0.0)
 
 func _get_gravity_value() -> float:
 	var g = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -711,29 +727,45 @@ func _get_gravity_value() -> float:
 func _perform_jump_to_position(target_pos: Vector2, extra_jump_height: float) -> void:
 	var start_pos := obj.global_position
 	var dx := target_pos.x - start_pos.x
-
 	var g := _get_gravity_value()
 
-	var needed_up_height = max(0.0, start_pos.y - target_pos.y + extra_jump_height)
-	var initial_vy := -sqrt(2.0 * g * needed_up_height)
+	var base_extra = max(extra_jump_height, 10.0)
 
-	var time_to_peak := -initial_vy / g
-	var total_time := time_to_peak * 2.0
-	total_time = clamp(total_time, 0.35, 1.2)
+	var needed_up_height = max(0.0, (start_pos.y - target_pos.y) + base_extra)
+	var vy := -sqrt(2.0 * g * max(1.0, needed_up_height))
 
-	var vx := dx / total_time
-	var max_air_speed = obj.air_horizontal_speed
-	if abs(vx) > max_air_speed:
-		vx = sign(vx) * max_air_speed
+	var dy := target_pos.y - start_pos.y  
+	var disc := vy * vy + 2.0 * g * dy
+	if disc < 0.0:
+		disc = 0.0
+	var t := (-vy + sqrt(disc)) / g
+	t = clamp(t, 0.35, 1.2)
 
-	_jump_dir_x = sign(vx)
-	if _jump_dir_x == 0:
-		_jump_dir_x = 1 if dx >= 0.0 else -1
+	var max_air = max(1.0, obj.air_horizontal_speed)
+	var t_need = abs(dx) / max_air
+	var iter := 0
+	while t < t_need and iter < 6:
+		iter += 1
+		needed_up_height += 40.0
+		vy = -sqrt(2.0 * g * needed_up_height)
 
-	obj.change_direction(_jump_dir_x)
+		dy = target_pos.y - start_pos.y
+		disc = vy * vy + 2.0 * g * dy
+		if disc < 0.0:
+			disc = 0.0
+		t = (-vy + sqrt(disc)) / g
+		t = clamp(t, 0.35, 1.2)
+
+	var vx := dx / t
+	vx = clamp(vx, -max_air, max_air)
+
+	var dir_x = sign(dx)
+	if dir_x == 0:
+		dir_x = 1 if not obj.animated_sprite_2d.flip_h else -1
+
+	obj.change_direction(dir_x)
 	obj.velocity.x = vx
-	obj.velocity.y = initial_vy
-
+	obj.velocity.y = vy
 
 func _clamp_position_to_bounds() -> void:
 	var lb: Rect2 = obj.level_bounds

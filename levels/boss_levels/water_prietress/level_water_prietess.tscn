@@ -30,6 +30,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wnerh"]
 size = Vector2(953.5, 141.5)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 32.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4si3a"]
 size = Vector2(627, 20)
 
@@ -38,9 +41,6 @@ size = Vector2(620, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(156.5, 47)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
-radius = 32.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kibuc"]
 size = Vector2(277, 664)
@@ -84,26 +84,37 @@ position = Vector2(1027, 138)
 script = ExtResource("2_7sno5")
 rect_platform = NodePath("RectPlatform")
 platforms = [NodePath("FloatingPlatform1"), NodePath("FloatingPlatform2"), NodePath("FloatingPlatform3"), NodePath("FloatingPlatform4"), NodePath("FloatingPlatform5")]
-jump_markers = [NodePath("FloatingPlatform1/JumpMarker"), NodePath("FloatingPlatform2/JumpMarker"), NodePath("FloatingPlatform3/JumpMarker"), NodePath("FloatingPlatform4/JumpMarker"), NodePath("FloatingPlatform5/JumpMarker")]
+jump_markers = [NodePath("RectPlatform/JumpMarker"), NodePath("FloatingPlatform1/JumpMarker"), NodePath("FloatingPlatform2/JumpMarker"), NodePath("FloatingPlatform3/JumpMarker"), NodePath("FloatingPlatform4/JumpMarker"), NodePath("FloatingPlatform5/JumpMarker"), NodePath("RectPlatform/JumpMarker")]
 left_platform = NodePath("LeftPlatform")
 right_platform = NodePath("RightPlatform")
 room_bound_point_a = NodePath("../RoomBoundPointA")
 room_bound_point_b = NodePath("../RoomBoundPointB")
 
 [node name="RectPlatform" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(-261, -1220)
+position = Vector2(612, 675)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/RectPlatform"]
-collision_mask = 0
+collision_mask = 10
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/RectPlatform/StaticBody2D"]
-position = Vector2(868.4998, 1889)
 scale = Vector2(1.1337894, 0.6191407)
 texture = ExtResource("3_qntum")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/RectPlatform/StaticBody2D"]
-position = Vector2(868.25, 1909.25)
+position = Vector2(0, 11)
 shape = SubResource("RectangleShape2D_wnerh")
+
+[node name="JumpMarker" type="Marker2D" parent="World/BossPlatformController/RectPlatform"]
+position = Vector2(0, -60)
+script = ExtResource("18_jump_marker")
+platform_size = Vector2(476.75, 32)
+jump_priority = 2.0
+
+[node name="Area2D" type="Area2D" parent="World/BossPlatformController/RectPlatform/JumpMarker"]
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/RectPlatform/JumpMarker/Area2D"]
+shape = SubResource("CircleShape2D_1")
 
 [node name="LeftPlatform" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(221, -21)
@@ -146,26 +157,26 @@ position = Vector2(1463, 624)
 scale = Vector2(0.7, 0.7)
 
 [node name="FloatingPlatform1" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(448, 561)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform1"]
-collision_mask = 10
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform1/StaticBody2D"]
-position = Vector2(-148.25, -64.5)
-shape = SubResource("RectangleShape2D_1")
-one_way_collision = true
+position = Vector2(263, 493)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform1"]
 modulate = Color(0.7, 0.9, 1, 1)
-position = Vector2(-148.75, -65)
 scale = Vector2(0.35185188, 0.2857143)
 texture = ExtResource("6_qntum")
 region_enabled = true
 region_rect = Rect2(26, 801, 459, 182)
 
+[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform1"]
+position = Vector2(0, 4)
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform1/StaticBody2D"]
+shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
+debug_color = Color(0.93604743, 0.12763739, 0.5475304, 0.41960785)
+
 [node name="JumpMarker" type="Marker2D" parent="World/BossPlatformController/FloatingPlatform1"]
-position = Vector2(-151, -85)
+position = Vector2(0, -20)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform1/JumpMarker"]
@@ -175,26 +186,26 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform2" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(751, 564)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform2"]
-collision_mask = 10
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform2/StaticBody2D"]
-position = Vector2(-148.25, -64.5)
-shape = SubResource("RectangleShape2D_1")
-one_way_collision = true
+position = Vector2(620, 495)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform2"]
 modulate = Color(0.7, 0.9, 1, 1)
-position = Vector2(-148.75, -65)
 scale = Vector2(0.35185188, 0.2857143)
 texture = ExtResource("6_qntum")
 region_enabled = true
 region_rect = Rect2(26, 801, 459, 182)
 
+[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform2"]
+position = Vector2(0, 4)
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform2/StaticBody2D"]
+shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
+debug_color = Color(0.92841834, 0.16048867, 0.53827375, 0.41960785)
+
 [node name="JumpMarker" type="Marker2D" parent="World/BossPlatformController/FloatingPlatform2"]
-position = Vector2(-151, -85)
+position = Vector2(0, -20)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform2/JumpMarker"]
@@ -204,26 +215,26 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform3" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(1029, 564)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform3"]
-collision_mask = 10
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform3/StaticBody2D"]
-position = Vector2(-148.25, -64.5)
-shape = SubResource("RectangleShape2D_1")
-one_way_collision = true
+position = Vector2(982, 492)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform3"]
 modulate = Color(0.7, 0.9, 1, 1)
-position = Vector2(-148.75, -65)
 scale = Vector2(0.35185188, 0.2857143)
 texture = ExtResource("6_qntum")
 region_enabled = true
 region_rect = Rect2(26, 801, 459, 182)
 
+[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform3"]
+position = Vector2(0, 5)
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform3/StaticBody2D"]
+shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
+debug_color = Color(0.8790414, 0.2286486, 0.6340421, 0.41960785)
+
 [node name="JumpMarker" type="Marker2D" parent="World/BossPlatformController/FloatingPlatform3"]
-position = Vector2(-151, -85)
+position = Vector2(0, -19)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform3/JumpMarker"]
@@ -233,26 +244,26 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(883, 447)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform4"]
-collision_mask = 10
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform4/StaticBody2D"]
-position = Vector2(-148.25, -64.5)
-shape = SubResource("RectangleShape2D_1")
-one_way_collision = true
+position = Vector2(808, 393)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform4"]
 modulate = Color(0.7, 0.9, 1, 1)
-position = Vector2(-148.75, -65)
 scale = Vector2(0.35185188, 0.2857143)
 texture = ExtResource("6_qntum")
 region_enabled = true
 region_rect = Rect2(26, 801, 459, 182)
 
+[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform4"]
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform4/StaticBody2D"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
+debug_color = Color(0.94792575, 5.0055983e-06, 0.58310807, 0.41960785)
+
 [node name="JumpMarker" type="Marker2D" parent="World/BossPlatformController/FloatingPlatform4"]
-position = Vector2(-151, -85)
+position = Vector2(0, -20)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform4/JumpMarker"]
@@ -262,26 +273,26 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(601, 447)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform5"]
-collision_mask = 10
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform5/StaticBody2D"]
-position = Vector2(-148.25, -64.5)
-shape = SubResource("RectangleShape2D_1")
-one_way_collision = true
+position = Vector2(440, 393)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform5"]
 modulate = Color(0.7, 0.9, 1, 1)
-position = Vector2(-148.75, -65)
 scale = Vector2(0.35185188, 0.2857143)
 texture = ExtResource("6_qntum")
 region_enabled = true
 region_rect = Rect2(26, 801, 459, 182)
 
+[node name="StaticBody2D" type="StaticBody2D" parent="World/BossPlatformController/FloatingPlatform5"]
+position = Vector2(-1, 3)
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/FloatingPlatform5/StaticBody2D"]
+shape = SubResource("RectangleShape2D_1")
+one_way_collision = true
+debug_color = Color(0.9408318, 0.219434, 0.28519142, 0.41960785)
+
 [node name="JumpMarker" type="Marker2D" parent="World/BossPlatformController/FloatingPlatform5"]
-position = Vector2(-151, -85)
+position = Vector2(0, -21)
 script = ExtResource("18_jump_marker")
 
 [node name="Area2D" type="Area2D" parent="World/BossPlatformController/FloatingPlatform5/JumpMarker"]
@@ -343,7 +354,7 @@ flip_v = true
 position = Vector2(447, 461)
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
-position = Vector2(-117, 558)
+position = Vector2(496, 563)
 has_blade = true
 has_fire_gem = true
 has_water_paw_gem = true
@@ -394,6 +405,7 @@ debug_color = Color(0.8645528, 0.2529613, 0.639173, 0.41960785)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BossHUD" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

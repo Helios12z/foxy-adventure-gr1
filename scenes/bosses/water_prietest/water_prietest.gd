@@ -34,7 +34,6 @@ signal start_fight
 
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D
-@export var rect_platform: Node2D
 
 # Platform jumping system
 @export var jump_detection_range: float = 300.0
@@ -49,7 +48,6 @@ var can_roll: bool = true
 var roll_cooldown_timer: float = 0.0
 var _phase2_transition_running: bool = false
 var _original_time_scale: float = 1.0
-var force_phase2_ground_jump: bool = false
 
 var jump_markers: Array[JumpMarker2D] = []
 var current_jump_marker: JumpMarker2D = null

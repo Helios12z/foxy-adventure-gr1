@@ -1,6 +1,6 @@
 extends WaterPrietestState
 
-const EXTRA_JUMP_HEIGHT := 24.0
+const EXTRA_JUMP_HEIGHT := 12.0
 
 func _enter() -> void:
 	obj.change_animation("jump")
