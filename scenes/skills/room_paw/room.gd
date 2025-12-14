@@ -68,8 +68,11 @@ func _ready() -> void:
 
 	# Heal logic based on level
 	if skill_level >= 2:
-		var heal_amount = int(player.max_health * heal_percentage)
-		player.heal(heal_amount)
+		var ht = Timer.new()
+		ht.wait_time = 1.0 # Every 1 second
+		ht.autostart = true
+		ht.timeout.connect(_on_heal_tick)
+		add_child(ht)
 
 	# lấy node hiển thị của player để nhấp nháy mềm
 	player_display_item = _find_display_item(player)
@@ -113,6 +116,64 @@ func _ready() -> void:
 	var existing := area.get_overlapping_bodies()
 	for b in existing:
 		_consider_capture(b)
+	
+	# Level 2+: Spawn healing particles continuously
+	if skill_level >= 2:
+		var heal_timer := Timer.new()
+		heal_timer.wait_time = 0.2
+		heal_timer.autostart = true
+		heal_timer.timeout.connect(_spawn_heal_particle)
+		add_child(heal_timer)
+
+func _spawn_heal_particle() -> void:
+	if state == "ending" or not is_instance_valid(player):
+		return
+	
+	var plus_tex = load("res://asset/foxy/foxy/skill_room_paw/plus_icon.png")
+	if plus_tex == null:
+		return
+		
+	# Spawn main particle
+	_emit_plus_icon(plus_tex, Vector2(0.025, 0.025))
+	
+	# Spawn smaller particle with slight delay
+	var delay = randf_range(0.05, 0.15)
+	var t = get_tree().create_timer(delay)
+	t.timeout.connect(func(): _emit_plus_icon(plus_tex, Vector2(0.0125, 0.0125)))
+
+func _emit_plus_icon(tex: Texture2D, s: Vector2) -> void:
+	# Check validity again for the delayed call
+	if not is_inside_tree() or state == "ending" or not is_instance_valid(player):
+		return
+		
+	var p = Sprite2D.new()
+	p.texture = tex
+	# Start at player's feet (approx global_position)
+	# Add slight random X offset (-18 to 2 range)
+	var start_pos = player.global_position + Vector2(randf_range(-18, 2), 0)
+	p.global_position = start_pos
+	p.scale = s
+	p.z_index = 10 # Ensure it's above player
+	get_tree().current_scene.add_child(p)
+	
+	# Tween up and fade out
+	var tw = create_tween()
+	var end_pos = start_pos + Vector2(0, -50) # Float up ~50px (above head)
+	
+	tw.set_parallel(true)
+	tw.tween_property(p, "global_position", end_pos, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(p, "modulate:a", 0.0, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	
+	# Cleanup
+	tw.chain().tween_callback(p.queue_free)
+
+func _on_heal_tick() -> void:
+	if state == "ending" or not is_instance_valid(player):
+		return
+	# Heal 4% per second
+	var heal_amount = int(player.max_health * 0.04)
+	if heal_amount < 1: heal_amount = 1
+	player.heal(heal_amount)
 
 func _on_scaled() -> void:
 	state = "lifting"

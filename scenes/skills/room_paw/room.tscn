@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dw1fpakrytas"]
+[gd_scene load_steps=12 format=3 uid="uid://dw1fpakrytas"]
 
 [ext_resource type="Texture2D" uid="uid://bp25fwiw1wvmo" path="res://asset/foxy/foxy/skill_room_paw/room_1.tres" id="1_c0nfp"]
 [ext_resource type="Texture2D" uid="uid://bv0pmtwalsecj" path="res://asset/foxy/foxy/skill_room_paw/room_2.png" id="2_4hew7"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dg683tr2ljg3a" path="res://asset/foxy/foxy/skill_room_paw/room_4.png" id="4_86q3d"]
 [ext_resource type="Texture2D" uid="uid://8r1w7dguekgr" path="res://asset/foxy/foxy/skill_room_paw/room_5.png" id="5_a4pj6"]
 [ext_resource type="Script" uid="uid://c056mho1any6v" path="res://scenes/skills/room_paw/room.gd" id="6_room_script"]
+[ext_resource type="Texture2D" uid="uid://cik58f22k10pk" path="res://asset/foxy/foxy/skill_room_paw/plus_icon.png" id="8_y0inw"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4hew7"]
 animations = [{
@@ -79,3 +80,8 @@ position = Vector2(133.333, -66.6667)
 
 [node name="BulletMarker2D" type="Marker2D" parent="."]
 position = Vector2(-400, -160)
+
+[node name="PlusIconSprite2D" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("8_y0inw")
