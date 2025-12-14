@@ -9,13 +9,27 @@ const MARKER_Y_UP_PAD := 10.0
 const MARKER_Y_DOWN_PAD := 40.0   
 const MARKER_Y_CAP := 70.0     
 const MARKER_X_PAD := 10.0
+const ROLL_MIN_TIME := 0.20
+const ROLL_MIN_DIST := 6.0
+const ROLL_TARGET_EPS := 3.0
+const ROLL_BOUND_MARGIN := 8.0
+const ROLL_END_MARGIN := 4.0
+const ROLL_THROUGH_BOUND_RATIO := 0.6
+const ROLL_THROUGH_PLAYER_OFFSET := 40.0
 
-var _jump_target_x: float = 0.0
 var _has_reached_peak: bool = false
 var _drop_active := false
 var _drop_x := 0.0
 var _drop_force_x := 0.0
 var _last_move_dir_x: int = 1
+var _roll_elapsed := 0.0
+var _roll_total_time := 0.0
+var _roll_speed_x := 0.0
+var _roll_dir := 1
+var _roll_target_x := 0.0
+var _roll_has_invincibility := false
+var _roll_left_floor := false
+var _saved_floor_snap := -1.0
 
 var _atk_shapes_cached: bool = false
 var _atk1_shape_base_size: Vector2
@@ -855,120 +869,91 @@ func _try_air_attack(max_dist: float, max_vertical_diff: float, require_player_b
 	if player_dir == facing_dir and randf() < chance:
 		change_state(fsm.states.atk_air)
 
-# ---------------- Roll ----------------
-var _roll_elapsed := 0.0
-var _roll_total_time := 0.0
-var _roll_speed_x := 0.0
-var _roll_dir := 1
-var _roll_has_invincibility := false
-
-const ROLL_MIN_TIME := 0.20          
-const ROLL_MIN_DIST := 4.0
-const ROLL_END_MARGIN := 4.0         
-const ROLL_BOUND_MARGIN := 8.0
-const ROLL_THROUGH_BOUND_RATIO := 0.6
-const ROLL_THROUGH_PLAYER_OFFSET := 40.0
-
 func control_roll_enter() -> void:
 	_roll_elapsed = 0.0
+	_roll_left_floor = false
 	_roll_has_invincibility = true
-	_play_roll_sfx()
+	if obj.roll: obj.roll.play()
 
 	var sprite := obj.animated_sprite_2d as AnimatedSprite2D
-	_play_roll_anim(sprite)
+	_play_roll_anim_loop(sprite)
 
-	var player = obj.get_player()
-	var has_player := player != null
+	if "floor_snap_length" in obj:
+		_saved_floor_snap = obj.floor_snap_length
+		obj.floor_snap_length = 0.0
 
 	var start_x := obj.global_position.x
-	var bounds = _get_roll_bounds(ROLL_BOUND_MARGIN)  
+	var bounds = _get_roll_bounds(ROLL_BOUND_MARGIN)
 
-	_roll_dir = _pick_roll_dir(player, has_player)    
-	var target_x := _pick_roll_target_x(start_x, _roll_dir, player, has_player, bounds)
+	var player = obj.get_player()
+	var plan := _compute_roll_plan(start_x, player, bounds) 
+	_roll_dir = plan.dir
+	_roll_target_x = plan.target
 
-	var dist = max(abs(target_x - start_x), ROLL_MIN_DIST)
-	var base_speed = max(obj.roll_speed, 1.0)
-	_roll_total_time = max(dist / base_speed, 0.35)
-	_roll_speed_x = dist / _roll_total_time
-
-	obj.change_direction(_roll_dir)
-	obj.velocity.x = float(_roll_dir) * _roll_speed_x
+	var dist = max(abs(_roll_target_x - start_x), ROLL_MIN_DIST)
 
 	var g := obj.get_gravity().y
-	var hop_height = max(8.0, obj.roll_peak_height)
-	obj.velocity.y = -sqrt(2.0 * g * hop_height)
+	var min_time_from_height := sqrt(max(0.001, 8.0 * max(8.0, obj.roll_peak_height) / g))
+	var min_time_from_speed = dist / max(1.0, obj.roll_speed)
+
+	_roll_total_time = max(ROLL_MIN_TIME, min_time_from_height, min_time_from_speed)
+
+	var dx := _roll_target_x - start_x
+	_roll_speed_x = abs(dx) / _roll_total_time
+	obj.velocity.x = float(_roll_dir) * _roll_speed_x
+	obj.velocity.y = -0.5 * g * _roll_total_time
+
+	obj.change_direction(_roll_dir)
 
 	_sync_roll_anim_speed(sprite, _roll_total_time)
 
 
 func control_roll_update(delta: float) -> void:
 	_roll_elapsed += delta
+	if not obj.is_on_floor():
+		_roll_left_floor = true
 
-	if _roll_elapsed >= ROLL_MIN_TIME and obj.is_on_floor():
-		_finish_roll_to_idle()
-		return
+	var dx := _roll_target_x - obj.global_position.x
+	var dir_to_target = sign(dx)
+	if dir_to_target == 0:
+		dir_to_target = _roll_dir
 
-	if _roll_elapsed <= _roll_total_time:
-		obj.velocity.x = float(_roll_dir) * _roll_speed_x
+	var reached_target = abs(dx) <= ROLL_TARGET_EPS
+	var overtime := _roll_elapsed >= _roll_total_time
+
+	if not reached_target and not overtime:
+		obj.velocity.x = float(dir_to_target) * _roll_speed_x
 	else:
 		obj.velocity.x = 0.0
+	if _roll_left_floor and _roll_elapsed >= ROLL_MIN_TIME and obj.is_on_floor():
+		_finish_roll_to_idle()
+		return
 
 	obj.velocity.y += obj.get_gravity().y * delta
 
 	var bounds = _get_roll_bounds(ROLL_END_MARGIN)
 	if bounds != null:
-		var left = bounds.x
-		var right = bounds.y
 		var pos := obj.global_position
-		var clamped_x = clamp(pos.x, left, right)
+		var clamped_x = clamp(pos.x, bounds.x, bounds.y)
 		if clamped_x != pos.x:
 			pos.x = clamped_x
 			obj.global_position = pos
 			obj.velocity.x = 0.0
-
+			if _roll_left_floor and _roll_elapsed >= ROLL_MIN_TIME and obj.is_on_floor():
+				_finish_roll_to_idle()
+				return
 
 func control_roll_exit() -> void:
 	_roll_has_invincibility = false
 	obj.velocity.x = 0.0
 	_reset_roll_anim_speed()
 
+	if "floor_snap_length" in obj and _saved_floor_snap >= 0.0:
+		obj.floor_snap_length = _saved_floor_snap
+	_saved_floor_snap = -1.0
+
 func has_roll_invincibility() -> bool:
 	return _roll_has_invincibility
-
-func _play_roll_sfx() -> void:
-	if obj.roll:
-		obj.roll.play()
-
-func _play_roll_anim(sprite: AnimatedSprite2D) -> void:
-	if sprite == null:
-		return
-	if sprite.animation != "roll":
-		sprite.play("roll")
-
-	var frames := sprite.sprite_frames
-	if frames and frames.has_animation("roll"):
-		if frames.has_method("set_animation_loop"):
-			frames.set_animation_loop("roll", true)
-
-func _sync_roll_anim_speed(sprite: AnimatedSprite2D, duration: float) -> void:
-	if sprite == null:
-		return
-	var frames := sprite.sprite_frames
-	if frames == null or not frames.has_animation("roll"):
-		return
-
-	var fc := frames.get_frame_count("roll")
-	var fps := frames.get_animation_speed("roll")
-	if fc <= 0 or fps <= 0.0:
-		return
-
-	var anim_len := float(fc) / fps
-	sprite.speed_scale = clamp(anim_len / max(0.001, duration), 0.15, 4.0)
-
-func _reset_roll_anim_speed() -> void:
-	var sprite := obj.animated_sprite_2d as AnimatedSprite2D
-	if sprite:
-		sprite.speed_scale = 1.0
 
 func _finish_roll_to_idle() -> void:
 	_roll_has_invincibility = false
@@ -976,21 +961,14 @@ func _finish_roll_to_idle() -> void:
 	_reset_roll_anim_speed()
 	change_state(fsm.states.idle)
 
-func _get_roll_bounds(margin: float) -> Variant:
-	var lb: Rect2 = obj.level_bounds
-	if lb.size.x <= 0.0:
-		return null
-	return Vector2(lb.position.x + margin, lb.position.x + lb.size.x - margin)
+func _compute_roll_plan(start_x: float, player: Node2D, bounds: Variant) -> Dictionary:
+	var has_player := player != null
+	var dir := 1
+	if has_player:
+		dir = 1 if player.global_position.x < obj.global_position.x else -1
 
-func _pick_roll_dir(player: Node2D, has_player: bool) -> int:
-	if not has_player:
-		return 1
-	return 1 if player.global_position.x < obj.global_position.x else -1
-
-func _pick_roll_target_x(start_x: float, dir: int, player: Node2D, has_player: bool, bounds: Variant) -> float:
 	var desired = obj.roll_distance
 	var target = start_x + float(dir) * desired
-
 	if bounds != null:
 		target = clamp(target, bounds.x, bounds.y)
 
@@ -998,10 +976,38 @@ func _pick_roll_target_x(start_x: float, dir: int, player: Node2D, has_player: b
 		var away_dist = abs(target - start_x)
 		if away_dist < desired * ROLL_THROUGH_BOUND_RATIO:
 			var through_dir = sign(player.global_position.x - start_x)
-			if through_dir == 0:
-				through_dir = 1
-			_roll_dir = through_dir
-			target = player.global_position.x + float(through_dir) * ROLL_THROUGH_PLAYER_OFFSET
-			target = clamp(target, bounds.x, bounds.y)
+			if through_dir == 0: through_dir = 1
+			dir = through_dir
+			target = clamp(player.global_position.x + float(through_dir) * ROLL_THROUGH_PLAYER_OFFSET, bounds.x, bounds.y)
 
-	return target
+	return {"dir": dir, "target": target}
+
+func _get_roll_bounds(margin: float) -> Variant:
+	var lb: Rect2 = obj.level_bounds
+	if lb.size.x <= 0.0:
+		return null
+	return Vector2(lb.position.x + margin, lb.position.x + lb.size.x - margin)
+
+func _play_roll_anim_loop(sprite: AnimatedSprite2D) -> void:
+	if sprite == null: return
+	if sprite.animation != "roll":
+		sprite.play("roll")
+
+	var frames := sprite.sprite_frames
+	if frames and frames.has_animation("roll"):
+		frames.set_animation_loop("roll", true)
+
+func _sync_roll_anim_speed(sprite: AnimatedSprite2D, duration: float) -> void:
+	if sprite == null: return
+	var frames := sprite.sprite_frames
+	if frames == null or not frames.has_animation("roll"): return
+	var fc := frames.get_frame_count("roll")
+	var fps := frames.get_animation_speed("roll")
+	if fc <= 0 or fps <= 0.0: return
+	var anim_len := float(fc) / fps
+	sprite.speed_scale = clamp(anim_len / max(0.001, duration), 0.15, 4.0)
+
+func _reset_roll_anim_speed() -> void:
+	var sprite := obj.animated_sprite_2d as AnimatedSprite2D
+	if sprite:
+		sprite.speed_scale = 1.0
