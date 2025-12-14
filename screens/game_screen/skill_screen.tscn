@@ -62,9 +62,9 @@ axis_stretch_vertical = 1
 [node name="Label" type="Label" parent="NinePatchRect"]
 layout_mode = 0
 offset_left = 447.0
-offset_top = 45.0
+offset_top = 70.0
 offset_right = 625.0
-offset_bottom = 68.0
+offset_bottom = 93.0
 scale = Vector2(2, 2)
 theme_override_fonts/font = ExtResource("3_yenis")
 text = "UPGRADE SKILLS"
@@ -111,9 +111,9 @@ texture = ExtResource("9_pxssm")
 [node name="SkillSusanoo" type="Control" parent="NinePatchRect"]
 anchors_preset = 0
 offset_left = -11.0
-offset_top = 16.0
+offset_top = 41.0
 offset_right = 81.0
-offset_bottom = 88.0
+offset_bottom = 113.0
 
 [node name="SkillName" type="Label" parent="NinePatchRect/SkillSusanoo"]
 layout_mode = 0
@@ -408,9 +408,9 @@ texture = ExtResource("9_pxssm")
 [node name="SkillRoom" type="Control" parent="NinePatchRect"]
 anchors_preset = 0
 offset_left = -13.0
-offset_top = 256.0
+offset_top = 281.0
 offset_right = 79.0
-offset_bottom = 328.0
+offset_bottom = 353.0
 
 [node name="SkillName" type="Label" parent="NinePatchRect/SkillRoom"]
 layout_mode = 0
