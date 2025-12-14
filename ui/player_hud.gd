@@ -23,6 +23,8 @@ var mana_display := 0.0
 var mana_target := 0.0
 
 
+@onready var skill_button = $SkillTextureButton
+
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	if player != null:
@@ -42,6 +44,24 @@ func _ready():
 		c.a = 0.0
 		susanoo_control.modulate = c
 		susanoo_control.visible = false
+	
+	if skill_button:
+		skill_button.pressed.connect(_on_skill_button_pressed)
+
+func _on_skill_button_pressed() -> void:
+	var skill_screen_scene = load("res://screens/game_screen/skill_screen.tscn")
+	if skill_screen_scene:
+		var screen = skill_screen_scene.instantiate()
+		# Add to a CanvasLayer if possible, default to parent
+		var root = get_tree().current_scene
+		if root:
+			var ui_layer = root.find_child("UILayer", true, false)
+			if ui_layer:
+				ui_layer.add_child(screen)
+			else:
+				get_parent().add_child(screen)
+		else:
+			add_child(screen)
 
 
 
@@ -119,6 +139,10 @@ func _connect_susanoo(s: Node) -> void:
 		susanoo_mana_bar.max_value = max(1, threshold)
 		mana_target = 0.0
 		mana_display = 0.0
+		if player and "susanoo_level" in player:
+			susanoo_mana_bar.visible = (player.susanoo_level >= 3)
+		else:
+			susanoo_mana_bar.visible = false
 
 
 func _show_susanoo_hud() -> void:

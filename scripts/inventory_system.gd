@@ -62,6 +62,15 @@ func has_key() -> bool:
 func get_gold() -> int:
 	return coins
 
+func spend_gold(amount: int) -> bool:
+	if coins >= amount:
+		coins -= amount
+		coin_changed.emit(coins)
+		GameManager.update_inventory_in_checkpoint()
+		print("Spent ", amount, " coins. Total: ", coins)
+		return true
+	return false
+
 func get_keys() -> int:
 	return keys
 

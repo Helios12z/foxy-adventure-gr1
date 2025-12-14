@@ -80,7 +80,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uldvi"]
-size = Vector2(109, 142)
+size = Vector2(80, 142)
 
 [node name="SusanooSpirit" type="Node2D"]
 script = ExtResource("1_script")
@@ -117,7 +117,7 @@ collision_mask = 24
 script = ExtResource("12_defense_fx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DefenseHitArea2D"]
-position = Vector2(12.5, -24)
+position = Vector2(8, -24)
 shape = SubResource("RectangleShape2D_uldvi")
 
 [node name="HitArea2D2" type="Area2D" parent="."]

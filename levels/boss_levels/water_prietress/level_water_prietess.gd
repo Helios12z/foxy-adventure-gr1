@@ -1,5 +1,15 @@
 extends Node2D
 
+@export var serpent_eel_scene: PackedScene
+@export var golden_carp_scene: PackedScene
+
+@export var fight_trigger_area: Area2D                      
+@export var prewave_spawn_markers: Array[Marker2D] = []     
+@export var boss_bg_marker: Marker2D                       
+@export var boss_land_marker: Marker2D                      
+@export var boss_intro_jump_height: float = 220.0        
+@export var boss_parallax_layer: ParallaxLayer    
+
 @onready var boss_hud: Control = $CanvasLayer/BossHUD
 @onready var boss: CharacterBody2D = $World/WaterPrietest
 @onready var boss_platform_controller: Node2D = $World/BossPlatformController
@@ -8,6 +18,12 @@ extends Node2D
 @onready var chest: Node2D = $World/Chest
 
 @onready var ambient: AudioStreamPlayer2D = $Sound/Ambient
+@onready var boss_entry_sfx: AudioStreamPlayer2D = get_node_or_null("Sound/BossEntry")
+
+var _prewave_started: bool = false
+var _prewave_enemies_left: int = 0
+var _boss_intro_started: bool = false
+var _boss_in_parallax: bool = false
 
 func _enter_tree() -> void:
 	GameManager.current_stage = self
@@ -15,34 +31,152 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if not GameManager.respawn_at_portal():
 		GameManager.respawn_at_checkpoint()
-	
+
 	ambient.play(2.0)
-	
+
 	var boss_defeated := GameManager.is_boss_defeated()
 
 	if boss_defeated:
 		_setup_boss_defeated_state()
 	else:
+		if fight_trigger_area:
+			fight_trigger_area.monitoring = true
+			fight_trigger_area.monitorable = true
+
+			var player_body := get_node_or_null("World/Player")
+			if player_body is PhysicsBody2D:
+				fight_trigger_area.collision_mask = (player_body as PhysicsBody2D).collision_layer
+
 		_setup_boss_alive_state()
 
+func _process(_delta: float) -> void:
+	if _boss_in_parallax and boss_bg_marker and boss and boss.get_parent() == boss_parallax_layer:
+		var target_global := boss_bg_marker.global_position
+		var parallax_transform := boss_parallax_layer.get_global_transform()
+		var local_pos := parallax_transform.affine_inverse() * target_global
+		boss.position = local_pos
+		
 func _on_boss_start_fight() -> void:
 	boss_hud._on_boss_start_fighting()
 	await get_tree().create_timer(0.75).timeout
-	boss_platform_controller.start_boss_intro()
 
 func _on_boss_died() -> void:
 	boss_platform_controller.return_platform_after_boss_dead()
-	
-	var fall_time = boss_platform_controller.rise_time if boss_platform_controller.has_method("get") else 1.0
-	await get_tree().create_timer(fall_time + 1.25).timeout
+	await get_tree().create_timer(2.25).timeout
 	_spawn_chest()
-	
-func _on_complete_moving_up() -> void:
-	boss.seen_player = true 
-	boss_hud._on_boss_start_fighting()
-	if boss.phase_1 and not boss.phase_1.playing:
-		boss.phase_1.play()
-	
+
+func _on_fight_trigger_body_entered(body: Node) -> void:
+	if not body.is_in_group("Player"):
+		return
+	if _prewave_started:
+		return
+
+	_prewave_started = true
+	if fight_trigger_area:
+		fight_trigger_area.monitoring = false
+
+	boss_platform_controller.start_boss_intro()
+	_spawn_prewave_enemies()
+
+func _spawn_prewave_enemies() -> void:
+	_prewave_enemies_left = 0
+
+	var enemies: Array[Node2D] = [
+		serpent_eel_scene.instantiate() as Node2D,
+		serpent_eel_scene.instantiate() as Node2D,
+		golden_carp_scene.instantiate() as Node2D,
+		golden_carp_scene.instantiate() as Node2D
+	]
+
+	var world := get_node_or_null("World") as Node2D
+	if world == null:
+		world = self
+
+	for i in range(enemies.size()):
+		var enemy: Node2D = enemies[i]
+		var marker: Marker2D = prewave_spawn_markers[i]
+
+		if enemy == null or marker == null:
+			continue
+
+		world.add_child(enemy)
+
+		enemy.visible = true
+		if "modulate" in enemy:
+			enemy.modulate = Color(1, 1, 1, 1)
+		enemy.z_index = 0
+
+		var spawn_pos := marker.global_position
+		enemy.global_position = spawn_pos
+		_register_prewave_enemy(enemy)
+
+
+func _register_prewave_enemy(enemy: Node) -> void:
+	_prewave_enemies_left += 1
+	enemy.tree_exited.connect(_on_prewave_enemy_died.bind(enemy))
+
+func _on_prewave_enemy_died(_enemy: Node) -> void:
+	_prewave_enemies_left -= 1
+	if _prewave_enemies_left <= 0:
+		_start_boss_intro_jump()
+
+func _start_boss_intro_jump() -> void:
+	if _boss_intro_started:
+		return
+	_boss_intro_started = true
+
+	var world := get_node("World") as Node2D
+
+	var start_pos: Vector2 = boss.global_position
+	if boss_bg_marker:
+		start_pos = boss_bg_marker.global_position
+	boss.global_position = start_pos
+
+	var land_pos: Vector2 = boss.global_position
+	if boss_land_marker:
+		land_pos = boss_land_marker.global_position
+	elif boss_platform_controller and "rect_platform" in boss_platform_controller:
+		var rect_plat: Node2D = boss_platform_controller.rect_platform
+		if rect_plat:
+			land_pos = rect_plat.global_position
+
+	var apex_y = min(start_pos.y, land_pos.y) - boss_intro_jump_height
+	var apex_pos := Vector2(land_pos.x, apex_y)
+
+	boss.set_physics_process(false)
+	boss.change_animation("jump")
+
+	var tw := create_tween()
+
+	tw.tween_property(
+		boss,
+		"global_position",
+		apex_pos,
+		0.45
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+	tw.tween_callback(func ():
+		if boss_parallax_layer and boss.get_parent() == boss_parallax_layer and world:
+			var gp := boss.global_position
+			boss_parallax_layer.remove_child(boss)
+			world.add_child(boss)
+			boss.global_position = gp
+			_boss_in_parallax = false 
+	)
+
+	tw.tween_property(
+		boss,
+		"global_position",
+		land_pos,
+		0.35
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+	tw.finished.connect(func ():
+		boss.change_animation("idle")
+		boss.set_physics_process(true)
+		boss.emit_signal("start_fight")
+	)
+
 func _spawn_chest() -> void:
 	if chest == null:
 		return
@@ -57,12 +191,13 @@ func _spawn_chest() -> void:
 
 	var spawn_x = (a.x + b.x) * 0.5
 	var ground_y = a.y
-
 	var target_y = ground_y - feet.position.y
 	var start_y = target_y - 300.0
 
 	chest.global_position = Vector2(spawn_x, start_y)
-	add_child(chest)
+
+	if chest.get_parent() == null:
+		add_child(chest)
 
 	var tw := create_tween()
 	tw.tween_property(
@@ -84,7 +219,7 @@ func _set_chest_collision(root: Node, enabled: bool) -> void:
 			child.monitorable = enabled
 		if child.get_child_count() > 0:
 			_set_chest_collision(child, enabled)
-			
+
 func _setup_boss_alive_state() -> void:
 	if chest:
 		chest.visible = false
@@ -92,11 +227,41 @@ func _setup_boss_alive_state() -> void:
 
 	boss_hud.set_boss(boss)
 
-	if not boss.start_fight.is_connected(_on_boss_start_fight):
-		boss.start_fight.connect(_on_boss_start_fight)
+	_place_boss_idle_in_background()
+
+	if fight_trigger_area and not fight_trigger_area.body_entered.is_connected(_on_fight_trigger_body_entered):
+		fight_trigger_area.body_entered.connect(_on_fight_trigger_body_entered)
 
 	if not boss.boss_died.is_connected(_on_boss_died):
 		boss.boss_died.connect(_on_boss_died)
+
+	if not boss.start_fight.is_connected(_on_boss_start_fight):
+		boss.start_fight.connect(_on_boss_start_fight)
+		
+	if not boss.into_phase2.is_connected(_on_boss_into_phase2):
+		boss.into_phase2.connect(_on_boss_into_phase2)
+
+func _place_boss_idle_in_background() -> void:
+	if boss_bg_marker:
+		var target_global := boss_bg_marker.global_position
+
+		if boss_parallax_layer:
+			var gp := target_global
+			var old_parent := boss.get_parent()
+			if old_parent:
+				old_parent.remove_child(boss)
+			boss_parallax_layer.add_child(boss)
+			var parallax_transform := boss_parallax_layer.get_global_transform()
+			var local_pos := parallax_transform.affine_inverse() * gp
+			boss.position = local_pos
+			_boss_in_parallax = true
+		else:
+			boss.global_position = target_global
+			_boss_in_parallax = false
+
+	boss.modulate.a = 1.0
+	boss.set_physics_process(false)
+	boss.change_animation("idle")
 
 func _setup_boss_defeated_state() -> void:
 	if is_instance_valid(boss):
@@ -126,4 +291,7 @@ func _setup_boss_defeated_state() -> void:
 		if chest.has_node("AnimatedSprite2D"):
 			var anim := chest.get_node("AnimatedSprite2D") as AnimatedSprite2D
 			if chest_opened:
-				anim.play("open")   
+				anim.play("open")
+				
+func _on_boss_into_phase2() -> void:
+	pass

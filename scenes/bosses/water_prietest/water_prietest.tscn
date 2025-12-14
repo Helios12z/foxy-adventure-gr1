@@ -1,4 +1,4 @@
-[gd_scene load_steps=202 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=207 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3donb"]
@@ -164,7 +164,6 @@
 [ext_resource type="Script" uid="uid://bcsssihdl2g2r" path="res://scenes/bosses/water_prietest/jump.gd" id="156_l5lxe"]
 [ext_resource type="Texture2D" uid="uid://cqe13eldb6ff7" path="res://asset/water_prietest/surf/surf_6.png" id="157_lj8qf"]
 [ext_resource type="Script" uid="uid://dsjsihs611j7r" path="res://scenes/bosses/water_prietest/fall.gd" id="157_ym30o"]
-[ext_resource type="Script" uid="uid://c17d25emfxkex" path="res://scenes/bosses/water_prietest/run.gd" id="158_cootd"]
 [ext_resource type="Texture2D" uid="uid://c4wtpkx3usqyh" path="res://asset/water_prietest/surf/surf_7.png" id="158_srv6a"]
 [ext_resource type="Texture2D" uid="uid://pibk4o01vgc2" path="res://asset/water_prietest/surf/surf_8.png" id="159_yk4bp"]
 [ext_resource type="Texture2D" uid="uid://c0v3kndf0q8f6" path="res://asset/water_prietest/walk/walk_1.png" id="160_rhe6i"]
@@ -185,12 +184,18 @@
 [ext_resource type="Script" uid="uid://d2c06c2e4ocoy" path="res://scenes/bosses/water_prietest/roll.gd" id="181_spm2m"]
 [ext_resource type="Script" uid="uid://rqlnopwgspi0" path="res://scenes/bosses/water_prietest/hurt.gd" id="183_6cqs2"]
 [ext_resource type="Script" uid="uid://chi7fvld2woeg" path="res://scenes/bosses/water_prietest/dead.gd" id="184_bu7ft"]
-[ext_resource type="Script" uid="uid://b8usx670g1vsm" path="res://scenes/bosses/water_prietest/phase_2_windup.gd" id="185_bboxk"]
 [ext_resource type="Script" uid="uid://dgvne3nt5k0ia" path="res://scenes/bosses/water_prietest/surf.gd" id="186_pyckh"]
 [ext_resource type="Script" uid="uid://belugcidxb8jf" path="res://scenes/bosses/water_prietest/walk.gd" id="187_gbqh0"]
-[ext_resource type="AudioStream" uid="uid://d0d203cd5p73l" path="res://asset/sounds/water_prietess_sound/boss_music.mp3" id="188_i0py4"]
 [ext_resource type="Script" uid="uid://dbxaxhs0hiq7a" path="res://scenes/bosses/water_prietest/cast_into_phase_2.gd" id="189_ktdfs"]
+[ext_resource type="AudioStream" uid="uid://8fkhndgglr5v" path="res://asset/water_prietest/phase1.mp3" id="190_514da"]
 [ext_resource type="AudioStream" uid="uid://vrfc845cqvtl" path="res://asset/sounds/water_prietess_sound/slash.mp3" id="190_p2we0"]
+[ext_resource type="AudioStream" uid="uid://cvu5ag64m4eiq" path="res://asset/water_prietest/phase2_intro.mp3" id="191_xjnxp"]
+[ext_resource type="AudioStream" uid="uid://cym1bxq13ndmb" path="res://asset/water_prietest/phase2_loop.mp3" id="192_dhjuf"]
+[ext_resource type="AudioStream" uid="uid://dwvnobdvwjj4i" path="res://asset/sounds/water_prietess_sound/water_splash.mp3" id="192_y8wfg"]
+[ext_resource type="AudioStream" uid="uid://y38eh2uffch1" path="res://asset/sounds/water_prietess_sound/jump.wav" id="195_xjnxp"]
+[ext_resource type="AudioStream" uid="uid://d33w0liqmm4fb" path="res://asset/sounds/water_prietess_sound/roll.wav" id="196_dhjuf"]
+[ext_resource type="AudioStream" uid="uid://bli3d1axw47x2" path="res://asset/sounds/water_prietess_sound/defend.mp3" id="197_dmvcu"]
+[ext_resource type="AudioStream" uid="uid://g3kwsn8tyiu" path="res://asset/sounds/water_prietess_sound/phase2_talk.mp3" id="198_7ipbc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nk125"]
 size = Vector2(19, 36)
@@ -509,7 +514,7 @@ animations = [{
 "texture": ExtResource("96_6gnxb")
 }],
 "loop": false,
-"name": &"atk_sp",
+"name": &"atk_super",
 "speed": 10.0
 }, {
 "frames": [{
@@ -778,7 +783,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktdfs"]
-size = Vector2(13, 34.5)
+size = Vector2(8, 34.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_samf3"]
 size = Vector2(19, 36)
@@ -815,10 +820,9 @@ shape = SubResource("RectangleShape2D_nk125")
 material = SubResource("ShaderMaterial_p2we0")
 position = Vector2(0, -50)
 sprite_frames = SubResource("SpriteFrames_ed6l8")
-animation = &"atk_3"
+animation = &"atk_super"
 autoplay = "idle"
-frame = 26
-frame_progress = 1.0
+frame = 12
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
 collision_layer = 0
@@ -827,7 +831,7 @@ script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(0.5, -4.25)
+position = Vector2(1, -4.25)
 shape = SubResource("RectangleShape2D_ktdfs")
 debug_color = Color(0.5585858, 0.5607403, 0.019441742, 0.41960785)
 
@@ -888,12 +892,15 @@ shape = SubResource("CapsuleShape2D_gbqh0")
 debug_color = Color(0, 0.13333334, 0.7372549, 0.41960785)
 
 [node name="AtkSuperHitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("152_altnt")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/AtkSuperHitArea2D"]
 position = Vector2(57.5, -55)
 shape = SubResource("CircleShape2D_i0py4")
+debug_color = Color(0.893849, 0.00022698462, 0.7845825, 0.41960785)
 
 [node name="States" type="Node" parent="."]
 
@@ -918,26 +925,20 @@ script = ExtResource("177_pjmbv")
 [node name="Defend" type="Node" parent="States"]
 script = ExtResource("178_pjmbv")
 
-[node name="Jump" type="Node" parent="States"]
+[node name="JumpState" type="Node" parent="States"]
 script = ExtResource("156_l5lxe")
 
-[node name="Fall" type="Node" parent="States"]
+[node name="FallState" type="Node" parent="States"]
 script = ExtResource("157_ym30o")
 
 [node name="Roll" type="Node" parent="States"]
 script = ExtResource("181_spm2m")
-
-[node name="Run" type="Node" parent="States"]
-script = ExtResource("158_cootd")
 
 [node name="Hurt" type="Node" parent="States"]
 script = ExtResource("183_6cqs2")
 
 [node name="Dead" type="Node" parent="States"]
 script = ExtResource("184_bu7ft")
-
-[node name="Phase2_Windup" type="Node" parent="States"]
-script = ExtResource("185_bboxk")
 
 [node name="Surf" type="Node" parent="States"]
 script = ExtResource("186_pyckh")
@@ -950,11 +951,50 @@ script = ExtResource("189_ktdfs")
 
 [node name="Sound" type="Node2D" parent="."]
 
-[node name="BossMusic" type="AudioStreamPlayer2D" parent="Sound"]
-stream = ExtResource("188_i0py4")
+[node name="Phase1" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("190_514da")
 volume_db = 10.0
+bus = &"Music"
+parameters/looping = true
+
+[node name="Phase2Intro" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("191_xjnxp")
+volume_db = 5.0
+bus = &"Music"
+
+[node name="Phase2" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("192_dhjuf")
+volume_db = 5.0
+bus = &"Music"
 parameters/looping = true
 
 [node name="Slash" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("190_p2we0")
 volume_db = 5.0
+bus = &"SFX"
+
+[node name="WaterSlash" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("192_y8wfg")
+volume_db = 10.0
+pitch_scale = 5.0
+bus = &"SFX"
+
+[node name="Jump" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("195_xjnxp")
+volume_db = 5.0
+bus = &"SFX"
+
+[node name="Roll" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("196_dhjuf")
+volume_db = 10.0
+bus = &"SFX"
+
+[node name="Defend" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("197_dmvcu")
+volume_db = 10.0
+bus = &"SFX"
+
+[node name="Phase2Talk" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("198_7ipbc")
+volume_db = 5.0
+bus = &"SFX"

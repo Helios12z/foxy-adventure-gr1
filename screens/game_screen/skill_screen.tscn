@@ -1,0 +1,705 @@
+[gd_scene load_steps=22 format=3 uid="uid://b8jsosq2em0nc"]
+
+[ext_resource type="Script" uid="uid://b1eyokggcpuas" path="res://screens/game_screen/skill_screen.gd" id="1_skillscript"]
+[ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="2_g8ht1"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="3_yenis"]
+[ext_resource type="Texture2D" uid="uid://bv7tyyseapdis" path="res://asset/ui/player/susanoo_avatar1.png" id="4_ga1rl"]
+[ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="4_l2qfa"]
+[ext_resource type="Texture2D" uid="uid://dyitct72bmpf2" path="res://asset/tutorial/arrow.png" id="4_onmdm"]
+[ext_resource type="Texture2D" uid="uid://btk5dgncj12a1" path="res://asset/ui/player/susanoo_avatar1_cooldown.png" id="5_0to3b"]
+[ext_resource type="Texture2D" uid="uid://cx1m1wxkbipxh" path="res://asset/ui/close_button.png" id="5_5n7ko"]
+[ext_resource type="FontFile" uid="uid://cta457en76vru" path="res://asset/fonts/PixelOperator8-Bold.ttf" id="8_pc5ts"]
+[ext_resource type="Texture2D" uid="uid://dtwnvoh5jfgsn" path="res://asset/coin/coin/01.png" id="9_pxssm"]
+[ext_resource type="Texture2D" uid="uid://brctgih2lcsyj" path="res://asset/ui/skill/susanoo_shield_avatar.png" id="11_pxssm"]
+[ext_resource type="Texture2D" uid="uid://dfu3p5itat3hu" path="res://asset/ui/skill/susanoo_shield_avatar_2.png" id="12_p1g5r"]
+[ext_resource type="Texture2D" uid="uid://vlmix8wpr6vk" path="res://asset/ui/skill/susanoo_meteor_avatar.png" id="13_ns11h"]
+[ext_resource type="Texture2D" uid="uid://cnvnstt84pyk4" path="res://asset/ui/skill/susanoo_meteor_avatar_2.png" id="14_o8h44"]
+[ext_resource type="Texture2D" uid="uid://dnqaqj0su1l0b" path="res://asset/ui/player/room_avatar1.png" id="15_471hl"]
+[ext_resource type="Texture2D" uid="uid://eamr15pas2lm" path="res://asset/ui/player/room_avatar1 (1).png" id="16_qioaf"]
+[ext_resource type="Texture2D" uid="uid://djj7e41qf3aij" path="res://asset/ui/skill/room_level2_avatar_1.png" id="17_qioaf"]
+[ext_resource type="Texture2D" uid="uid://bqrn7io56fdbc" path="res://asset/ui/skill/room_level2_avatar_2.png" id="18_kyils"]
+[ext_resource type="Texture2D" uid="uid://5cqm3yj0gpgl" path="res://asset/ui/skill/room_level3_avatar_1.png" id="19_sytrg"]
+[ext_resource type="Texture2D" uid="uid://kfu1vf04n6e2" path="res://asset/ui/skill/room_level3_avatar_2.png" id="20_sytrg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rbs2k"]
+
+[node name="SkillScreen" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_skillscript")
+susanoo_level_2_cost = 1
+susanoo_level_3_cost = 1
+room_level_2_description = "Room Skill 2
+HP Recovery
+"
+room_level_2_cost = 1
+room_level_3_description = "Room Skill 3
+Invulnerable"
+room_level_3_cost = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(160, 96)
+layout_mode = 0
+offset_left = -29.0
+offset_top = -30.0
+offset_right = 1190.0
+offset_bottom = 674.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g8ht1")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Label" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 447.0
+offset_top = 70.0
+offset_right = 625.0
+offset_bottom = 93.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "UPGRADE SKILLS"
+label_settings = SubResource("LabelSettings_rbs2k")
+
+[node name="CloseTextureButton" type="TextureButton" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 1107.0
+offset_top = 45.0
+offset_right = 1121.0
+offset_bottom = 60.0
+scale = Vector2(4, 4)
+toggle_mode = true
+texture_normal = ExtResource("5_5n7ko")
+texture_pressed = ExtResource("5_5n7ko")
+texture_hover = ExtResource("5_5n7ko")
+texture_disabled = ExtResource("5_5n7ko")
+texture_focused = ExtResource("5_5n7ko")
+
+[node name="Coins" type="Control" parent="NinePatchRect"]
+anchors_preset = 0
+offset_left = 415.00003
+offset_top = 615.0
+offset_right = 615.0
+offset_bottom = 655.0
+scale = Vector2(1.2, 1.2)
+
+[node name="Label" type="Label" parent="NinePatchRect/Coins"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("8_pc5ts")
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="NinePatchRect/Coins"]
+layout_mode = 0
+offset_left = 160.0
+offset_right = 200.0
+offset_bottom = 40.0
+texture = ExtResource("9_pxssm")
+
+[node name="SkillSusanoo" type="Control" parent="NinePatchRect"]
+anchors_preset = 0
+offset_left = -11.0
+offset_top = 41.0
+offset_right = 81.0
+offset_bottom = 113.0
+
+[node name="SkillName" type="Label" parent="NinePatchRect/SkillSusanoo"]
+layout_mode = 0
+offset_left = 79.0
+offset_top = 86.0
+offset_right = 257.0
+offset_bottom = 109.0
+scale = Vector2(1.5, 1.5)
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "SUSANOO"
+label_settings = SubResource("LabelSettings_rbs2k")
+
+[node name="Level1" type="Control" parent="NinePatchRect/SkillSusanoo"]
+anchors_preset = 0
+offset_left = -44.0
+offset_top = 7.0
+offset_right = -4.0
+offset_bottom = 47.0
+
+[node name="Level" type="Label" parent="NinePatchRect/SkillSusanoo/Level1"]
+layout_mode = 0
+offset_left = 289.0
+offset_top = 117.0
+offset_right = 373.0
+offset_bottom = 140.0
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "LEVEL 1"
+
+[node name="Icon" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level1"]
+layout_mode = 0
+offset_left = 131.0
+offset_top = 68.0
+offset_right = 814.0
+offset_bottom = 1092.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_ga1rl")
+
+[node name="Overlay" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level1"]
+layout_mode = 0
+offset_left = 131.0
+offset_top = 68.0
+offset_right = 814.0
+offset_bottom = 1092.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("5_0to3b")
+
+[node name="Description" type="Label" parent="NinePatchRect/SkillSusanoo/Level1"]
+layout_mode = 0
+offset_left = 285.0
+offset_top = 130.0
+offset_right = 435.0
+offset_bottom = 212.0
+theme_override_fonts/font = ExtResource("4_l2qfa")
+text = "Skill level 1
+"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/SkillSusanoo/Level1"]
+custom_minimum_size = Vector2(92, 64)
+layout_mode = 0
+offset_left = 298.0
+offset_top = 214.0
+offset_right = 390.0
+offset_bottom = 278.0
+scale = Vector2(0.6, 0.6)
+
+[node name="Background" type="NinePatchRect" parent="NinePatchRect/SkillSusanoo/Level1/Button"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_right = 92.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g8ht1")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="NinePatchRect/SkillSusanoo/Level1/Button"]
+position = Vector2(47, 29)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("4_onmdm")
+
+[node name="Cost" type="Label" parent="NinePatchRect/SkillSusanoo/Level1"]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 224.0
+offset_right = 405.0
+offset_bottom = 273.0
+theme_override_fonts/font = ExtResource("8_pc5ts")
+text = "10
+"
+horizontal_alignment = 1
+
+[node name="Coin" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level1"]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 212.0
+offset_right = 443.0
+offset_bottom = 252.0
+texture = ExtResource("9_pxssm")
+
+[node name="Level2" type="Control" parent="NinePatchRect/SkillSusanoo"]
+anchors_preset = 0
+offset_left = 314.0
+offset_top = 6.0
+offset_right = 354.0
+offset_bottom = 46.0
+
+[node name="Level2" type="Label" parent="NinePatchRect/SkillSusanoo/Level2"]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 116.0
+offset_right = 372.0
+offset_bottom = 139.0
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "LEVEL 2"
+
+[node name="Icon" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level2"]
+layout_mode = 0
+offset_left = 137.00003
+offset_top = 125.99999
+offset_right = 1225.0
+offset_bottom = 1086.0
+scale = Vector2(0.145, 0.145)
+texture = ExtResource("11_pxssm")
+
+[node name="Overlay" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level2"]
+layout_mode = 0
+offset_left = 137.00003
+offset_top = 125.99999
+offset_right = 1225.0
+offset_bottom = 1086.0
+scale = Vector2(0.145, 0.145)
+texture = ExtResource("12_p1g5r")
+
+[node name="Description" type="Label" parent="NinePatchRect/SkillSusanoo/Level2"]
+layout_mode = 0
+offset_left = 285.0
+offset_top = 130.0
+offset_right = 435.0
+offset_bottom = 212.0
+theme_override_fonts/font = ExtResource("4_l2qfa")
+text = "Skill level 2
+"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/SkillSusanoo/Level2"]
+custom_minimum_size = Vector2(92, 64)
+layout_mode = 0
+offset_left = 298.0
+offset_top = 214.0
+offset_right = 390.0
+offset_bottom = 278.0
+scale = Vector2(0.6, 0.6)
+
+[node name="Background" type="NinePatchRect" parent="NinePatchRect/SkillSusanoo/Level2/Button"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_right = 92.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g8ht1")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="NinePatchRect/SkillSusanoo/Level2/Button"]
+position = Vector2(47, 29)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("4_onmdm")
+
+[node name="Cost" type="Label" parent="NinePatchRect/SkillSusanoo/Level2"]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 224.0
+offset_right = 405.0
+offset_bottom = 273.0
+theme_override_fonts/font = ExtResource("8_pc5ts")
+text = "10
+"
+horizontal_alignment = 1
+
+[node name="Coin" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level2"]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 212.0
+offset_right = 443.0
+offset_bottom = 252.0
+texture = ExtResource("9_pxssm")
+
+[node name="Level3" type="Control" parent="NinePatchRect/SkillSusanoo"]
+anchors_preset = 0
+offset_left = 680.0
+offset_top = 10.0
+offset_right = 720.0
+offset_bottom = 50.0
+
+[node name="Level3" type="Label" parent="NinePatchRect/SkillSusanoo/Level3"]
+layout_mode = 0
+offset_left = 284.0
+offset_top = 114.0
+offset_right = 368.0
+offset_bottom = 137.0
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "LEVEL 3"
+
+[node name="Icon" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level3"]
+layout_mode = 0
+offset_left = 66.99999
+offset_top = 126.99999
+offset_right = 1603.0
+offset_bottom = 799.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_ns11h")
+
+[node name="Overlay" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level3"]
+layout_mode = 0
+offset_left = 66.99999
+offset_top = 126.99999
+offset_right = 1603.0
+offset_bottom = 799.0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("14_o8h44")
+
+[node name="Description" type="Label" parent="NinePatchRect/SkillSusanoo/Level3"]
+layout_mode = 0
+offset_left = 285.0
+offset_top = 130.0
+offset_right = 435.0
+offset_bottom = 212.0
+theme_override_fonts/font = ExtResource("4_l2qfa")
+text = "Skill level 3
+"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/SkillSusanoo/Level3"]
+custom_minimum_size = Vector2(92, 64)
+layout_mode = 0
+offset_left = 298.0
+offset_top = 214.0
+offset_right = 390.0
+offset_bottom = 278.0
+scale = Vector2(0.6, 0.6)
+
+[node name="Background" type="NinePatchRect" parent="NinePatchRect/SkillSusanoo/Level3/Button"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_right = 92.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g8ht1")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="NinePatchRect/SkillSusanoo/Level3/Button"]
+position = Vector2(47, 29)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("4_onmdm")
+
+[node name="Cost" type="Label" parent="NinePatchRect/SkillSusanoo/Level3"]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 224.0
+offset_right = 405.0
+offset_bottom = 273.0
+theme_override_fonts/font = ExtResource("8_pc5ts")
+text = "10
+"
+horizontal_alignment = 1
+
+[node name="Coin" type="TextureRect" parent="NinePatchRect/SkillSusanoo/Level3"]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 212.0
+offset_right = 443.0
+offset_bottom = 252.0
+texture = ExtResource("9_pxssm")
+
+[node name="SkillRoom" type="Control" parent="NinePatchRect"]
+anchors_preset = 0
+offset_left = -13.0
+offset_top = 281.0
+offset_right = 79.0
+offset_bottom = 353.0
+
+[node name="SkillName" type="Label" parent="NinePatchRect/SkillRoom"]
+layout_mode = 0
+offset_left = 79.0
+offset_top = 86.0
+offset_right = 257.0
+offset_bottom = 109.0
+scale = Vector2(1.5, 1.5)
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "ROOM"
+label_settings = SubResource("LabelSettings_rbs2k")
+
+[node name="Level1" type="Control" parent="NinePatchRect/SkillRoom"]
+anchors_preset = 0
+offset_left = -44.0
+offset_top = 7.0
+offset_right = -4.0
+offset_bottom = 47.0
+
+[node name="Level" type="Label" parent="NinePatchRect/SkillRoom/Level1"]
+layout_mode = 0
+offset_left = 289.0
+offset_top = 117.0
+offset_right = 373.0
+offset_bottom = 140.0
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "LEVEL 1"
+
+[node name="Icon" type="TextureRect" parent="NinePatchRect/SkillRoom/Level1"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 124.00001
+offset_right = 1151.0
+offset_bottom = 972.0
+scale = Vector2(0.165, 0.165)
+texture = ExtResource("15_471hl")
+
+[node name="Overlay" type="TextureRect" parent="NinePatchRect/SkillRoom/Level1"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 124.00001
+offset_right = 1151.0
+offset_bottom = 972.0
+scale = Vector2(0.165, 0.165)
+texture = ExtResource("16_qioaf")
+
+[node name="Description" type="Label" parent="NinePatchRect/SkillRoom/Level1"]
+layout_mode = 0
+offset_left = 285.0
+offset_top = 130.0
+offset_right = 435.0
+offset_bottom = 212.0
+theme_override_fonts/font = ExtResource("4_l2qfa")
+text = "Skill level 1
+"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/SkillRoom/Level1"]
+custom_minimum_size = Vector2(92, 64)
+layout_mode = 0
+offset_left = 298.0
+offset_top = 214.0
+offset_right = 390.0
+offset_bottom = 278.0
+scale = Vector2(0.6, 0.6)
+
+[node name="Background" type="NinePatchRect" parent="NinePatchRect/SkillRoom/Level1/Button"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_right = 92.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g8ht1")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="NinePatchRect/SkillRoom/Level1/Button"]
+position = Vector2(47, 29)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("4_onmdm")
+
+[node name="Cost" type="Label" parent="NinePatchRect/SkillRoom/Level1"]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 224.0
+offset_right = 405.0
+offset_bottom = 273.0
+theme_override_fonts/font = ExtResource("8_pc5ts")
+text = "10
+"
+horizontal_alignment = 1
+
+[node name="Coin" type="TextureRect" parent="NinePatchRect/SkillRoom/Level1"]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 212.0
+offset_right = 443.0
+offset_bottom = 252.0
+texture = ExtResource("9_pxssm")
+
+[node name="Level2" type="Control" parent="NinePatchRect/SkillRoom"]
+anchors_preset = 0
+offset_left = 318.0
+offset_top = 7.0
+offset_right = 358.0
+offset_bottom = 47.0
+
+[node name="Level" type="Label" parent="NinePatchRect/SkillRoom/Level2"]
+layout_mode = 0
+offset_left = 289.0
+offset_top = 117.0
+offset_right = 373.0
+offset_bottom = 140.0
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "LEVEL 2"
+
+[node name="Icon" type="TextureRect" parent="NinePatchRect/SkillRoom/Level2"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 124.00001
+offset_right = 1151.0
+offset_bottom = 972.0
+scale = Vector2(0.152, 0.152)
+texture = ExtResource("17_qioaf")
+
+[node name="Overlay" type="TextureRect" parent="NinePatchRect/SkillRoom/Level2"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 124.00001
+offset_right = 1151.0
+offset_bottom = 972.0
+scale = Vector2(0.152, 0.152)
+texture = ExtResource("18_kyils")
+
+[node name="Description" type="Label" parent="NinePatchRect/SkillRoom/Level2"]
+layout_mode = 0
+offset_left = 285.0
+offset_top = 130.0
+offset_right = 435.0
+offset_bottom = 212.0
+theme_override_fonts/font = ExtResource("4_l2qfa")
+text = "Skill level 1
+"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/SkillRoom/Level2"]
+custom_minimum_size = Vector2(92, 64)
+layout_mode = 0
+offset_left = 298.0
+offset_top = 214.0
+offset_right = 390.0
+offset_bottom = 278.0
+scale = Vector2(0.6, 0.6)
+
+[node name="Background" type="NinePatchRect" parent="NinePatchRect/SkillRoom/Level2/Button"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_right = 92.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g8ht1")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="NinePatchRect/SkillRoom/Level2/Button"]
+position = Vector2(47, 29)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("4_onmdm")
+
+[node name="Cost" type="Label" parent="NinePatchRect/SkillRoom/Level2"]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 224.0
+offset_right = 405.0
+offset_bottom = 273.0
+theme_override_fonts/font = ExtResource("8_pc5ts")
+text = "10
+"
+horizontal_alignment = 1
+
+[node name="Coin" type="TextureRect" parent="NinePatchRect/SkillRoom/Level2"]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 212.0
+offset_right = 443.0
+offset_bottom = 252.0
+texture = ExtResource("9_pxssm")
+
+[node name="Level3" type="Control" parent="NinePatchRect/SkillRoom"]
+anchors_preset = 0
+offset_left = 684.0
+offset_top = 7.0
+offset_right = 724.0
+offset_bottom = 47.0
+
+[node name="Level" type="Label" parent="NinePatchRect/SkillRoom/Level3"]
+layout_mode = 0
+offset_left = 289.0
+offset_top = 117.0
+offset_right = 373.0
+offset_bottom = 140.0
+theme_override_fonts/font = ExtResource("3_yenis")
+text = "LEVEL 3"
+
+[node name="Icon" type="TextureRect" parent="NinePatchRect/SkillRoom/Level3"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 124.00001
+offset_right = 1151.0
+offset_bottom = 972.0
+scale = Vector2(0.152, 0.152)
+texture = ExtResource("19_sytrg")
+
+[node name="Overlay" type="TextureRect" parent="NinePatchRect/SkillRoom/Level3"]
+layout_mode = 0
+offset_left = 127.0
+offset_top = 124.00001
+offset_right = 1151.0
+offset_bottom = 972.0
+scale = Vector2(0.152, 0.152)
+texture = ExtResource("20_sytrg")
+
+[node name="Description" type="Label" parent="NinePatchRect/SkillRoom/Level3"]
+layout_mode = 0
+offset_left = 285.0
+offset_top = 130.0
+offset_right = 435.0
+offset_bottom = 212.0
+theme_override_fonts/font = ExtResource("4_l2qfa")
+text = "Skill level 1
+"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/SkillRoom/Level3"]
+custom_minimum_size = Vector2(92, 64)
+layout_mode = 0
+offset_left = 298.0
+offset_top = 214.0
+offset_right = 390.0
+offset_bottom = 278.0
+scale = Vector2(0.6, 0.6)
+
+[node name="Background" type="NinePatchRect" parent="NinePatchRect/SkillRoom/Level3/Button"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 0
+offset_right = 92.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_g8ht1")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="NinePatchRect/SkillRoom/Level3/Button"]
+position = Vector2(47, 29)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("4_onmdm")
+
+[node name="Cost" type="Label" parent="NinePatchRect/SkillRoom/Level3"]
+layout_mode = 0
+offset_left = 365.0
+offset_top = 224.0
+offset_right = 405.0
+offset_bottom = 273.0
+theme_override_fonts/font = ExtResource("8_pc5ts")
+text = "10
+"
+horizontal_alignment = 1
+
+[node name="Coin" type="TextureRect" parent="NinePatchRect/SkillRoom/Level3"]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 212.0
+offset_right = 443.0
+offset_bottom = 252.0
+texture = ExtResource("9_pxssm")
+
+[connection signal="pressed" from="NinePatchRect/CloseTextureButton" to="." method="_on_close_texture_button_pressed"]

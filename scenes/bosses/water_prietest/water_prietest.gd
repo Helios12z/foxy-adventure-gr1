@@ -5,9 +5,11 @@ signal boss_died
 signal into_phase2
 signal start_fight
 
+@export var roll_peak_height: float = 30.0
 @export var spike_damage: int = 150 
 @export var max_health_boss: int = 1000
-@export var boss_jump_speed: float = 420.0     
+@export var boss_jump_speed: float = 500.0     
+@export var attack_range: float = 140.0
 @export var move_speed: float = 80.0
 @export var surf_speed: float = 100.0    
 @export var air_horizontal_speed: float = 60.0
@@ -18,26 +20,17 @@ signal start_fight
 @export var atk1_windup_time: float = 1.25
 @export var atk2_windup_time: float = 1.0
 @export var atk3_windup_time: float = 0.75
-@export var atk_super_windup_time: float = 0.5
+@export var atk_super_windup_time: float = 0.75
 @export var atk_air_windup_time: float = 0.8
 @export var defend_range: float = 80.0
-@export var defend_windup_time: float = 0.3
-@export var defend_duration: float = 1.0
-@export var defend_cooldown: float = 3.0
-@export var attack_prepare_time: float = 5
+@export var defend_cooldown: float = 7.0
+@export var attack_prepare_time: float = 2.5
 @export var roll_escape_distance: float = 35.0
-@export var roll_same_level_threshold: float = 32.0  
+@export var roll_same_level_threshold: float = 32.0
+@export var roll_cooldown: float = 7.0  
 
-@export var retaliate_damage_window_seconds: float = 6.0 #6 seconds
-@export var retaliate_combo_hits: int = 3  #3 hits
-
-var can_attack: bool = true
-var attack_cooldown_timer: float = 0.0
-var can_defend: bool = true
-var defend_cooldown_timer: float = 0.0
-
-var _phase2_transition_running: bool = false
-var _original_time_scale: float = 1.0
+@export var retaliate_damage_window_seconds: float = 4.0 
+@export var retaliate_combo_hits: int = 8 
 
 @export var bound_point_a: Node2D
 @export var bound_point_b: Node2D
@@ -46,6 +39,16 @@ var _original_time_scale: float = 1.0
 @export var jump_detection_range: float = 300.0
 @export var max_jump_distance: float = 200.0
 @export var jump_height_tolerance: float = 100.0
+
+var can_attack: bool = true
+var attack_cooldown_timer: float = 0.0
+var can_defend: bool = true
+var defend_cooldown_timer: float = 0.0
+var can_roll: bool = true
+var roll_cooldown_timer: float = 0.0
+var state_transition_cooldown: float = 0.0
+var _phase2_transition_running: bool = false
+var _original_time_scale: float = 1.0
 
 var jump_markers: Array[JumpMarker2D] = []
 var current_jump_marker: JumpMarker2D = null
@@ -58,20 +61,21 @@ var target_jump_marker: JumpMarker2D = null
 @onready var atk2_collision_shape_2d_left: CollisionShape2D = $Direction/Atk2HitArea2D2/CollisionShape2D
 @onready var atk3_collision_shape_2d: CollisionShape2D = $Direction/Atk3HitArea2D/CollisionShape2D
 @onready var atk_super_collision_shape_2d: CollisionShape2D = $Direction/AtkSuperHitArea2D/CollisionShape2D
+@onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
+@onready var hurt_collision_shape_2d: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
-@onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
+
+@onready var phase_1: AudioStreamPlayer2D = $Sound/Phase1
+@onready var phase_2_intro: AudioStreamPlayer2D = $Sound/Phase2Intro
+@onready var phase_2: AudioStreamPlayer2D = $Sound/Phase2
 @onready var slash: AudioStreamPlayer2D = $Sound/Slash
-
-enum MoveMode {
-	MOVE_NONE,
-	MOVE_CHASE_SAME_LEVEL,
-	MOVE_GO_EDGE_FOR_FALL,
-	MOVE_GO_EDGE_FOR_JUMP,
-}
-
-var move_mode: int = MoveMode.MOVE_NONE
-var move_target_x: float = 0.0
+@onready var water_slash: AudioStreamPlayer2D = $Sound/WaterSlash
+@onready var jump_sound: AudioStreamPlayer2D = $Sound/Jump
+@onready var roll: AudioStreamPlayer2D = $Sound/Roll
+@onready var defend: AudioStreamPlayer2D = $Sound/Defend
+@onready var phase_2_talk: AudioStreamPlayer2D = $Sound/Phase2Talk
 
 var seen_player: bool = false 
 var _flash_tw: Tween
@@ -95,6 +99,8 @@ func _ready() -> void:
 	_update_level_bounds_from_markers()
 	_init_jump_markers()
 	_disable_hit_collisionshape()
+	
+	phase_2_intro.finished.connect(_on_phase_2_intro_finished)
 
 	fsm = FSM.new(self, $States, $States/Idle)
 	
@@ -107,22 +113,24 @@ func _disable_hit_collisionshape()->void:
 		atk_super_collision_shape_2d.disabled = true 
 
 func _physics_process(delta: float) -> void:
-	# Update defend cooldown
 	update_defend_cooldown(delta)
-
-	# Update attack cooldown
+	update_roll_cooldown(delta)
 	update_attack_cooldown(delta)
-
-	if fsm != null: fsm._update(delta)
+	update_state_transition_cooldown(delta)
+	_detect_player()
 
 	if fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.surf: 
 		_update_facing()
-	_detect_player()
-	
-	_try_roll_if_player_too_close()
+
+	_check_player_attack_input()
 
 	super._physics_process(delta)
 	_keep_inside_room_and_avoid_fall()
+		
+	if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
+		animated_sprite_2d.speed_scale = 1.0
+		
+	print(fsm.current_state)
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -130,28 +138,38 @@ func _init_hurt_area() -> void:
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
-	# Don't take damage during phase 2 transition
+	var on_ground = (
+			fsm.current_state == fsm.states.idle
+			or fsm.current_state == fsm.states.walk
+			or fsm.current_state == fsm.states.surf
+		)
+	
 	if _phase2_transition_running:
 		return
 
-	if fsm.current_state == fsm.states.roll:
-		var roll_state = fsm.current_state
-		if roll_state.has_method("has_invincibility") and roll_state.has_invincibility():
-			return
+	if fsm.current_state == fsm.states.roll: 
+		return
 
+	_note_damage_hit()
+
+	if _took_consecutive_damage():
+		var choice := randf()
+		if choice < 0.7:
+			fsm.change_state(fsm.states.defend)
+		else:
+			fsm.change_state(fsm.states.roll)
+		_recent_damage_times.clear()
+		return
+
+	var should_block := false
 	if fsm.current_state == fsm.states.defend:
-		var defend_state = fsm.current_state
-		if defend_state.has_method("should_block_damage") and defend_state.should_block_damage(_dir):
-			flash_hurt(0.1, 1, Color.CYAN)
-			return
+		should_block = fsm.current_state.should_block_damage(_dir)
+
+	if should_block:
+		return
 
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
-	_note_damage_hit()
-	
-	if fsm.current_state != fsm.states.idle or fsm.current_state != fsm.states.walk or fsm.current_state != fsm.states.surf:
-		if fsm.current_state != fsm.states.defend: 
-			flash_hurt(0.25, 3)
 
 	if health <= 0.0:
 		if fsm and fsm.current_state != fsm.states.dead:
@@ -165,14 +183,10 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 		_start_phase2_transition()
 		return
 
-	if _took_consecutive_damage():
-		if fsm.current_state == fsm.states.walk and fsm.current_state != fsm.states.dead:
-			fsm.change_state(fsm.states.roll)
-		_recent_damage_times.clear()
-		return 
-
-	if fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.surf:
+	if on_ground:
 		fsm.change_state(fsm.states.hurt)
+	else: 
+		flash_hurt()
 
 func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -> void:
 	var mat := animated_sprite_2d.material as ShaderMaterial
@@ -194,17 +208,14 @@ func flash_hurt(duration := 0.25, blinks := 3, color := Color(1, 0.2, 0.2, 1)) -
 func _now_secs() -> float:
 	return Time.get_ticks_msec() / 1000.0
 
-
 func _prune_damage_times(now_secs: float) -> void:
 	while _recent_damage_times.size() > 0 and now_secs - _recent_damage_times[0] > retaliate_damage_window_seconds:
 		_recent_damage_times.remove_at(0)
-
 
 func _note_damage_hit() -> void:
 	var now := _now_secs()
 	_recent_damage_times.append(now)
 	_prune_damage_times(now)
-
 
 func _took_consecutive_damage() -> bool:
 	var now := _now_secs()
@@ -223,15 +234,18 @@ func _update_facing() -> void:
 	if p == null:
 		return
 
-	var dir_x := -1 if p.global_position.x < global_position.x else 1
-	change_direction(dir_x)
+	var dx := p.global_position.x - global_position.x
+	if abs(dx) <= 10:
+		return
+
+	change_direction(1 if dx > 0.0 else -1)
 	
 func _detect_player()->void:
 	if seen_player: return
 	if _distance_to_player()<=280:
 		seen_player = true
 		emit_signal("start_fight") 
-		boss_music.play()
+		phase_1.play()
 			
 func _update_level_bounds_from_markers() -> void:
 	if bound_point_a == null or bound_point_b == null:
@@ -276,6 +290,24 @@ func get_nearest_jump_marker() -> JumpMarker2D:
 			nearest = marker
 
 	return nearest
+	
+func get_nearest_jump_marker_to_position(pos: Vector2) -> JumpMarker2D:
+	if jump_markers.is_empty():
+		return null
+
+	var nearest: JumpMarker2D = null
+	var min_distance := INF
+
+	for marker in jump_markers:
+		if not marker or not marker.is_active:
+			continue
+
+		var d := pos.distance_to(marker.global_position)
+		if d < min_distance:
+			min_distance = d
+			nearest = marker
+
+	return nearest
 
 func get_best_jump_marker_to_player() -> JumpMarker2D:
 	var player = get_player()
@@ -292,7 +324,6 @@ func get_best_jump_marker_to_player() -> JumpMarker2D:
 		var distance_to_player = marker.global_position.distance_to(player.global_position)
 		var distance_to_boss = global_position.distance_to(marker.global_position)
 
-		# Score considers both distances and priority
 		var score = distance_to_player + (distance_to_boss * 0.5) - (marker.jump_priority * 20.0)
 		if not marker.is_safe_spot:
 			score += 50.0
@@ -311,16 +342,13 @@ func should_defend() -> bool:
 	if not player:
 		return false
 
-	# Check if player is in defend range and facing us
 	var distance = _distance_to_player()
 	if distance > defend_range:
 		return false
 
-	# Check if we're facing the player (can only defend forward)
 	var player_dir = sign(player.global_position.x - global_position.x)
 	var facing_dir = 1 if not animated_sprite_2d.flip_h else -1
 
-	# Only defend if we're facing the player
 	return player_dir == facing_dir
 
 func update_defend_cooldown(delta: float) -> void:
@@ -342,13 +370,26 @@ func update_attack_cooldown(delta: float) -> void:
 func start_attack_cooldown() -> void:
 	can_attack = false
 	attack_cooldown_timer = attack_prepare_time
-	
+
+func update_roll_cooldown(delta: float) -> void:
+	if roll_cooldown_timer > 0:
+		roll_cooldown_timer -= delta
+		if roll_cooldown_timer <= 0:
+			can_roll = true
+
+func start_roll_cooldown() -> void:
+	can_roll = false
+	roll_cooldown_timer = roll_cooldown
+
+func update_state_transition_cooldown(delta: float) -> void:
+	if state_transition_cooldown > 0:
+		state_transition_cooldown -= delta
+
 func clamp_x_to_room(x: float) -> float:
 	var lb: Rect2 = level_bounds
 	if lb.size.x == 0.0:
 		return x
 	return clamp(x, lb.position.x, lb.position.x + lb.size.x)
-
 
 func _keep_inside_room_and_avoid_fall() -> void:
 	var lb: Rect2 = level_bounds
@@ -362,7 +403,6 @@ func _keep_inside_room_and_avoid_fall() -> void:
 	var out_left := pos.x < left
 	var out_right := pos.x > right
 
-	# 1) Nếu đã vượt bound → snap lại, rồi roll cho an toàn
 	if out_left or out_right:
 		pos.x = clamp(pos.x, left, right)
 		global_position = pos
@@ -371,48 +411,12 @@ func _keep_inside_room_and_avoid_fall() -> void:
 			fsm.change_state(fsm.states.roll)
 		return
 
-	# 2) Vẫn trong room nhưng sắp tới mép mà còn tiếp tục đi theo hướng đó
 	var dir_x = sign(velocity.x)
 	if dir_x != 0:
 		var ahead_x = pos.x + dir_x * 32.0
-		# Gần mép bound + một tí buffer
 		if ahead_x <= left + 8.0 or ahead_x >= right - 8.0:
 			if is_on_floor() and fsm and fsm.current_state != fsm.states.roll:
 				fsm.change_state(fsm.states.roll)
-
-func _try_roll_if_player_too_close() -> void:
-	if fsm == null:
-		return
-
-	if fsm.current_state in [
-		fsm.states.roll,
-		fsm.states.defend,
-		fsm.states.cast_into_phase_2
-	]:
-		return
-
-	var player := get_player()
-	if player == null:
-		return
-
-	if not is_on_floor():
-		return
-
-	if not (fsm.current_state in [fsm.states.idle, fsm.states.walk, fsm.states.surf, fsm.states.atk_1]):
-		return
-
-	var dy = abs(player.global_position.y - global_position.y)
-	if dy > roll_same_level_threshold:
-		return
-
-	var dist = abs(player.global_position.x - global_position.x)
-	if dist > roll_escape_distance:
-		return
-
-	var facing_dir := 1 if not animated_sprite_2d.flip_h else -1
-	var player_dir = sign(player.global_position.x - global_position.x)
-	if player_dir != 0 and player_dir == facing_dir:
-		fsm.change_state(fsm.states.roll)
 
 func _start_phase2_transition() -> void:
 	if _phase2_transition_running:
@@ -434,16 +438,82 @@ func _start_phase2_transition() -> void:
 	tw.tween_callback(Callable(self, "_finish_phase2_transition"))
 
 func _finish_phase2_transition() -> void:
-	# Restore normal time scale
 	Engine.time_scale = 1.0
+	
+	phase_2_talk.play()
 
-	# Set phase 2 flag
 	in_phase2 = true
 	_phase2_transition_running = false
 
-	# Emit phase 2 signal
 	emit_signal("into_phase2")
 
-	# Stop phase 1 music, play phase 2 music
-	if boss_music:
-		boss_music.stop()
+	phase_1.stop()
+	phase_2_intro.play()
+		
+func _get_boss_platform_controller() -> Node:
+	var stage = GameManager.current_stage
+	if stage == null:
+		return null
+
+	if stage.has_node("World/BossPlatformController"):
+		return stage.get_node("World/BossPlatformController")
+	return null
+
+func _check_player_attack_input() -> void:
+	if not seen_player or _phase2_transition_running or fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.atk_2 or fsm.current_state == fsm.states.atk_3 or fsm.current_state == fsm.states.atk_super or fsm.current_state == fsm.states.atk_air:
+		return
+
+	if Input.is_action_just_pressed("attack"):
+		var player = get_player()
+		if not player:
+			return
+
+		var distance_to_player = _distance_to_player()
+
+		if distance_to_player <= attack_range:
+			var should_use_defend = false
+			var should_use_roll = false
+
+			if can_defend and defend_cooldown_timer <= 0:
+				var player_dir = sign(player.global_position.x - global_position.x)
+				var facing_dir = 1 if not animated_sprite_2d.flip_h else -1
+
+				if player_dir == facing_dir and distance_to_player <= defend_range:
+					should_use_defend = true
+
+			if not should_use_defend and can_roll and roll_cooldown_timer <= 0:
+				should_use_roll = true
+
+			if should_use_defend:
+				start_defend_cooldown()
+				fsm.change_state(fsm.states.defend)
+			elif should_use_roll:
+				start_roll_cooldown()
+				fsm.change_state(fsm.states.roll)
+				
+func _on_phase_2_intro_finished() -> void:
+	if in_phase2 and phase_2 and not phase_2.playing:
+		phase_2.play()
+	
+func get_marker_at_pos(pos: Vector2) -> JumpMarker2D:
+	if jump_markers.is_empty():
+		return null
+
+	var best: JumpMarker2D = null
+	var best_score := INF
+
+	for m in jump_markers:
+		if m == null or not m.is_active:
+			continue
+
+		var half := m.platform_size * 0.5
+		var dx = abs(pos.x - m.global_position.x)
+		var dy = abs(pos.y - m.global_position.y)
+
+		if dx <= half.x and dy <= half.y + 64.0:
+			var score = dx + dy * 2.0
+			if score < best_score:
+				best_score = score
+				best = m
+
+	return best

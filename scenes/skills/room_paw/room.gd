@@ -59,17 +59,20 @@ func _ready() -> void:
 	global_position = player.global_position
 	scale.x = abs(scale.x) * float(player.direction)
 
-	# Set room level on player
-	player.room_level = skill_level
+	# Sync local skill_level with Player's current room_level
+	if player.room_level > 0:
+		skill_level = player.room_level
+	else:
+		# Fallback if player level not set, though it should be if gem collected
+		skill_level = 1
 
 	# Heal logic based on level
 	if skill_level >= 2:
-		var heal_amount = int(player.max_health * heal_percentage)
-		player.heal(heal_amount)
-	else:
-		# L1: Heal 3 HP (Legacy)
-		player.health = min(player.max_health, player.health + 3)
-		player.emit_signal("hp_changed", player.health, player.max_health)
+		var ht = Timer.new()
+		ht.wait_time = 1.0 # Every 1 second
+		ht.autostart = true
+		ht.timeout.connect(_on_heal_tick)
+		add_child(ht)
 
 	# lấy node hiển thị của player để nhấp nháy mềm
 	player_display_item = _find_display_item(player)
@@ -113,6 +116,99 @@ func _ready() -> void:
 	var existing := area.get_overlapping_bodies()
 	for b in existing:
 		_consider_capture(b)
+	
+	# Level 2+: Spawn healing particles continuously
+	if skill_level >= 2:
+		var heal_timer := Timer.new()
+		heal_timer.wait_time = 0.2
+		heal_timer.autostart = true
+		heal_timer.timeout.connect(_spawn_heal_particle)
+		add_child(heal_timer)
+
+	# Level 3: Show persistent Shield Room icon above player
+	if skill_level >= 3:
+		_setup_shield_effect()
+
+var _shield_icon: Sprite2D = null
+
+func _setup_shield_effect() -> void:
+	if not is_instance_valid(player):
+		return
+	var shield_tex = load("res://asset/foxy/foxy/skill_room_paw/shield_room.png")
+	if shield_tex == null:
+		return
+		
+	_shield_icon = Sprite2D.new()
+	_shield_icon.texture = shield_tex
+	_shield_icon.scale = Vector2(0.09, 0.07)
+	# Position above player head (approx -30 to -40 y offset)
+	_shield_icon.position = Vector2(0, -67)
+	_shield_icon.z_index = 20
+	
+	# Add as child of player so it follows him
+	player.add_child(_shield_icon)
+	
+	# Start hidden, let _process handle visibility
+	_shield_icon.modulate.a = 0.0
+	_shield_icon.visible = false
+
+func _animate_shield_pulse() -> void:
+	if not is_instance_valid(_shield_icon):
+		return
+	var tw = create_tween().set_loops()
+	# Pulse alpha between 0.4 and 1.0
+	tw.tween_property(_shield_icon, "modulate:a", 0.4, 0.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func _spawn_heal_particle() -> void:
+	if state == "ending" or not is_instance_valid(player):
+		return
+	
+	var plus_tex = load("res://asset/foxy/foxy/skill_room_paw/plus_icon.png")
+	if plus_tex == null:
+		return
+		
+	# Spawn main particle
+	_emit_plus_icon(plus_tex, Vector2(0.025, 0.025))
+	
+	# Spawn smaller particle with slight delay
+	var delay = randf_range(0.05, 0.15)
+	var t = get_tree().create_timer(delay)
+	t.timeout.connect(func(): _emit_plus_icon(plus_tex, Vector2(0.0125, 0.0125)))
+
+func _emit_plus_icon(tex: Texture2D, s: Vector2) -> void:
+	# Check validity again for the delayed call
+	if not is_inside_tree() or state == "ending" or not is_instance_valid(player):
+		return
+		
+	var p = Sprite2D.new()
+	p.texture = tex
+	# Start at player's feet (approx global_position)
+	# Add slight random X offset (-18 to 2 range)
+	var start_pos = player.global_position + Vector2(randf_range(-18, 2), 0)
+	p.global_position = start_pos
+	p.scale = s
+	p.z_index = 10 # Ensure it's above player
+	get_tree().current_scene.add_child(p)
+	
+	# Tween up and fade out
+	var tw = create_tween()
+	var end_pos = start_pos + Vector2(0, -50) # Float up ~50px (above head)
+	
+	tw.set_parallel(true)
+	tw.tween_property(p, "global_position", end_pos, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(p, "modulate:a", 0.0, 1.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	
+	# Cleanup
+	tw.chain().tween_callback(p.queue_free)
+
+func _on_heal_tick() -> void:
+	if state == "ending" or not is_instance_valid(player):
+		return
+	# Heal 4% per second
+	var heal_amount = int(player.max_health * 0.04)
+	if heal_amount < 1: heal_amount = 1
+	player.heal(heal_amount)
 
 func _on_scaled() -> void:
 	state = "lifting"
@@ -129,6 +225,39 @@ func _process(delta: float) -> void:
 	if player and area:
 		var inside := area.overlaps_body(player)
 		player.invincible_zone = inside
+		
+		# Level 3 Shield Logic
+		if skill_level >= 3 and is_instance_valid(_shield_icon):
+			if inside:
+				if not _shield_icon.visible:
+					_shield_icon.visible = true
+					var tw = create_tween()
+					tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.3)
+					_animate_shield_pulse() # Restart pulse if needed
+				elif _shield_icon.modulate.a < 0.05: # Was fading out?
+					var tw = create_tween()
+					tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.3)
+					_animate_shield_pulse()
+			else:
+				# Outside
+				if _shield_icon.visible and _shield_icon.modulate.a > 0.0:
+					# Fade out and then hide
+					# We should ensure we don't spam tweens.
+					# Simple check: if alpha is high, tween it down.
+					# Note: Pulsing tweens modify alpha too. This conflicts.
+					# Solution: Put the Icon in a Node2D container. Pulse the Icon, Fade the Container.
+					# But we only have _shield_icon sprite.
+					# Workaround: Stop pulse tween when fading out?
+					if _shield_icon.get_meta("fading_out", false) == false:
+						_shield_icon.set_meta("fading_out", true)
+						var tw = create_tween()
+						tw.tween_property(_shield_icon, "modulate:a", 0.0, 0.3)
+						tw.tween_callback(func(): 
+							if is_instance_valid(_shield_icon):
+								_shield_icon.visible = false
+								_shield_icon.set_meta("fading_out", false)
+						)
+		
 		# Hiệu ứng nhấp nháy nhẹ cho player khi ở trong vùng an toàn
 		if player_display_item:
 			if inside:
@@ -219,6 +348,10 @@ func _on_hold_finished() -> void:
 	tw.tween_callback(Callable(self, "_cleanup"))
 
 func _cleanup() -> void:
+	# Clean up shield icon if it exists
+	if is_instance_valid(_shield_icon):
+		_shield_icon.queue_free()
+
 	# release enemies/bullets at their marker positions
 	# Skip invalid or previously freed instances to avoid type errors
 	captured_enemies = captured_enemies.filter(func(x): return is_instance_valid(x))
@@ -235,7 +368,6 @@ func _cleanup() -> void:
 	# restore player damage reception
 	if player:
 		player.invincible_zone = false
-		player.room_level = 0
 		# Khôi phục độ sáng ban đầu cho player nếu có áp dụng flicker
 		if player_display_item:
 			(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
@@ -339,23 +471,6 @@ func _on_bullet_entered(body: Node) -> void:
 			body.queue_free()
 		return
 
-	captured_bullets.append(body)
-	_prepare_bullet(body)
-	# Áp dụng dissolve tại vị trí hiện tại (vùng flash mở rộng), chờ xong rồi teleport tới marker
-	if body is Node2D:
-		var n2 := body as Node2D
-		_apply_dissolve_appear(n2, bullet_flash_duration, func(): _animate_bullet_to_marker(n2), bullet_flash_scale)
-
-func _animate_bullet_to_marker(bullet: Node) -> void:
-	if not (bullet is Node2D):
-		return
-	var n2 := bullet as Node2D
-	# Teleport ngay sau khi kết thúc flash đầu
-	n2.global_position = bullet_marker.global_position
-	_release_body(bullet)
-	# Flash lần hai lâu hơn một chút
-	_apply_dissolve_appear(n2, bullet_flash_duration, Callable(), bullet_flash_scale)
-
 func _find_display_item(node: Node) -> CanvasItem:
 	# Tìm Sprite2D/AnimatedSprite2D ở bất kỳ cấp con
 	if node is Sprite2D or node is AnimatedSprite2D:
@@ -433,7 +548,9 @@ func _apply_dissolve_appear(node: Node2D, duration: float = 0.15, on_done: Calla
 	
 	if overlay_spr != null and is_instance_valid(overlay_spr):
 		overlay_spr.queue_free()
-	# Không cần khôi phục spr.visible vì đối tượng thường sẽ bị queue_free ngay sau đó bởi on_done
+		# Khôi phục sprite gốc nếu đối tượng không bị hủy
+		if is_instance_valid(spr) and spr != null:
+			spr.visible = true
 	
 	elif spr != null and is_instance_valid(spr):
 		spr.material = null
