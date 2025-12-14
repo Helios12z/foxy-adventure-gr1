@@ -328,31 +328,76 @@ func _get_min_local_y(n: Node) -> float:
 	return min_y
 
 func play_appear_effect() -> void:
-	var tw := create_tween()
-	tw.set_parallel(false)
+	if _sprite == null:
+		return
 	
-	var tw2 := create_tween()
-	tw2.set_parallel(true)
-	tw2.tween_property(_sprite, "modulate:a", 0.58, 0.30).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	# Load the gold ash dissolve shader
+	var shader := load("res://resources/effects/gold_ash_dissolve.gdshader")
+	if shader == null:
+		# Fallback to simple fade if shader not found
+		var tw := create_tween()
+		tw.tween_property(_sprite, "modulate:a", 0.58, 0.30).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		return
+	
+	# Create shader material
+	var mat := ShaderMaterial.new()
+	mat.shader = shader
+	mat.set_shader_parameter("progress", 1.0) # Start fully dissolved
+	_sprite.material = mat
+	_sprite.modulate.a = 0.58 # Set target alpha
+	
+	# Animate from dissolved (1.0) to fully visible (0.0)
+	var tw := create_tween()
+	tw.tween_method(func(p): mat.set_shader_parameter("progress", p), 1.0, 0.0, 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	await tw.finished
+	
+	# Clear material after effect
+	if is_instance_valid(_sprite):
+		_sprite.material = null
 
 func play_disappear_and_free() -> void:
-	# Smooth blinking then disappear
+	# Blink first, then use gold ash dissolve shader for disappearance
 	if _sprite == null:
 		queue_free()
 		return
 	# Ensure hit disabled
 	_set_hit_area_enabled(_hit, false)
 	_set_hit_area_enabled(_hit2, false)
-
-	var tw := create_tween()
-	tw.set_parallel(false)
-	# Blink a few times by modulating alpha
-	for i in range(4):
-		tw.tween_property(_sprite, "modulate:a", 0.25, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-		tw.tween_property(_sprite, "modulate:a", 0.75, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	# Fade out and free
-	tw.tween_property(_sprite, "modulate:a", 0.0, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	tw.tween_callback(Callable(self, "queue_free"))
+	
+	# Load the gold ash dissolve shader
+	var shader := load("res://resources/effects/gold_ash_dissolve.gdshader")
+	if shader == null:
+		# Fallback to blinking effect only
+		var tw := create_tween()
+		tw.set_parallel(false)
+		for i in range(4):
+			tw.tween_property(_sprite, "modulate:a", 0.25, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			tw.tween_property(_sprite, "modulate:a", 0.75, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tw.tween_property(_sprite, "modulate:a", 0.0, 0.22).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		tw.tween_callback(Callable(self, "queue_free"))
+		return
+	
+	# First: Blink a few times
+	var blink_tw := create_tween()
+	blink_tw.set_parallel(false)
+	for i in range(3):  # Blink 3 times before dissolving
+		blink_tw.tween_property(_sprite, "modulate:a", 0.25, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		blink_tw.tween_property(_sprite, "modulate:a", 0.58, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	await blink_tw.finished
+	
+	# Then: Apply shader and dissolve
+	var mat := ShaderMaterial.new()
+	mat.shader = shader
+	mat.set_shader_parameter("progress", 0.0) # Start fully visible
+	_sprite.material = mat
+	_sprite.modulate.a = 0.58 # Restore alpha for shader
+	
+	# Animate from visible (0.0) to fully dissolved (1.0)
+	var dissolve_tw := create_tween()
+	dissolve_tw.tween_method(func(p): mat.set_shader_parameter("progress", p), 0.0, 1.0, 0.55).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	await dissolve_tw.finished
+	
+	queue_free()
 
 func _on_lifetime_timeout() -> void:
 	susanoo_ended.emit()
