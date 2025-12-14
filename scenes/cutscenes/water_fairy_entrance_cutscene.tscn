@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://cb3026hd0o8mm"]
+
+[ext_resource type="Script" uid="uid://crnyj0sy5u8kn" path="res://scenes/cutscenes/water_fairy_entrance_cutscene.gd" id="1_cutscene"]
+[ext_resource type="PackedScene" uid="uid://bqjagem8q5c1u" path="res://scenes/character/npcs/WaterFairy.tscn" id="2_npc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(150, 200)
+
+[node name="WaterFairyEntranceCutscene" type="Node2D"]
+script = ExtResource("1_cutscene")
+
+[node name="FoxyReachCutScene" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FoxyReachCutScene"]
+shape = SubResource("RectangleShape2D_trigger")
+
+[node name="Camera2DCutSceneWaterFairyAppears" type="Camera2D" parent="."]
+position = Vector2(400, -200)
+enabled = false
+
+[node name="WaterFairyDoor" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(500, -100)
+
+[node name="WaterFairyNpc" parent="." instance=ExtResource("2_npc")]
+visible = false
+position = Vector2(500, -100)

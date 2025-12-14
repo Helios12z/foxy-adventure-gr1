@@ -1,0 +1,101 @@
+[gd_scene load_steps=18 format=3 uid="uid://bqjagem8q5c1u"]
+
+[ext_resource type="Script" uid="uid://36c421jbgn17" path="res://scenes/character/npcs/water_fairy.gd" id="1_fairy"]
+[ext_resource type="Texture2D" uid="uid://c2uau1eipg8qy" path="res://asset/water_prietest/fall/j_down_1.png" id="1_nm4ux"]
+[ext_resource type="Texture2D" uid="uid://c8w76oroo0pu7" path="res://asset/water_prietest/fall/j_down_2.png" id="2_ewtte"]
+[ext_resource type="Texture2D" uid="uid://btdc0hfnth4bm" path="res://asset/water_prietest/fall/j_down_3.png" id="3_it1iu"]
+[ext_resource type="Texture2D" uid="uid://bjonqd8i4bxyf" path="res://asset/water_prietest/idle/idle_1.png" id="4_2othf"]
+[ext_resource type="Texture2D" uid="uid://btu0o7ggfjvmg" path="res://asset/water_prietest/idle/idle_2.png" id="5_2cxue"]
+[ext_resource type="Texture2D" uid="uid://d0kx4usn7b3ti" path="res://asset/water_prietest/idle/idle_3.png" id="6_ve235"]
+[ext_resource type="Texture2D" uid="uid://npwbqhkj7uc6" path="res://asset/water_prietest/idle/idle_4.png" id="7_302y0"]
+[ext_resource type="Texture2D" uid="uid://c67kuro2voomn" path="res://asset/water_prietest/idle/idle_5.png" id="8_dh1qo"]
+[ext_resource type="Texture2D" uid="uid://dvie8pl5qfwsk" path="res://asset/water_prietest/idle/idle_6.png" id="9_oiu85"]
+[ext_resource type="Texture2D" uid="uid://dr8q75qh2lm1n" path="res://asset/water_prietest/idle/idle_7.png" id="10_e0a1n"]
+[ext_resource type="Texture2D" uid="uid://woxck2oe6yt4" path="res://asset/water_prietest/idle/idle_8.png" id="11_f6e1g"]
+[ext_resource type="Texture2D" uid="uid://dm5joxtpmqels" path="res://asset/water_prietest/jump/j_up_1.png" id="12_4p1j8"]
+[ext_resource type="Texture2D" uid="uid://rox5h1djagax" path="res://asset/water_prietest/jump/j_up_2.png" id="13_5evoq"]
+[ext_resource type="Texture2D" uid="uid://diwrdr8fry5p4" path="res://asset/water_prietest/jump/j_up_3.png" id="14_48sie"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3u0nk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_nm4ux")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ewtte")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_it1iu")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_2othf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2cxue")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ve235")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_302y0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dh1qo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_oiu85")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_e0a1n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_f6e1g")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_4p1j8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_5evoq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_48sie")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fairy"]
+size = Vector2(100, 120)
+
+[node name="WaterFairy" type="Node2D"]
+script = ExtResource("1_fairy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -206)
+scale = Vector2(3.234375, 3.234375)
+sprite_frames = SubResource("SpriteFrames_3u0nk")
+animation = &"idle"
+frame_progress = 0.047610197
+flip_h = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-2, -63)
+shape = SubResource("RectangleShape2D_fairy")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

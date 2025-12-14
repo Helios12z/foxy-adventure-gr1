@@ -1,0 +1,11 @@
+[remap]
+
+importer="dialogic-timeline"
+type="Resource"
+uid="uid://c2vq3t8yh6y0r"
+path="res://.godot/imported/king_crab_awakening.dtl-c2vq3t8yh6y0r.res"
+
+[deps]
+
+source_file="res://timelines/king_crab_awakening.dtl"
+dest_files=["res://.godot/imported/king_crab_awakening.dtl-c2vq3t8yh6y0r.res"]

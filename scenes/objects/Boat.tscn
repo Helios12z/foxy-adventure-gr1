@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=3 uid="uid://bamn71p5ub8w4"]
+
+[ext_resource type="Texture2D" uid="uid://crflavbexmqg2" path="res://asset/island/images/boat/boat_body.png" id="1_8psyu"]
+[ext_resource type="Texture2D" uid="uid://c4rqp2pt34uek" path="res://asset/island/objects/flag/platform.png" id="2_w4s3k"]
+[ext_resource type="Texture2D" uid="uid://bnyyso8r3xy7h" path="res://asset/island/images/boat/boat_sail_1.png" id="3_pk4pk"]
+[ext_resource type="Texture2D" uid="uid://vtdtt6qgcrpm" path="res://asset/island/images/boat/boat_sail_2.png" id="4_k126q"]
+[ext_resource type="Texture2D" uid="uid://y8tmjcm0d6ki" path="res://asset/island/images/boat/boat_sail_3.png" id="5_lxtun"]
+[ext_resource type="Texture2D" uid="uid://bv2po7d5rema6" path="res://asset/island/images/boat/boat_sail_4.png" id="6_ks30v"]
+[ext_resource type="Texture2D" uid="uid://cbrqqsfiyiei0" path="res://asset/island/images/boat/boat_sail_5.png" id="7_4ubva"]
+[ext_resource type="Texture2D" uid="uid://ca86gibgtivuf" path="res://asset/island/objects/moving_platforms/moving_platform.png" id="8_uhext"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v1dvd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_pk4pk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_k126q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lxtun")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ks30v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4ubva")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8psyu"]
+size = Vector2(161, 17)
+
+[node name="Boat" type="AnimatableBody2D"]
+
+[node name="BoatBody" type="Sprite2D" parent="."]
+position = Vector2(-1, 1)
+texture = ExtResource("1_8psyu")
+
+[node name="Platform" type="Sprite2D" parent="."]
+position = Vector2(-44, -63)
+texture = ExtResource("2_w4s3k")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-37, -96)
+sprite_frames = SubResource("SpriteFrames_v1dvd")
+autoplay = "default"
+frame_progress = 0.7193588
+
+[node name="BoatBody2" type="Sprite2D" parent="."]
+position = Vector2(-86, 0)
+texture = ExtResource("1_8psyu")
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+position = Vector2(-96, -36)
+sprite_frames = SubResource("SpriteFrames_v1dvd")
+autoplay = "default"
+frame_progress = 0.8605603
+
+[node name="MovingPlatform" type="Sprite2D" parent="."]
+position = Vector2(-44, -32)
+rotation = 1.5707964
+scale = Vector2(0.5501165, 0.5501165)
+texture = ExtResource("8_uhext")
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="."]
+position = Vector2(16, -34)
+sprite_frames = SubResource("SpriteFrames_v1dvd")
+autoplay = "default"
+frame_progress = 0.6955824
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-44.5, -0.5)
+shape = SubResource("RectangleShape2D_8psyu")

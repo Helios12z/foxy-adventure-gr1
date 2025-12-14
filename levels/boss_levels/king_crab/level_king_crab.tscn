@@ -116,6 +116,7 @@ target_stage = "uid://dq7eu5p47t8gv"
 is_cross_scene = true
 
 [node name="Player" parent="World" instance=ExtResource("3_wyfuh")]
+position = Vector2(-186, 579)
 has_blade = true
 max_health = 1000
 

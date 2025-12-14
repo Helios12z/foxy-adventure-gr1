@@ -31,17 +31,25 @@ TutorialManager="*res://scripts/autoload/tutorial_manager.gd"
 
 directories/dch_directory={
 "crystal_mauler": "res://dialog/character/crystal_mauler.dch",
-"foxy": "res://dialog/character/foxy.dch"
+"foxy": "res://dialog/character/foxy.dch",
+"king_crab": "res://dialog/character/king_crab.dch",
+"water_fairy": "res://dialog/character/water_fairy.dch"
 }
 directories/dtl_directory={
-"collect_blade": "res://timelines/collect_blade.dtl"
+"collect_blade": "res://timelines/collect_blade.dtl",
+"king_crab_awakening": "res://timelines/king_crab_awakening.dtl",
+"water_fairy_blade": "res://timelines/water_fairy_blade.dtl",
+"water_fairy_self_talk": "res://timelines/water_fairy_self_talk.dtl"
 }
 layout/style_directory={
 "": "res://dialog/custom/dialogic_style.tres",
 "dialogic_style": "res://dialog/custom/dialogic_style.tres"
 }
 variables={
-"HasBlade": false
+"HasBlade": false,
+"KingCrabCutsceneSeen": false,
+"WaterFairyConversationSeen": false,
+"WaterFairyCutsceneSeen": false
 }
 layout/style_list=["res://dialog/custom/dialogic_style.tres"]
 layout/default_style="res://dialog/custom/dialogic_style.tres"
