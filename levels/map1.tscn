@@ -680,7 +680,7 @@ position = Vector2(13454, 69)
 position = Vector2(14675, -265)
 
 [node name="Teleport" parent="." instance=ExtResource("53_70u64")]
-position = Vector2(15509, -341)
+position = Vector2(15507, -316)
 scale = Vector2(0.5, 0.5)
 target_stage = "uid://x5qrj66qebnm"
 target_door = "LeftDoor"
@@ -723,6 +723,6 @@ position = Vector2(12382, 27)
 popup_scene = ExtResource("58_0ekna")
 
 [node name="CrabGate" type="Sprite2D" parent="."]
-position = Vector2(15505, -404)
-scale = Vector2(0.3546875, 0.3546875)
+position = Vector2(15507, -384)
+scale = Vector2(0.3070318, 0.3070318)
 texture = ExtResource("59_0ekna")

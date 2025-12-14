@@ -17,11 +17,11 @@
 [ext_resource type="Script" uid="uid://o27rb5nypyco" path="res://levels/boss_levels/war_lord_turtle/boss_hud.gd" id="10_x24gd"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="11_0sdmd"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="11_x24gd"]
-[ext_resource type="PackedScene" path="res://screens/game_screen/hud.tscn" id="12_8kqfi"]
+[ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="12_8kqfi"]
 [ext_resource type="PackedScene" uid="uid://dcyxh7eep8web" path="res://scenes/objects/chest.tscn" id="12_myin1"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="13_wcg3s"]
 [ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="14_7gl8q"]
-[ext_resource type="PackedScene" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="14_7i7cj"]
+[ext_resource type="PackedScene" uid="uid://bx2xcf02m4m0r" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="14_7i7cj"]
 [ext_resource type="AudioStream" uid="uid://d24jcdo6d6n0k" path="res://asset/sounds/king_crab_sound/level_craking.mp3" id="16_x24gd"]
 [ext_resource type="AudioStream" uid="uid://bfmjl0sopd8ah" path="res://asset/sounds/war_lord_turtle_sound/level_ambient.mp3" id="17_8kqfi"]
 
@@ -108,7 +108,7 @@ tile_set = ExtResource("1_i0g7a")
 position = Vector2(1566, 576)
 
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
-position = Vector2(-325, 548)
+position = Vector2(-317, 535)
 has_blade = true
 has_fire_gem = true
 has_water_paw_gem = true
@@ -117,7 +117,7 @@ max_health = 1000
 
 [node name="WarLordTurtle" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_7dedx")]
 position = Vector2(652, 541)
-max_health_boss = 2000
+max_health_boss = 1
 phase2_threshold_ratio = 0.68
 bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
@@ -259,7 +259,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_colors/font_outline_color = Color(0.773859, 0, 0, 1)
 theme_override_fonts/font = ExtResource("10_bqd06")
 theme_override_font_sizes/font_size = 24
-text = "WANDERER OF THE BADLANDS"
+text = "ILLUMINATOR OF THE BADLANDS"
 horizontal_alignment = 1
 vertical_alignment = 1
 

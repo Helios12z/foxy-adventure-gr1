@@ -37,7 +37,9 @@ directories/dch_directory={
 }
 directories/dtl_directory={
 "collect_blade": "res://timelines/collect_blade.dtl",
+"fire_gem_collected": "res://timelines/fire_gem_collected.dtl",
 "king_crab_awakening": "res://timelines/king_crab_awakening.dtl",
+"king_crab_death": "res://timelines/king_crab_death.dtl",
 "water_fairy_blade": "res://timelines/water_fairy_blade.dtl",
 "water_fairy_self_talk": "res://timelines/water_fairy_self_talk.dtl"
 }
