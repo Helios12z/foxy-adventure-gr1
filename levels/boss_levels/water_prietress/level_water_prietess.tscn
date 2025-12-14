@@ -186,7 +186,7 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform2" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(620, 495)
+position = Vector2(625, 296)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform2"]
 modulate = Color(0.7, 0.9, 1, 1)
