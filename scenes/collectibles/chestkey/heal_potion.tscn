@@ -1,0 +1,70 @@
+[gd_scene load_steps=13 format=3 uid="uid://caerpr6ajbb3y"]
+
+[ext_resource type="Script" uid="uid://cu6wv2oowhpx6" path="res://scenes/collectibles/chestkey/heal_potion.gd" id="1_ghb0w"]
+[ext_resource type="Texture2D" uid="uid://cpwlp7ufxlrsf" path="res://asset/level_3_water_palace/objects/potions/heal_potion.png" id="2_ue43n"]
+[ext_resource type="Texture2D" uid="uid://dygsiw7ox020x" path="res://asset/chest_key/effects/sparks_4.png" id="13_uxavv"]
+[ext_resource type="Texture2D" uid="uid://c3cu0smeo0kbu" path="res://asset/chest_key/effects/sparks_5.png" id="14_364ba"]
+[ext_resource type="Texture2D" uid="uid://dufcenpce4hx8" path="res://asset/chest_key/effects/sparks_6.png" id="15_5snfa"]
+[ext_resource type="Texture2D" uid="uid://b3q6luqw5bkxc" path="res://asset/chest_key/effects/sparks_7.png" id="16_63rng"]
+[ext_resource type="Texture2D" uid="uid://d2y6y511u1lgu" path="res://asset/chest_key/effects/sparks_8.png" id="17_u5yof"]
+[ext_resource type="Texture2D" uid="uid://bovvsrgwsq4og" path="res://asset/chest_key/effects/sparks_9.png" id="18_sbgif"]
+[ext_resource type="Texture2D" uid="uid://oi4yhkx4gb3b" path="res://asset/chest_key/effects/sparks_10.png" id="19_yjpms"]
+[ext_resource type="Texture2D" uid="uid://c1rmde6fpmxpn" path="res://asset/chest_key/effects/sparks_11.png" id="20_miu0s"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e7x3q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ue43n")
+}],
+"loop": true,
+"name": &"appearance",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_uxavv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_364ba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_5snfa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_63rng")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_u5yof")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_sbgif")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_yjpms")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_miu0s")
+}],
+"loop": false,
+"name": &"disappearance",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqu7x"]
+size = Vector2(24, 21)
+
+[node name="HealPotion" type="Area2D" groups=["collectible"]]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_ghb0w")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 5)
+scale = Vector2(0.02, 0.02)
+sprite_frames = SubResource("SpriteFrames_e7x3q")
+animation = &"appearance"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_hqu7x")

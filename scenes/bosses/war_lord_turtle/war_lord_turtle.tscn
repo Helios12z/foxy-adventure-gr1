@@ -462,7 +462,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="WarLordTurtle" type="CharacterBody2D"]
+[node name="WarLordTurtle" type="CharacterBody2D" groups=["Boss"]]
 collision_layer = 8
 script = ExtResource("1_lsjki")
 max_health_boss = 300

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dv22tc3rfo8sv"
+path="res://.godot/imported/show_bubbles_sound.mp3-7e45eda26b9fa9cb3fbc981e0be861b6.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/show_bubbles_sound.mp3"
+dest_files=["res://.godot/imported/show_bubbles_sound.mp3-7e45eda26b9fa9cb3fbc981e0be861b6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

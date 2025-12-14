@@ -148,6 +148,9 @@ func _apply_checkpoint_inventory_only() -> void:
 		player.collected_water_paw_gem()
 	if data.has("has_water_room_gem") and bool(data["has_water_room_gem"]):
 		player.collected_water_room_gem()
+	if data.has("susanoo_level"):
+		player.susanoo_level = int(data["susanoo_level"])
+		player.susanoo_level_changed.emit(player.susanoo_level)
 	apply_inventory_from_checkpoint()
 
 
@@ -211,6 +214,7 @@ func respawn_at_checkpoint() -> void:
 		if inventory_data != null:
 			inventory_system.coins = inventory_data["coins"]
 			inventory_system.keys = inventory_data["keys"]
+			inventory_system.heal_potions = inventory_data["heal_potions"]
 
 #check if there is a checkpoint
 func has_checkpoint() -> bool:

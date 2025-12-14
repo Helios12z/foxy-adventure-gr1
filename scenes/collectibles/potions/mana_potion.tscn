@@ -1,0 +1,80 @@
+[gd_scene load_steps=16 format=3 uid="uid://cdavk444ks4gs"]
+
+[ext_resource type="Script" uid="uid://clvabmjukl0e" path="res://scenes/collectibles/potions/mana_potion.gd" id="1_p1brm"]
+[ext_resource type="Texture2D" uid="uid://iutxaodf75ww" path="res://asset/level_3_water_palace/objects/potions/mana_potion.png" id="2_jim2x"]
+[ext_resource type="Texture2D" uid="uid://d35qod6vijjuy" path="res://asset/chest_key/effects/sparks_1.png" id="3_rs45j"]
+[ext_resource type="Texture2D" uid="uid://r46xwh0nneel" path="res://asset/chest_key/effects/sparks_2.png" id="4_dqs2j"]
+[ext_resource type="Texture2D" uid="uid://b835550pfdxua" path="res://asset/chest_key/effects/sparks_3.png" id="5_fgica"]
+[ext_resource type="Texture2D" uid="uid://dygsiw7ox020x" path="res://asset/chest_key/effects/sparks_4.png" id="6_yj5ju"]
+[ext_resource type="Texture2D" uid="uid://c3cu0smeo0kbu" path="res://asset/chest_key/effects/sparks_5.png" id="7_cl8lj"]
+[ext_resource type="Texture2D" uid="uid://dufcenpce4hx8" path="res://asset/chest_key/effects/sparks_6.png" id="8_5hno0"]
+[ext_resource type="Texture2D" uid="uid://b3q6luqw5bkxc" path="res://asset/chest_key/effects/sparks_7.png" id="9_5po8i"]
+[ext_resource type="Texture2D" uid="uid://d2y6y511u1lgu" path="res://asset/chest_key/effects/sparks_8.png" id="10_15gfe"]
+[ext_resource type="Texture2D" uid="uid://bovvsrgwsq4og" path="res://asset/chest_key/effects/sparks_9.png" id="11_s07mk"]
+[ext_resource type="Texture2D" uid="uid://oi4yhkx4gb3b" path="res://asset/chest_key/effects/sparks_10.png" id="12_x5hmg"]
+[ext_resource type="Texture2D" uid="uid://c1rmde6fpmxpn" path="res://asset/chest_key/effects/sparks_11.png" id="13_pvdmw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e7x3q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_jim2x")
+}],
+"loop": true,
+"name": &"appearance",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_rs45j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_dqs2j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_fgica")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_yj5ju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_cl8lj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_5hno0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_5po8i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_15gfe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_s07mk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_x5hmg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_pvdmw")
+}],
+"loop": false,
+"name": &"disappearance",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqu7x"]
+size = Vector2(24, 26)
+
+[node name="ManaPotion" type="Area2D" groups=["collectible"]]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_p1brm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.03, 0.03)
+sprite_frames = SubResource("SpriteFrames_e7x3q")
+animation = &"appearance"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hqu7x")

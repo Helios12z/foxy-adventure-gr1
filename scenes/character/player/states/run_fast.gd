@@ -22,6 +22,8 @@ func _update(delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		change_state(fsm.states.attack)
 		return
+	
+		
 	if not obj.is_giant_mode:
 		if control_dash():
 			return

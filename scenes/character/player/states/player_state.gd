@@ -3,7 +3,7 @@ extends FSMState
 
 @export var dash_mana : int = 10
 @export var giant_mana : int = 100
-
+@export var heal_amount : int = 20
 #Control moving and changing state to run
 #Return true if moving
 #Add friction and acceleration effects
@@ -145,7 +145,6 @@ func control_room() -> bool:
 			if inst is Node2D:
 				(inst as Node2D).global_position = obj.global_position
 			obj.add_child(inst)
-			obj.start_room_cooldown()
 			return true
 	return false
 	
@@ -153,5 +152,11 @@ func control_giant_mode() ->bool:
 	if Input.is_action_just_pressed("skill_giant") and obj.has_water_paw_gem and obj.can_use_giant and obj.can_use_skill(giant_mana):
 		obj.take_mana(giant_mana)
 		change_state(fsm.states.giant)
+		return true
+	return false
+
+func control_heal_potion() -> bool:
+	if Input.is_action_just_pressed("use_heal_potion") and obj.can_heal():
+		obj.use_heal_potion(heal_amount) 
 		return true
 	return false

@@ -62,6 +62,6 @@ position = Vector2(-1, -1)
 shape = SubResource("RectangleShape2D_2u810")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -9)
+position = Vector2(0, -6.655)
 sprite_frames = SubResource("SpriteFrames_vthut")
 animation = &"open"

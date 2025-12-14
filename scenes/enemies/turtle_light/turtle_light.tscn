@@ -41,7 +41,7 @@ size = Vector2(78, 35)
 [sub_resource type="CircleShape2D" id="CircleShape2D_4pfcb"]
 radius = 16.0
 
-[node name="TurtleLight" type="CharacterBody2D"]
+[node name="TurtleLight" type="CharacterBody2D" groups=["Boss"]]
 script = ExtResource("1_5slrn")
 coin_drop_count = 2
 max_health = 200

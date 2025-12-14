@@ -1,12 +1,15 @@
 extends PlayerState
 
 var direction_node: Node2D
-var original_offset := Vector2.ZERO
+var hurt_area: Area2D
+var original_direction_offset := Vector2.ZERO
+var original_hurt_offset := Vector2.ZERO
 var forward_offset := 20
 
 func _enter():
-	# Lấy Direction lúc state được kích hoạt (obj đã có)
+	# Get Direction node and HurtArea2D
 	direction_node = obj.get_node("Direction")
+	hurt_area = obj.get_node("Direction/HurtArea2D")
 
 	obj.attack_sound.play()
 
@@ -16,14 +19,19 @@ func _enter():
 	obj.velocity.x = 0
 	obj.set_hit_collision(true)
 
-	# Lưu offset gốc
-	original_offset = direction_node.position
+	# Save original offsets
+	original_direction_offset = direction_node.position
+	original_hurt_offset = hurt_area.position
 
-	# Offset theo hướng
+	# Offset Direction node forward (moves sprite and hitbox)
 	if obj.is_right():
-		direction_node.position.x = original_offset.x + forward_offset
+		direction_node.position = Vector2(original_direction_offset.x + forward_offset, original_direction_offset.y)
+		# Compensate hurt area backward to keep it in correct position
+		hurt_area.position = Vector2(original_hurt_offset.x - forward_offset, original_hurt_offset.y)
 	else:
-		direction_node.position.x = original_offset.x - forward_offset
+		direction_node.position = Vector2(original_direction_offset.x - forward_offset, original_direction_offset.y)
+		# Compensate hurt area backward (note: Direction.scale.x = -1 when facing left, so sign is inverted)
+		hurt_area.position = Vector2(original_hurt_offset.x - forward_offset, original_hurt_offset.y)
 
 	if obj.is_giant_mode:
 		timer = 0.5
@@ -38,6 +46,8 @@ func _update(delta: float):
 
 func _exit():
 	obj.set_hit_collision(false)
-	# Reset lại vị trí
+	# Reset positions
 	if direction_node:
-		direction_node.position = original_offset
+		direction_node.position = original_direction_offset
+	if hurt_area:
+		hurt_area.position = original_hurt_offset

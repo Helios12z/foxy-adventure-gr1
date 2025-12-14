@@ -7,9 +7,16 @@ signal mana_changed(current_mana, max_mana)
 signal dash_cooldown_started(duration)
 signal dash_cooldown_updated(time_left)
 signal dash_cooldown_finished()
+signal susanoo_cooldown_started(duration)
+signal susanoo_cooldown_updated(time_left)
+signal susanoo_cooldown_finished()
 signal room_cooldown_started(duration)
 signal room_cooldown_updated(time_left)
 signal room_cooldown_finished()
+signal giant_cooldown_started(duration)
+signal giant_cooldown_updated(time_left)
+signal giant_cooldown_finished()
+signal susanoo_level_changed(level)
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var _base_movement_speed: float = 0.0
@@ -21,6 +28,7 @@ var hack_mode: HackMode = null
 @export var has_fire_gem: bool = false
 @export var has_water_paw_gem: bool = false
 @export var has_water_room_gem: bool = false
+@export var susanoo_level: int = 0
 @export var max_able_jump = 2
 @export var max_jump_count = 2
 @export var max_mana : int = 100
@@ -46,6 +54,12 @@ var dash_cooldown_timer: Timer = null
 var room_on_cooldown: bool = false
 var room_cooldown_timer: Timer = null
 
+var sus_on_cooldown: bool = false
+var sus_cooldown_timer: Timer = null
+
+var giant_on_cooldown: bool = false
+var giant_cooldown_timer: Timer = null
+
 @export var run_speed_multiplier: float = 1.35
 @export var run_double_tap_window_ms: int = 250
 
@@ -64,6 +78,7 @@ var room_cooldown_timer: Timer = null
 @onready var body_collision: CollisionShape2D = $CollisionShape2D
 @onready var hit_collision: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 @onready var hurt_collision: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
+@onready var effect_sprite: AnimatedSprite2D = $Direction/HealEffect
 var _orig_max_health: int
 var _orig_jump_speed: float
 var _orig_attack_damage: float
@@ -85,6 +100,10 @@ var _orig_has_blade: bool
 
 var _last_left_press_ms: int = -100000
 var _last_right_press_ms: int = -100000
+
+
+var inventory: InvetorySystem
+const HEAL_SHADER = preload("res://scenes/character/player/shaders/heal.gdshader")
 
 
 func get_run_speed() -> float:
@@ -154,6 +173,8 @@ func _ready() -> void:
 	mana_regen_timer.autostart = true
 	mana_regen_timer.timeout.connect(_on_mana_regen_timeout)
 	add_child(mana_regen_timer)
+	var gm = get_tree().get_root().get_node("GameManager")
+	inventory = gm.get_node("InventorySystem")
 	
 func _physics_process(delta: float) -> void:
 	# Apply safe-zone modifiers before physics so gravity uses updated value
@@ -169,13 +190,19 @@ func _process(_delta: float) -> void:
 		print("Giant time left: ", $Timer/GiantDuration.time_left)
 	if dash_on_cooldown and dash_cooldown_timer != null:
 		dash_cooldown_updated.emit(dash_cooldown_timer.time_left)
+	if sus_on_cooldown and sus_cooldown_timer != null:
+		susanoo_cooldown_updated.emit(sus_cooldown_timer.time_left)
 	if room_on_cooldown and room_cooldown_timer != null:
 		room_cooldown_updated.emit(room_cooldown_timer.time_left)
+	if giant_on_cooldown and giant_cooldown_timer != null:
+		giant_cooldown_updated.emit(giant_cooldown_timer.time_left)
+
+var room_level: int = 0
 
 func _apply_safe_zone_mods() -> void:
 	if is_giant_mode:
 		return  # không overwrite stats khi đang giant
-	if invincible_zone:
+	if invincible_zone and room_level >= 2:
 		# tốc độ moving x1.5
 		movement_speed = _base_movement_speed * 1.5
 		# trọng lực giảm 25%
@@ -193,12 +220,12 @@ func can_attack() -> bool:
 	return has_blade
 	
 func can_jump() -> bool:
-	if invincible_zone:
+	if invincible_zone and room_level >= 2:
 		return true
 	return max_jump_count > 0
 
 func consume_jump() -> void:
-	if invincible_zone or GameManager.hack_mode_enabled:
+	if (invincible_zone and room_level >= 2) or GameManager.hack_mode_enabled:
 		return
 	max_jump_count -= 1
 
@@ -227,6 +254,9 @@ func collected_blade() -> void:
 
 func collected_fire_gem() -> void:
 	has_fire_gem = true
+	if susanoo_level < 1:
+		susanoo_level = 1
+		susanoo_level_changed.emit(susanoo_level)
 
 func collected_water_paw_gem() -> void:
 	has_water_paw_gem = true
@@ -240,7 +270,8 @@ func save_state() -> Dictionary:
 		"has_blade": has_blade,
 		"has_fire_gem": has_fire_gem,
 		"has_water_paw_gem": has_water_paw_gem,
-		"has_water_room_gem": has_water_room_gem
+		"has_water_room_gem": has_water_room_gem,
+		"susanoo_level": susanoo_level
 	}
 
 func load_state(data: Dictionary) -> void:
@@ -265,11 +296,31 @@ func load_state(data: Dictionary) -> void:
 		has_water_room_gem = data["has_water_room_gem"]
 		if has_water_room_gem:
 			collected_water_room_gem()
+	if data.has("susanoo_level"):
+		susanoo_level = data["susanoo_level"]
+		susanoo_level_changed.emit(susanoo_level)
+
+func upgrade_susanoo_level() -> void:
+	susanoo_level += 1
+	susanoo_level_changed.emit(susanoo_level)
+	GameManager.update_current_checkpoint_player_state({"susanoo_level": susanoo_level}, true)
 			
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	#take_dame.emit()
 	if invincible_zone:
+		# Level 3: Immune to all damage
+		if room_level >= 3:
+			return
+		
+		# Level 1-2: Take damage but NO KNOCKBACK
+		if !is_invulnerable:
+			take_damage(_damage)
+			start_invulnerability()
+			if health <= 0:
+				fsm.change_state(fsm.states.dead)
+			# Do NOT enter hurt state (avoids knockback)
 		return
+
 	if !is_invulnerable: 
 		fsm.current_state.take_damage(_damage)
 		if(health <= 0):
@@ -285,7 +336,7 @@ var inv_cooldown_timer: Timer = null
 func start_invulnerability(duration: float = 2.0) -> void:
 	if inv_cooldown_timer and inv_cooldown_timer.time_left > 0:
 		return  # đang inv, không reset
-	is_invulnerable = true
+	is_invulnerable = true 
 	set_collision_mask_value(6,true)
 	set_collision_layer_value(2,false)
 	_start_blink_effect()
@@ -318,6 +369,12 @@ func _on_invulnerable_timeout() -> void:
 func can_dash() -> bool:
 	return (not dash_on_cooldown) and (dash_chain_count < dash_chain_max)
 
+func can_heal() -> bool:
+	return health < max_health
+
+func can_charge_mana() -> bool:
+	return mana < max_mana
+
 func register_dash_started() -> void:
 	dash_chain_count += 1
 
@@ -341,6 +398,17 @@ func _on_dash_cooldown_timeout() -> void:
 	dash_chain_count = 0
 	dash_cooldown_finished.emit()
 
+func start_susanoo_cooldown() -> void:
+	sus_on_cooldown = true
+	if sus_cooldown_timer == null:
+		sus_cooldown_timer = Timer.new()
+		sus_cooldown_timer.one_shot = true
+		sus_cooldown_timer.timeout.connect(_on_susanoo_cooldown_timeout)
+		add_child(sus_cooldown_timer)
+	sus_cooldown_timer.wait_time = 20.0  # Fixed to 20 seconds
+	sus_cooldown_timer.start()
+	susanoo_cooldown_started.emit(20.0)
+
 func start_room_cooldown() -> void:
 	room_on_cooldown = true
 	if room_cooldown_timer == null:
@@ -348,9 +416,24 @@ func start_room_cooldown() -> void:
 		room_cooldown_timer.one_shot = true
 		room_cooldown_timer.timeout.connect(_on_room_cooldown_timeout)
 		add_child(room_cooldown_timer)
-	room_cooldown_timer.wait_time = room_cooldown_time
+	room_cooldown_timer.wait_time = 20.0  # Fixed to 20 seconds
 	room_cooldown_timer.start()
-	room_cooldown_started.emit(room_cooldown_time)
+	room_cooldown_started.emit(20.0)
+
+func start_giant_cooldown() -> void:
+	giant_on_cooldown = true
+	if giant_cooldown_timer == null:
+		giant_cooldown_timer = Timer.new()
+		giant_cooldown_timer.one_shot = true
+		giant_cooldown_timer.timeout.connect(_on_giant_cooldown_timeout)
+		add_child(giant_cooldown_timer)
+	giant_cooldown_timer.wait_time = giant_cool_down
+	giant_cooldown_timer.start()
+	giant_cooldown_started.emit(giant_cool_down)
+
+func _on_susanoo_cooldown_timeout() -> void:
+	sus_on_cooldown = false
+	susanoo_cooldown_finished.emit()
 
 func _on_room_cooldown_timeout() -> void:
 	room_on_cooldown = false
@@ -470,11 +553,6 @@ func activate_giant_form() -> void:
 	# ----- APPLY GIANT MODE -----
 	is_giant_mode = true
 
-	set_physics_process(false)
-	animated_sprite.play("transform_giant")
-	await animated_sprite.animation_finished
-	set_physics_process(true)
-
 	print("Activate Giant Form for: ", giant_duration, " seconds")
 	resize_all_collisions()
 	has_blade = true
@@ -510,10 +588,6 @@ func resize_all_collisions():
 	
 func inactive_giant_form():
 		# Reset sprite
-	set_physics_process(false)
-	animated_sprite.play("transform_normal")
-	await animated_sprite.animation_finished
-	set_physics_process(true)
 	is_giant_mode = false
 	if _orig_sprite != null:
 		set_animated_sprite(_orig_sprite)
@@ -545,12 +619,24 @@ func inactive_giant_form():
 	hit_shape.size = _orig_hit_shape_size
 	hit_collision.position = _orig_hit_pos
 	can_use_giant = false
-	$Timer/GiantCoolDown.start(giant_cool_down)
+	start_giant_cooldown()
 
 func _on_giant_duration_timeout() -> void:
 	inactive_giant_form()
 
 
-func _on_giant_cool_down_timeout() -> void:
+func _on_giant_cooldown_timeout() -> void:
 	can_use_giant = true
+
+
+func use_heal_potion(amount: int) -> void:
+	if GameManager.inventory_system.use_heal_potion():
+		heal(amount)
+		play_heal_effect()
+		
+func play_heal_effect():
+	effect_sprite.visible = true
+	effect_sprite.play("heal")
+	await effect_sprite.animation_finished
+	effect_sprite.visible = false	
 	

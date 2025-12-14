@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmy016ckrux7t"
-path="res://.godot/imported/health_potion.png-a6cea100fbba13c57d3e249bc7fc454c.ctex"
+uid="uid://dkaxeuovdamaj"
+path="res://.godot/imported/boss-removebg-preview4.png-c7a5ef65cb412391cd9400586a9c115a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/level_3_water_palace/objects/potions/health_potion.png"
-dest_files=["res://.godot/imported/health_potion.png-a6cea100fbba13c57d3e249bc7fc454c.ctex"]
+source_file="res://asset/level_3_water_palace/water_goddess/states/boss-removebg-preview4.png"
+dest_files=["res://.godot/imported/boss-removebg-preview4.png-c7a5ef65cb412391cd9400586a9c115a.ctex"]
 
 [params]
 
