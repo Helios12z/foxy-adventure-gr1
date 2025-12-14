@@ -608,11 +608,6 @@ func control_move(speed: float, attack_table: Array, _on_reach: Callable, _use_e
 		change_state(fsm.states.idle)
 		return
 
-	if obj.in_phase2 and not _same_platform(p):
-		if p.global_position.y < obj.global_position.y and _player_marker(p) != null:
-			change_state(fsm.states.jumpstate)
-			return
-
 	var same_level = abs(p.global_position.y - obj.global_position.y) <= SAME_LEVEL_THRESHOLD
 	var in_range = abs(p.global_position.x - obj.global_position.x) <= obj.attack_range
 
@@ -621,6 +616,26 @@ func control_move(speed: float, attack_table: Array, _on_reach: Callable, _use_e
 		obj.start_attack_cooldown()
 		_choose_attack_from_table(attack_table)
 		return
+
+	if obj.in_phase2 and obj.state_transition_cooldown <= 0:
+		if p.global_position.y < obj.global_position.y - 100:
+			var horizontal_distance = abs(p.global_position.x - obj.global_position.x)
+			if horizontal_distance <= 200:
+				obj.state_transition_cooldown = 1.0  # 1 second cooldown
+				change_state(fsm.states.jumpstate)
+				return
+
+		if not _same_platform(p) and p.global_position.y > obj.global_position.y:
+			var horizontal_distance = abs(p.global_position.x - obj.global_position.x)
+			if horizontal_distance <= 300:
+				var direction = sign(p.global_position.x - obj.global_position.x)
+				if direction == 0:
+					direction = 1  
+				obj.velocity.x = direction * obj.air_horizontal_speed
+				obj.velocity.y = -50  
+				obj.state_transition_cooldown = 1.5  
+				change_state(fsm.states.fallstate)
+				return
 
 	var dx = p.global_position.x - obj.global_position.x
 	var dir_x = sign(dx)
@@ -654,16 +669,21 @@ func control_jump_enter(extra_jump_height: float = 24.0) -> void:
 		change_state(fsm.states.idle)
 		return
 
-	var from := _marker_for_pos(obj.global_position)
-	var to := _marker_for_pos(p.global_position)
+	if p.global_position.y < obj.global_position.y:
+		var jump_direction = sign(p.global_position.x - obj.global_position.x)
+		if jump_direction == 0:
+			jump_direction = 1
 
-	if from != null and to != null:
-		var next := _dijkstra_next(from, to)
-		if next != null:
-			_perform_jump_to_position(next.global_position, 0.0)
-			return
+		var jump_height = max(abs(p.global_position.y - obj.global_position.y) + extra_jump_height, 50.0)
+		var gravity = _get_gravity_value()
+		var vy = -sqrt(2.0 * gravity * jump_height)
 
-	_fallback_jump_to_player(p, 0)
+		var vx = jump_direction * obj.air_horizontal_speed
+
+		obj.change_direction(jump_direction)
+		obj.velocity = Vector2(vx, vy)
+	else:
+		change_state(fsm.states.surf)
 	
 func _plan_drop_edge(from: JumpMarker2D, p: Node2D) -> void:
 	var half_x := from.platform_size.x * 0.5
@@ -688,35 +708,18 @@ func control_jump_update(delta: float, land_state_phase2, land_state_normal) -> 
 		_has_reached_peak = true
 
 	if _has_reached_peak:
-		_try_air_attack(
-			150.0, 100.0,
-			false, 
-			0.3,
-			true   
-		)
+		_try_air_attack(150.0, 100.0, false, 0.3, true   )
 
 	_clamp_position_to_bounds()
 
 	if obj.velocity.y >= 0.0 and _has_reached_peak:
 		if obj.is_on_floor():
-			if obj.in_phase2 and land_state_phase2:
-				change_state(land_state_phase2)
+			if obj.in_phase2:
+				change_state(fsm.states.surf)
 			else:
 				change_state(land_state_normal)
 		else:
 			change_state(fsm.states.fallstate)
-
-func _fallback_jump_to_player(player: Node2D, extra_jump_height: float) -> void:
-	var target_pos := obj.global_position
-
-	if player:
-		target_pos = player.global_position
-		var lb: Rect2 = obj.level_bounds
-		if lb.size.x > 0.0:
-			target_pos.x = clamp(target_pos.x, lb.position.x, lb.position.x + lb.size.x)
-
-	_jump_target_x = target_pos.x
-	_perform_jump_to_position(target_pos, 0.0)
 
 func _get_gravity_value() -> float:
 	var g = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -794,7 +797,10 @@ func control_fall_update(delta: float) -> void:
 	if obj.is_on_floor():
 		obj.velocity.x = 0.0
 		_update_current_jump_marker()
-		change_state(fsm.states.idle)
+		if obj.in_phase2:
+			change_state(fsm.states.surf)
+		else:
+			change_state(fsm.states.idle)
 
 func _adjust_fall_horizontal_movement() -> void:
 	var player = obj.get_player()
@@ -849,174 +855,153 @@ func _try_air_attack(max_dist: float, max_vertical_diff: float, require_player_b
 	if player_dir == facing_dir and randf() < chance:
 		change_state(fsm.states.atk_air)
 
-var _roll_start_x: float = 0.0
-var _roll_start_y: float = 0.0
-var _roll_target_x: float = 0.0
-var _roll_total_time: float = 0.0
-var _roll_elapsed: float = 0.0
-var _roll_speed_x: float = 0.0
-var _roll_direction: int = 1
-var _roll_has_invincibility: bool = false
+# ---------------- Roll ----------------
+var _roll_elapsed := 0.0
+var _roll_total_time := 0.0
+var _roll_speed_x := 0.0
+var _roll_dir := 1
+var _roll_has_invincibility := false
 
-const ROLL_EXTRA_HEIGHT_MULT := 1.2
+const ROLL_MIN_TIME := 0.20          
+const ROLL_MIN_DIST := 4.0
+const ROLL_END_MARGIN := 4.0         
+const ROLL_BOUND_MARGIN := 8.0
 const ROLL_THROUGH_BOUND_RATIO := 0.6
 const ROLL_THROUGH_PLAYER_OFFSET := 40.0
 
 func control_roll_enter() -> void:
-	var sprite: AnimatedSprite2D = obj.animated_sprite_2d
-	if sprite:
-		sprite.speed_scale = 1.0
-
-	_roll_has_invincibility = true
-
-	if obj.roll:
-		obj.roll.play()
-
-	_roll_start_x = obj.global_position.x
-	_roll_start_y = obj.global_position.y
 	_roll_elapsed = 0.0
+	_roll_has_invincibility = true
+	_play_roll_sfx()
+
+	var sprite := obj.animated_sprite_2d as AnimatedSprite2D
+	_play_roll_anim(sprite)
 
 	var player = obj.get_player()
 	var has_player := player != null
 
-	if has_player:
-		# giữ nguyên logic cũ của bạn
-		if player.global_position.x < obj.global_position.x:
-			_roll_direction = 1
-		else:
-			_roll_direction = -1
-	else:
-		_roll_direction = 1
+	var start_x := obj.global_position.x
+	var bounds = _get_roll_bounds(ROLL_BOUND_MARGIN)  
 
-	var lb: Rect2 = obj.level_bounds
-	var margin := 8.0
-	var has_bounds := lb.size.x > 0.0
+	_roll_dir = _pick_roll_dir(player, has_player)    
+	var target_x := _pick_roll_target_x(start_x, _roll_dir, player, has_player, bounds)
 
-	var left := 0.0
-	var right := 0.0
-	if has_bounds:
-		left = lb.position.x + margin
-		right = lb.position.x + lb.size.x - margin
-
-	var desired_distance = obj.roll_distance
-	var away_target_x = _roll_start_x + float(_roll_direction) * desired_distance
-
-	if has_bounds:
-		away_target_x = clamp(away_target_x, left, right)
-
-	var away_distance = abs(away_target_x - _roll_start_x)
-
-	var use_roll_through := false
-	if has_player and has_bounds:
-		if away_distance < desired_distance * ROLL_THROUGH_BOUND_RATIO:
-			use_roll_through = true
-
-	var final_target_x: float
-	if use_roll_through:
-		_roll_direction = sign(player.global_position.x - _roll_start_x)
-		if _roll_direction == 0:
-			_roll_direction = 1
-
-		final_target_x = player.global_position.x + float(_roll_direction) * ROLL_THROUGH_PLAYER_OFFSET
-		if has_bounds:
-			final_target_x = clamp(final_target_x, left, right)
-	else:
-		final_target_x = away_target_x
-
-	_roll_target_x = final_target_x
-
-	var distance = abs(_roll_target_x - _roll_start_x)
-	if distance < 4.0:
-		distance = 4.0
-
+	var dist = max(abs(target_x - start_x), ROLL_MIN_DIST)
 	var base_speed = max(obj.roll_speed, 1.0)
-	_roll_total_time = distance / base_speed
-	_roll_total_time = max(_roll_total_time, 0.35)
+	_roll_total_time = max(dist / base_speed, 0.35)
+	_roll_speed_x = dist / _roll_total_time
 
-	# ---- fit tốc độ di chuyển để đúng total_time + đúng target ----
-	_roll_speed_x = distance / _roll_total_time
-	obj.velocity.x = float(_roll_direction) * _roll_speed_x
+	obj.change_direction(_roll_dir)
+	obj.velocity.x = float(_roll_dir) * _roll_speed_x
 
-	# ---- parabolic hop (nhẹ) ----
 	var g := obj.get_gravity().y
-	var vy0 := -0.5 * g * _roll_total_time
-	obj.velocity.y = vy0
+	var hop_height = max(8.0, obj.roll_peak_height)
+	obj.velocity.y = -sqrt(2.0 * g * hop_height)
 
-	obj.change_direction(_roll_direction)
-
-	if sprite:
-		# đảm bảo đang play roll (nếu state enter chưa play)
-		if sprite.animation != "roll":
-			sprite.play("roll")
-
-		var frames := sprite.sprite_frames
-		if frames and frames.has_animation("roll"):
-			var fc := frames.get_frame_count("roll")
-			var fps := frames.get_animation_speed("roll") # frames/sec
-			if fc > 0 and fps > 0.0:
-				var anim_len := float(fc) / fps
-				# duration thực = anim_len / speed_scale  => speed_scale = anim_len / total_time
-				sprite.speed_scale = clamp(anim_len / _roll_total_time, 0.1, 4.0)
+	_sync_roll_anim_speed(sprite, _roll_total_time)
 
 
 func control_roll_update(delta: float) -> void:
 	_roll_elapsed += delta
 
-	# ĐỪNG update_facing khi roll (dễ flip giật hướng)
-	# obj._update_facing()
+	if _roll_elapsed >= ROLL_MIN_TIME and obj.is_on_floor():
+		_finish_roll_to_idle()
+		return
 
-	obj.velocity.x = float(_roll_direction) * _roll_speed_x
-	obj.velocity.y += obj.get_gravity().y * delta
-
-	var lb: Rect2 = obj.level_bounds
-	if lb.size.x > 0.0:
-		var margin := 4.0
-		var left := lb.position.x + margin
-		var right := lb.position.x + lb.size.x - margin
-		var pos := obj.global_position
-		pos.x = clamp(pos.x, left, right)
-		obj.global_position = pos
-
-	var done_time := _roll_elapsed >= _roll_total_time
-	var landed := obj.is_on_floor() and _roll_elapsed > 0.05
-
-	if done_time and landed:
-		_roll_has_invincibility = false
+	if _roll_elapsed <= _roll_total_time:
+		obj.velocity.x = float(_roll_dir) * _roll_speed_x
+	else:
 		obj.velocity.x = 0.0
 
-		# reset speed_scale cho chắc
-		var sprite: AnimatedSprite2D = obj.animated_sprite_2d
-		if sprite:
-			sprite.speed_scale = 1.0
+	obj.velocity.y += obj.get_gravity().y * delta
 
-		change_state(fsm.states.idle)
+	var bounds = _get_roll_bounds(ROLL_END_MARGIN)
+	if bounds != null:
+		var left = bounds.x
+		var right = bounds.y
+		var pos := obj.global_position
+		var clamped_x = clamp(pos.x, left, right)
+		if clamped_x != pos.x:
+			pos.x = clamped_x
+			obj.global_position = pos
+			obj.velocity.x = 0.0
+
 
 func control_roll_exit() -> void:
 	_roll_has_invincibility = false
 	obj.velocity.x = 0.0
-	var sprite: AnimatedSprite2D = obj.animated_sprite_2d
-	if sprite:
-		sprite.speed_scale = 1.0
-
+	_reset_roll_anim_speed()
 
 func has_roll_invincibility() -> bool:
 	return _roll_has_invincibility
-	
-func _pick_drop_x_to_rect(player: Node2D) -> float:
-	var x := obj.global_position.x
 
-	if obj.in_phase2 and not obj.jump_markers.is_empty():
-		var m = obj.get_best_jump_marker_to_player()
-		# FIX: chỉ dùng marker nếu nó nằm THẤP hơn boss (đường xuống)
-		if m and m.global_position.y > obj.global_position.y:
-			x = m.global_position.x
-		elif player:
-			x = player.global_position.x
-	elif player:
-		x = player.global_position.x
+func _play_roll_sfx() -> void:
+	if obj.roll:
+		obj.roll.play()
 
-	return obj.clamp_x_to_room(x)
-	
-func _drop_to_rect_now(_dy: float) -> void:
-	obj.force_phase2_ground_jump = true
-	change_state(fsm.states.jumpstate)
+func _play_roll_anim(sprite: AnimatedSprite2D) -> void:
+	if sprite == null:
+		return
+	if sprite.animation != "roll":
+		sprite.play("roll")
+
+	var frames := sprite.sprite_frames
+	if frames and frames.has_animation("roll"):
+		if frames.has_method("set_animation_loop"):
+			frames.set_animation_loop("roll", true)
+
+func _sync_roll_anim_speed(sprite: AnimatedSprite2D, duration: float) -> void:
+	if sprite == null:
+		return
+	var frames := sprite.sprite_frames
+	if frames == null or not frames.has_animation("roll"):
+		return
+
+	var fc := frames.get_frame_count("roll")
+	var fps := frames.get_animation_speed("roll")
+	if fc <= 0 or fps <= 0.0:
+		return
+
+	var anim_len := float(fc) / fps
+	sprite.speed_scale = clamp(anim_len / max(0.001, duration), 0.15, 4.0)
+
+func _reset_roll_anim_speed() -> void:
+	var sprite := obj.animated_sprite_2d as AnimatedSprite2D
+	if sprite:
+		sprite.speed_scale = 1.0
+
+func _finish_roll_to_idle() -> void:
+	_roll_has_invincibility = false
+	obj.velocity.x = 0.0
+	_reset_roll_anim_speed()
+	change_state(fsm.states.idle)
+
+func _get_roll_bounds(margin: float) -> Variant:
+	var lb: Rect2 = obj.level_bounds
+	if lb.size.x <= 0.0:
+		return null
+	return Vector2(lb.position.x + margin, lb.position.x + lb.size.x - margin)
+
+func _pick_roll_dir(player: Node2D, has_player: bool) -> int:
+	if not has_player:
+		return 1
+	return 1 if player.global_position.x < obj.global_position.x else -1
+
+func _pick_roll_target_x(start_x: float, dir: int, player: Node2D, has_player: bool, bounds: Variant) -> float:
+	var desired = obj.roll_distance
+	var target = start_x + float(dir) * desired
+
+	if bounds != null:
+		target = clamp(target, bounds.x, bounds.y)
+
+	if has_player and bounds != null:
+		var away_dist = abs(target - start_x)
+		if away_dist < desired * ROLL_THROUGH_BOUND_RATIO:
+			var through_dir = sign(player.global_position.x - start_x)
+			if through_dir == 0:
+				through_dir = 1
+			_roll_dir = through_dir
+			target = player.global_position.x + float(through_dir) * ROLL_THROUGH_PLAYER_OFFSET
+			target = clamp(target, bounds.x, bounds.y)
+
+	return target

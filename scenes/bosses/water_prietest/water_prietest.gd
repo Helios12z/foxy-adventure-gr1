@@ -46,6 +46,7 @@ var can_defend: bool = true
 var defend_cooldown_timer: float = 0.0
 var can_roll: bool = true
 var roll_cooldown_timer: float = 0.0
+var state_transition_cooldown: float = 0.0
 var _phase2_transition_running: bool = false
 var _original_time_scale: float = 1.0
 
@@ -115,6 +116,7 @@ func _physics_process(delta: float) -> void:
 	update_defend_cooldown(delta)
 	update_roll_cooldown(delta)
 	update_attack_cooldown(delta)
+	update_state_transition_cooldown(delta)
 	_detect_player()
 
 	if fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.surf: 
@@ -378,6 +380,10 @@ func update_roll_cooldown(delta: float) -> void:
 func start_roll_cooldown() -> void:
 	can_roll = false
 	roll_cooldown_timer = roll_cooldown
+
+func update_state_transition_cooldown(delta: float) -> void:
+	if state_transition_cooldown > 0:
+		state_transition_cooldown -= delta
 
 func clamp_x_to_room(x: float) -> float:
 	var lb: Rect2 = level_bounds

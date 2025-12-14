@@ -354,7 +354,7 @@ flip_v = true
 position = Vector2(447, 461)
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
-position = Vector2(496, 563)
+position = Vector2(-308, 563)
 has_blade = true
 has_fire_gem = true
 has_water_paw_gem = true

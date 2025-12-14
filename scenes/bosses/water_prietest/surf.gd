@@ -10,8 +10,9 @@ func _update(delta: float) -> void:
 		[fsm.states.atk_3, 0.7],
 		[fsm.states.atk_super, 0.95],
 	]
-	control_move(obj.surf_speed, attack_table, Callable(self, "_on_reach_target"), false)
+	control_move(obj.surf_speed, attack_table, Callable(self, "_on_reach_target"), true)
 
 func _on_reach_target(dy: float) -> void:
-	if not obj.is_on_floating_platform():
-		change_state(fsm.states.jumpstate)
+	# Only fall if not on floor
+	if not obj.is_on_floor():
+		change_state(fsm.states.fallstate)
