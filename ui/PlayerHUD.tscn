@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://btj7ilbg28lwi"]
+[gd_scene load_steps=10 format=3 uid="uid://btj7ilbg28lwi"]
 
 [ext_resource type="Texture2D" uid="uid://ddg68xd2v6lbp" path="res://asset/ui/foxy_avatar.png" id="2_kor1e"]
 [ext_resource type="Texture2D" uid="uid://31wwmmc0vdti" path="res://asset/ui/background_bar.png" id="2_rrwxd"]
@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="5_r6v1a"]
 [ext_resource type="Script" uid="uid://d0nsldc0urj8n" path="res://ui/player_hud.gd" id="5_script"]
 [ext_resource type="PackedScene" uid="uid://dufomu7dd3vmb" path="res://ui/skill_bar.tscn" id="8_kor1e"]
+[ext_resource type="Texture2D" uid="uid://b282mx8um2y11" path="res://asset/ui/skill/ui_skill.png" id="9_wnsv7"]
 
 [node name="PlayerHud" type="Control"]
 layout_mode = 3
@@ -126,3 +127,12 @@ offset_left = 7.0
 offset_top = -86.0
 offset_right = 7.0
 offset_bottom = -86.0
+
+[node name="SkillTextureButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 1077.0
+offset_top = 559.0
+offset_right = 2101.0
+offset_bottom = 1583.0
+scale = Vector2(0.08, 0.08)
+texture_normal = ExtResource("9_wnsv7")

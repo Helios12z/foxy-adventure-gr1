@@ -48,6 +48,10 @@ var _defense_area: Area2D = null
 @export var meteor_top_margin: float = 200.0
 func _ready() -> void:
 	player = (get_parent() as Player)
+	if player and "susanoo_level" in player:
+		# Sync level from player's persistent state
+		level = player.susanoo_level
+
 	# Nếu đặt vị trí sẵn trong Editor cho SusanooSpirit, dùng nó làm offset
 	if use_initial_position_as_offset:
 		follow_offset = position

@@ -16,6 +16,7 @@ signal room_cooldown_finished()
 signal giant_cooldown_started(duration)
 signal giant_cooldown_updated(time_left)
 signal giant_cooldown_finished()
+signal susanoo_level_changed(level)
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var _base_movement_speed: float = 0.0
@@ -27,6 +28,7 @@ var hack_mode: HackMode = null
 @export var has_fire_gem: bool = false
 @export var has_water_paw_gem: bool = false
 @export var has_water_room_gem: bool = false
+@export var susanoo_level: int = 0
 @export var max_able_jump = 2
 @export var max_jump_count = 2
 @export var max_mana : int = 100
@@ -252,6 +254,9 @@ func collected_blade() -> void:
 
 func collected_fire_gem() -> void:
 	has_fire_gem = true
+	if susanoo_level < 1:
+		susanoo_level = 1
+		susanoo_level_changed.emit(susanoo_level)
 
 func collected_water_paw_gem() -> void:
 	has_water_paw_gem = true
@@ -265,7 +270,8 @@ func save_state() -> Dictionary:
 		"has_blade": has_blade,
 		"has_fire_gem": has_fire_gem,
 		"has_water_paw_gem": has_water_paw_gem,
-		"has_water_room_gem": has_water_room_gem
+		"has_water_room_gem": has_water_room_gem,
+		"susanoo_level": susanoo_level
 	}
 
 func load_state(data: Dictionary) -> void:
@@ -290,6 +296,14 @@ func load_state(data: Dictionary) -> void:
 		has_water_room_gem = data["has_water_room_gem"]
 		if has_water_room_gem:
 			collected_water_room_gem()
+	if data.has("susanoo_level"):
+		susanoo_level = data["susanoo_level"]
+		susanoo_level_changed.emit(susanoo_level)
+
+func upgrade_susanoo_level() -> void:
+	susanoo_level += 1
+	susanoo_level_changed.emit(susanoo_level)
+	GameManager.update_current_checkpoint_player_state({"susanoo_level": susanoo_level}, true)
 			
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	#take_dame.emit()
