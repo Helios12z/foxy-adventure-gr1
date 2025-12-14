@@ -59,17 +59,17 @@ func _ready() -> void:
 	global_position = player.global_position
 	scale.x = abs(scale.x) * float(player.direction)
 
-	# Set room level on player
-	player.room_level = skill_level
+	# Sync local skill_level with Player's current room_level
+	if player.room_level > 0:
+		skill_level = player.room_level
+	else:
+		# Fallback if player level not set, though it should be if gem collected
+		skill_level = 1
 
 	# Heal logic based on level
 	if skill_level >= 2:
 		var heal_amount = int(player.max_health * heal_percentage)
 		player.heal(heal_amount)
-	else:
-		# L1: Heal 3 HP (Legacy)
-		player.health = min(player.max_health, player.health + 3)
-		player.emit_signal("hp_changed", player.health, player.max_health)
 
 	# lấy node hiển thị của player để nhấp nháy mềm
 	player_display_item = _find_display_item(player)
@@ -235,7 +235,6 @@ func _cleanup() -> void:
 	# restore player damage reception
 	if player:
 		player.invincible_zone = false
-		player.room_level = 0
 		# Khôi phục độ sáng ban đầu cho player nếu có áp dụng flicker
 		if player_display_item:
 			(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
@@ -338,23 +337,6 @@ func _on_bullet_entered(body: Node) -> void:
 		else:
 			body.queue_free()
 		return
-
-	captured_bullets.append(body)
-	_prepare_bullet(body)
-	# Áp dụng dissolve tại vị trí hiện tại (vùng flash mở rộng), chờ xong rồi teleport tới marker
-	if body is Node2D:
-		var n2 := body as Node2D
-		_apply_dissolve_appear(n2, bullet_flash_duration, func(): _animate_bullet_to_marker(n2), bullet_flash_scale)
-
-func _animate_bullet_to_marker(bullet: Node) -> void:
-	if not (bullet is Node2D):
-		return
-	var n2 := bullet as Node2D
-	# Teleport ngay sau khi kết thúc flash đầu
-	n2.global_position = bullet_marker.global_position
-	_release_body(bullet)
-	# Flash lần hai lâu hơn một chút
-	_apply_dissolve_appear(n2, bullet_flash_duration, Callable(), bullet_flash_scale)
 
 func _find_display_item(node: Node) -> CanvasItem:
 	# Tìm Sprite2D/AnimatedSprite2D ở bất kỳ cấp con

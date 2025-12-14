@@ -151,6 +151,9 @@ func _apply_checkpoint_inventory_only() -> void:
 	if data.has("susanoo_level"):
 		player.susanoo_level = int(data["susanoo_level"])
 		player.susanoo_level_changed.emit(player.susanoo_level)
+	if data.has("room_level"):
+		player.room_level = int(data["room_level"])
+		player.room_level_changed.emit(player.room_level)
 	apply_inventory_from_checkpoint()
 
 

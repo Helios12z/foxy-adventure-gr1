@@ -17,6 +17,7 @@ signal giant_cooldown_started(duration)
 signal giant_cooldown_updated(time_left)
 signal giant_cooldown_finished()
 signal susanoo_level_changed(level)
+signal room_level_changed(level)
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var _base_movement_speed: float = 0.0
@@ -29,6 +30,7 @@ var hack_mode: HackMode = null
 @export var has_water_paw_gem: bool = false
 @export var has_water_room_gem: bool = false
 @export var susanoo_level: int = 0
+@export var room_level: int = 0
 @export var max_able_jump = 2
 @export var max_jump_count = 2
 @export var max_mana : int = 100
@@ -197,7 +199,7 @@ func _process(_delta: float) -> void:
 	if giant_on_cooldown and giant_cooldown_timer != null:
 		giant_cooldown_updated.emit(giant_cooldown_timer.time_left)
 
-var room_level: int = 0
+
 
 func _apply_safe_zone_mods() -> void:
 	if is_giant_mode:
@@ -263,6 +265,9 @@ func collected_water_paw_gem() -> void:
 
 func collected_water_room_gem() -> void:
 	has_water_room_gem = true
+	if room_level < 1:
+		room_level = 1
+		room_level_changed.emit(room_level)
 
 func save_state() -> Dictionary:
 	return {
@@ -271,7 +276,8 @@ func save_state() -> Dictionary:
 		"has_fire_gem": has_fire_gem,
 		"has_water_paw_gem": has_water_paw_gem,
 		"has_water_room_gem": has_water_room_gem,
-		"susanoo_level": susanoo_level
+		"susanoo_level": susanoo_level,
+		"room_level": room_level
 	}
 
 func load_state(data: Dictionary) -> void:
@@ -299,11 +305,19 @@ func load_state(data: Dictionary) -> void:
 	if data.has("susanoo_level"):
 		susanoo_level = data["susanoo_level"]
 		susanoo_level_changed.emit(susanoo_level)
+	if data.has("room_level"):
+		room_level = data["room_level"]
+		room_level_changed.emit(room_level)
 
 func upgrade_susanoo_level() -> void:
 	susanoo_level += 1
 	susanoo_level_changed.emit(susanoo_level)
 	GameManager.update_current_checkpoint_player_state({"susanoo_level": susanoo_level}, true)
+
+func upgrade_room_level() -> void:
+	room_level += 1
+	room_level_changed.emit(room_level)
+	GameManager.update_current_checkpoint_player_state({"room_level": room_level}, true)
 			
 func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	#take_dame.emit()
