@@ -148,13 +148,9 @@ func _setup_shield_effect() -> void:
 	# Add as child of player so it follows him
 	player.add_child(_shield_icon)
 	
-	# Smooth fade-in
+	# Start hidden, let _process handle visibility
 	_shield_icon.modulate.a = 0.0
-	var tw = create_tween()
-	tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	
-	# Start pulsing effect loop
-	_animate_shield_pulse()
+	_shield_icon.visible = false
 
 func _animate_shield_pulse() -> void:
 	if not is_instance_valid(_shield_icon):
@@ -229,6 +225,39 @@ func _process(delta: float) -> void:
 	if player and area:
 		var inside := area.overlaps_body(player)
 		player.invincible_zone = inside
+		
+		# Level 3 Shield Logic
+		if skill_level >= 3 and is_instance_valid(_shield_icon):
+			if inside:
+				if not _shield_icon.visible:
+					_shield_icon.visible = true
+					var tw = create_tween()
+					tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.3)
+					_animate_shield_pulse() # Restart pulse if needed
+				elif _shield_icon.modulate.a < 0.05: # Was fading out?
+					var tw = create_tween()
+					tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.3)
+					_animate_shield_pulse()
+			else:
+				# Outside
+				if _shield_icon.visible and _shield_icon.modulate.a > 0.0:
+					# Fade out and then hide
+					# We should ensure we don't spam tweens.
+					# Simple check: if alpha is high, tween it down.
+					# Note: Pulsing tweens modify alpha too. This conflicts.
+					# Solution: Put the Icon in a Node2D container. Pulse the Icon, Fade the Container.
+					# But we only have _shield_icon sprite.
+					# Workaround: Stop pulse tween when fading out?
+					if _shield_icon.get_meta("fading_out", false) == false:
+						_shield_icon.set_meta("fading_out", true)
+						var tw = create_tween()
+						tw.tween_property(_shield_icon, "modulate:a", 0.0, 0.3)
+						tw.tween_callback(func(): 
+							if is_instance_valid(_shield_icon):
+								_shield_icon.visible = false
+								_shield_icon.set_meta("fading_out", false)
+						)
+		
 		# Hiệu ứng nhấp nháy nhẹ cho player khi ở trong vùng an toàn
 		if player_display_item:
 			if inside:
