@@ -125,6 +125,45 @@ func _ready() -> void:
 		heal_timer.timeout.connect(_spawn_heal_particle)
 		add_child(heal_timer)
 
+	# Level 3: Show persistent Shield Room icon above player
+	if skill_level >= 3:
+		_setup_shield_effect()
+
+var _shield_icon: Sprite2D = null
+
+func _setup_shield_effect() -> void:
+	if not is_instance_valid(player):
+		return
+	var shield_tex = load("res://asset/foxy/foxy/skill_room_paw/shield_room.png")
+	if shield_tex == null:
+		return
+		
+	_shield_icon = Sprite2D.new()
+	_shield_icon.texture = shield_tex
+	_shield_icon.scale = Vector2(0.09, 0.07)
+	# Position above player head (approx -30 to -40 y offset)
+	_shield_icon.position = Vector2(0, -67)
+	_shield_icon.z_index = 20
+	
+	# Add as child of player so it follows him
+	player.add_child(_shield_icon)
+	
+	# Smooth fade-in
+	_shield_icon.modulate.a = 0.0
+	var tw = create_tween()
+	tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	# Start pulsing effect loop
+	_animate_shield_pulse()
+
+func _animate_shield_pulse() -> void:
+	if not is_instance_valid(_shield_icon):
+		return
+	var tw = create_tween().set_loops()
+	# Pulse alpha between 0.4 and 1.0
+	tw.tween_property(_shield_icon, "modulate:a", 0.4, 0.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(_shield_icon, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
 func _spawn_heal_particle() -> void:
 	if state == "ending" or not is_instance_valid(player):
 		return
@@ -280,6 +319,10 @@ func _on_hold_finished() -> void:
 	tw.tween_callback(Callable(self, "_cleanup"))
 
 func _cleanup() -> void:
+	# Clean up shield icon if it exists
+	if is_instance_valid(_shield_icon):
+		_shield_icon.queue_free()
+
 	# release enemies/bullets at their marker positions
 	# Skip invalid or previously freed instances to avoid type errors
 	captured_enemies = captured_enemies.filter(func(x): return is_instance_valid(x))
