@@ -11,7 +11,7 @@ extends Node2D
 func _ready() -> void:
 	# Mặc định tắt hitbox
 	hit.set_deferred("monitoring", false)
-	hit.set_deferred("monitorable", false)
+	# hit.set_deferred("monitorable", false)
 	anim.visible = false
 
 
@@ -50,14 +50,14 @@ func _run_sequence() -> void:
 		pagoda_sound.play()
 
 	hit.set_deferred("monitoring", true)
-	hit.set_deferred("monitorable", true)
+	# hit.set_deferred("monitorable", true)
 
 	await get_tree().create_timer(active_time).timeout
 	print("[WaterPagoda] ACTIVE_END")
 
 	# Kết thúc: tắt hitbox, tuỳ chọn huỷ node
 	hit.set_deferred("monitoring", false)
-	hit.set_deferred("monitorable", false)
+	# hit.set_deferred("monitorable", false)
 
 	if auto_free:
 		print("[WaterPagoda] QUEUE_FREE")

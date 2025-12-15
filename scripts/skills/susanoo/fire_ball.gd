@@ -68,9 +68,12 @@ func _ready() -> void:
 	var choice := SCALE_CHOICES[randi() % SCALE_CHOICES.size()]
 	if _body:
 		_body.scale = Vector2(choice, choice)
-	if _pf:
-		_pf.progress_ratio = 0.0
+	_pf.progress_ratio = 0.0
 	_bob_phase = randf() * TAU
+
+	# Auto-destroy after 7 seconds
+	var life_timer := get_tree().create_timer(5.0)
+	life_timer.timeout.connect(queue_free)
 
 	# Ensure both process loops are active
 	set_physics_process(true)

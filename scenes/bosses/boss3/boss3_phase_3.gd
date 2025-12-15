@@ -360,17 +360,24 @@ func _do_water_ball_orbit_no_move() -> void:
 	while elapsed < orbit_time:
 		elapsed += get_process_delta_time()
 		for data in balls:
-			data.angle += orbit_speed * get_process_delta_time()
-			var new_pos = orbit_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
-			data.ball.global_position = new_pos
+			if is_instance_valid(data.ball):
+				data.angle += orbit_speed * get_process_delta_time()
+				var new_pos = orbit_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
+				data.ball.global_position = new_pos
 		await get_tree().process_frame
 
 	# SHOOT TOWARD PLAYER - one by one sequentially
 	for data in balls:
 		var ball = data.ball
+		if not is_instance_valid(ball):
+			continue
+			
 		# Direction toward player
 		var direction = (obj.player.global_position - ball.global_position).normalized()
-		ball.direction = direction
+		
+		# Safely set direction (script might be stripped)
+		if "direction" in ball:
+			ball.direction = direction
 
 		# Flip sprite based on direction
 		if direction.x < 0:
@@ -379,8 +386,9 @@ func _do_water_ball_orbit_no_move() -> void:
 			ball.get_node("AnimatedSprite2D").flip_h = false
 
 		# Enable acceleration for orbit pattern
-		ball.enable_acceleration()
-		ball.start_moving()
+		if ball.has_method("start_moving"):
+			ball.enable_acceleration()
+			ball.start_moving()
 		# Delay between each ball shooting
 		await get_tree().create_timer(0.6).timeout
 
@@ -433,9 +441,10 @@ func _do_water_ball_cluster_no_move() -> void:
 
 		# Rotate all balls around cluster center
 		for data in balls:
-			data.angle += rotation_speed * dt
-			var new_pos = cluster_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
-			data.ball.global_position = new_pos
+			if is_instance_valid(data.ball):
+				data.angle += rotation_speed * dt
+				var new_pos = cluster_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
+				data.ball.global_position = new_pos
 
 		await get_tree().process_frame
 
@@ -447,6 +456,8 @@ func _do_water_ball_cluster_no_move() -> void:
 	for i in balls.size():
 		var data = balls[i]
 		var ball = data.ball
+		if not is_instance_valid(ball):
+			continue
 
 		# Calculate spread: divide total angle across all balls
 		var angle_offset = -spread_angle / 2 + (i / float(balls.size() - 1)) * spread_angle
@@ -454,7 +465,9 @@ func _do_water_ball_cluster_no_move() -> void:
 		var final_angle = base_angle + angle_offset
 
 		var direction = Vector2(cos(final_angle), sin(final_angle))
-		ball.direction = direction
+		
+		if "direction" in ball:
+			ball.direction = direction
 
 		# Flip sprite based on direction
 		if direction.x < 0:
@@ -463,8 +476,9 @@ func _do_water_ball_cluster_no_move() -> void:
 			ball.get_node("AnimatedSprite2D").flip_h = false
 
 		# Enable acceleration for cluster pattern
-		ball.enable_acceleration()
-		ball.start_moving()
+		if ball.has_method("start_moving"):
+			ball.enable_acceleration()
+			ball.start_moving()
 		# Small delay between each shot for visual effect
 		await get_tree().create_timer(0.15).timeout
 

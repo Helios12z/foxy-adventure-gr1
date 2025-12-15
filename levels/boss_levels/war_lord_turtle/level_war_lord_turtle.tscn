@@ -17,7 +17,7 @@
 [ext_resource type="Script" uid="uid://o27rb5nypyco" path="res://levels/boss_levels/war_lord_turtle/boss_hud.gd" id="10_x24gd"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="11_0sdmd"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="11_x24gd"]
-[ext_resource type="PackedScene" path="res://screens/game_screen/hud.tscn" id="12_8kqfi"]
+[ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="12_8kqfi"]
 [ext_resource type="PackedScene" uid="uid://dcyxh7eep8web" path="res://scenes/objects/chest.tscn" id="12_myin1"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="13_wcg3s"]
 [ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="14_7gl8q"]
@@ -113,6 +113,8 @@ has_blade = true
 has_fire_gem = true
 has_water_paw_gem = true
 has_water_room_gem = true
+susanoo_level = 3
+room_level = 3
 max_health = 1000
 
 [node name="WarLordTurtle" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_7dedx")]
