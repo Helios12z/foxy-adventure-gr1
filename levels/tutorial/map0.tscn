@@ -594,4 +594,4 @@ zoom = Vector2(1.44, 1.44)
 position = Vector2(894, 76)
 
 [node name="WaterFairy" parent="Node2D" instance=ExtResource("44_7ilwd")]
-position = Vector2(753, 73)
+position = Vector2(752, 75)
