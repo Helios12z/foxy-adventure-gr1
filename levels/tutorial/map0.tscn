@@ -393,15 +393,15 @@ position = Vector2(-594, -55)
 key_text = "D"
 
 [node name="Node7" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(6, -59)
+position = Vector2(7, -107)
 key_text = "W"
 
 [node name="Node8" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(73, -59)
+position = Vector2(74, -107)
 key_text = "↑"
 
 [node name="Node2" parent="KeyBoardKeyHints" instance=ExtResource("36_21dun")]
-position = Vector2(39, -2)
+position = Vector2(40, -50)
 key_text = "Space"
 custom_scale = Vector2(0.3, 0.07)
 
@@ -503,10 +503,10 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Label8" type="Label" parent="."]
-offset_left = -127.0
-offset_top = -129.0
-offset_right = 223.0
-offset_bottom = -75.0
+offset_left = -126.0
+offset_top = -177.0
+offset_right = 224.0
+offset_bottom = -123.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("41_lybv0")
@@ -564,8 +564,8 @@ offset = Vector2(0, 44.505)
 zoom = Vector2(1.44, 1.44)
 
 [node name="WaterFairyDoor" parent="Node2D" instance=ExtResource("45_scw3o")]
-position = Vector2(894, 76)
-scale = Vector2(0.59, 0.59)
+position = Vector2(894, 73)
+scale = Vector2(0.7, 0.7)
 
 [node name="WaterFairy" parent="Node2D" instance=ExtResource("44_7ilwd")]
 position = Vector2(752, 75)

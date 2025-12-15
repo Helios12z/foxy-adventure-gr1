@@ -1,17 +1,18 @@
 [gd_scene load_steps=36 format=4 uid="uid://bhwnd0dvsqev8"]
 
-[ext_resource type="Script" path="res://scenes/test_scenes/level_boss_3.gd" id="1_aeh5d"]
+[ext_resource type="Script" uid="uid://4ch8ctjqh6tg" path="res://scenes/test_scenes/level_boss_3.gd" id="1_aeh5d"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_aystw"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="1_p0w1l"]
 [ext_resource type="Texture2D" uid="uid://dkp2h6vxltgjn" path="res://asset/level_3_water_palace/background/boss_layer_2.png" id="2_1myvi"]
 [ext_resource type="Texture2D" uid="uid://tofm1rqb0fy1" path="res://asset/level_3_water_palace/background/full bg.jpg" id="2_b5x6u"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="2_imhqq"]
+[ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="2_u6av4"]
 [ext_resource type="PackedScene" uid="uid://drem1inlnoymq" path="res://scenes/bosses/boss3/Boss3.tscn" id="3_gtfhx"]
 [ext_resource type="Texture2D" uid="uid://byehnf2rvnybh" path="res://asset/level_3_water_palace/background/Gemini_Generated_Image_8hytlc8hytlc8hyt.png" id="3_keb00"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/boss3/WaterEruption.tscn" id="7_1myvi"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/boss3/WaterEruption2.tscn" id="8_sdf1u"]
-[ext_resource type="Script" path="res://scenes/test_scenes/marker_2d.gd" id="9_r8tgu"]
-[ext_resource type="Script" path="res://scenes/test_scenes/boss3_hud.gd" id="11_wtdap"]
+[ext_resource type="PackedScene" uid="uid://bv3lat67dsein" path="res://scenes/bosses/boss3/WaterEruption.tscn" id="7_1myvi"]
+[ext_resource type="PackedScene" uid="uid://clgtrl0k7dopq" path="res://scenes/bosses/boss3/WaterEruption2.tscn" id="8_sdf1u"]
+[ext_resource type="Script" uid="uid://pbub875k1ti6" path="res://scenes/test_scenes/marker_2d.gd" id="9_r8tgu"]
+[ext_resource type="Script" uid="uid://d27a6ocyke8m0" path="res://scenes/test_scenes/boss3_hud.gd" id="11_wtdap"]
 [ext_resource type="Texture2D" uid="uid://d1c6cxmgbcehx" path="res://asset/level_3_water_palace/water_goddess/states/boss_healthbar1.png" id="12_aeh5d"]
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="13_2pftl"]
 [ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="14_keb00"]
@@ -23,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://caayffphhg6bw" path="res://scenes/bosses/boss3/ColumnSpike.tscn" id="21_y5yu7"]
 [ext_resource type="PackedScene" uid="uid://4jkpch4ypfqs" path="res://scenes/bosses/boss3/Boss3CoralSpike.tscn" id="22_b5x6u"]
 [ext_resource type="PackedScene" uid="uid://deauakn2u0vau" path="res://scenes/bosses/boss3/UpwardPlatform.tscn" id="22_g0ari"]
-[ext_resource type="Script" path="res://scenes/bosses/boss3/phase_3_camera.gd" id="23_phase3cam"]
+[ext_resource type="Script" uid="uid://cuny6i8se13vl" path="res://scenes/bosses/boss3/phase_3_camera.gd" id="23_phase3cam"]
 [ext_resource type="PackedScene" uid="uid://bdjyxenddcpp7" path="res://scenes/bosses/boss3/Bubble.tscn" id="24_vggod"]
 [ext_resource type="AudioStream" uid="uid://eds17v5qb4u5" path="res://asset/sounds/boss 3/battle end music.mp3" id="26_xoqag"]
 [ext_resource type="AudioStream" uid="uid://cpefwogjd2wwo" path="res://asset/sounds/boss 3/loop_phase12_boss.mp3" id="27_u6av4"]
@@ -49,6 +50,11 @@ size = Vector2(993.234, 62.78346)
 
 [node name="TestBoss3" type="Node2D"]
 script = ExtResource("1_aeh5d")
+
+[node name="Teleport" parent="." instance=ExtResource("2_u6av4")]
+position = Vector2(301, -293)
+scale = Vector2(0.1, 0.1)
+is_cross_scene = true
 
 [node name="FullBg" type="Sprite2D" parent="."]
 modulate = Color(0.7581918, 0.7581918, 0.7581917, 1)

@@ -301,8 +301,8 @@ scale = Vector2(0.7, 0.7)
 key_text = "F"
 
 [node name="KeyboardTeleport" parent="Enemies" instance=ExtResource("10_e0w0y")]
-position = Vector2(15268, -398.99997)
-scale = Vector2(0.7, 0.7)
+position = Vector2(15507, -364)
+scale = Vector2(0.4, 0.4)
 key_text = "F"
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="."]
