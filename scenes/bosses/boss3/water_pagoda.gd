@@ -38,8 +38,17 @@ func _run_sequence() -> void:
 	# TELEGRAPH: hiện dần với anim "appears", chưa gây dmg
 	anim.visible = true
 	anim.play("appears")
+
+	# Check if still in tree before awaiting
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(telegraph_time).timeout
 	print("[WaterPagoda] TELEGRAPH_END")
+
+	# Check if still valid after await
+	if not is_inside_tree():
+		return
 
 	# ACTIVE: chuyển sang anim "slash", bật hitbox
 	print("[WaterPagoda] ACTIVE_START (slash)")
@@ -52,8 +61,16 @@ func _run_sequence() -> void:
 	hit.set_deferred("monitoring", true)
 	# hit.set_deferred("monitorable", true)
 
+	# Check if still in tree before awaiting
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(active_time).timeout
 	print("[WaterPagoda] ACTIVE_END")
+
+	# Check if still valid after await
+	if not is_inside_tree():
+		return
 
 	# Kết thúc: tắt hitbox, tuỳ chọn huỷ node
 	hit.set_deferred("monitoring", false)

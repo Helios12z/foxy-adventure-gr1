@@ -27,10 +27,24 @@ func play():
 
 	# On first play, wait one extra frame to ensure nodes are ready
 	if _first_play:
+		# Check if still in tree before awaiting
+		if not is_inside_tree():
+			_is_playing = false
+			return
 		await get_tree().process_frame
 		_first_play = false
 
+	# Check if still valid after await
+	if not is_inside_tree():
+		_is_playing = false
+		return
+
 	await _fade_out(sprite, fade_duration)
+
+	# Check if still valid after fade
+	if not is_inside_tree():
+		_is_playing = false
+		return
 
 	# Play sound right when attack starts (animation becomes visible)
 	if eruption_sound:
@@ -42,9 +56,24 @@ func play():
 	hit.set_deferred("monitoring", true)
 	hit.set_deferred("monitorable", true)
 
+	# Check if still in tree before awaiting timer
+	if not is_inside_tree():
+		_is_playing = false
+		return
 
 	await get_tree().create_timer(active_time).timeout
+
+	# Check if still valid after timer
+	if not is_inside_tree():
+		_is_playing = false
+		return
+
 	await _fade_out(anim, fade_duration)
+
+	# Check if still valid after fade
+	if not is_inside_tree():
+		_is_playing = false
+		return
 
 	anim.visible = false
 	hit.set_deferred("monitoring", false)
@@ -66,15 +95,30 @@ func _reset_state():
 
 
 func _fade_out(node: Node2D, duration: float) -> void:
+	# Check if node is valid before starting
+	if not is_instance_valid(node) or not is_inside_tree():
+		return
+
 	var start := node.modulate.a
 	var t := 0.0
 	while t < duration:
+		# Check if we're still in the tree before awaiting
+		if not is_inside_tree():
+			return
+
 		t += get_process_delta_time()
 		var k := 1.0 - (t / duration)
 		node.modulate.a = start * k
 		await get_tree().process_frame
-	node.modulate.a = 0.0
-	node.visible = false
+
+		# Check again after await in case node was freed during the frame
+		if not is_instance_valid(node) or not is_inside_tree():
+			return
+
+	# Final checks before setting properties
+	if is_instance_valid(node) and is_inside_tree():
+		node.modulate.a = 0.0
+		node.visible = false
 
 
 func stop() -> void:
