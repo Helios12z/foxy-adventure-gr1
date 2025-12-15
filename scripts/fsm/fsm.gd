@@ -28,12 +28,27 @@ func _set_states_parent_node(parent_node: Node) -> void:
 		return
 	var state_nodes: Array = parent_node.get_children()
 	for state_node in state_nodes:
+		# Skip nodes that aren't FSMState instances
+		if not state_node is FSMState:
+			if debug:
+				print("Warning: Skipping node '", state_node.name, "' - not an FSMState (type: %s)" % state_node.get_class())
+			continue
+
 		if debug:
 			print("adding state: ", state_node.name)
 		var normalized_name: String = state_node.name.to_lower()
 		states[normalized_name] = state_node
-		state_node.fsm = self
-		state_node.obj = self.obj
+
+		# Safe property assignment - check if properties exist first
+		if "fsm" in state_node:
+			state_node.fsm = self
+		else:
+			push_warning("State node '%s' doesn't have 'fsm' property" % state_node.name)
+
+		if "obj" in state_node:
+			state_node.obj = self.obj
+		else:
+			push_warning("State node '%s' doesn't have 'obj' property" % state_node.name)
 
 
 func change_state(new_state: FSMState) -> void:

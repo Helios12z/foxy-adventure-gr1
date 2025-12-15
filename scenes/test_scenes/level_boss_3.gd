@@ -14,6 +14,11 @@ func _ready() -> void:
 	if not spawned_at_portal:
 		GameManager.respawn_at_checkpoint()
 
+	# Don't lock player movement at start - let boss intro handle it
+	# if GameManager.player:
+	#	GameManager.player.set_can_move(false)
+	#	print("[Boss3 Level] Player locked from start")
+
 	# Ensure player always respawns at the entrance door during boss fight
 	var entrance_door = get_node_or_null("Teleport")
 	if entrance_door and is_instance_valid(entrance_door):
@@ -32,17 +37,58 @@ func _ready() -> void:
 	_setup_boss_alive_state()
 	_setup_camera_for_boss3()
 
+	# Fade out the Door node AFTER scene is fully loaded and visible
+	if spawned_at_portal:
+		var door_node = get_node_or_null("Door")
+		if door_node and is_instance_valid(door_node):
+			# Wait for loading screen to finish and scene to be visible
+			await get_tree().create_timer(2.0).timeout
+			print("[Boss3 Level] Fading out Door node after arrival")
+			_fade_entrance_door(door_node)
+
 
 func _setup_boss_alive_state() -> void:
 	boss_hud.set_boss(boss)
 	print("we set boss")
 
-	# Connect to boss intro_finished signal to show HUD when boss is ready to fight
+	# Connect to boss intro_finished signal to trigger dialogue instead of starting fight
 	if not boss.intro_finished.is_connected(_on_boss_intro_finished):
 		boss.intro_finished.connect(_on_boss_intro_finished)
 
 func _on_boss_intro_finished() -> void:
-	print("[Level Boss 3] Boss intro finished! Showing HUD...")
+	print("[Level Boss 3] Boss intro finished! Starting dialogue...")
+
+	# Lock player during dialogue
+	if GameManager.player:
+		GameManager.player.set_can_move(false)
+		print("[Boss3 Level] Player locked for dialogue")
+
+	# Keep boss invulnerable during dialogue
+	if boss:
+		boss.is_invulnerable = true
+		print("[Boss3 Level] Boss invulnerable during dialogue")
+
+	# Start the Water Goddess awakening dialogue
+	Dialogic.start("water_goddess_awakening")
+	# Wait for dialogue to finish before starting fight
+	await Dialogic.timeline_ended
+	print("[Level Boss 3] Dialogue finished! Starting fight...")
+
+	# Re-enable player movement
+	if GameManager.player:
+		GameManager.player.set_can_move(true)
+		print("[Level Boss 3] Player movement enabled")
+
+	# Start the boss fight (this will initialize FSM and make boss vulnerable)
+	if boss and boss.has_method("start_boss_fight"):
+		boss.start_boss_fight()
+		print("[Level Boss 3] Boss fight started!")
+	else:
+		# Fallback for older boss scripts
+		if boss:
+			boss.is_invulnerable = false
+			print("[Level Boss 3] Boss vulnerable (fallback)")
+
 	boss_hud._on_boss_start_fighting()
 	print("[Level Boss 3] HUD visible now: ", boss_hud.visible)
 

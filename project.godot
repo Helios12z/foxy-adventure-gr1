@@ -35,6 +35,7 @@ directories/dch_directory={
 "king_crab": "res://dialog/character/king_crab.dch",
 "war_lord_turtle": "res://dialog/character/war_lord_turtle.dch",
 "water_fairy": "res://dialog/character/water_fairy.dch",
+"water_goddess": "res://dialog/character/water_goddess.dch",
 "water_priestess": "res://dialog/character/water_priestess.dch"
 }
 directories/dtl_directory={
@@ -46,6 +47,8 @@ directories/dtl_directory={
 "war_lord_turtle_death": "res://timelines/war_lord_turtle_death.dtl",
 "water_fairy_blade": "res://timelines/water_fairy_blade.dtl",
 "water_fairy_self_talk": "res://timelines/water_fairy_self_talk.dtl",
+"water_goddess_awakening": "res://timelines/water_goddess_awakening.dtl",
+"water_goddess_phase3": "res://timelines/water_goddess_phase3.dtl",
 "water_paw_gem_collected": "res://timelines/water_paw_gem_collected.dtl",
 "water_priestess_awakening": "res://timelines/water_priestess_awakening.dtl",
 "water_priestess_death": "res://timelines/water_priestess_death.dtl",

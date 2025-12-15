@@ -103,14 +103,19 @@ func call_from_dialogic(msg:String = ""):
 
 #respawn at portal or door
 func respawn_at_portal() -> bool:
+	print("respawn_at_portal called. target_portal_name: ", target_portal_name)
 	if target_portal_name.is_empty():
+		print("target_portal_name is empty, returning false")
 		return false
 	# Đảm bảo player hợp lệ sau khi đổi scene
 	if not is_instance_valid(player):
+		print("Player not valid, searching for Player in scene")
 		var p := get_tree().current_scene.find_child("Player", true, false)
 		if p is Player:
 			player = p as Player
+			print("Found player: ", player)
 		else:
+			print("Could not find Player in scene")
 			return false
 	# Xác định node portal/door theo tên hoặc đường dẫn
 	var portal: Node = null
@@ -118,14 +123,18 @@ func respawn_at_portal() -> bool:
 		portal = current_stage.get_node_or_null(NodePath(target_portal_name))
 	else:
 		portal = current_stage.find_child(target_portal_name, true, false)
+	print("Looking for portal: ", target_portal_name, ", found: ", portal)
 	if portal is Node2D and is_instance_valid(player):
+		print("Setting player position to: ", (portal as Node2D).global_position)
 		player.global_position = (portal as Node2D).global_position
 		target_portal_name = ""
 		_apply_checkpoint_inventory_only()
 		# Đồng bộ stage_path của checkpoint sang stage hiện tại và cập nhật vị trí để respawn đúng chỗ
 		var new_pos = player.global_position
 		update_current_checkpoint_player_state({"position": [new_pos.x, new_pos.y]}, true)
+		print("Successfully spawned at portal")
 		return true
+	print("Failed to spawn at portal. portal is Node2D: ", portal is Node2D, ", player is valid: ", is_instance_valid(player))
 	return false
 
 func _apply_checkpoint_inventory_only() -> void:
