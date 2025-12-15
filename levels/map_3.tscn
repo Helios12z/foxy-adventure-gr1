@@ -130,7 +130,7 @@ scale = Vector2(0.505, 0.505)
 texture = ExtResource("14_5uw15")
 
 [node name="Player" parent="." instance=ExtResource("6_cdk1v")]
-position = Vector2(1590, 498.75)
+position = Vector2(10220, 461.25)
 scale = Vector2(1.15, 1.15)
 has_blade = true
 has_fire_gem = true
@@ -326,4 +326,5 @@ position = Vector2(8858.751, 396.25)
 [node name="Teleport3" parent="." instance=ExtResource("21_2g2fv")]
 position = Vector2(10207.5, 463.75)
 scale = Vector2(0.5, 0.5)
+target_stage = "uid://bhwnd0dvsqev8"
 is_cross_scene = true
