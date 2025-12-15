@@ -7,12 +7,13 @@ func _enter():
 	timer = 1.0
 	obj.velocity.x = 0
 	obj.set_hurt_collision(false)
+	obj.set_hit_collision(false)
 	obj.disable_check_player_in_sight()
 	obj.drop_coins()
 	
 	# Tắt collision ngay lập tức để không đụng được và không gây damage
 	obj.collision_layer = 0
-	obj.collision_mask = 0
+	obj.collision_mask = 1
 	# Tắt tất cả HitArea để không gây damage cho player
 	for child in obj.get_children():
 		if child is Area2D:

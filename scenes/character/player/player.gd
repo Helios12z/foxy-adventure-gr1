@@ -197,7 +197,6 @@ func _physics_process(delta: float) -> void:
 	
 
 func _process(_delta: float) -> void:
-	print($Direction/HitArea2D.damage)
 	if $Timer/GiantDuration.is_stopped() == false:
 		print("Giant time left: ", $Timer/GiantDuration.time_left)
 	if dash_on_cooldown and dash_cooldown_timer != null:

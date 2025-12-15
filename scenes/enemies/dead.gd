@@ -7,6 +7,7 @@ func _enter():
 	timer = 1.0
 	obj.velocity.x = 0
 	obj.set_hurt_collision(false)
+	obj.set_hit_collision(false)
 	obj.disable_check_player_in_sight()
 	obj.drop_coins()
 	
