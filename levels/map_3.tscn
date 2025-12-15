@@ -1,10 +1,10 @@
-[gd_scene load_steps=24 format=4 uid="uid://du7hahnxorxmd"]
+[gd_scene load_steps=28 format=4 uid="uid://du7hahnxorxmd"]
 
-[ext_resource type="Script" path="res://levels/map_3.gd" id="1_v7snb"]
+[ext_resource type="Script" uid="uid://bum0u6kcrp01i" path="res://levels/map_3.gd" id="1_v7snb"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="2_qhmmx"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="3_eoo8e"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="4_h1kon"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/platform_boss_water_guard_02.tscn" id="5_g80ft"]
+[ext_resource type="PackedScene" uid="uid://72ullgkrurgm" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="4_h1kon"]
+[ext_resource type="PackedScene" uid="uid://o0l0aag5601w" path="res://scenes/bosses/platform_boss_water_guard_02.tscn" id="5_g80ft"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="6_cdk1v"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="7_j6y88"]
 [ext_resource type="PackedScene" uid="uid://fp8qfvpe8i5o" path="res://scenes/enemies/pearl_fairy/pearl_fairy.tscn" id="8_ws0ms"]
@@ -17,11 +17,15 @@
 [ext_resource type="Texture2D" uid="uid://cfhl3s5dh27jq" path="res://asset/level_3_water_palace/background/background_layer_1.png" id="14_5uw15"]
 [ext_resource type="PackedScene" uid="uid://cfhmqw0q4i4lg" path="res://scenes/enemies/cray_fish/cray_fish.tscn" id="16_m3c0n"]
 [ext_resource type="PackedScene" uid="uid://dgwlv5lvkntgn" path="res://scenes/enemies/golden_carp/golden_carp.tscn" id="17_d0h85"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_7rwwu"]
+[ext_resource type="PackedScene" uid="uid://dqrpvlvc54tyk" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_7rwwu"]
 [ext_resource type="PackedScene" uid="uid://nx0guycix2h4" path="res://scenes/enemies/turtle_light/turtle_light.tscn" id="19_gxm5u"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="20_2g2fv"]
 [ext_resource type="PackedScene" uid="uid://c6vomwflyb5ek" path="res://levels/objects/camera_limit_zone.tscn" id="20_li3tj"]
 [ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="21_2g2fv"]
+[ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="23_qic2r"]
+[ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="24_j5txl"]
+[ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="25_lmidc"]
+[ext_resource type="PackedScene" uid="uid://3jekpoeelwr4" path="res://levels/objects/checkpoint/checkpoint_map3.tscn" id="26_j5txl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j565u"]
 size = Vector2(17222, 1610)
@@ -130,7 +134,7 @@ scale = Vector2(0.505, 0.505)
 texture = ExtResource("14_5uw15")
 
 [node name="Player" parent="." instance=ExtResource("6_cdk1v")]
-position = Vector2(1590, 498.75)
+position = Vector2(-5700, 472.5)
 scale = Vector2(1.15, 1.15)
 has_blade = true
 has_fire_gem = true
@@ -148,9 +152,6 @@ scale = Vector2(0.46999994, 0.46999994)
 [node name="PlatformBossWaterGuard03" parent="." instance=ExtResource("10_j565u")]
 position = Vector2(8240.625, 247.50002)
 scale = Vector2(0.7353518, 0.85625)
-
-[node name="SerpentEel" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(5214.001, 523.765)
 
 [node name="PearlFairy" parent="." instance=ExtResource("8_ws0ms")]
 position = Vector2(5118.001, 310.765)
@@ -215,15 +216,6 @@ position = Vector2(3636.25, 433.75)
 [node name="DuckweedMap4" parent="." instance=ExtResource("12_2v58w")]
 position = Vector2(4576.25, 442.5)
 
-[node name="SerpentEel2" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(6356.2505, 541.25)
-
-[node name="CrayFish" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(7023.7495, 428.74994)
-
-[node name="GoldenCarp" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(6880.0005, 531.25)
-
 [node name="PearlFairy2" parent="." instance=ExtResource("8_ws0ms")]
 position = Vector2(6407.501, 192.5)
 
@@ -236,33 +228,6 @@ position = Vector2(5821, 531.765)
 [node name="CameraLimitZone" parent="." instance=ExtResource("20_li3tj")]
 position = Vector2(-7491.25, 1357.5)
 scale = Vector2(3, 3)
-
-[node name="CrayFish2" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(-4308.7495, 484.99994)
-
-[node name="CrayFish3" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(-3786.2498, 1052.4999)
-
-[node name="GoldenCarp2" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(-5356.2495, 891.24994)
-
-[node name="GoldenCarp3" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(-3244.9998, 513.74994)
-
-[node name="GoldenCarp4" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(-1932.4998, 1144.9999)
-
-[node name="CrayFish4" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(-2715, 901.2499)
-
-[node name="SerpentEel3" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(-2111.2498, 492.5)
-
-[node name="SerpentEel4" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(-2484.9998, 1137.4999)
-
-[node name="SerpentEel5" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(-4641.2495, 926.24994)
 
 [node name="HitArea2D2" type="Area2D" parent="."]
 collision_layer = 0
@@ -287,43 +252,134 @@ position = Vector2(3205, 180)
 scale = Vector2(0.5, 0.5)
 is_cross_scene = true
 
-[node name="CrayFish5" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(4026.2495, 283.74997)
-
-[node name="SerpentEel6" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(4087.4995, 508.74994)
-
-[node name="GoldenCarp5" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(4239.9995, 397.49997)
-
-[node name="CrayFish6" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(4282.4995, 87.49999)
-
-[node name="CrayFish7" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(8101.249, 508.74994)
-
-[node name="CrayFish8" parent="." instance=ExtResource("16_m3c0n")]
-position = Vector2(8252.499, 219.99998)
-
-[node name="GoldenCarp6" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(8087.499, 114.99999)
-
-[node name="GoldenCarp7" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(8723.749, 542.49994)
-
-[node name="SerpentEel7" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(7779.9995, 535)
-
-[node name="SerpentEel8" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(8360, 352.5)
-
 [node name="PearlFairy4" parent="." instance=ExtResource("8_ws0ms")]
 position = Vector2(7823.7495, 331.24997)
 
 [node name="PearlFairy5" parent="." instance=ExtResource("8_ws0ms")]
 position = Vector2(8858.751, 396.25)
 
+[node name="SerpentEel" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(5214.0005, 523.7649)
+scale = Vector2(1.8, 1.8)
+
+[node name="SerpentEel2" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(6356.2495, 541.24994)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(7023.748, 428.74988)
+scale = Vector2(1.8, 1.8)
+
+[node name="GoldenCarp" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(6879.9995, 531.24994)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish2" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(-4308.7495, 484.9999)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish3" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(-3786.2493, 1052.4999)
+scale = Vector2(1.8, 1.8)
+
+[node name="GoldenCarp2" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(-5356.249, 891.2498)
+scale = Vector2(1.8, 1.8)
+
+[node name="GoldenCarp3" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(-3244.9993, 513.74994)
+scale = Vector2(1.8, 1.8)
+
+[node name="GoldenCarp4" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(-1932.4996, 1144.9998)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish4" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(-2714.9998, 901.2498)
+scale = Vector2(1.8, 1.8)
+
+[node name="SerpentEel3" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(-2111.2498, 492.49994)
+scale = Vector2(1.8, 1.8)
+
+[node name="SerpentEel4" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(-2484.9995, 1137.4998)
+scale = Vector2(1.8, 1.8)
+
+[node name="SerpentEel5" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(-4641.249, 926.2498)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish5" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(4026.2493, 283.74994)
+scale = Vector2(1.8, 1.8)
+
+[node name="SerpentEel6" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(4087.4993, 508.7499)
+scale = Vector2(1.8, 1.8)
+
+[node name="GoldenCarp5" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(4239.9995, 397.49994)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish6" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(4282.4995, 87.499985)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish7" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(8101.2485, 508.7499)
+scale = Vector2(1.8, 1.8)
+
+[node name="CrayFish8" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(8252.499, 219.99995)
+scale = Vector2(1.8, 1.8)
+
+[node name="SerpentEel7" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(7779.9985, 534.99994)
+scale = Vector2(1.8, 1.8)
+
+[node name="SerpentEel8" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(8359.999, 352.49997)
+scale = Vector2(1.8, 1.8)
+
+[node name="GoldenCarp7" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(8723.749, 542.49994)
+scale = Vector2(1.8, 1.8)
+
+[node name="GoldenCarp6" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(8087.4985, 114.99998)
+scale = Vector2(1.8, 1.8)
+
 [node name="Teleport3" parent="." instance=ExtResource("21_2g2fv")]
 position = Vector2(10207.5, 463.75)
 scale = Vector2(0.5, 0.5)
+target_stage = "uid://bhwnd0dvsqev8"
+target_door = "Teleport"
 is_cross_scene = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="CoinAndKeyContainer" parent="UI" instance=ExtResource("23_qic2r")]
+offset_left = -49.0
+offset_top = 16.0
+offset_right = 151.0
+offset_bottom = 66.0
+
+[node name="PlayerHUD" parent="UI" instance=ExtResource("24_j5txl")]
+
+[node name="HUD" parent="UI" instance=ExtResource("25_lmidc")]
+offset_left = 4.999999
+offset_top = -7.999998
+offset_right = -425.0
+offset_bottom = 44.0
+
+[node name="Teleport4" parent="." instance=ExtResource("21_2g2fv")]
+position = Vector2(-5830, 506.24997)
+scale = Vector2(0.5, 0.5)
+is_cross_scene = true
+
+[node name="CheckpointMap3" parent="." instance=ExtResource("26_j5txl")]
+position = Vector2(-1016.25, 844.99994)
+
+[node name="CheckpointMap4" parent="." instance=ExtResource("26_j5txl")]
+position = Vector2(7198.75, 556.25)
