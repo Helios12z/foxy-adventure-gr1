@@ -1,0 +1,11 @@
+[remap]
+
+importer="dialogic-character"
+type="Resource"
+uid="uid://dxhnu1nqwj5x5"
+path="res://.godot/imported/king_crab.dch-dxhnu1nqwj5x5.res"
+
+[deps]
+
+source_file="res://dialog/character/king_crab.dch"
+dest_files=["res://.godot/imported/king_crab.dch-dxhnu1nqwj5x5.res"]

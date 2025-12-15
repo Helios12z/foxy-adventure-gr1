@@ -1266,6 +1266,9 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 	# Disable boss flip during laser attack
 	_disable_flip = true
 
+	# Make boss invulnerable during laser attack
+	is_invulnerable = true
+
 	# TELEGRAPH: Boss charges energy
 	_log_skill("WaterLaserRadiance", "TELEGRAPH_START")
 	sprite.play("atk_1")
@@ -1384,9 +1387,8 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 					laser.set_prepare()
 
 			# Rotate by a fraction of the gap between lasers
-			var rotation_amount = (TAU / laser_count) * 0.5  # Half-step rotation
-
 			if is_instance_valid(laser_container):
+				var rotation_amount = (TAU / laser_count) * 0.5  # Half-step rotation
 				var tween = create_tween()
 				tween.tween_property(laser_container, "rotation", laser_container.rotation + rotation_amount, 0.5)\
 					.set_trans(Tween.TRANS_SINE)\
@@ -1418,7 +1420,8 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 	await get_tree().create_timer(0.6).timeout
 	_log_skill("WaterLaserRadiance", "RECOVERY_END")
 
-	# Re-enable boss flip
+	# Re-enable boss vulnerability and flip
+	is_invulnerable = false
 	_disable_flip = false
 
 
@@ -1431,6 +1434,9 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 
 	# Disable boss flip during laser attack
 	_disable_flip = true
+
+	# Make boss invulnerable during laser attack
+	is_invulnerable = true
 
 	# TELEGRAPH
 	_log_skill("WaterLaserPhase2", "TELEGRAPH_START")
@@ -1520,7 +1526,8 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 	sprite.play("idle")
 	await get_tree().create_timer(0.6).timeout
 
-	# Re-enable boss flip
+	# Re-enable boss vulnerability and flip
+	is_invulnerable = false
 	_disable_flip = false
 
 
@@ -1536,6 +1543,9 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 
 	# Disable boss flip during laser attack
 	_disable_flip = true
+
+	# Make boss invulnerable during laser attack
+	is_invulnerable = true
 
 	# TELEGRAPH
 	_log_skill("WaterLaserUltimate", "TELEGRAPH_START")
@@ -1658,5 +1668,6 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 	sprite.play("idle")
 	await get_tree().create_timer(0.6).timeout
 
-	# Re-enable boss flip
+	# Re-enable boss vulnerability and flip
+	is_invulnerable = false
 	_disable_flip = false

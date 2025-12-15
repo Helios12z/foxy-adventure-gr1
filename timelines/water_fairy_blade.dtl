@@ -1,0 +1,20 @@
+if {HasBlade} == true:
+	water_fairy: Ngươi đã có kiếm rồi, hỡi dũng sĩ. Đừng chần chừ nữa.
+	[end_timeline]
+else:
+	water_fairy: /Hơi thở yếu ớt, hào quang chập chờn/
+	water_fairy: Chào cáo nhỏ
+	water_fairy: Ta đã thấy nó... Sức mạnh khổng lồ trong thân hình nhỏ bé... Ý chí của kẻ chinh phục bừng cháy trong tim
+	foxy: ...?
+	foxy: Cô là ai? Sao lại bị thương thế này?
+	water_fairy: Khụ. Ta là bề tôi của Thánh Mẫu. 
+	water_fairy: Nhưng than ôi, hai linh thú Cua và Rùa đã phản bội. Chúng đánh cắp 2 viên 'Chân Linh Ngọc', phong ấn Thánh Mẫu và khiến vùng đất này lầm than. Ta vì ngăn cản chúng mà ra nông nỗi này.
+	foxy: Thật thế sao! Ta thật muốn thay trời hành đạo, nhưng..
+	water_fairy: Ngươi cứ việc nói
+	foxy: Nhưng ta không chắc bản thân có đủ sức mạnh không.. /Chần chừ/
+	water_fairy: Chỉ cần giết chúng, mang ngọc về đây, hai viên ngọc cùng với Dẫn Linh Ngọc của ta sẽ có thể mở phong ấn. Khi đó, Thánh Mẫu sẽ ban cho ngươi mọi thứ ngươi muốn. 
+	foxy: /Mắt loé lên/ Vậy không còn cách nào khác, ta phải đòi lại công lý cho vùng đất này thôi!
+	water_fairy: Hãy cầm lấy thanh Phệ Linh Thần Kiếm này. 
+	do GameManager.collect_blade()
+	water_fairy: Đi đi... 'Dũng sĩ' của ta. Đừng để ta thất vọng.
+	[end_timeline]

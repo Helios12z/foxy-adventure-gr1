@@ -327,13 +327,14 @@ shape = SubResource("CapsuleShape2D_xf2r0")
 [node name="Direction" type="Node2D" parent="."]
 
 [node name="UltimateBlingBling" type="AnimatedSprite2D" parent="Direction"]
+self_modulate = Color(0, 0, 0, 1)
 position = Vector2(-10, -10)
 scale = Vector2(0.42265624, 0.42265624)
 sprite_frames = SubResource("SpriteFrames_pjl4r")
 frame_progress = 0.23252743
 
 [node name="BlingBling" type="AnimatedSprite2D" parent="Direction"]
-visible = false
+self_modulate = Color(0, 0, 0, 1)
 position = Vector2(-12.000027, -18)
 scale = Vector2(0.3890625, 0.3890625)
 sprite_frames = SubResource("SpriteFrames_52xfl")

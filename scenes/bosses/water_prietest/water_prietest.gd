@@ -77,11 +77,12 @@ var target_jump_marker: JumpMarker2D = null
 @onready var defend: AudioStreamPlayer2D = $Sound/Defend
 @onready var phase_2_talk: AudioStreamPlayer2D = $Sound/Phase2Talk
 
-var seen_player: bool = false 
+var seen_player: bool = false
 var _flash_tw: Tween
 var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
 var level_bounds: Rect2
+var in_dialogue: bool = false
 
 func _ready() -> void:
 	movement_speed = 0.0
@@ -113,24 +114,27 @@ func _disable_hit_collisionshape()->void:
 		atk_super_collision_shape_2d.disabled = true 
 
 func _physics_process(delta: float) -> void:
-	update_defend_cooldown(delta)
-	update_roll_cooldown(delta)
-	update_attack_cooldown(delta)
-	update_state_transition_cooldown(delta)
-	_detect_player()
+	if not in_dialogue:
+		update_defend_cooldown(delta)
+		update_roll_cooldown(delta)
+		update_attack_cooldown(delta)
+		update_state_transition_cooldown(delta)
+		_detect_player()
 
-	if fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.surf: 
-		_update_facing()
+		if fsm.current_state == fsm.states.walk or fsm.current_state == fsm.states.idle or fsm.current_state == fsm.states.atk_1 or fsm.current_state == fsm.states.surf:
+			_update_facing()
 
-	_check_player_attack_input()
+		_check_player_attack_input()
 
 	super._physics_process(delta)
-	_keep_inside_room_and_avoid_fall()
-		
-	if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
-		animated_sprite_2d.speed_scale = 1.0
-		
-	print(fsm.current_state)
+
+	if not in_dialogue:
+		_keep_inside_room_and_avoid_fall()
+
+		if fsm.current_state == fsm.states.roll or fsm.current_state == fsm.states.defend:
+			animated_sprite_2d.speed_scale = 1.0
+
+		print(fsm.current_state)
 
 func _init_hurt_area() -> void:
 	if has_node("Direction/HurtArea2D"):
@@ -143,11 +147,11 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 			or fsm.current_state == fsm.states.walk
 			or fsm.current_state == fsm.states.surf
 		)
-	
-	if _phase2_transition_running:
+
+	if _phase2_transition_running or in_dialogue:
 		return
 
-	if fsm.current_state == fsm.states.roll: 
+	if fsm.current_state == fsm.states.roll:
 		return
 
 	_note_damage_hit()
@@ -241,11 +245,8 @@ func _update_facing() -> void:
 	change_direction(1 if dx > 0.0 else -1)
 	
 func _detect_player()->void:
-	if seen_player: return
-	if _distance_to_player()<=280:
-		seen_player = true
-		emit_signal("start_fight") 
-		phase_1.play()
+	# Player detection is now handled by cutscene
+	pass
 			
 func _update_level_bounds_from_markers() -> void:
 	if bound_point_a == null or bound_point_b == null:

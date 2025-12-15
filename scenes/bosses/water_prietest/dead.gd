@@ -1,6 +1,7 @@
 extends WaterPrietestState
 
 var _death_done := false
+var _dialogue_started := false
 
 func _enter() -> void:
 	obj.velocity = Vector2.ZERO
@@ -20,7 +21,7 @@ func _enter() -> void:
 		obj.camera.camera_shake(0.4, 24)
 
 	obj.phase_2.stop()
-	
+
 	obj.flash_hurt(
 		0.4,
 		4,
@@ -41,9 +42,52 @@ func _on_death_cinematic_finished() -> void:
 
 	Engine.time_scale = obj._original_time_scale
 
+	# Play idle/sleep animation if available
+	if obj.animated_sprite_2d.sprite_frames.has_animation("sleep"):
+		obj.animated_sprite_2d.play("sleep")
+	else:
+		obj.animated_sprite_2d.play("idle")
+
+	# Wait a moment before starting dialogue
+	var tw := obj.create_tween()
+	tw.tween_interval(0.3)
+	tw.tween_callback(Callable(self, "_start_death_dialogue"))
+
+
+func _start_death_dialogue() -> void:
+	if _dialogue_started:
+		return
+	_dialogue_started = true
+
+	# Pause boss AI during dialogue
+	obj.in_dialogue = true
+
+	# Pause player during dialogue
+	var player = obj.get_tree().get_first_node_in_group("Player")
+	if player and player.has_method("set_can_move"):
+		player.set_can_move(false)
+
+	# Start the death dialogue timeline
+	Dialogic.start("water_priestess_death")
+	Dialogic.timeline_ended.connect(_on_dialogue_finished)
+
+
+func _on_dialogue_finished() -> void:
+	Dialogic.timeline_ended.disconnect(_on_dialogue_finished)
+
+	# Resume boss AI (not that it matters, boss is dying)
+	obj.in_dialogue = false
+
+	# Resume player movement
+	var player = obj.get_tree().get_first_node_in_group("Player")
+	if player and player.has_method("set_can_move"):
+		player.set_can_move(true)
+
+	# Wait a bit before removing the boss
 	var tw := obj.create_tween()
 	tw.tween_interval(0.6)
 	tw.tween_callback(Callable(self, "_final_remove"))
+
 
 func _final_remove() -> void:
 	obj.queue_free()

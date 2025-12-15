@@ -24,6 +24,7 @@ var _prewave_started: bool = false
 var _prewave_enemies_left: int = 0
 var _boss_intro_started: bool = false
 var _boss_in_parallax: bool = false
+var cutscene_controller: Node2D = null
 
 func _enter_tree() -> void:
 	GameManager.current_stage = self
@@ -173,8 +174,9 @@ func _start_boss_intro_jump() -> void:
 
 	tw.finished.connect(func ():
 		boss.change_animation("idle")
-		boss.set_physics_process(true)
-		boss.emit_signal("start_fight")
+		boss.set_physics_process(false)
+		# Start the cutscene after boss lands
+		_trigger_cutscene_after_landing()
 	)
 
 func _spawn_chest() -> void:
@@ -295,3 +297,78 @@ func _setup_boss_defeated_state() -> void:
 				
 func _on_boss_into_phase2() -> void:
 	pass
+
+func _setup_cutscene() -> void:
+	# Load the cutscene script
+	var cutscene_script = load("res://scenes/cutscenes/water_priestess_awakening_cutscene.gd")
+	if not cutscene_script:
+		print("[Level] Failed to load cutscene script")
+		return
+
+	# Create cutscene controller
+	cutscene_controller = Node2D.new()
+	cutscene_controller.name = "WaterPriestessCutscene"
+	cutscene_controller.set_script(cutscene_script)
+
+	# Create trigger area (will be activated after boss lands)
+	var trigger_area = Area2D.new()
+	trigger_area.name = "CutsceneTrigger"
+	trigger_area.collision_layer = 0
+	trigger_area.collision_mask = 2  # Player layer
+	trigger_area.monitoring = false  # Disabled initially
+	trigger_area.monitorable = false
+
+	# Create collision shape for trigger
+	var collision_shape = CollisionShape2D.new()
+	var shape = RectangleShape2D.new()
+	shape.size = Vector2(400, 300)  # Large trigger area
+	collision_shape.shape = shape
+	trigger_area.add_child(collision_shape)
+
+	# Position trigger area near the boss landing position
+	if boss_land_marker:
+		trigger_area.global_position = boss_land_marker.global_position
+	else:
+		trigger_area.global_position = boss.global_position
+
+	# Add trigger as child BEFORE adding controller to scene
+	cutscene_controller.add_child(trigger_area)
+
+	# Now add controller to scene (this will call _ready)
+	$World.add_child(cutscene_controller)
+
+	# Wait for next frame, then set up properties
+	await get_tree().process_frame
+
+	# Set up cutscene controller properties directly
+	cutscene_controller.boss = boss
+	cutscene_controller.trigger_area = trigger_area
+	cutscene_controller.cutscene_camera_zoom = 1.0
+
+	print("[Level] Cutscene setup complete - Boss at: ", boss.global_position)
+	print("[Level] Trigger area at: ", trigger_area.global_position)
+	print("[Level] Trigger size: ", shape.size)
+
+func _trigger_cutscene_after_landing() -> void:
+	# Setup the cutscene if not already done
+	if not cutscene_controller:
+		_setup_cutscene()
+		# Wait for setup to complete
+		await get_tree().process_frame
+
+	# Enable the trigger area
+	if cutscene_controller and cutscene_controller.trigger_area:
+		cutscene_controller.trigger_area.monitoring = true
+
+		# Get player position and check if already in trigger area
+		var player := get_tree().get_first_node_in_group("Player") as Node2D
+		if player:
+			var trigger_area := cutscene_controller.trigger_area as Area2D
+			# Manually trigger if player is already close
+			var distance := player.global_position.distance_to(trigger_area.global_position)
+			if distance < 200:  # Within trigger range
+				# Directly call the cutscene trigger
+				cutscene_controller._on_trigger_area_body_entered(player)
+				return
+
+	print("[Level] Cutscene trigger enabled after boss landing")

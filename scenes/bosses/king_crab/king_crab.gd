@@ -60,13 +60,14 @@ signal start_fight
 var front_ray_cast: RayCast2D
 var down_ray_cast: RayCast2D
  
-var seen_player: bool = false 
+var seen_player: bool = false
 var _flash_tw: Tween
 var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
 var level_bounds: Rect2
 var _phase2_transition_running := false
 var _chain_after_basic: bool = false
+var in_dialogue: bool = false
 
 var _original_time_scale: float = 1.0
 var _sleep_health: int = 0  
@@ -137,13 +138,13 @@ func _ready() -> void:
 		phase_2_intro.finished.connect(_on_phase2_intro_finished)
 	
 func _physics_process(delta: float) -> void:
-	if fsm != null:
+	if fsm != null and not in_dialogue:
 		fsm._update(delta)
 	_update_movement(delta)
 	_check_changed_animation()
 	check_changed_direction()
 	_update_level_bounds_from_markers()
-	
+
 	if level_bounds.size != Vector2.ZERO:
 		global_position = _clamp_to_level(global_position)
 
@@ -193,11 +194,11 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 	if is_sleeping:
 		_handle_sleep_damage(damage)
 		return
-	
-	if not seen_player: 
-		return 
-		
-	if _phase2_transition_running:
+
+	if not seen_player:
+		return
+
+	if _phase2_transition_running or in_dialogue:
 		return
 
 	take_damage(damage)

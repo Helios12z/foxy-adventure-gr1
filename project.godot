@@ -31,17 +31,35 @@ TutorialManager="*res://scripts/autoload/tutorial_manager.gd"
 
 directories/dch_directory={
 "crystal_mauler": "res://dialog/character/crystal_mauler.dch",
-"foxy": "res://dialog/character/foxy.dch"
+"foxy": "res://dialog/character/foxy.dch",
+"king_crab": "res://dialog/character/king_crab.dch",
+"war_lord_turtle": "res://dialog/character/war_lord_turtle.dch",
+"water_fairy": "res://dialog/character/water_fairy.dch",
+"water_priestess": "res://dialog/character/water_priestess.dch"
 }
 directories/dtl_directory={
-"collect_blade": "res://timelines/collect_blade.dtl"
+"collect_blade": "res://timelines/collect_blade.dtl",
+"fire_gem_collected": "res://timelines/fire_gem_collected.dtl",
+"king_crab_awakening": "res://timelines/king_crab_awakening.dtl",
+"king_crab_death": "res://timelines/king_crab_death.dtl",
+"war_lord_turtle_awakening": "res://timelines/war_lord_turtle_awakening.dtl",
+"war_lord_turtle_death": "res://timelines/war_lord_turtle_death.dtl",
+"water_fairy_blade": "res://timelines/water_fairy_blade.dtl",
+"water_fairy_self_talk": "res://timelines/water_fairy_self_talk.dtl",
+"water_paw_gem_collected": "res://timelines/water_paw_gem_collected.dtl",
+"water_priestess_awakening": "res://timelines/water_priestess_awakening.dtl",
+"water_priestess_death": "res://timelines/water_priestess_death.dtl",
+"water_room_gem_collected": "res://timelines/water_room_gem_collected.dtl"
 }
 layout/style_directory={
 "": "res://dialog/custom/dialogic_style.tres",
 "dialogic_style": "res://dialog/custom/dialogic_style.tres"
 }
 variables={
-"HasBlade": false
+"HasBlade": false,
+"KingCrabCutsceneSeen": false,
+"WaterFairyConversationSeen": false,
+"WaterFairyCutsceneSeen": false
 }
 layout/style_list=["res://dialog/custom/dialogic_style.tres"]
 layout/default_style="res://dialog/custom/dialogic_style.tres"
