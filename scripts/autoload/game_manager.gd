@@ -122,8 +122,9 @@ func respawn_at_portal() -> bool:
 		player.global_position = (portal as Node2D).global_position
 		target_portal_name = ""
 		_apply_checkpoint_inventory_only()
-		# Đồng bộ stage_path của checkpoint sang stage hiện tại để respawn sau chết không bị bỏ qua
-		update_current_checkpoint_player_state({}, true)
+		# Đồng bộ stage_path của checkpoint sang stage hiện tại và cập nhật vị trí để respawn đúng chỗ
+		var new_pos = player.global_position
+		update_current_checkpoint_player_state({"position": [new_pos.x, new_pos.y]}, true)
 		return true
 	return false
 

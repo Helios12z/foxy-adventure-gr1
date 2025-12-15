@@ -559,7 +559,10 @@ func _do_water_pagoda_internal(behavior: int) -> void:
 			var arena_right = 550
 			var spawn_x = clamp(player.global_position.x, arena_left, arena_right)
 			var spawn_pos = Vector2(spawn_x, 16)
-			pagoda.cast_at(spawn_pos)
+
+			# Check if pagoda is still valid before calling methods (phase change may have freed it)
+			if is_instance_valid(pagoda):
+				pagoda.cast_at(spawn_pos)
 
 			# Wait before spawning next tracking pagoda
 			await get_tree().create_timer(0.8).timeout
@@ -600,7 +603,10 @@ func _do_water_pagoda_internal(behavior: int) -> void:
 
 			# Start the pagoda's telegraph/attack sequence when it lands
 			await get_tree().create_timer(0.7).timeout
-			pagoda.play()
+
+			# Check if pagoda is still valid before calling play (phase change may have freed it)
+			if is_instance_valid(pagoda):
+				pagoda.play()
 
 			# Small delay before spawning next falling pagoda
 			await get_tree().create_timer(0.3).timeout
@@ -860,15 +866,21 @@ func _do_water_ball_orbit_internal(behavior: int) -> void:
 	while elapsed < orbit_time:
 		elapsed += get_process_delta_time()
 		for data in balls:
-			data.angle += orbit_speed * get_process_delta_time()
-			var new_pos = orbit_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
-			data.ball.global_position = new_pos
+			# Check if ball is still valid (phase change may have freed it)
+			if is_instance_valid(data.ball):
+				data.angle += orbit_speed * get_process_delta_time()
+				var new_pos = orbit_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
+				data.ball.global_position = new_pos
 		await get_tree().process_frame
 
 	# SHOOT TOWARD PLAYER - one by one sequentially
 	_log_skill("WaterBallOrbit", "SHOOT_TO_PLAYER")
 	for data in balls:
 		var ball = data.ball
+		# Check if ball is still valid (phase change may have freed it)
+		if not is_instance_valid(ball):
+			continue
+
 		# Direction toward player
 		var direction = (player.global_position - ball.global_position).normalized()
 		ball.direction = direction
@@ -959,9 +971,11 @@ func _do_water_ball_cluster_internal(behavior: int) -> void:
 
 		# Rotate all balls around cluster center
 		for data in balls:
-			data.angle += rotation_speed * dt
-			var new_pos = cluster_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
-			data.ball.global_position = new_pos
+			# Check if ball is still valid (phase change may have freed it)
+			if is_instance_valid(data.ball):
+				data.angle += rotation_speed * dt
+				var new_pos = cluster_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
+				data.ball.global_position = new_pos
 
 		await get_tree().process_frame
 
@@ -975,6 +989,10 @@ func _do_water_ball_cluster_internal(behavior: int) -> void:
 	for i in balls.size():
 		var data = balls[i]
 		var ball = data.ball
+
+		# Check if ball is still valid (phase change may have freed it)
+		if not is_instance_valid(ball):
+			continue
 
 		# Calculate spread: divide total angle across all balls
 		var angle_offset = -spread_angle / 2 + (i / float(balls.size() - 1)) * spread_angle
