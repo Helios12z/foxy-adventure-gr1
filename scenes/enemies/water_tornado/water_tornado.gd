@@ -23,9 +23,10 @@ func _ready() -> void:
 	hurt_area_2d.hurt.connect(_on_hurt_area_2d_hurt)
 	hit_area_2d.damage = tornado_damage
 	hit_area_2d.monitoring = false
-	hit_area_2d.monitorable = false
+	# hit_area_2d.monitorable = false
 	
 	add_to_group("water_tornado")
+
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)

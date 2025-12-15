@@ -28,13 +28,14 @@ var tall_hit_position_y := -57.625  # Final position for hit collision
 var tall_hurt_position_y := -57.625  # Final position for hurt collision (same as hit)
 
 func _ready() -> void:
+
 	health = max_health
 	anim.visible = false
 	hit_area.damage = damage
 
 	# Disable hitbox initially
 	hit_area.set_deferred("monitoring", false)
-	hit_area.set_deferred("monitorable", false)
+	# hit_area.set_deferred("monitorable", false)
 	hurt_area.set_deferred("monitoring", false)
 	hurt_area.set_deferred("monitorable", false)
 
@@ -130,7 +131,7 @@ func _break() -> void:
 
 	# Disable collision immediately
 	hit_area.set_deferred("monitoring", false)
-	hit_area.set_deferred("monitorable", false)
+	# hit_area.set_deferred("monitorable", false)
 	hurt_area.set_deferred("monitoring", false)
 	hurt_area.set_deferred("monitorable", false)
 

@@ -44,7 +44,7 @@ animations = [{
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_urbwv"]
 points = PackedVector2Array(20, -66, 45, 58, -47, 58, -19, -65, 0, -87)
 
-[node name="WaterPagoda" type="Node2D"]
+[node name="WaterPagoda" type="Node2D" groups=["bullet_enemy"]]
 script = ExtResource("1_urbwv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -55,7 +55,7 @@ animation = &"appears"
 frame_progress = 0.67785996
 
 [node name="HitArea2D" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 4
 script = ExtResource("8_b2xuf")
 damage = 20

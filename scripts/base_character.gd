@@ -69,6 +69,9 @@ func stop_move() -> void:
 	velocity.x = 0
 	velocity.y = 0
 
+func continue_move() -> void:
+	pass
+
 func take_damage(damage: int) -> void:
 	health -= damage
 

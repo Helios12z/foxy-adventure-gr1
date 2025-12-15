@@ -75,7 +75,16 @@ func _ready() -> void:
 		add_child(ht)
 
 	# lấy node hiển thị của player để nhấp nháy mềm
-	player_display_item = _find_display_item(player)
+
+
+	player_display_item = null
+	# Simple single sprite finder for player (player is simple)
+	# Reuse _collect_all_sprites? No, inline simple check.
+	if player.has_node("Sprite2D"):
+		player_display_item = player.get_node("Sprite2D") as CanvasItem
+	elif player.has_node("AnimatedSprite2D"):
+		player_display_item = player.get_node("AnimatedSprite2D") as CanvasItem
+	
 	if player_display_item:
 		player_display_modulate_saved = (player_display_item as CanvasItem).self_modulate
 
@@ -107,6 +116,8 @@ func _ready() -> void:
 		bullet_detect_area.monitoring = true
 	if not bullet_detect_area.is_connected("body_entered", Callable(self, "_on_bullet_entered")):
 		bullet_detect_area.body_entered.connect(_on_bullet_entered)
+	if not bullet_detect_area.is_connected("area_entered", Callable(self, "_on_bullet_area_entered")):
+		bullet_detect_area.area_entered.connect(_on_bullet_area_entered)
 
 	# Cập nhật hurt của player theo overlap ngay khi bắt đầu
 	if player and area:
@@ -185,7 +196,7 @@ func _emit_plus_icon(tex: Texture2D, s: Vector2) -> void:
 	p.texture = tex
 	# Start at player's feet (approx global_position)
 	# Add slight random X offset (-18 to 2 range)
-	var start_pos = player.global_position + Vector2(randf_range(-18, 2), 0)
+	var start_pos = player.global_position + Vector2(randf_range(-15, 5), 0)
 	p.global_position = start_pos
 	p.scale = s
 	p.z_index = 10 # Ensure it's above player
@@ -222,6 +233,11 @@ func _on_scaled() -> void:
 
 func _process(delta: float) -> void:
 	# Toggle hurt chỉ khi cáo ở trong phạm vi detect enemy của skill
+	if state == "lifting" or state == "moving" or state == "holding":
+		var current := area.get_overlapping_bodies()
+		for b in current:
+			_consider_capture(b)
+	
 	if player and area:
 		var inside := area.overlaps_body(player)
 		player.invincible_zone = inside
@@ -348,9 +364,13 @@ func _on_hold_finished() -> void:
 	tw.tween_callback(Callable(self, "_cleanup"))
 
 func _cleanup() -> void:
-	# Clean up shield icon if it exists
+	# Clean up shield icon if it exists via smooth fade out
 	if is_instance_valid(_shield_icon):
-		_shield_icon.queue_free()
+		var s = _shield_icon
+		_shield_icon = null # Disconnect ref
+		var tw = s.create_tween()
+		tw.tween_property(s, "modulate:a", 0.0, 0.5)
+		tw.tween_callback(s.queue_free)
 
 	# release enemies/bullets at their marker positions
 	# Skip invalid or previously freed instances to avoid type errors
@@ -385,8 +405,8 @@ func _consider_capture(body: Node) -> void:
 	if body is Player:
 		return
 		
-	# Skip capture if body is in Boss group
-	if body.is_in_group("Boss"):
+	# Skip capture if body is a Boss
+	if _is_part_of_boss(body):
 		return
 		
 	# Enemy capture: EnemyCharacter or CharacterBody2D on enemy layer
@@ -432,6 +452,13 @@ func _prepare_bullet(bullet: Node) -> void:
 	if bullet is Node:
 		(bullet as Node).process_mode = Node.PROCESS_MODE_DISABLED
 
+func _on_bullet_area_entered(area: Area2D) -> void:
+	if area == null:
+		return
+	var parent = area.get_parent()
+	if parent:
+		_on_bullet_entered(parent)
+
 func _on_bullet_entered(body: Node) -> void:
 	if body == null:
 		return
@@ -439,18 +466,26 @@ func _on_bullet_entered(body: Node) -> void:
 	if body is Player or body is EnemyCharacter:
 		return
 		
-	# Skip if body is a Boss (e.g. WarLordTurtle body parts if they are on bullet layer)
-	if body.is_in_group("Boss") or body.is_in_group("boss"):
-		return
+	# 1. Check for explicit "bullet_enemy" group (Priority over Boss check)
+	var is_bullet_enemy := body.is_in_group("bullet_enemy") or (body.get_parent() and body.get_parent().is_in_group("bullet_enemy"))
+	
+	if not is_bullet_enemy:
+		# Skip if body is a Boss (or part of one), unless it was explicitly marked as bullet_enemy
+		if _is_part_of_boss(body):
+			return
+
 	# Chỉ nhận viên đạn trên layer 4 (Enemy Bullet) hoặc Layer 8 (Special Bullet)
 	# PearlFairyBullet and WarLord detection relied on layers, not Group names.
-	var is_bullet := false
-	if body is CharacterBody2D:
-		is_bullet = (body as CharacterBody2D).get_collision_layer_value(4) or (body as CharacterBody2D).get_collision_layer_value(8)
-	elif body is RigidBody2D:
-		is_bullet = (body as RigidBody2D).get_collision_layer_value(4) or (body as RigidBody2D).get_collision_layer_value(8)
-	else:
-		is_bullet = false
+	var is_bullet := is_bullet_enemy
+	if not is_bullet:
+		if body is CharacterBody2D:
+			# Only check Layer 8 for Kinematic bullets. Layer 4 contains Enemies (CharacterBody2D), so we ignore it here to prevent dissolving enemies.
+			is_bullet = (body as CharacterBody2D).get_collision_layer_value(8)
+		elif body is RigidBody2D:
+			# RigidBody on Layer 4 is likely a bullet (Enemies are usually CharacterBody)
+			is_bullet = (body as RigidBody2D).get_collision_layer_value(4) or (body as RigidBody2D).get_collision_layer_value(8)
+		else:
+			is_bullet = false
 	if not is_bullet:
 		return
 	if captured_bullets.has(body):
@@ -458,6 +493,9 @@ func _on_bullet_entered(body: Node) -> void:
 
 	# Level 3: Disappear and destroy
 	if skill_level >= 3:
+		# Strip script to prevent internal logic errors (e.g. null access) during dissolve sequence
+		body.set_script(null)
+		
 		captured_bullets.append(body) # Track it so we can force-kill on cleanup
 		if body is Node2D:
 			_prepare_bullet(body) # Disable it first
@@ -471,89 +509,124 @@ func _on_bullet_entered(body: Node) -> void:
 			body.queue_free()
 		return
 
-func _find_display_item(node: Node) -> CanvasItem:
-	# Tìm Sprite2D/AnimatedSprite2D ở bất kỳ cấp con
+# Helper to find all sprites recursively
+func _collect_all_sprites(node: Node, result: Array[CanvasItem]) -> void:
 	if node is Sprite2D or node is AnimatedSprite2D:
-		return node as CanvasItem
+		result.append(node as CanvasItem)
 	for child in node.get_children():
-		var ci := _find_display_item(child)
-		if ci != null:
-			return ci
-	return null
+		_collect_all_sprites(child, result)
 
 func _apply_dissolve_appear(node: Node2D, duration: float = 0.15, on_done: Callable = Callable(), scale_mult: float = 1.0) -> void:
-	var spr: CanvasItem = _find_display_item(node)
-	if spr == null:
+	var sprites: Array[CanvasItem] = []
+	_collect_all_sprites(node, sprites)
+	
+	if sprites.is_empty():
+		if on_done.is_valid():
+			on_done.call()
 		return
+
 	var shader := load("res://resources/effects/gold_ash_dissolve.gdshader")
 	if shader == null:
+		if on_done.is_valid():
+			on_done.call()
 		return
 	var mat := ShaderMaterial.new()
 	mat.shader = shader
 	mat.set_shader_parameter("progress", 0.0)
-	var overlay_spr: Sprite2D = null
-	# Nếu có Sprite2D và muốn mở rộng vùng flash thì tạo overlay riêng, không scale bullet
-	if spr is Sprite2D and scale_mult > 1.0:
-		var orig := spr as Sprite2D
-		overlay_spr = Sprite2D.new()
-		overlay_spr.texture = orig.texture
-		overlay_spr.centered = orig.centered
-		overlay_spr.flip_h = orig.flip_h
-		overlay_spr.flip_v = orig.flip_v
-		overlay_spr.self_modulate = Color(1.0, 0.9, 0.2, 1.0) # vàng
-		# Thêm overlay cùng parent với sprite để đúng không gian local
-		var parent := orig.get_parent()
-		if parent:
-			parent.add_child(overlay_spr)
-		else:
-			node.add_child(overlay_spr)
-		# Sao chép transform local để khớp vị trí
-		overlay_spr.position = orig.position
-		overlay_spr.rotation = orig.rotation
-		overlay_spr.scale = orig.scale * scale_mult
-		overlay_spr.z_index = orig.z_index + 100
-		overlay_spr.material = mat
-	elif spr is AnimatedSprite2D and scale_mult > 1.0:
-		var aspr := spr as AnimatedSprite2D
-		var frames := aspr.sprite_frames
-		if frames != null:
-			var tex: Texture2D = frames.get_frame_texture(aspr.animation, aspr.frame)
-			if tex != null:
-				overlay_spr = Sprite2D.new()
-				overlay_spr.texture = tex
-				overlay_spr.centered = true
-				overlay_spr.flip_h = aspr.flip_h
-				overlay_spr.flip_v = aspr.flip_v
-				overlay_spr.self_modulate = Color(1.0, 0.9, 0.2, 1.0)
-				var parent2 := aspr.get_parent()
-				if parent2:
-					parent2.add_child(overlay_spr)
-				else:
-					node.add_child(overlay_spr)
-				overlay_spr.position = aspr.position
-				overlay_spr.rotation = aspr.rotation
-				overlay_spr.scale = aspr.scale * scale_mult
-				overlay_spr.z_index = aspr.z_index + 100
-				overlay_spr.material = mat
-	else:
-		# Áp dụng trực tiếp nếu không thể tạo overlay
-		spr.material = mat
-	# Nếu tạo được overlay, ẩn sprite gốc đi vì overlay sẽ thay thế visual
-	if overlay_spr != null:
-		spr.visible = false
-	
+	mat.set_shader_parameter("scale", scale_mult)
+	mat.set_shader_parameter("dissolve_color", Color(1,1,1)) # Default white
+
+	var overlay_sprites: Array[Sprite2D] = []
+	var original_sprites: Array[CanvasItem] = [] 
+
+	for spr in sprites:
+		if not spr.visible:
+			continue
+			
+		var handled := false
+		
+		if spr is Sprite2D and scale_mult > 1.0:
+			var orig := spr as Sprite2D
+			var overlay_spr = Sprite2D.new()
+			overlay_spr.texture = orig.texture
+			overlay_spr.centered = orig.centered
+			overlay_spr.offset = orig.offset
+			overlay_spr.flip_h = orig.flip_h
+			overlay_spr.flip_v = orig.flip_v
+			overlay_spr.self_modulate = Color(1.0, 0.9, 0.2, 1.0) 
+			
+			var parent := orig.get_parent()
+			if parent:
+				parent.add_child(overlay_spr)
+			else:
+				node.add_child(overlay_spr)
+			
+			overlay_spr.position = orig.position
+			overlay_spr.rotation = orig.rotation
+			overlay_spr.scale = orig.scale * scale_mult
+			overlay_spr.z_index = orig.z_index + 100
+			overlay_spr.material = mat
+			
+			overlay_sprites.append(overlay_spr)
+			original_sprites.append(spr) 
+			spr.visible = false 
+			handled = true
+			
+		elif spr is AnimatedSprite2D and scale_mult > 1.0:
+			var aspr := spr as AnimatedSprite2D
+			var frames := aspr.sprite_frames
+			if frames != null:
+				var tex: Texture2D = frames.get_frame_texture(aspr.animation, aspr.frame)
+				if tex != null:
+					var overlay_spr = Sprite2D.new()
+					overlay_spr.texture = tex
+					overlay_spr.centered = aspr.centered # Copy centered property
+					overlay_spr.offset = aspr.offset # Copy offset
+					overlay_spr.flip_h = aspr.flip_h
+					overlay_spr.flip_v = aspr.flip_v
+					overlay_spr.self_modulate = Color(1.0, 0.9, 0.2, 1.0)
+					
+					var parent2 := aspr.get_parent()
+					if parent2:
+						parent2.add_child(overlay_spr)
+					else:
+						node.add_child(overlay_spr)
+						
+					overlay_spr.position = aspr.position
+					overlay_spr.rotation = aspr.rotation
+					overlay_spr.scale = aspr.scale * scale_mult
+					overlay_spr.z_index = aspr.z_index + 100
+					overlay_spr.material = mat
+					
+					overlay_sprites.append(overlay_spr)
+					original_sprites.append(spr)
+					spr.visible = false
+					handled = true
+		
+		if not handled:
+			# Apply directly
+			spr.material = mat
+
 	var tw := create_tween()
 	tw.tween_method(func(p): mat.set_shader_parameter("progress", p), 0.0, 1.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	await tw.finished
 	
-	if overlay_spr != null and is_instance_valid(overlay_spr):
-		overlay_spr.queue_free()
-		# Khôi phục sprite gốc nếu đối tượng không bị hủy
-		if is_instance_valid(spr) and spr != null:
-			spr.visible = true
+	# Cleanup overlays
+	for overlay in overlay_sprites:
+		if is_instance_valid(overlay):
+			overlay.queue_free()
 	
-	elif spr != null and is_instance_valid(spr):
-		spr.material = null
+	# Restore hidden sprites (if node still valid)
+	if is_instance_valid(node):
+		for spr in original_sprites:
+			if is_instance_valid(spr):
+				spr.visible = true
+		
+		# Clear material from direct application
+		for spr in sprites:
+			if is_instance_valid(spr) and spr.material == mat:
+				spr.material = null
+
 	if on_done.is_valid():
 		on_done.call()
 
@@ -574,60 +647,62 @@ func _flash(node: Node2D, duration: float, scale_mult: float = 1.0) -> void:
 		overlay_spr.centered = orig.centered
 		overlay_spr.flip_h = orig.flip_h
 		overlay_spr.flip_v = orig.flip_v
-		overlay_spr.modulate = Color(1.0, 0.9, 0.2, 0.0)
+		overlay_spr.self_modulate = Color(1.0, 0.9, 0.2, 1.0) # vàng
+		# Thêm overlay cùng parent với sprite để đúng không gian local
+		var parent := orig.get_parent()
+		if parent:
+			parent.add_child(overlay_spr)
+		else:
+			node.add_child(overlay_spr)
 		overlay_spr.position = orig.position
 		overlay_spr.rotation = orig.rotation
 		overlay_spr.scale = orig.scale * scale_mult
 		overlay_spr.z_index = orig.z_index + 100
-		node.add_child(overlay_spr)
-		# Animate alpha up then down, and slight scale puff
-		tw.tween_property(overlay_spr, "modulate:a", 1.0, duration * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		tw.tween_property(overlay_spr, "scale", overlay_spr.scale * 1.12, duration * 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		tw.tween_property(overlay_spr, "modulate:a", 0.0, duration * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		
+		tw.tween_property(overlay_spr, "modulate:a", 0.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tw.tween_callback(overlay_spr.queue_free)
 	else:
-		# Fallback: modulate the existing sprite to gold and back
-		var saved_modulate: Color = (spr as CanvasItem).modulate
-		(spr as CanvasItem).modulate = Color(1.0, 0.9, 0.2, 0.0)
-		tw.tween_property(spr, "modulate:a", 1.0, duration * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		tw.tween_property(spr, "modulate:a", 0.0, duration * 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-		await tw.finished
-		if is_instance_valid(spr):
-			(spr as CanvasItem).modulate = saved_modulate
-		return
-	await tw.finished
-	if overlay_spr != null and is_instance_valid(overlay_spr):
-		overlay_spr.queue_free()
+		# fallback flash trực tiếp
+		spr.modulate = Color(2, 2, 2, 1)
+		tw.tween_property(spr, "modulate", Color.WHITE, duration)
 
-func _tween_to_marker(body: Node, target_pos: Vector2, duration: float) -> void:
-	if not (body is Node2D):
-		return
-	var n2 := body as Node2D
+
+func _tween_to_marker(node: Node2D, target: Vector2) -> void:
 	var tw := create_tween()
-	tw.tween_property(n2, "global_position", target_pos, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw.tween_property(node, "global_position", target, enemy_move_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _release_body(body: Node) -> void:
 	if not is_instance_valid(body):
 		return
-	if body is BaseCharacter:
-		var bc := body as BaseCharacter
-		bc.set_ignore_gravity(false)
+	_restore_properties(body)
 	if body is RigidBody2D:
-		var rb := body as RigidBody2D
-		rb.freeze = false
-		rb.gravity_scale = 1.0
+		(body as RigidBody2D).freeze = false
+		(body as RigidBody2D).linear_velocity = Vector2.ZERO
+		(body as RigidBody2D).angular_velocity = 0.0
+
+func _restore_properties(body: Node) -> void:
+	if body is BaseCharacter:
+		(body as BaseCharacter).set_ignore_gravity(false)
+		(body as BaseCharacter).continue_move()
+	if body is RigidBody2D:
+		(body as RigidBody2D).gravity_scale = 1.0
 	if body is Node:
 		(body as Node).process_mode = Node.PROCESS_MODE_INHERIT
 
-func _random_point_in_radius(center: Vector2, radius: float) -> Vector2:
-	var ang := randf() * TAU
-	var r := randf() * radius
-	return center + Vector2(cos(ang), sin(ang)) * r
+func _random_point_in_radius(center: Vector2, r: float) -> Vector2:
+	var angle := randf() * TAU
+	var dist := sqrt(randf()) * r
+	return center + Vector2(cos(angle), sin(angle)) * dist
 
-func _exit_tree() -> void:
-	# Failsafe: luôn khôi phục hurt collision cho player khi Room rời scene
-	if player:
-		player.invincible_zone = false
-		# Failsafe: khôi phục độ sáng nếu còn bị mờ
-		if player_display_item:
-			(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
-			player_flicker_phase = 0.0
+func _is_part_of_boss(node: Node) -> bool:
+	var p = node
+	while p:
+		if p.is_in_group("Boss") or p.is_in_group("boss"):
+			return true
+		p = p.get_parent()
+	
+	if node.owner and (node.owner.is_in_group("Boss") or node.owner.is_in_group("boss")):
+		return true
+	if node.is_in_group("Bosses") or node.is_in_group("bosses"):
+		return true
+	return false

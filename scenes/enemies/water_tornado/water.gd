@@ -9,7 +9,7 @@ func _enter() -> void:
 	obj.tornado.visible = false
 
 	obj.hit_area_2d.monitoring = false
-	obj.hit_area_2d.monitorable = false
+	# obj.hit_area_2d.monitorable = false
 
 	obj._start_warning_blink(warmup_time, 5)
 

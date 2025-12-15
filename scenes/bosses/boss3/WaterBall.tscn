@@ -81,7 +81,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_dnvde"]
 radius = 13.0
 
-[node name="WaterBall" type="Node2D"]
+[node name="WaterBall" type="Node2D" groups=["bullet_enemy"]]
 script = ExtResource("1_dnvde")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -92,8 +92,10 @@ animation = &"idle"
 frame_progress = 0.86071414
 
 [node name="HitArea2D" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 4
+monitoring = true
+monitorable = true
 script = ExtResource("9_jslva")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 

@@ -62,7 +62,7 @@ size = Vector2(21, 129)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jenr"]
 size = Vector2(21, 130.75)
 
-[node name="WaterColumn" type="Node2D"]
+[node name="WaterColumn" type="Node2D" groups=["bullet_enemy"]]
 script = ExtResource("1_column")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -72,8 +72,9 @@ sprite_frames = SubResource("SpriteFrames_column")
 animation = &"upward"
 
 [node name="HitArea2D" type="Area2D" parent="."]
-collision_layer = 0
+collision_layer = 8
 collision_mask = 4
+monitorable = true
 script = ExtResource("4_hit")
 damage = 20
 

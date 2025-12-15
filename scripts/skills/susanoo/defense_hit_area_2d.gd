@@ -47,19 +47,22 @@ func _on_area_entered(area: Area2D) -> void:
 			return
 	# If bullet area (child of bullet), try to remove parent bullet
 	var parent := area.get_parent()
-	if parent and parent is RigidBody2D:
+	if parent and (parent is RigidBody2D or parent.is_in_group("bullet_enemy")):
 		_spawn_shield(cp.pos, cp.normal)
+		# parent.set_script(null)
 		parent.queue_free()
 		_consume_charge()
 
 func _on_body_entered(body: Node) -> void:
 	if not _enabled or _charges_left <= 0:
 		return
-	# If a rigid body bullet enters directly
-	if body is RigidBody2D:
+	# If a rigid body bullet enters directly or a specially marked bullet enemy
+	if body is RigidBody2D or body.is_in_group("bullet_enemy"):
 		var cp := _compute_contact(body.global_position)
 		_spawn_shield(cp.pos, cp.normal)
-		(body as RigidBody2D).queue_free()
+		# body.set_script(null)
+		if body.has_method("queue_free"):
+			body.queue_free()
 		_consume_charge()
 
 func _compute_contact(other_pos: Vector2) -> Dictionary:

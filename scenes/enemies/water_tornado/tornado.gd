@@ -8,4 +8,4 @@ func _enter() -> void:
 	owner.tornado.play("default")
 
 	owner.hit_area_2d.monitoring = true
-	owner.hit_area_2d.monitorable = true
+	# owner.hit_area_2d.monitorable = true

@@ -10,7 +10,6 @@ func create(_product_packed_scene := product_packed_scene) -> Node2D:
 	if _product_packed_scene == null:
 		return null
 	var product: Node2D = _product_packed_scene.instantiate()
-	product.global_position = global_position
 
 	var container := _resolve_container()
 	if container == null:
@@ -20,6 +19,7 @@ func create(_product_packed_scene := product_packed_scene) -> Node2D:
 		container = self
 
 	container.add_child(product)
+	product.global_position = global_position
 	created.emit(product)
 	return product
 
