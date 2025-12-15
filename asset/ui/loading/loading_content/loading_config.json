@@ -55,6 +55,36 @@
 				"Your journey begins with a single step forward..."
 			],
 			"loading_duration": 2.0
+		},
+		"map_3": {
+			"area_name": "Water Palace",
+			"tips": [
+				"Welcome to the mystical underwater palace...",
+				"Ancient water spirits guard these sacred halls...",
+				"The depths hold both beauty and danger...",
+				"Beware of the creatures that lurk in the deep waters..."
+			],
+			"loading_duration": 2.5
+		},
+		"water_priestess": {
+			"area_name": "Water Priestess Sanctum",
+			"tips": [
+				"The Water Priestess commands the power of the ocean...",
+				"Watch for her devastating water attacks...",
+				"Stay mobile to avoid her magical spells...",
+				"The priestess draws strength from the surrounding waters..."
+			],
+			"loading_duration": 3.0
+		},
+		"boss3_water_goddess": {
+			"area_name": "Water Goddess Throne",
+			"tips": [
+				"You stand before the mighty Water Goddess...",
+				"Her power is beyond anything you've faced before...",
+				"The fate of the world rests on this final battle...",
+				"Use everything you've learned to survive this encounter..."
+			],
+			"loading_duration": 3.5
 		}
 	}
 }

@@ -53,7 +53,19 @@ func _build_scene_mapping():
 
 		# War Lord Turtle
 		"res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle",
-		"uid://k0emccpu8xrk": "war_lord_turtle"
+		"uid://k0emccpu8xrk": "war_lord_turtle",
+
+		# Map 3 - Water Palace
+		"uid://du7hahnxorxmd": "map_3",
+		"res://levels/map_3.tscn": "map_3",
+
+		# Water Priestess
+		"uid://kv02hvhfsd8k": "water_priestess",
+		"res://levels/boss_levels/water_prietress/level_water_prietess.tscn": "water_priestess",
+
+		# Boss 3 - Water Goddess
+		"uid://bhwnd0dvsqev8": "boss3_water_goddess",
+		"res://scenes/test_scenes/test_boss3.tscn": "boss3_water_goddess"
 	}
 
 func get_content_for_transition(from_scene: String, to_scene: String) -> Dictionary:
@@ -103,7 +115,19 @@ func _get_transition_key(from_scene: String, to_scene: String) -> String:
 		"res://levels/boss_levels/king_crab/level_king_crab.tscn→res://levels/map_2.tscn": "dark_forest",
 
 		# Map2 → War Lord Turtle: Show War Lord Turtle loading
-		"res://levels/map_2.tscn→res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle"
+		"res://levels/map_2.tscn→res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn": "war_lord_turtle",
+
+		# War Lord Turtle → Map3: Show Water Palace loading
+		"res://levels/boss_levels/war_lord_turtle/level_war_lord_turtle.tscn→res://levels/map_3.tscn": "map_3",
+
+		# Map3 → Water Priestess: Show Water Priestess loading
+		"res://levels/map_3.tscn→res://levels/boss_levels/water_prietress/level_water_prietess.tscn": "water_priestess",
+
+		# Water Priestess → Boss3: Show Water Goddess loading
+		"res://levels/boss_levels/water_prietress/level_water_prietess.tscn→res://scenes/test_scenes/test_boss3.tscn": "boss3_water_goddess",
+
+		# Map3 → Boss3: Direct to Water Goddess
+		"res://levels/map_3.tscn→res://scenes/test_scenes/test_boss3.tscn": "boss3_water_goddess"
 	}
 
 	var transition_key = from_scene + "→" + to_scene
@@ -132,6 +156,12 @@ func _get_content_key_for_scene(scene_path: String) -> String:
 		return "war_lord_turtle"
 	elif "king_crab" in scene_path.to_lower():
 		return "king_crab"
+	elif "water_priet" in scene_path.to_lower():
+		return "water_priestess"
+	elif "test_boss3" in scene_path.to_lower() or "boss3" in scene_path.to_lower():
+		return "boss3_water_goddess"
+	elif "map_3" in scene_path.to_lower() or "map3" in scene_path.to_lower():
+		return "map_3"
 	elif "map1" in scene_path.to_lower() or "map_1" in scene_path.to_lower():
 		return "dark_forest"
 	elif "map_2" in scene_path.to_lower() or "map2" in scene_path.to_lower():
