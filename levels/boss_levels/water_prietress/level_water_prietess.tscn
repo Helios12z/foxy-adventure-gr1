@@ -132,9 +132,10 @@ texture = ExtResource("6_kibuc")
 position = Vector2(-526.5, 648)
 shape = SubResource("RectangleShape2D_4si3a")
 
-[node name="Door" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_wnerh")]
+[node name="Door1" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_wnerh")]
 position = Vector2(-527, 637)
-scale = Vector2(0.7, 0.7)
+scale = Vector2(1.3, 1.3)
+is_cross_scene = true
 
 [node name="Checkpoint" parent="World/BossPlatformController/LeftPlatform" instance=ExtResource("5_enfxh")]
 position = Vector2(-300, 622)
@@ -154,9 +155,12 @@ region_rect = Rect2(15, 3, 1253, 792)
 position = Vector2(1466, 636)
 shape = SubResource("RectangleShape2D_qntum")
 
-[node name="Door" parent="World/BossPlatformController/RightPlatform" instance=ExtResource("5_wnerh")]
-position = Vector2(1463, 624)
-scale = Vector2(0.7, 0.7)
+[node name="Door2" parent="World/BossPlatformController/RightPlatform" instance=ExtResource("5_wnerh")]
+position = Vector2(1463.0001, 622.00006)
+scale = Vector2(1.3, 1.3)
+target_stage = "uid://du7hahnxorxmd"
+target_door = "Teleport2"
+is_cross_scene = true
 
 [node name="FloatingPlatform1" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(263, 493)
@@ -356,7 +360,7 @@ flip_v = true
 position = Vector2(447, 461)
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
-position = Vector2(-308, 563)
+position = Vector2(-200, 575)
 has_blade = true
 has_fire_gem = true
 has_water_paw_gem = true
