@@ -24,7 +24,13 @@ func _ready() -> void:
 
 	# Start idle timer (unless manually controlled)
 	if not _manual_control:
+		# Check if still in tree before awaiting
+		if not is_inside_tree():
+			return
 		await get_tree().create_timer(idle_duration).timeout
+		# Check if still valid after await
+		if not is_inside_tree():
+			return
 		start_moving()
 
 func _physics_process(delta: float) -> void:
@@ -67,7 +73,17 @@ func start_moving() -> void:
 		move_sound.play()
 
 	sprite.play("start_move")
+
+	# Check if still in tree before awaiting
+	if not is_inside_tree():
+		return
+
 	await sprite.animation_finished
+
+	# Check if still valid after await
+	if not is_inside_tree():
+		return
+
 	sprite.play("move")
 
 ## Enable acceleration for this ball (call before start_moving)
@@ -77,9 +93,19 @@ func enable_acceleration() -> void:
 ## Optional: Call this to make ball disappear after a delay
 func fade_and_destroy(fade_time: float = 0.3) -> void:
 	is_moving = false
+
+	# Check if still in tree before creating tween
+	if not is_inside_tree():
+		return
+
 	var tween = create_tween()
 	tween.tween_property(sprite, "modulate:a", 0.0, fade_time)
 	await tween.finished
+
+	# Check if still valid after tween
+	if not is_inside_tree():
+		return
+
 	queue_free()
 
 ## For orbit/ring/cluster patterns - make visible without auto-moving

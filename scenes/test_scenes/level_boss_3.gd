@@ -8,8 +8,27 @@ func _enter_tree() -> void:
 	GameManager.current_stage = self
 
 func _ready() -> void:
-	if not GameManager.respawn_at_portal():
+	# Try to respawn at portal (door) first
+	var spawned_at_portal = GameManager.respawn_at_portal()
+
+	if not spawned_at_portal:
 		GameManager.respawn_at_checkpoint()
+
+	# Ensure player always respawns at the entrance door during boss fight
+	var entrance_door = get_node_or_null("Teleport")
+	if entrance_door and is_instance_valid(entrance_door):
+		# Save a checkpoint at the entrance door position for respawning
+		if spawned_at_portal and GameManager.player:
+			# Player just entered through door - save checkpoint here
+			var door_checkpoint_id = "boss3_entrance"
+			GameManager.current_checkpoint_id = door_checkpoint_id
+			GameManager.save_checkpoint(door_checkpoint_id)
+			GameManager.save_checkpoint_data()
+			print("[Boss3 Level] Saved entrance door checkpoint at: ", entrance_door.global_position)
+
+			# Fade out the entrance door after teleportation
+			_fade_entrance_door(entrance_door)
+
 	_setup_boss_alive_state()
 	_setup_camera_for_boss3()
 
@@ -63,3 +82,31 @@ func _setup_boss_defeated_state() -> void:
 
 	if boss_hud and boss_hud.has_method("reset"):
 		boss_hud.reset()
+
+## Fade out the entrance door after player teleports in
+func _fade_entrance_door(door: Node2D) -> void:
+	if not door:
+		return
+
+	# Find the sprite or animated sprite in the door
+	var sprite = null
+	for child in door.get_children():
+		if child is Sprite2D or child is AnimatedSprite2D:
+			sprite = child
+			break
+
+	if not sprite:
+		# Try to get the door's own sprite if it has one
+		if door is Sprite2D or door is AnimatedSprite2D:
+			sprite = door
+
+	if sprite:
+		# Create fade out tween
+		var tween = create_tween()
+		tween.tween_property(sprite, "modulate:a", 0.0, 1.5)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
+
+		print("[Boss3 Level] Fading out entrance door")
+	else:
+		print("[Boss3 Level] Warning: Could not find sprite to fade in door")

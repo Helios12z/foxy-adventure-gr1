@@ -434,7 +434,7 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 	if behavior == 1:
 		# BEHAVIOR 1: Play only WaterEruption (type 1)
 		for w in get_tree().get_nodes_in_group("WaterEruption"):
-			if is_instance_valid(w) and w.has_method("play"):
+			if w.has_method("play"):
 				# Only first eruption plays sound to avoid overlapping
 				if not sound_played:
 					w.eruption_sound = water_eruption_sound
@@ -446,7 +446,7 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 	elif behavior == 2:
 		# BEHAVIOR 2: Play only WaterEruption2 (type 2)
 		for w in get_tree().get_nodes_in_group("WaterEruption2"):
-			if is_instance_valid(w) and w.has_method("play"):
+			if w.has_method("play"):
 				# Only first eruption plays sound to avoid overlapping
 				if not sound_played:
 					w.eruption_sound = water_eruption_sound
@@ -458,7 +458,7 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 	elif behavior == 3:
 		# BEHAVIOR 3: Play randomly mixed (both types at once)
 		for w in get_tree().get_nodes_in_group("WaterEruption"):
-			if is_instance_valid(w) and w.has_method("play") and randf() > 0.5:
+			if w.has_method("play") and randf() > 0.5:
 				# Only first eruption plays sound to avoid overlapping
 				if not sound_played:
 					w.eruption_sound = water_eruption_sound
@@ -467,7 +467,7 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 					w.eruption_sound = null
 				w.play()
 		for w in get_tree().get_nodes_in_group("WaterEruption2"):
-			if is_instance_valid(w) and w.has_method("play") and randf() > 0.5:
+			if w.has_method("play") and randf() > 0.5:
 				# Only first eruption plays sound to avoid overlapping
 				if not sound_played:
 					w.eruption_sound = water_eruption_sound
@@ -494,7 +494,7 @@ func _do_eruption_wave_internal(behavior: int) -> void:
 			for i in children.size():
 				var w = children[i]
 				print("[Boss3] Playing eruption %d at x=%d" % [i, w.global_position.x])
-				if is_instance_valid(w) and w.has_method("play"):
+				if w.has_method("play"):
 					w.eruption_sound = water_eruption_sound
 					w.play()
 				await get_tree().create_timer(0.15).timeout
@@ -559,7 +559,10 @@ func _do_water_pagoda_internal(behavior: int) -> void:
 			var arena_right = 550
 			var spawn_x = clamp(player.global_position.x, arena_left, arena_right)
 			var spawn_pos = Vector2(spawn_x, 16)
-			pagoda.cast_at(spawn_pos)
+
+			# Check if pagoda is still valid before calling methods (phase change may have freed it)
+			if is_instance_valid(pagoda):
+				pagoda.cast_at(spawn_pos)
 
 			# Wait before spawning next tracking pagoda
 			await get_tree().create_timer(0.8).timeout
@@ -600,7 +603,9 @@ func _do_water_pagoda_internal(behavior: int) -> void:
 
 			# Start the pagoda's telegraph/attack sequence when it lands
 			await get_tree().create_timer(0.7).timeout
-			if is_instance_valid(pagoda) and pagoda.has_method("play"):
+
+			# Check if pagoda is still valid before calling play (phase change may have freed it)
+			if is_instance_valid(pagoda):
 				pagoda.play()
 
 			# Small delay before spawning next falling pagoda
@@ -643,7 +648,7 @@ func _do_water_pillar_internal(behavior: int) -> void:
 	# TODO: spawn / kích hoạt WaterPillar thật sự (hitbox)
 	#       có thể dùng 1 scene riêng lấy target_pos là nơi đã telegraph
 	for w in get_tree().get_nodes_in_group("WaterPillar"):
-		if is_instance_valid(w) and w.has_method("play"):
+		if w.has_method("play"):
 			w.play()
 	await get_tree().create_timer(0.3).timeout
 	_log_skill("WaterPillar", "ACTIVE_END")
@@ -684,7 +689,7 @@ func _do_vase_water_internal(behavior: int) -> void:
 	#   - spawn vài "vase" rơi xuống dưới
 	#   - hoặc kích hoạt các scene trong group "VaseWater"
 	for w in get_tree().get_nodes_in_group("VaseWater"):
-		if is_instance_valid(w) and w.has_method("play"):
+		if w.has_method("play"):
 			w.play()
 	await get_tree().create_timer(0.4).timeout
 	_log_skill("VaseWater", "ACTIVE_END")
@@ -861,6 +866,7 @@ func _do_water_ball_orbit_internal(behavior: int) -> void:
 	while elapsed < orbit_time:
 		elapsed += get_process_delta_time()
 		for data in balls:
+			# Check if ball is still valid (phase change may have freed it)
 			if is_instance_valid(data.ball):
 				data.angle += orbit_speed * get_process_delta_time()
 				var new_pos = orbit_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
@@ -871,14 +877,13 @@ func _do_water_ball_orbit_internal(behavior: int) -> void:
 	_log_skill("WaterBallOrbit", "SHOOT_TO_PLAYER")
 	for data in balls:
 		var ball = data.ball
+		# Check if ball is still valid (phase change may have freed it)
 		if not is_instance_valid(ball):
 			continue
-			
+
 		# Direction toward player
 		var direction = (player.global_position - ball.global_position).normalized()
-		
-		if "direction" in ball:
-			ball.direction = direction
+		ball.direction = direction
 
 		# Flip sprite based on direction
 		if direction.x < 0:
@@ -887,9 +892,8 @@ func _do_water_ball_orbit_internal(behavior: int) -> void:
 			ball.get_node("AnimatedSprite2D").flip_h = false
 
 		# Enable acceleration for orbit pattern
-		if is_instance_valid(ball) and ball.has_method("start_moving"):
-			ball.enable_acceleration()
-			ball.start_moving()
+		ball.enable_acceleration()
+		ball.start_moving()
 		# Delay between each ball shooting
 		await get_tree().create_timer(0.6).timeout
 
@@ -967,6 +971,7 @@ func _do_water_ball_cluster_internal(behavior: int) -> void:
 
 		# Rotate all balls around cluster center
 		for data in balls:
+			# Check if ball is still valid (phase change may have freed it)
 			if is_instance_valid(data.ball):
 				data.angle += rotation_speed * dt
 				var new_pos = cluster_center + Vector2(cos(data.angle), sin(data.angle)) * orbit_radius
@@ -984,7 +989,8 @@ func _do_water_ball_cluster_internal(behavior: int) -> void:
 	for i in balls.size():
 		var data = balls[i]
 		var ball = data.ball
-		
+
+		# Check if ball is still valid (phase change may have freed it)
 		if not is_instance_valid(ball):
 			continue
 
@@ -994,9 +1000,7 @@ func _do_water_ball_cluster_internal(behavior: int) -> void:
 		var final_angle = base_angle + angle_offset
 
 		var direction = Vector2(cos(final_angle), sin(final_angle))
-		
-		if "direction" in ball:
-			ball.direction = direction
+		ball.direction = direction
 
 		# Flip sprite based on direction
 		if direction.x < 0:
@@ -1005,9 +1009,8 @@ func _do_water_ball_cluster_internal(behavior: int) -> void:
 			ball.get_node("AnimatedSprite2D").flip_h = false
 
 		# Enable acceleration for cluster pattern
-		if is_instance_valid(ball) and ball.has_method("start_moving"):
-			ball.enable_acceleration()
-			ball.start_moving()
+		ball.enable_acceleration()
+		ball.start_moving()
 		# Small delay between each shot for visual effect
 		await get_tree().create_timer(0.15).timeout
 
@@ -1393,26 +1396,23 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 				tween.tween_property(laser_container, "rotation", laser_container.rotation + rotation_amount, 0.5)\
 					.set_trans(Tween.TRANS_SINE)\
 					.set_ease(Tween.EASE_IN_OUT)
-				await tween.finished
-			else:
-				await get_tree().create_timer(0.5).timeout
 
-			# Brief tick before next attack
-			await get_tree().create_timer(0.3).timeout
+				await tween.finished
+
+				# Brief tick before next attack
+				await get_tree().create_timer(0.3).timeout
 
 	# FINISH: Fade out all lasers
 	_log_skill("WaterLaserRadiance", "FINISH")
 
-	if is_instance_valid(laser_container):
-		for laser in laser_container.get_children():
-			if is_instance_valid(laser) and laser.has_method("fade_out"):
-				laser.fade_out()
+	for laser in laser_container.get_children():
+		if is_instance_valid(laser) and laser.has_method("fade_out"):
+			laser.fade_out()
 
-		await get_tree().create_timer(0.4).timeout
+	await get_tree().create_timer(0.4).timeout
 
-		# Clean up container
-		if is_instance_valid(laser_container):
-			laser_container.queue_free()
+	# Clean up container
+	laser_container.queue_free()
 
 	# RECOVERY
 	_log_skill("WaterLaserRadiance", "RECOVERY_START")
@@ -1503,24 +1503,20 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 				if is_instance_valid(laser):
 					laser.set_prepare()
 
-			var rotation_amount = (TAU / laser_count) * 0.5
 			if is_instance_valid(laser_container):
+				var rotation_amount = (TAU / laser_count) * 0.5
 				var tween = create_tween()
 				tween.tween_property(laser_container, "rotation", laser_container.rotation + rotation_amount, 0.5)\
 					.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 				await tween.finished
-			else:
-				await get_tree().create_timer(0.5).timeout
-			await get_tree().create_timer(0.3).timeout
+				await get_tree().create_timer(0.3).timeout
 
 	# FINISH
-	if is_instance_valid(laser_container):
-		for laser in laser_container.get_children():
-			if is_instance_valid(laser) and laser.has_method("fade_out"):
-				laser.fade_out()
-		await get_tree().create_timer(0.4).timeout
-		if is_instance_valid(laser_container):
-			laser_container.queue_free()
+	for laser in laser_container.get_children():
+		if is_instance_valid(laser) and laser.has_method("fade_out"):
+			laser.fade_out()
+	await get_tree().create_timer(0.4).timeout
+	laser_container.queue_free()
 
 	# RECOVERY
 	sprite.play("idle")
@@ -1645,24 +1641,20 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 				if is_instance_valid(laser):
 					laser.set_prepare()
 
-			var rotation_amount = (TAU / laser_count) * 0.5
 			if is_instance_valid(laser_container):
+				var rotation_amount = (TAU / laser_count) * 0.5
 				var tween = create_tween()
 				tween.tween_property(laser_container, "rotation", laser_container.rotation + rotation_amount, 0.5)\
 					.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 				await tween.finished
-			else:
-				await get_tree().create_timer(0.5).timeout
-			await get_tree().create_timer(0.3).timeout
+				await get_tree().create_timer(0.3).timeout
 
 	# FINISH
-	if is_instance_valid(laser_container):
-		for laser in laser_container.get_children():
-			if is_instance_valid(laser) and laser.has_method("fade_out"):
-				laser.fade_out()
-		await get_tree().create_timer(0.4).timeout
-		if is_instance_valid(laser_container):
-			laser_container.queue_free()
+	for laser in laser_container.get_children():
+		if is_instance_valid(laser) and laser.has_method("fade_out"):
+			laser.fade_out()
+	await get_tree().create_timer(0.4).timeout
+	laser_container.queue_free()
 
 	# RECOVERY
 	sprite.play("idle")

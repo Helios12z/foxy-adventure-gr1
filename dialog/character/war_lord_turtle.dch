@@ -4,9 +4,11 @@
 &"_translation_id": "",
 &"color": Color(0.2, 0.6, 0.4, 1),
 &"custom_info": {
+"prefix": "",
 "sound_mood_default": "",
 "sound_moods": {},
-"style": ""
+"style": "",
+"suffix": ""
 },
 &"default_portrait": "default",
 &"description": "",
@@ -17,7 +19,7 @@
 &"portraits": {
 "default": {
 "export_overrides": {
-"image": "\"res://asset/war_lord_turtle/war_lord_turtle_1.png\""
+"image": "\"res://dialog/character/war_lord_turtle.png\""
 },
 "mirror": false,
 "offset": Vector2(0, 0),

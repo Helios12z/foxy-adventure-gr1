@@ -59,11 +59,24 @@ func spawn() -> void:
 	anim.visible = true
 	anim.play("prepare")
 	print("[WaterColumn] PREPARE phase - warning player")
+
+	# Check if still in tree before awaiting
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(prepare_duration).timeout
+
+	# Check if still valid after await
+	if not is_inside_tree():
+		return
 
 	# PHASE 2: UPWARD - Column rises and becomes active
 	print("[WaterColumn] UPWARD phase - rising")
 	await _rise_animation()
+
+	# Check if still valid after rise
+	if not is_inside_tree():
+		return
 
 	# Column stays forever until player breaks it (no auto-destroy)
 	print("[WaterColumn] Fully risen, health: %d/%d (stays until destroyed)" % [health, max_health])
@@ -76,6 +89,10 @@ func _rise_animation() -> void:
 	# Play rising sound when column starts rising
 	if rising_sound:
 		rising_sound.play()
+
+	# Check if still in tree before creating tween
+	if not is_inside_tree():
+		return
 
 	# Gradually grow collision shapes during rise
 	var tween = create_tween()
@@ -92,6 +109,10 @@ func _rise_animation() -> void:
 		tween.tween_property(hurt_collision, "position:y", tall_hurt_position_y, rise_duration)
 
 	await tween.finished
+
+	# Check if still valid after tween
+	if not is_inside_tree():
+		return
 
 	# Enable collision after fully risen
 	is_active = true
@@ -118,7 +139,17 @@ func _on_hurt(_direction: Vector2, damage: float) -> void:
 func _flash_white() -> void:
 	var original_modulate = anim.modulate
 	anim.modulate = Color(2, 2, 2, 1)  # Bright white
+
+	# Check if still in tree before awaiting
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(0.1).timeout
+
+	# Check if still valid after await
+	if not is_inside_tree():
+		return
+
 	anim.modulate = original_modulate
 
 ## Break the column
@@ -142,15 +173,32 @@ func _break() -> void:
 		sound_duration = break_sound.stream.get_length()
 		print("[WaterColumn] Playing break sound (duration: %.2fs)" % sound_duration)
 
+	# Check if still in tree before creating tween
+	if not is_inside_tree():
+		return
+
 	# Fade out and destroy
 	var tween = create_tween()
 	tween.tween_property(anim, "modulate:a", 0.0, 0.3)
 	await tween.finished
 
+	# Check if still valid after tween
+	if not is_inside_tree():
+		return
+
 	# Wait for sound to finish before destroying node
 	if sound_duration > 0.3:
 		var remaining_time = sound_duration - 0.3
+
+		# Check if still in tree before awaiting
+		if not is_inside_tree():
+			return
+
 		await get_tree().create_timer(remaining_time).timeout
 		print("[WaterColumn] Sound finished, destroying node")
+
+		# Check if still valid after timer
+		if not is_inside_tree():
+			return
 
 	queue_free()
