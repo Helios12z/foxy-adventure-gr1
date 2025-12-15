@@ -21,4 +21,6 @@ func load_next_stage():
 
 func _on_interactive_area_2d_interacted() -> void:
 	print("interacted")
+	if GameManager.player.is_giant_mode:
+		GameManager.player.inactive_giant_form()
 	load_next_stage()

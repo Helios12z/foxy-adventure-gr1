@@ -197,6 +197,7 @@ func _physics_process(delta: float) -> void:
 	
 
 func _process(_delta: float) -> void:
+	print($Direction/HitArea2D.damage)
 	if $Timer/GiantDuration.is_stopped() == false:
 		print("Giant time left: ", $Timer/GiantDuration.time_left)
 	if dash_on_cooldown and dash_cooldown_timer != null:
@@ -569,24 +570,6 @@ func activate_giant_form() -> void:
 	_orig_has_blade = has_blade
 	_orig_max_health = max_health
 
-	# Save original body collision
-	var body_shape := body_collision.shape as CapsuleShape2D
-	_orig_body_shape = body_shape.duplicate()
-	_orig_body_pos = body_collision.position
-
-	# Save original hurt collision
-	var hurt_shape := hurt_collision.shape as CapsuleShape2D
-	_orig_hurt_shape = hurt_shape.duplicate()
-	_orig_hurt_pos = hurt_collision.position
-
-	# Save original hitbox
-	var hit_shape := hit_collision.shape as RectangleShape2D
-	_orig_hit_shape_size = hit_shape.size
-	_orig_hit_pos = hit_collision.position
-
-	# Save sprite
-	_orig_sprite = animated_sprite
-
 	# ----- APPLY GIANT MODE -----
 	is_giant_mode = true
 
@@ -624,39 +607,43 @@ func resize_all_collisions():
 	hit_collision.position = Vector2(38.0, -3.839)
 	
 func inactive_giant_form():
-		# Reset sprite
+	# ----- RESET GIANT STATE -----
 	is_giant_mode = false
-	if _orig_sprite != null:
-		set_animated_sprite(_orig_sprite)
+	set_animated_sprite($Direction/BladeAnimatedSprite2D)
 
 	# Reset stats
 	has_blade = _orig_has_blade
 	jump_speed = _orig_jump_speed
 	$Direction/HitArea2D.damage = _orig_attack_damage
 	movement_speed = _orig_movement_speed
-	health = min((health * 100/max_health) * _orig_max_health /100, _orig_max_health)
+
+	health = min((health * 100 / max_health) * _orig_max_health / 100, _orig_max_health)
 	max_health = _orig_max_health
 	emit_signal("hp_changed", health, max_health)
 
+	# ----- RESET COLLISIONS (THEO 3 ẢNH) -----
 
-	# Reset Body Collision
+	# Body Collision
 	var body_shape := body_collision.shape as CapsuleShape2D
-	body_shape.radius = _orig_body_shape.radius
-	body_shape.height = _orig_body_shape.height
-	body_collision.position = _orig_body_pos
+	body_shape.radius = 10.0
+	body_shape.height = 30.0
+	body_collision.position = Vector2(0.0, -14.0)
 
-	# Reset Hurt Collision
+	# Hurt Collision
 	var hurt_shape := hurt_collision.shape as CapsuleShape2D
-	hurt_shape.radius = _orig_hurt_shape.radius
-	hurt_shape.height = _orig_hurt_shape.height
-	hurt_collision.position = _orig_hurt_pos
+	hurt_shape.radius = 10.0
+	hurt_shape.height = 30.0
+	hurt_collision.position = Vector2(0.0, -14.0)
 
-	# Reset Hit Collision
+	# Hit Collision
 	var hit_shape := hit_collision.shape as RectangleShape2D
-	hit_shape.size = _orig_hit_shape_size
-	hit_collision.position = _orig_hit_pos
+	hit_shape.size = Vector2(35.833, 33.0)
+	hit_collision.position = Vector2(17.917, -15.5)
+
+	# Cooldown
 	can_use_giant = false
 	start_giant_cooldown()
+
 
 func _on_giant_duration_timeout() -> void:
 	inactive_giant_form()

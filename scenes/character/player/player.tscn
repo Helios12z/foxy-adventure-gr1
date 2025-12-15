@@ -273,11 +273,11 @@ collision_layer = 2
 script = ExtResource("1_puv7k")
 dash_chain_cooldown = 1.0
 run_speed_multiplier = 2.1
+giant_duration = 5
 movement_speed = 120.0
 max_health = 5000
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_rkxg8")
 
@@ -373,7 +373,6 @@ shape = SubResource("CircleShape2D_b1yw4")
 disabled = true
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
-visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("7_t4wjd")
