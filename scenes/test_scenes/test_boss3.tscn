@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://bhwnd0dvsqev8"]
+[gd_scene load_steps=36 format=4 uid="uid://bhwnd0dvsqev8"]
 
 [ext_resource type="Script" uid="uid://4ch8ctjqh6tg" path="res://scenes/test_scenes/level_boss_3.gd" id="1_aeh5d"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_aystw"]
@@ -30,6 +30,7 @@
 [ext_resource type="AudioStream" uid="uid://r6u743a3xnm" path="res://asset/sounds/boss 3/intro_boss.mp3" id="28_c8nuj"]
 [ext_resource type="AudioStream" uid="uid://cpfcumn7ayffy" path="res://asset/sounds/boss 3/loop_phase_3.mp3" id="29_focve"]
 [ext_resource type="AudioStream" uid="uid://cnkhat6iqkbph" path="res://asset/sounds/boss 3/intro_boss_phase_3.mp3" id="30_dotdf"]
+[ext_resource type="PackedScene" uid="uid://cg88ymtkt485w" path="res://levels/objects/door/door_map3.tscn" id="31_u6av4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hv7ei"]
 atlas = ExtResource("12_aeh5d")
@@ -467,3 +468,7 @@ parameters/looping = true
 
 [node name="IntroBossPhase3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("30_dotdf")
+
+[node name="Door" parent="." instance=ExtResource("31_u6av4")]
+position = Vector2(0, 24)
+is_cross_scene = true
