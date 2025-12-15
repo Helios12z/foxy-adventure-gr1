@@ -20,6 +20,7 @@ signal susanoo_level_changed(level)
 signal room_level_changed(level)
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
+var can_move: bool = true
 var _base_movement_speed: float = 0.0
 var _base_gravity: float = 0.0
 var _base_max_jump_count: int = 0
@@ -181,6 +182,14 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	# Apply safe-zone modifiers before physics so gravity uses updated value
 	_apply_safe_zone_mods()
+
+	# If player can't move (cutscene), don't update FSM
+	if not can_move:
+		_update_movement(delta)
+		_check_changed_animation()
+		_check_changed_direction()
+		return
+
 	super._physics_process(delta)
 	if is_on_wall() or is_on_floor():
 		reset_jump_count()
@@ -215,6 +224,11 @@ func _apply_safe_zone_mods() -> void:
 #Collect powerup to apply to the player
 func collect_powerup(powerup_id: String) -> void:
 	decorator_manager.apply_powerup(powerup_id)
+
+func set_can_move(value: bool) -> void:
+	can_move = value
+	if not can_move:
+		velocity.x = 0
 
 func can_attack() -> bool:
 	#if decorator_manager != null:

@@ -52,6 +52,14 @@ func _start_death_dialogue() -> void:
 		return
 	_dialogue_started = true
 
+	# Pause boss AI during dialogue
+	obj.in_dialogue = true
+
+	# Pause player during dialogue
+	var player = obj.get_tree().get_first_node_in_group("Player")
+	if player and player.has_method("set_can_move"):
+		player.set_can_move(false)
+
 	# Start the death dialogue timeline
 	Dialogic.start("king_crab_death")
 	Dialogic.timeline_ended.connect(_on_dialogue_finished)
@@ -59,6 +67,14 @@ func _start_death_dialogue() -> void:
 
 func _on_dialogue_finished() -> void:
 	Dialogic.timeline_ended.disconnect(_on_dialogue_finished)
+
+	# Resume boss AI (not that it matters, boss is dying)
+	obj.in_dialogue = false
+
+	# Resume player movement
+	var player = obj.get_tree().get_first_node_in_group("Player")
+	if player and player.has_method("set_can_move"):
+		player.set_can_move(true)
 
 	# Wait a bit before removing the boss
 	var tw := obj.create_tween()

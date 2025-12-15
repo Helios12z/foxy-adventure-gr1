@@ -51,7 +51,7 @@ signal start_fight
 @export var phase2_flash_duration: float = 0.4    
 @export var phase2_flash_blinks: int = 4          
 
-var seen_player: bool = false 
+var seen_player: bool = false
 var _flash_tw: Tween
 var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
@@ -61,6 +61,7 @@ var level_bounds: Rect2
 var _phase2_transition_running := false
 var _original_time_scale: float = 1.0
 var phase2_platform_ready: bool = false
+var in_dialogue: bool = false
 
 @onready var phase_1: AudioStreamPlayer2D = $Sound/Phase1
 @onready var phase_2_intro: AudioStreamPlayer2D = $Sound/Phase2Intro
@@ -97,7 +98,8 @@ func _ready() -> void:
 		phase_2_intro.finished.connect(_on_phase2_intro_finished)
 
 func _physics_process(delta: float) -> void:
-	if fsm != null: fsm._update(delta)
+	if fsm != null and not in_dialogue:
+		fsm._update(delta)
 
 	_update_facing()
 	_detect_player()
@@ -110,9 +112,9 @@ func _init_hurt_area() -> void:
 		hurt_area.hurt.connect(_on_hurt_area_2d_hurt)
 
 func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
-	if _phase2_transition_running: 
-		return 
-	
+	if _phase2_transition_running or in_dialogue:
+		return
+
 	take_damage(damage)
 	emit_signal("health_changed", health, max_health)
 	_note_damage_hit()
@@ -199,11 +201,8 @@ func _update_facing() -> void:
 	change_direction(dir_x)
 	
 func _detect_player()->void:
-	if seen_player: return
-	if _distance_to_player()<=280: 
-		seen_player = true 
-		phase_1.play()
-		emit_signal("start_fight")
+	# Player detection is now handled by cutscene
+	pass
 			
 func _update_level_bounds_from_markers() -> void:
 	if bound_point_a == null or bound_point_b == null:

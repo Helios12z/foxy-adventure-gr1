@@ -15,13 +15,15 @@ extends Node2D
 
 @onready var ambient: AudioStreamPlayer2D = $Sound/Ambient
 
+var cutscene_controller: Node2D = null
+
 func _enter_tree() -> void:
 	GameManager.current_stage = self
 
 func _ready() -> void:
 	if not GameManager.respawn_at_portal():
 		GameManager.respawn_at_checkpoint()
-	
+
 	ambient.play()
 
 	var boss_defeated := GameManager.is_boss_defeated()
@@ -30,6 +32,7 @@ func _ready() -> void:
 		_setup_boss_defeated_state()
 	else:
 		_setup_boss_alive_state()
+		_setup_cutscene()
 
 func _setup_boss_alive_state() -> void:
 	_dim_background()
@@ -158,7 +161,7 @@ func _dim_background() -> void:
 func _restore_background() -> void:
 	if not is_instance_valid(parallax_layer_back):
 		return
-	
+
 	var tw := create_tween()
 	tw.tween_property(
 		parallax_layer_back,
@@ -166,3 +169,52 @@ func _restore_background() -> void:
 		back_layer_normal_color,
 		back_layer_tween_time
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func _setup_cutscene() -> void:
+	# Load the cutscene script
+	var cutscene_script = load("res://scenes/cutscenes/war_lord_turtle_awakening_cutscene.gd")
+	if not cutscene_script:
+		print("[Level] Failed to load cutscene script")
+		return
+
+	# Create trigger area FIRST
+	var trigger_area = Area2D.new()
+	trigger_area.name = "CutsceneTrigger"
+	trigger_area.collision_layer = 0
+	trigger_area.collision_mask = 2  # Player layer
+	trigger_area.monitoring = true
+	trigger_area.monitorable = false
+
+	# Create collision shape for trigger
+	var collision_shape = CollisionShape2D.new()
+	var shape = RectangleShape2D.new()
+	shape.size = Vector2(400, 300)  # Larger trigger area
+	collision_shape.shape = shape
+	trigger_area.add_child(collision_shape)
+
+	# Position trigger area in front of the boss
+	trigger_area.global_position = boss.global_position + Vector2(-200, 0)
+
+	# Create cutscene controller
+	cutscene_controller = Node2D.new()
+	cutscene_controller.name = "WarLordTurtleCutscene"
+	cutscene_controller.set_script(cutscene_script)
+
+	# Add trigger as child BEFORE adding controller to scene
+	cutscene_controller.add_child(trigger_area)
+
+	# Now add controller to scene (this will call _ready)
+	$World.add_child(cutscene_controller)
+
+	# Wait for next frame, then set up properties
+	await get_tree().process_frame
+
+	# Set up cutscene controller properties directly
+	cutscene_controller.boss = boss
+	cutscene_controller.trigger_area = trigger_area
+	# Optional: Adjust zoom here if you want (1.2 = less zoom, 1.5 = more zoom, 2.0 = very close)
+	cutscene_controller.cutscene_camera_zoom = 1.0
+
+	print("[Level] Cutscene setup complete - Boss at: ", boss.global_position)
+	print("[Level] Trigger area at: ", trigger_area.global_position)
+	print("[Level] Trigger size: ", shape.size)
