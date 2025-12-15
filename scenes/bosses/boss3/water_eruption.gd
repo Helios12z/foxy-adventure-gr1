@@ -75,3 +75,9 @@ func _fade_out(node: Node2D, duration: float) -> void:
 		await get_tree().process_frame
 	node.modulate.a = 0.0
 	node.visible = false
+
+
+func stop() -> void:
+	"""Stop the eruption immediately and reset state"""
+	_is_playing = false
+	_reset_state()

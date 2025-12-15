@@ -30,6 +30,11 @@ func _transition_to_phase2() -> void:
 	obj.set_invulnerable(true)
 	obj.set_blingbling_effect(true)
 
+	# Clear all active skills from phase 1
+	print("[Boss3 Phase1] Cancelling all remaining phase 1 skills...")
+	_clear_phase1_skills()
+	print("[Boss3 Phase1] All phase 1 skills cancelled")
+
 	# Time slowdown effect
 	print("[Boss3 Phase1] Slowing down time...")
 	Engine.time_scale = 0.3
@@ -113,3 +118,25 @@ func _run_pattern() -> void:
 
 		# Recovery delay after skill completes
 		await get_tree().create_timer(0.5).timeout
+
+
+func _clear_phase1_skills() -> void:
+	"""Clear all active phase 1 skill objects"""
+	var cleared_count = 0
+
+	# Clear WaterBalls (though rare in phase 1)
+	for node in get_tree().get_nodes_in_group("WaterBall"):
+		if is_instance_valid(node):
+			node.queue_free()
+			cleared_count += 1
+
+	# Clear WaterPagodas
+	for node in get_tree().get_nodes_in_group("WaterPagoda"):
+		if is_instance_valid(node):
+			node.queue_free()
+			cleared_count += 1
+
+	# NOTE: WaterEruption nodes are permanent scene objects, not dynamically spawned.
+	# They will naturally finish their animations or remain hidden. Don't touch them.
+
+	print("[Boss3 Phase1] Cleared %d active skill objects" % cleared_count)
