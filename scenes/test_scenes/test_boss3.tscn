@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://bhwnd0dvsqev8"]
+[gd_scene load_steps=37 format=4 uid="uid://bhwnd0dvsqev8"]
 
 [ext_resource type="Script" uid="uid://4ch8ctjqh6tg" path="res://scenes/test_scenes/level_boss_3.gd" id="1_aeh5d"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_aystw"]
@@ -58,11 +58,13 @@ is_cross_scene = true
 
 [node name="FullBg" type="Sprite2D" parent="."]
 modulate = Color(0.7581918, 0.7581918, 0.7581917, 1)
+self_modulate = Color(0.8046875, 0.8046875, 0.8046875, 1)
 position = Vector2(301.50003, 68)
 scale = Vector2(0.37618458, 0.4117188)
 texture = ExtResource("2_b5x6u")
 
 [node name="Upper_Floor" type="Sprite2D" parent="."]
+self_modulate = Color(0.70703125, 0.70703125, 0.70703125, 1)
 position = Vector2(301.631, -216.606)
 scale = Vector2(0.28827715, 0.3592173)
 texture = ExtResource("3_keb00")
