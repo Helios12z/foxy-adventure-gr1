@@ -20,7 +20,7 @@ func _exit() -> void:
 func _update(delta: float) -> void:
 	if obj.health <= obj.max_health * phase3_health_threshold:
 		await _transition_to_phase3()
-		change_state(fsm.states.phase3)
+		change_state(fsm.states["phase3"])
 		return
 
 func _transition_to_phase3() -> void:

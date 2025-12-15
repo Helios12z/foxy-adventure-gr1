@@ -714,6 +714,25 @@ func _play_phase3_transition() -> void:
 	# 	obj.blingbling_sprite.play("default")
 	# 	print("[Boss3 Phase3] ✓ BlingBling animation enabled")
 
+	# WATER GODDESS SELF-TALK DIALOGUE before floor breaks
+	print("[Boss3 Phase3] Starting Water Goddess self-talk dialogue...")
+
+	# Freeze player during dialogue
+	var player = get_tree().get_first_node_in_group("Player")
+	if player and "set_can_move" in player:
+		player.set_can_move(false)
+		print("[Boss3 Phase3] Player frozen for dialogue")
+
+	# Start dialogue
+	Dialogic.start("water_goddess_phase3")
+	await Dialogic.timeline_ended
+	print("[Boss3 Phase3] Dialogue finished!")
+
+	# Unfreeze player
+	if player and "set_can_move" in player:
+		player.set_can_move(true)
+		print("[Boss3 Phase3] Player unfrozen")
+
 	# Small pause before floor breaks
 	await get_tree().create_timer(0.5).timeout
 
@@ -818,7 +837,7 @@ func _play_phase3_transition() -> void:
 
 	# Wait for player to fall and land
 	print("[Boss3 Phase3] Waiting for player to reach ground...")
-	var player = get_tree().get_first_node_in_group("Player")
+	#var player = get_tree().get_first_node_in_group("Player")
 	if player:
 		# Wait until player lands (check if on ground)
 		while player.global_position.y < 400:  # Adjust threshold as needed

@@ -386,6 +386,7 @@ metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
 
 [node name="Phase3" type="Node" parent="States"]
 script = ExtResource("38_egjne")
+metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
 
 [node name="HurtSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("53_ecrbq")

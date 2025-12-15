@@ -4,8 +4,9 @@ signal health_changed(current: float, max_health: float)
 signal intro_finished
 
 @export var boss3_max_health: int = 2500
-@export var is_sleeping: bool = true 
+@export var is_sleeping: bool = true
 @export var sleep_health_max: int = 100
+@export var play_intro_music: bool = true
 
 @export var player_path: NodePath
 @onready var player: Node2D = get_node_or_null(player_path)
@@ -75,13 +76,64 @@ func _ready() -> void:
 	_setup_eruption_sounds()
 
 	await _play_intro()
-	
-	# Boss becomes vulnerable after intro
-	is_invulnerable = false
-	
-	fsm = FSM.new(self, $States, $States/Phase1)
+
+	# DON'T start FSM yet - wait for dialogue to finish
+	# The level script will call start_boss_fight() after dialogue
+	print("[Boss3] Intro finished - waiting for dialogue to complete before starting fight")
 
 var is_invulnerable: bool = false  # Can be set by states to make boss invulnerable
+
+## Called by level script after dialogue finishes to start the boss fight
+func start_boss_fight() -> void:
+	print("[Boss3] Starting boss fight - initializing FSM...")
+
+	# Boss becomes vulnerable
+	is_invulnerable = false
+
+	# Play boss intro music NOW (after dialogue ends)
+	if play_intro_music and boss_intro_sound:
+		if boss_intro_sound.stream:
+			boss_intro_sound.play()
+			print("[Boss3] ♪ Playing intro music (after dialogue) - stream: %s, volume: %d dB" % [boss_intro_sound.stream.resource_path, boss_intro_sound.volume_db])
+			# Start monitoring intro music to seamlessly transition to loop
+			_start_intro_music_monitor()
+		else:
+			print("[Boss3] ⚠ WARNING: boss_intro_sound has no stream assigned!")
+	else:
+		print("[Boss3] ⚠ Intro music disabled: play_intro_music=%s, boss_intro_sound=%s" % [play_intro_music, boss_intro_sound != null])
+
+	# Wait for all nodes to be fully ready before initializing FSM
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	# Initialize FSM with safety checks
+	var states_node = get_node_or_null("States")
+	var phase1_node = get_node_or_null("States/Phase1")
+
+	if states_node == null:
+		push_error("[Boss3] States node not found!")
+		return
+
+	if phase1_node == null:
+		push_error("[Boss3] States/Phase1 node not found!")
+		return
+
+	# Debug: Print all state children
+	print("[Boss3] Found States node with %d children:" % states_node.get_child_count())
+	for child in states_node.get_children():
+		var script_path = ""
+		if child.get_script():
+			script_path = str(child.get_script().resource_path)
+		print("  - %s (type: %s, is_EnemyState: %s, script: %s)" % [child.name, child.get_class(), child is EnemyState, script_path])
+
+	# Verify phase1_node has correct script
+	if not phase1_node is EnemyState:
+		push_error("[Boss3] Phase1 node doesn't have EnemyState script attached!")
+		print("[Boss3] Phase1 actual type: %s" % phase1_node.get_class())
+		return
+
+	fsm = FSM.new(self, states_node, phase1_node, true)  # Enable debug mode
+	print("[Boss3] FSM initialized successfully with %d states - FIGHT STARTED!" % fsm.states.size())
 
 func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 	# Check if boss is invulnerable
@@ -139,10 +191,8 @@ func _play_intro() -> void:
 	sprite.visible = false
 	appears_sprite.visible = true
 
-	# Play boss intro music
-	if boss_intro_sound:
-		boss_intro_sound.play()
-		print("[Boss3] Playing intro music")
+	# NOTE: Intro music is now played AFTER dialogue ends (in start_boss_fight)
+	# This ensures music plays when the actual fight begins, not during dialogue
 
 	appears_sprite.play("appears")
 	print("[Boss3] Intro appears START")
@@ -157,17 +207,14 @@ func _play_intro() -> void:
 	sprite.visible = true
 	sprite.play("idle")
 
-	# Start monitoring intro music to seamlessly transition to loop
-	if boss_intro_sound and boss_intro_sound.stream:
-		_start_intro_music_monitor()
-
-	# Emit signal that intro is finished
+	# Emit signal that intro is finished (dialogue will start)
 	emit_signal("intro_finished")
 
 var _disable_flip: bool = false  # Disable flip during laser attacks
 
 func _physics_process(delta: float) -> void:
-	if fsm != null:
+	# Only update FSM if it's properly initialized
+	if fsm != null and is_instance_valid(fsm):
 		fsm._update(delta)
 
 	# Don't flip during laser attacks
@@ -327,11 +374,14 @@ func _start_intro_music_monitor() -> void:
 	
 	# Start Phase 1/2 loop music
 	if boss_phase12_loop_sound:
-		boss_phase12_loop_sound.play()
-		# Enable looping by connecting to finished signal
-		if not boss_phase12_loop_sound.finished.is_connected(_on_phase12_loop_finished):
-			boss_phase12_loop_sound.finished.connect(_on_phase12_loop_finished)
-		print("[Boss3] Playing Phase 1/2 loop music (seamless transition)")
+		if boss_phase12_loop_sound.stream:
+			boss_phase12_loop_sound.play()
+			# Enable looping by connecting to finished signal
+			if not boss_phase12_loop_sound.finished.is_connected(_on_phase12_loop_finished):
+				boss_phase12_loop_sound.finished.connect(_on_phase12_loop_finished)
+			print("[Boss3] ♪ Playing Phase 1/2 loop music (seamless transition) - volume: %d dB" % boss_phase12_loop_sound.volume_db)
+		else:
+			print("[Boss3] ⚠ WARNING: boss_phase12_loop_sound has no stream assigned!")
 
 ## Loop Phase 1/2 music when it finishes
 func _on_phase12_loop_finished() -> void:
