@@ -136,7 +136,15 @@ func _apply_checkpoint_inventory_only() -> void:
 	var data: Dictionary = checkpoint_info.get("player_state", {})
 	if data.is_empty():
 		return
-	# Chỉ áp dụng các trạng thái, không thay đổi vị trí
+	
+	# IMPORTANT: Reset all gems to false first to prevent keeping old values
+	player.has_fire_gem = false
+	player.has_water_paw_gem = false
+	player.has_water_room_gem = false
+	player.susanoo_level = 0
+	player.room_level = 0
+	
+	# Apply checkpoint state - only set to true if in checkpoint
 	if data.has("has_blade"):
 		player.has_blade = data["has_blade"]
 		Dialogic.VAR.set("HasBlade", player.has_blade)
@@ -261,7 +269,7 @@ func collect_blade() -> void:
 func collect_fire_gem() -> void:
 	if player:
 		player.collected_fire_gem()
-		update_current_checkpoint_player_state({"has_fire_gem": true}, true)
+		update_current_checkpoint_player_state({"has_fire_gem": true, "susanoo_level": player.susanoo_level}, true)
 
 func collect_water_paw_gem() -> void:
 	if player:
@@ -271,7 +279,7 @@ func collect_water_paw_gem() -> void:
 func collect_water_room_gem() -> void:
 	if player:
 		player.collected_water_room_gem()
-		update_current_checkpoint_player_state({"has_water_room_gem": true}, true)
+		update_current_checkpoint_player_state({"has_water_room_gem": true, "room_level": player.room_level}, true)
 
 func ensure_initial_checkpoint() -> void:
 	# Create or adopt an initial checkpoint with starting position

@@ -139,7 +139,7 @@ func update_ui() -> void:
 	if GameManager.player:
 		current_level_sus = GameManager.player.susanoo_level
 		current_level_room = GameManager.player.room_level
-
+	
 	var current_gold = 0
 	if GameManager.inventory_system:
 		current_gold = GameManager.inventory_system.get_gold()
