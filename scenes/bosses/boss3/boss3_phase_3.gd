@@ -559,6 +559,9 @@ func _handle_death() -> void:
 	_running = false
 	_is_vulnerable = false
 
+	# IMPORTANT: Clear all active skills and spawned objects
+	_clear_all_active_skills()
+
 	# Switch to dead sprite
 	obj.switch_sprite(obj.dead_sprite)
 
@@ -610,6 +613,55 @@ func _handle_death() -> void:
 	# Remove the boss from the scene
 	print("[Boss3 Phase3] Removing boss from scene")
 	obj.queue_free()
+
+
+func _clear_all_active_skills() -> void:
+	"""Clear all active skill objects when boss dies to prevent game from getting stuck"""
+	print("[Boss3 Phase3] Clearing all active skills...")
+
+	var cleared_count = 0
+
+	# Clear WaterBalls
+	for node in get_tree().get_nodes_in_group("WaterBall"):
+		if is_instance_valid(node):
+			node.queue_free()
+			cleared_count += 1
+
+	# Clear WaterPagodas
+	for node in get_tree().get_nodes_in_group("WaterPagoda"):
+		if is_instance_valid(node):
+			node.queue_free()
+			cleared_count += 1
+
+	# Clear WaterColumns
+	for node in get_tree().get_nodes_in_group("WaterColumn"):
+		if is_instance_valid(node):
+			node.queue_free()
+			cleared_count += 1
+
+	# Clear WaterTornados
+	for node in get_tree().get_nodes_in_group("WaterTornado"):
+		if is_instance_valid(node):
+			node.queue_free()
+			cleared_count += 1
+
+	# Clear HealthBalls
+	for node in get_tree().get_nodes_in_group("HealthBall"):
+		if is_instance_valid(node):
+			node.queue_free()
+			cleared_count += 1
+
+	# Clear any laser containers (find Node2D nodes that are laser containers)
+	for node in get_tree().current_scene.get_children():
+		if node is Node2D and node.name.begins_with("@Node2D@"):
+			# Check if it contains WaterLaser children
+			for child in node.get_children():
+				if "WaterLaser" in child.scene_file_path if child.scene_file_path else "":
+					node.queue_free()
+					cleared_count += 1
+					break
+
+	print("[Boss3 Phase3] Cleared %d active skill objects" % cleared_count)
 
 
 func _play_phase3_transition() -> void:
