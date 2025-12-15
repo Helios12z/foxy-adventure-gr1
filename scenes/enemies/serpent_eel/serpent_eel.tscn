@@ -8,13 +8,13 @@
 [ext_resource type="Texture2D" uid="uid://b72l70sj7j3id" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_attack_4.png" id="7_wc0nf"]
 [ext_resource type="Texture2D" uid="uid://qchpapwusda5" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_attack_5.png" id="8_owfid"]
 [ext_resource type="Texture2D" uid="uid://few4ksdr5mi8" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_dead.png" id="9_anure"]
-[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="10_fxvrx"]
+[ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="10_fxvrx"]
 [ext_resource type="Texture2D" uid="uid://b5sl4ilyc305t" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_hurt.png" id="10_iq7vx"]
 [ext_resource type="Texture2D" uid="uid://c4thb4bwcp571" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_idle.png" id="11_1oasb"]
 [ext_resource type="Script" uid="uid://uavra2l206fu" path="res://scenes/enemies/serpent_eel/walk.gd" id="11_iq7vx"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="12_1oasb"]
 [ext_resource type="Script" uid="uid://cfx3rrythw07w" path="res://scenes/enemies/serpent_eel/attack.gd" id="13_duo06"]
-[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="14_vuytp"]
+[ext_resource type="Script" uid="uid://cjdx8mupt3n8k" path="res://scenes/enemies/serpent_eel/dead.gd" id="15_01h8l"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="16_mfgog"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="17_btsph"]
 [ext_resource type="Script" uid="uid://brpej3m2qw6e1" path="res://scenes/enemies/serpent_eel/attacking.gd" id="18_attacking"]
@@ -201,7 +201,7 @@ script = ExtResource("12_1oasb")
 script = ExtResource("13_duo06")
 
 [node name="Dead" type="Node" parent="States"]
-script = ExtResource("14_vuytp")
+script = ExtResource("15_01h8l")
 
 [node name="Attacking" type="Node" parent="States"]
 script = ExtResource("18_attacking")

@@ -16,7 +16,6 @@ func _enter():
 	if obj.current_animation != "attack":
 		obj.change_animation("attack")
 
-	obj.velocity.x = 0
 	obj.set_hit_collision(true)
 
 	# Save original offsets
