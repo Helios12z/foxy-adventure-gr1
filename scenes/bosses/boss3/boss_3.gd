@@ -3,6 +3,7 @@ extends BaseCharacter
 signal health_changed(current: float, max_health: float)
 signal intro_finished
 signal boss_died
+signal cutscene_ready
 
 @export var boss3_max_health: int = 2500
 @export var is_sleeping: bool = true

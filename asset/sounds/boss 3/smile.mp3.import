@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://crn428m1nmd0q"
+path="res://.godot/imported/smile.mp3-003d84b2875dadabebb8acdaa9233c33.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/smile.mp3"
+dest_files=["res://.godot/imported/smile.mp3-003d84b2875dadabebb8acdaa9233c33.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

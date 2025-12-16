@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://77qfnm83f6ia"
+path="res://.godot/imported/outro.mp3-64e251d56fd2e26e198f5c3f9ea7349a.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/outro.mp3"
+dest_files=["res://.godot/imported/outro.mp3-64e251d56fd2e26e198f5c3f9ea7349a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

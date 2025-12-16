@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://drpp50wp2c3rt"
+path="res://.godot/imported/dark_blue_energy.mp3-db0a9480904e7436a99ff1a80f7bb393.mp3str"
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/dark_blue_energy.mp3"
+dest_files=["res://.godot/imported/dark_blue_energy.mp3-db0a9480904e7436a99ff1a80f7bb393.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

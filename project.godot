@@ -39,6 +39,9 @@ directories/dch_directory={
 "water_priestess": "res://dialog/character/water_priestess.dch"
 }
 directories/dtl_directory={
+"boss3_aftermath_reflection": "res://timelines/boss3_aftermath_reflection.dtl",
+"boss3_door_self_talk": "res://timelines/boss3_door_self_talk.dtl",
+"boss3_energy_whisper": "res://timelines/boss3_energy_whisper.dtl",
 "collect_blade": "res://timelines/collect_blade.dtl",
 "fire_gem_collected": "res://timelines/fire_gem_collected.dtl",
 "king_crab_awakening": "res://timelines/king_crab_awakening.dtl",

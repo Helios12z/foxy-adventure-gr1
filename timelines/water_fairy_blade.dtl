@@ -12,9 +12,12 @@ else:
 	foxy: Thật thế sao! Ta thật muốn thay trời hành đạo, nhưng..
 	water_fairy: Ngươi cứ việc nói
 	foxy: Nhưng ta không chắc bản thân có đủ sức mạnh không.. /Chần chừ/
-	water_fairy: Chỉ cần giết chúng, mang ngọc về đây, hai viên ngọc cùng với Dẫn Linh Ngọc của ta sẽ có thể mở phong ấn. Khi đó, Thánh Mẫu sẽ ban cho ngươi mọi thứ ngươi muốn. 
+	water_fairy: Chỉ cần giết chúng, mang ngọc về đây, hai viên ngọc cùng với Dẫn Linh Ngọc của ta sẽ có thể mở phong ấn. 
+	water_fairy: Khi đó, Thánh Mẫu sẽ ban cho ngươi mọi thứ ngươi muốn. 
 	foxy: /Mắt loé lên/ Vậy không còn cách nào khác, ta phải đòi lại công lý cho vùng đất này thôi!
 	water_fairy: Hãy cầm lấy thanh Phệ Linh Thần Kiếm này. 
 	do GameManager.collect_blade()
-	water_fairy: Đi đi... 'Dũng sĩ' của ta. Đừng để ta thất vọng.
+	foxy: /Gấp rút/ Vậy ta đi đây
+	water_fairy: Khoan đã, ta trao ngươi 3 lọ huyết dược, nó sẽ hiện lên những lúc ngươi cần nó nhất. 
+	water_fairy: Giờ thì đi đi, 'Dũng sĩ' của ta. Đừng để ta thất vọng!
 	[end_timeline]
