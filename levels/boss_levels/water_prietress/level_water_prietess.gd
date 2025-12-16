@@ -30,6 +30,9 @@ func _enter_tree() -> void:
 	GameManager.current_stage = self
 
 func _ready() -> void:
+	GameManager.is_scene_boss = true
+	GameManager.inventory_system.heal_potions = 3
+	GameManager.inventory_system.heal_potion_changed.emit(3)
 	if not GameManager.respawn_at_portal():
 		GameManager.respawn_at_checkpoint()
 
@@ -50,7 +53,11 @@ func _ready() -> void:
 
 		_setup_boss_alive_state()
 
+
+
 func _process(_delta: float) -> void:
+	if GameManager.player.health <= 0:
+		GameManager.inventory_system.heal_potions = 3
 	if _boss_in_parallax and boss_bg_marker and boss and boss.get_parent() == boss_parallax_layer:
 		var target_global := boss_bg_marker.global_position
 		var parallax_transform := boss_parallax_layer.get_global_transform()

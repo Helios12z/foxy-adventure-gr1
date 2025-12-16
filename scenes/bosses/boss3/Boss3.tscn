@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://drem1inlnoymq"]
+[gd_scene load_steps=83 format=3 uid="uid://drem1inlnoymq"]
 
 [ext_resource type="Script" uid="uid://b5ht8frfquhry" path="res://scenes/bosses/boss3/boss_3.gd" id="1_dj6mc"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3t3rw"]
@@ -48,6 +48,7 @@
 [ext_resource type="Texture2D" uid="uid://b2t4t8m2vkxf8" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom10.png" id="27_nb13n"]
 [ext_resource type="Texture2D" uid="uid://mouhngrngj4j" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom9.png" id="28_3t3rw"]
 [ext_resource type="Texture2D" uid="uid://todn1osjjrul" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom11.png" id="29_egjne"]
+[ext_resource type="Texture2D" uid="uid://bwrltc6ws3ab2" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_2.tres" id="29_fc0hl"]
 [ext_resource type="Texture2D" uid="uid://b5effkvaoe0sn" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom12.png" id="30_jehqq"]
 [ext_resource type="Texture2D" uid="uid://bx8ntngdqmcw1" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom13.png" id="31_uliq1"]
 [ext_resource type="Texture2D" uid="uid://dcpdatr228ecv" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom14.png" id="32_jyyxr"]
@@ -167,6 +168,36 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("11_db1te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pgwly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_db1te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pgwly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_db1te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pgwly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_db1te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pgwly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_db1te")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_pgwly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_db1te")
 }],
 "loop": false,
 "name": &"atk_2",
@@ -184,6 +215,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("15_dmnor")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_hsgt3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_fc0hl")
 }],
 "loop": false,
 "name": &"atk_3",

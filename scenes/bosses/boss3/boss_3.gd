@@ -643,22 +643,23 @@ func _do_water_pagoda_internal(behavior: int) -> void:
 			var spawn_pos = Vector2(spawn_x, spawn_height)
 
 			# Set initial position at top
-			pagoda.global_position = spawn_pos
+			if is_instance_valid(pagoda):
+				pagoda.global_position = spawn_pos
 
-			# Make pagoda visible while falling
-			pagoda.show_while_falling()
+				# Make pagoda visible while falling
+				pagoda.show_while_falling()
 
-			# Animate falling down to ground
-			var tween = create_tween()
-			tween.tween_property(pagoda, "global_position:y", ground_y, 0.7)\
-				.set_trans(Tween.TRANS_QUAD)\
-				.set_ease(Tween.EASE_IN)
+				# Animate falling down to ground
+				var tween = create_tween()
+				tween.tween_property(pagoda, "global_position:y", ground_y, 0.7)\
+					.set_trans(Tween.TRANS_QUAD)\
+					.set_ease(Tween.EASE_IN)
 
 			# Start the pagoda's telegraph/attack sequence when it lands
 			await get_tree().create_timer(0.7).timeout
 
 			# Check if pagoda is still valid before calling play (phase change may have freed it)
-			if is_instance_valid(pagoda):
+			if is_instance_valid(pagoda) and pagoda.has_method("play"):
 				pagoda.play()
 
 			# Small delay before spawning next falling pagoda
@@ -701,7 +702,7 @@ func _do_water_pillar_internal(behavior: int) -> void:
 	# TODO: spawn / kích hoạt WaterPillar thật sự (hitbox)
 	#       có thể dùng 1 scene riêng lấy target_pos là nơi đã telegraph
 	for w in get_tree().get_nodes_in_group("WaterPillar"):
-		if w.has_method("play"):
+		if is_instance_valid(w) and w.has_method("play"):
 			w.play()
 	await get_tree().create_timer(0.3).timeout
 	_log_skill("WaterPillar", "ACTIVE_END")
@@ -742,7 +743,7 @@ func _do_vase_water_internal(behavior: int) -> void:
 	#   - spawn vài "vase" rơi xuống dưới
 	#   - hoặc kích hoạt các scene trong group "VaseWater"
 	for w in get_tree().get_nodes_in_group("VaseWater"):
-		if w.has_method("play"):
+		if is_instance_valid(w) and w.has_method("play"):
 			w.play()
 	await get_tree().create_timer(0.4).timeout
 	_log_skill("VaseWater", "ACTIVE_END")
@@ -1458,14 +1459,14 @@ func _do_water_laser_radiance_internal(behavior: int) -> void:
 	# FINISH: Fade out all lasers
 	_log_skill("WaterLaserRadiance", "FINISH")
 
-	for laser in laser_container.get_children():
-		if is_instance_valid(laser) and laser.has_method("fade_out"):
-			laser.fade_out()
+	if is_instance_valid(laser_container):
+		for laser in laser_container.get_children():
+			if is_instance_valid(laser) and laser.has_method("fade_out"):
+				laser.fade_out()
 
-	await get_tree().create_timer(0.4).timeout
-
-	# Clean up container
-	laser_container.queue_free()
+		await get_tree().create_timer(0.4).timeout
+		if is_instance_valid(laser_container):
+			laser_container.queue_free()
 
 	# RECOVERY
 	_log_skill("WaterLaserRadiance", "RECOVERY_START")
@@ -1565,11 +1566,13 @@ func _do_water_laser_simple(attack1: int, attack2: int, attack3: int, attack4: i
 				await get_tree().create_timer(0.3).timeout
 
 	# FINISH
-	for laser in laser_container.get_children():
-		if is_instance_valid(laser) and laser.has_method("fade_out"):
-			laser.fade_out()
-	await get_tree().create_timer(0.4).timeout
-	laser_container.queue_free()
+	if is_instance_valid(laser_container):
+		for laser in laser_container.get_children():
+			if is_instance_valid(laser) and laser.has_method("fade_out"):
+				laser.fade_out()
+		await get_tree().create_timer(0.4).timeout
+		if is_instance_valid(laser_container):
+			laser_container.queue_free()
 
 	# RECOVERY
 	sprite.play("idle")
@@ -1703,11 +1706,13 @@ func _do_water_laser_ultimate(attack1: int, attack2: int, attack3: int, attack4:
 				await get_tree().create_timer(0.3).timeout
 
 	# FINISH
-	for laser in laser_container.get_children():
-		if is_instance_valid(laser) and laser.has_method("fade_out"):
-			laser.fade_out()
-	await get_tree().create_timer(0.4).timeout
-	laser_container.queue_free()
+	if is_instance_valid(laser_container):
+		for laser in laser_container.get_children():
+			if is_instance_valid(laser) and laser.has_method("fade_out"):
+				laser.fade_out()
+		await get_tree().create_timer(0.4).timeout
+		if is_instance_valid(laser_container):
+			laser_container.queue_free()
 
 	# RECOVERY
 	sprite.play("idle")
