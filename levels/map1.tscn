@@ -53,7 +53,7 @@
 [ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="53_70u64"]
 [ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="53_e0w0y"]
 [ext_resource type="PackedScene" uid="uid://bmqdyggq31jj2" path="res://scenes/collectibles/firegem/fire_gem.tscn" id="54_py74h"]
-[ext_resource type="PackedScene" uid="uid://bx2xcf02m4m0r" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="55_hdm65"]
+[ext_resource type="PackedScene" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="55_hdm65"]
 [ext_resource type="PackedScene" uid="uid://c700eni2s0ngm" path="res://scenes/collectibles/waterpawgem/water_paw_gem.tscn" id="56_6jest"]
 [ext_resource type="PackedScene" uid="uid://dme30hj53kiyq" path="res://levels/tutorial/signpost.tscn" id="57_6jest"]
 [ext_resource type="PackedScene" uid="uid://cb64vaex5bwuw" path="res://levels/tutorial/signpost_details/skill_tutorial_popup.tscn" id="58_0ekna"]
@@ -190,7 +190,7 @@ size = Vector2(20, 596)
 [node name="Map1" type="Node2D"]
 position = Vector2(12, 0)
 script = ExtResource("1_vf8qv")
-camera_bottom_limit_y = -200.0
+camera_bottom_limit_y = -220.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

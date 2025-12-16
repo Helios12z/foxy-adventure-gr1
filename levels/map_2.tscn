@@ -32,7 +32,7 @@
 [ext_resource type="PackedScene" uid="uid://dubb5b1vjmsxd" path="res://levels/objects/door/door.tscn" id="20_nljfo"]
 [ext_resource type="AudioStream" uid="uid://c5uy78jxcl7ar" path="res://asset/sounds/Free Thunder Sound Effect  No Copyright - Friendly Free Sounds.mp3" id="21_4tdrg"]
 [ext_resource type="AudioStream" uid="uid://canhx8yq8bj6v" path="res://asset/sounds/Rain.mp3" id="23_vobq5"]
-[ext_resource type="Script" uid="uid://ti88f8njefc6" path="res://levels/objects/audio_zone.gd" id="24_durtq"]
+[ext_resource type="Script" path="res://levels/objects/audio_zone.gd" id="24_durtq"]
 [ext_resource type="Texture2D" uid="uid://clyana8poctkp" path="res://asset/forest/background/turtle_gate.png" id="34_yd5fx"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wkgak"]
@@ -159,7 +159,7 @@ size = Vector2(2829, 639)
 
 [node name="Map2" type="Node2D"]
 script = ExtResource("1_68p3w")
-camera_bottom_limit_y = -140.0
+camera_bottom_limit_y = -160.0
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
