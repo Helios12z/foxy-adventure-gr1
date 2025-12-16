@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=72 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -59,6 +59,7 @@
 [ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
 [ext_resource type="Script" uid="uid://bdb4rp0xqby5i" path="res://scenes/character/player/states/susanoo.gd" id="46_susanoo"]
 [ext_resource type="Script" uid="uid://dpwira2jef5n4" path="res://scenes/character/player/states/water_paw.gd" id="47_waterpaw"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkxg8"]
 
@@ -304,6 +305,12 @@ overshoot_px = 60.0
 
 [node name="Direction" type="Node2D" parent="."]
 position = Vector2(0, 2)
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("48_hitparticle")]
+scale = Vector2(0.99999994, 0.99999994)
+base_scale = 0.012
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="HealEffect" type="AnimatedSprite2D" parent="Direction"]
 self_modulate = Color(0, 0.8, 0, 1)

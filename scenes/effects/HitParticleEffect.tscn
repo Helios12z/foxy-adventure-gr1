@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqwx8d5k7n3ym"]
+
+[ext_resource type="Script" path="res://scenes/effects/hit_particle_effect.gd" id="1_particle"]
+
+[node name="HitParticleEffect" type="Node2D"]
+script = ExtResource("1_particle")
+enabled = true
+particle_count = 8
+min_velocity = 100.0
+max_velocity = 250.0
+gravity_strength = 400.0
+rotation_speed_min = -5.0
+rotation_speed_max = 5.0
+lifetime_min = 0.5
+lifetime_max = 1.0
+fade_duration = 0.3
+base_scale = 1.0

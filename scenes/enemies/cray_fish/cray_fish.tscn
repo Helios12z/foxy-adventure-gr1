@@ -1,14 +1,15 @@
-[gd_scene load_steps=22 format=3 uid="uid://cfhmqw0q4i4lg"]
+[gd_scene load_steps=23 format=3 uid="uid://cfhmqw0q4i4lg"]
 
 [ext_resource type="Script" uid="uid://k8ftfowx2ndh" path="res://scenes/enemies/cray_fish/cray_fish.gd" id="1_nir6k"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_37vla"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_k0iji"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_tf36u"]
 [ext_resource type="Texture2D" uid="uid://c14dr2fujn1pr" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_idle_1.png" id="4_l7ohy"]
 [ext_resource type="Texture2D" uid="uid://b6b7nitrr46m" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_attack_1.png" id="5_yd2tx"]
 [ext_resource type="Texture2D" uid="uid://be5wsmbe7uuti" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_attack_2.png" id="6_nir6k"]
 [ext_resource type="Texture2D" uid="uid://cva20k2attpw8" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_dead.png" id="7_37vla"]
 [ext_resource type="Texture2D" uid="uid://cffifopak6gb" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_hurt.png" id="8_tf36u"]
-[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="9_6rab2"]
+[ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_6rab2"]
 [ext_resource type="Texture2D" uid="uid://d0wjcftbmu7w5" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_move_1.png" id="9_wspda"]
 [ext_resource type="Script" uid="uid://bkm0htjnkf35e" path="res://scenes/enemies/cray_fish/walk.gd" id="10_vgapn"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_mjqi6"]
@@ -91,6 +92,12 @@ position = Vector2(-1.5, 7.5)
 shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_k0iji")]
+scale = Vector2(0.9999998, 0.9999998)
+base_scale = 0.012
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0.714286, 8.57143)

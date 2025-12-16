@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://bbmftido5vkbj"]
+[gd_scene load_steps=21 format=3 uid="uid://bbmftido5vkbj"]
 
 [ext_resource type="Script" uid="uid://baep3xl4edww0" path="res://scenes/enemies/pelican/peligan.gd" id="1_jmrmf"]
 [ext_resource type="Texture2D" uid="uid://f76ybo7id6gs" path="res://asset/enemy/pelican/pelican_atk_01.png" id="2_1vgc5"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_b5w71"]
 [ext_resource type="Texture2D" uid="uid://7ytnhmca0flh" path="res://asset/enemy/pelican/pelican_atk_02.png" id="3_ixl1t"]
 [ext_resource type="Texture2D" uid="uid://c0p31wsi60oyt" path="res://asset/enemy/pelican/pelican_atk_03.png" id="4_5uk3q"]
 [ext_resource type="Texture2D" uid="uid://dwclgx41hbga5" path="res://asset/enemy/pelican/pelican_01.png" id="5_b5w71"]
@@ -85,6 +86,12 @@ scale = Vector2(0.947399, 0.679999)
 shape = SubResource("CapsuleShape2D_vomf5")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_b5w71")]
+scale = Vector2(0.9999998, 0.9999998)
+base_scale = 0.008
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_okto5")

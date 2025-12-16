@@ -72,9 +72,9 @@ func control_run() -> bool:
 		return true
 	return false
 
-func take_damage(damage: int = 1) -> void:
+func take_damage(damage: int = 1, hit_direction: Vector2 = Vector2.ZERO) -> void:
 	#Player take damage
-	obj.take_damage(damage)
+	obj.take_damage(damage, hit_direction)
 	#Player die if health is 0 and change to dead state
 	#Player hurt if health is not 0 and change to hurt state
 	if obj.health <= 0:

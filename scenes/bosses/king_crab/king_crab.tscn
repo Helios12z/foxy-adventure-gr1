@@ -1,4 +1,4 @@
-[gd_scene load_steps=244 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=245 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="5_ctus2"]
 [ext_resource type="Texture2D" uid="uid://bf8kvj2al6xut" path="res://asset/King_Crab/King_Crab_27.png" id="5_dg743"]
 [ext_resource type="Texture2D" uid="uid://b1025qsl7bvwi" path="res://asset/King_Crab/King_Crab_20.png" id="5_pr7tb"]
 [ext_resource type="Texture2D" uid="uid://bqdlq6j7saohj" path="res://asset/King_Crab/King_Crab_24.png" id="5_whuld"]
@@ -188,7 +189,7 @@
 [ext_resource type="Texture2D" uid="uid://d0kst1pv442c5" path="res://asset/effects/electric_effect.png" id="167_gncue"]
 [ext_resource type="Script" uid="uid://dggrb3yqglexl" path="res://scenes/bosses/king_crab/atk_3_fly_and_hit.gd" id="184_0mt3f"]
 [ext_resource type="Script" uid="uid://34awkybwg3fs" path="res://scenes/bosses/king_crab/sleep.gd" id="189_h0v77"]
-[ext_resource type="Script" uid="uid://dk5kdicp2nxum" path="res://scenes/bosses/king_crab/cast_into_phase_2.gd" id="190_6w262"]
+[ext_resource type="Script" path="res://scenes/bosses/king_crab/cast_into_phase_2.gd" id="190_6w262"]
 [ext_resource type="AudioStream" uid="uid://q7m5ru2q56h7" path="res://asset/sounds/king_crab_sound/shoot.mp3" id="190_45o64"]
 [ext_resource type="Script" uid="uid://blo6btsoa0yf4" path="res://scenes/bosses/king_crab/cast_after_sleep.gd" id="190_bsmmm"]
 [ext_resource type="AudioStream" uid="uid://dtj8enf5cb5cd" path="res://asset/sounds/king_crab_sound/rolling.mp3" id="192_ck4wx"]
@@ -1090,6 +1091,12 @@ shape = SubResource("CapsuleShape2D_6162a")
 
 [node name="Direction" type="Node2D" parent="."]
 position = Vector2(0, -10)
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("5_ctus2")]
+scale = Vector2(0.9999998, 0.9999998)
+base_scale = 0.012
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=25 format=3 uid="uid://dmngvbkuj5adl"]
+[gd_scene load_steps=26 format=3 uid="uid://dmngvbkuj5adl"]
 
 [ext_resource type="Script" uid="uid://bmiuidbc22fru" path="res://scenes/enemies/starfish/starfish.gd" id="1_r5ogx"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_db23i"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_wmhok"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_s8cle"]
 [ext_resource type="Texture2D" uid="uid://d355p6q01qfbd" path="res://asset/enemy/starfish/starfish_atk_01.png" id="4_t00wx"]
@@ -135,6 +136,12 @@ position = Vector2(-1, 15)
 shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_db23i")]
+scale = Vector2(0.99999994, 0.99999994)
+base_scale = 0.012
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 target_position = Vector2(37, 0)

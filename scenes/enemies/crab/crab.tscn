@@ -1,9 +1,10 @@
-[gd_scene load_steps=31 format=3 uid="uid://tew7lh8j1um5"]
+[gd_scene load_steps=32 format=3 uid="uid://tew7lh8j1um5"]
 
 [ext_resource type="Script" uid="uid://ihhgbr3vhbea" path="res://scenes/enemies/crab/crab.gd" id="1_jgbqf"]
 [ext_resource type="Texture2D" uid="uid://ctrcbbe4a8dm" path="res://asset/enemy/crab/crab_hit_01.png" id="1_jwctj"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_0mleb"]
 [ext_resource type="Texture2D" uid="uid://hy22m0nck85p" path="res://asset/enemy/crab/crab_hit_02.png" id="2_jgbqf"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_vx3or"]
 [ext_resource type="Texture2D" uid="uid://d3dswkeayxgri" path="res://asset/enemy/crab/crab_01.png" id="3_0mleb"]
 [ext_resource type="Texture2D" uid="uid://dj246euecxbul" path="res://asset/effects/effect_4.png" id="3_0ud0h"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="4_novun"]
@@ -151,6 +152,12 @@ position = Vector2(-2, 13)
 shape = SubResource("RectangleShape2D_qokaa")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_vx3or")]
+scale = Vector2(0.99999994, 0.99999994)
+base_scale = 0.008
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 target_position = Vector2(37, 0)
