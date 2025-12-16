@@ -20,8 +20,8 @@ func set_boss(boss: Node) -> void:
 
 	if not _boss.health_changed.is_connected(_on_boss_health_changed):
 		_boss.health_changed.connect(_on_boss_health_changed)
-	#if not _boss.boss_died.is_connected(_on_boss_died):
-		#_boss.boss_died.connect(_on_boss_died)
+	if not _boss.boss_died.is_connected(_on_boss_died):
+		_boss.boss_died.connect(_on_boss_died)
 	#if not _boss.into_phase2.is_connected(_on_boss_into_phase2):
 		#_boss.into_phase2.connect(_on_boss_into_phase2)
 
@@ -60,6 +60,7 @@ func _on_boss_health_changed(current: float, max_health: float) -> void:
 		print("[Boss3 HUD] ERROR: texture_under is null!")
 
 func _on_boss_died() -> void:
+	print("[Boss3 HUD] Boss died - hiding health bar")
 	visible = false
 	
 func _on_boss_into_phase2() -> void:
@@ -69,8 +70,8 @@ func reset() -> void:
 	if _boss:
 		if _boss.health_changed.is_connected(_on_boss_health_changed):
 			_boss.health_changed.disconnect(_on_boss_health_changed)
-		#if _boss.boss_died.is_connected(_on_boss_died):
-			#_boss.boss_died.disconnect(_on_boss_died)
+		if _boss.boss_died.is_connected(_on_boss_died):
+			_boss.boss_died.disconnect(_on_boss_died)
 		#if _boss.into_phase2.is_connected(_on_boss_into_phase2):
 			#_boss.into_phase2.disconnect(_on_boss_into_phase2)
 
