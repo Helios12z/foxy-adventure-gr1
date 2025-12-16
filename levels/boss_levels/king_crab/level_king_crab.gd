@@ -15,6 +15,9 @@ func _enter_tree() -> void:
 	GameManager.current_stage = self
 
 func _ready() -> void:
+	GameManager.is_scene_boss = true
+	GameManager.inventory_system.heal_potions = 3
+	GameManager.inventory_system.heal_potion_changed.emit(3)
 	if not GameManager.respawn_at_portal():
 		GameManager.respawn_at_checkpoint()
 
@@ -27,6 +30,10 @@ func _ready() -> void:
 	else:
 		_setup_boss_alive_state()
 		_setup_cutscene()
+
+func _process(delta: float) -> void:
+	if GameManager.player.health <= 0:
+		GameManager.inventory_system.heal_potions = 3
 
 func _on_boss_start_fight() -> void:
 	await get_tree().create_timer(0.75).timeout

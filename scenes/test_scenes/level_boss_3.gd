@@ -9,6 +9,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	# Try to respawn at portal (door) first
+	GameManager.is_scene_boss = true
+	GameManager.inventory_system.heal_potions = 3
+	GameManager.inventory_system.heal_potion_changed.emit(3)
 	var spawned_at_portal = GameManager.respawn_at_portal()
 
 	if not spawned_at_portal:
@@ -46,6 +49,9 @@ func _ready() -> void:
 			print("[Boss3 Level] Fading out Door node after arrival")
 			_fade_entrance_door(door_node)
 
+func _process(delta: float) -> void:
+	if GameManager.player.health <= 0:
+		GameManager.inventory_system.heal_potions = 3
 
 func _setup_boss_alive_state() -> void:
 	boss_hud.set_boss(boss)

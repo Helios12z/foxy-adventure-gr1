@@ -118,6 +118,7 @@ is_cross_scene = true
 [node name="Player" parent="World" instance=ExtResource("3_wyfuh")]
 position = Vector2(-186, 579)
 has_blade = true
+has_water_paw_gem = true
 max_health = 1000
 
 [node name="KingCrab" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_5yrod")]
