@@ -9,7 +9,11 @@ extends CharacterBody2D
 
 @export var attack_damage: int = 1
 @export var max_health: int = 3
-var health: int 
+var health: int
+
+# Hit particle effect (enabled by default)
+@export var enable_hit_particles: bool = true
+@onready var hit_particle_effect: Node2D = null 
 
 
 var jump_speed: float = 320.0
@@ -26,6 +30,25 @@ var ignore_gravity: bool = false
 func _ready() -> void:
 	health=max_health
 	set_animated_sprite($Direction/AnimatedSprite2D)
+	
+	# Setup hit particle effect if enabled
+	if enable_hit_particles:
+		_setup_hit_particle_effect()
+
+func _setup_hit_particle_effect() -> void:
+	# Look for HitParticleEffect child node
+	for child in get_children():
+		if child is Node2D and child.has_method("spawn_particles"):
+			hit_particle_effect = child
+			break
+	
+	# If not found as direct child, look in Direction node
+	if hit_particle_effect == null and has_node("Direction"):
+		var direction_node = get_node("Direction")
+		for child in direction_node.get_children():
+			if child is Node2D and child.has_method("spawn_particles"):
+				hit_particle_effect = child
+				break
 
 func _physics_process(delta: float) -> void:
 	# Animation
@@ -72,8 +95,12 @@ func stop_move() -> void:
 func continue_move() -> void:
 	pass
 
-func take_damage(damage: int) -> void:
+func take_damage(damage: int, hit_direction: Vector2 = Vector2.ZERO) -> void:
 	health -= damage
+	
+	# Spawn hit particles if enabled
+	if enable_hit_particles and hit_particle_effect != null:
+		hit_particle_effect.spawn_particles(hit_direction)
 
 # Change the animation of the character on the next frame
 func change_animation(new_animation: String) -> void:

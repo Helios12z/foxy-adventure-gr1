@@ -1,7 +1,8 @@
-[gd_scene load_steps=81 format=3 uid="uid://drem1inlnoymq"]
+[gd_scene load_steps=82 format=3 uid="uid://drem1inlnoymq"]
 
 [ext_resource type="Script" uid="uid://b5ht8frfquhry" path="res://scenes/bosses/boss3/boss_3.gd" id="1_dj6mc"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3t3rw"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_g4e8d"]
 [ext_resource type="Texture2D" uid="uid://d3iuithljkf1o" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_gawyrugawyrugawy-Photoroom1.png" id="2_if4at"]
 [ext_resource type="Texture2D" uid="uid://cll42pu7paifw" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_onetyaonetyaonet1-Photoroom.png" id="2_igc3k"]
 [ext_resource type="Texture2D" uid="uid://cbsu7keqwph4k" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_05.png" id="2_vcpcy"]
@@ -327,6 +328,13 @@ metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 shape = SubResource("CapsuleShape2D_xf2r0")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_g4e8d")]
+scale = Vector2(0.9999998, 0.9999998)
+base_scale = 0.018
+particle_count = 12
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="UltimateBlingBling" type="AnimatedSprite2D" parent="Direction"]
 position = Vector2(-10, -10)

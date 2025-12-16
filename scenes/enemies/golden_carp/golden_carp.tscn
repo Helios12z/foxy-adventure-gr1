@@ -1,6 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://dgwlv5lvkntgn"]
+[gd_scene load_steps=23 format=3 uid="uid://dgwlv5lvkntgn"]
 
 [ext_resource type="Script" uid="uid://qsg23c3stkva" path="res://scenes/enemies/golden_carp/cray_fish.gd" id="1_lgtaj"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_di4su"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_rv3wm"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_t5yfm"]
 [ext_resource type="Texture2D" uid="uid://ksbmvulm55a3" path="res://asset/level_3_water_palace/enemies/goden_carp/golden_carp_idle_1.png" id="4_lgtaj"]
@@ -9,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dp320iri57t5a" path="res://asset/level_3_water_palace/enemies/goden_carp/goden_carp_dead.png" id="7_di4su"]
 [ext_resource type="Texture2D" uid="uid://dyij8dhlmrrcn" path="res://asset/level_3_water_palace/enemies/goden_carp/goden_carp_hurt.png" id="8_fh0t7"]
 [ext_resource type="Texture2D" uid="uid://v6frmgqmbckw" path="res://asset/level_3_water_palace/enemies/goden_carp/goden_carp_move.png" id="9_c0wdb"]
-[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="10_rql2j"]
+[ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="10_rql2j"]
 [ext_resource type="Script" uid="uid://bfcjcafe6icw0" path="res://scenes/enemies/golden_carp/walk.gd" id="11_y255k"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="12_0nq03"]
 [ext_resource type="Script" uid="uid://beifqirm7ehv7" path="res://scenes/enemies/golden_carp/attack.gd" id="13_2yow8"]
@@ -91,6 +92,12 @@ position = Vector2(-1.5, 7.5)
 shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_di4su")]
+scale = Vector2(0.9999998, 0.9999998)
+base_scale = 0.012
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0.714286, 8.57143)

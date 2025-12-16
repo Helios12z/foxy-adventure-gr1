@@ -1,14 +1,15 @@
-[gd_scene load_steps=45 format=3 uid="uid://g3pj503kap4d"]
+[gd_scene load_steps=46 format=3 uid="uid://g3pj503kap4d"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_p222q"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_pk2ch"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_wkpb5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://ws3vcducc3x8" path="res://asset/enemy/Skeleton/Attack.png" id="4_p222q"]
 [ext_resource type="Texture2D" uid="uid://bc13jptnfkne6" path="res://asset/enemy/Skeleton/Death.png" id="5_pk2ch"]
 [ext_resource type="Texture2D" uid="uid://dai4akr5x1pio" path="res://asset/enemy/Skeleton/Take Hit.png" id="6_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://cjwlrhvwu2qu0" path="res://asset/enemy/Skeleton/Idle.png" id="7_03bn8"]
 [ext_resource type="Texture2D" uid="uid://c08exc80o10pj" path="res://asset/enemy/Skeleton/Walk.png" id="8_8eo2u"]
-[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="9_lsssd"]
+[ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_lsssd"]
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_e0ypk"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_cm4hu"]
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_yptew"]
@@ -235,6 +236,12 @@ position = Vector2(3.5, 0)
 shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_wkpb5")]
+scale = Vector2(0.99999976, 0.99999976)
+base_scale = 0.012
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 3.57143)

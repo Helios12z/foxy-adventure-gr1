@@ -1,6 +1,7 @@
-[gd_scene load_steps=49 format=3 uid="uid://c3034u380fcvt"]
+[gd_scene load_steps=50 format=3 uid="uid://c3034u380fcvt"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_y6kf8"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_pxkrn"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_sebhr"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_xxunx"]
 [ext_resource type="Texture2D" uid="uid://bqgqp31un4ywg" path="res://asset/enemy/Goblin/Attack.png" id="4_0o6d4"]
@@ -8,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cc0iusqt6xbwc" path="res://asset/enemy/Goblin/Take Hit.png" id="6_g41d4"]
 [ext_resource type="Texture2D" uid="uid://djs1a2kyshej5" path="res://asset/enemy/Goblin/Idle.png" id="7_wj18h"]
 [ext_resource type="Texture2D" uid="uid://wvmqaqgupikv" path="res://asset/enemy/Goblin/Run.png" id="8_pxkrn"]
-[ext_resource type="Script" path="res://scenes/enemies/idle.gd" id="9_yr0v4"]
+[ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_yr0v4"]
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_y6kf8"]
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_g41d4"]
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_wj18h"]
@@ -263,6 +264,12 @@ position = Vector2(-1.5, 7.5)
 shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_pxkrn")]
+scale = Vector2(0.99999976, 0.99999976)
+base_scale = 0.012
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0.714286, 8.57143)

@@ -197,7 +197,6 @@ func _physics_process(delta: float) -> void:
 	
 
 func _process(_delta: float) -> void:
-	print($Direction/HitArea2D.damage)
 	if $Timer/GiantDuration.is_stopped() == false:
 		print("Giant time left: ", $Timer/GiantDuration.time_left)
 	if dash_on_cooldown and dash_cooldown_timer != null:
@@ -352,7 +351,7 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 		
 		# Level 1-2: Take damage but NO KNOCKBACK
 		if !is_invulnerable:
-			take_damage(_damage)
+			take_damage(_damage, _direction)
 			start_invulnerability()
 			if health <= 0:
 				fsm.change_state(fsm.states.dead)
@@ -360,7 +359,7 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 		return
 
 	if !is_invulnerable: 
-		fsm.current_state.take_damage(_damage)
+		fsm.current_state.take_damage(_damage, _direction)
 		if(health <= 0):
 			fsm.change_state(fsm.states.dead)
 		else: 
@@ -497,7 +496,7 @@ func _on_blink_timer_timeout() -> void:
 func _on_fall_hurt_area_2d_hurt(direction: Vector2, damage: float) -> void:
 	if invincible_zone:
 		return
-	fsm.current_state.take_damage(damage)
+	fsm.current_state.take_damage(damage, direction)
 	if(health <= 0):
 		fsm.change_state(fsm.states.dead)
 	else: 
@@ -533,8 +532,8 @@ func speed_up(multiplier: float, duration: float) -> void:
 	movement_speed = movement_speed / multiplier
 	
 
-func take_damage(damage: int) -> void:
-	super.take_damage(damage)
+func take_damage(damage: int, hit_direction: Vector2 = Vector2.ZERO) -> void:
+	super.take_damage(damage, hit_direction)
 	emit_signal("hp_changed", health, max_health)
 
 func heal(amount: int) -> void:

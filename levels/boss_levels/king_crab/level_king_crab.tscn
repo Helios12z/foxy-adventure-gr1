@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://x5qrj66qebnm"]
+[gd_scene load_steps=30 format=4 uid="uid://x5qrj66qebnm"]
 
 [ext_resource type="Script" uid="uid://bl3x6kmrgh3te" path="res://levels/boss_levels/king_crab/level_king_crab.gd" id="1_5yrod"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_n68t6"]
@@ -24,7 +24,6 @@
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="17_1fgx5"]
 [ext_resource type="AudioStream" uid="uid://bvgv16hpnqyah" path="res://asset/sounds/king_crab_sound/level_ambient.mp3" id="17_2l32d"]
 [ext_resource type="AudioStream" uid="uid://d24jcdo6d6n0k" path="res://asset/sounds/king_crab_sound/level_craking.mp3" id="19_ih6sn"]
-[ext_resource type="PackedScene" uid="uid://c700eni2s0ngm" path="res://scenes/collectibles/waterpawgem/water_paw_gem.tscn" id="25_slurx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_42jcx"]
 size = Vector2(4339, 2092)
@@ -281,6 +280,3 @@ parameters/looping = true
 [node name="Craking" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("19_ih6sn")
 volume_db = 5.0
-
-[node name="WaterPawGem" parent="." instance=ExtResource("25_slurx")]
-position = Vector2(-166, 588)

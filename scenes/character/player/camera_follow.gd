@@ -20,9 +20,12 @@ var _shake_magnitude: float = 0.0
 var _shake_override: bool = false  # When true, disable normal following during shake
 var _rng := RandomNumberGenerator.new()
 
+var _limit_overridden: bool = false  # Track if limit was set by CameraLimitZone
+
 func set_soft_bottom_limit(limit_y: float) -> void:
 	print("[Camera] set_soft_bottom_limit called: old=%f, new=%f" % [bottom_limit_y, limit_y])
 	bottom_limit_y = limit_y
+	_limit_overridden = true  # Mark that limit was set externally
 
 func _ready() -> void:
 	_rng.randomize()
@@ -37,8 +40,8 @@ func _ready() -> void:
 	if _target == null:
 		_target = get_parent() as Node2D
 
-	# Pull per-stage configured bottom limit if available
-	if GameManager.current_stage != null and GameManager.current_stage.has_method("get_camera_bottom_limit_y"):
+	# Pull per-stage configured bottom limit if available (only if not overridden)
+	if not _limit_overridden and GameManager.current_stage != null and GameManager.current_stage.has_method("get_camera_bottom_limit_y"):
 		bottom_limit_y = GameManager.current_stage.get_camera_bottom_limit_y()
 		print("[Camera] _ready: bottom_limit set to %f from GameManager" % bottom_limit_y)
 
@@ -105,26 +108,20 @@ func _process(delta: float) -> void:
 			y = new_y
 			if fmod(Time.get_ticks_msec() / 1000.0, 0.5) < 0.016:
 				print("[Camera]   -> INF MODE: old_y=%f, new_y=%f" % [global_position.y, y])
-		elif desired.y <= bottom_limit_y:
-			# Normal follow region (above limit)
+		else:
+			# When limit is set (by CameraLimitZone), always follow player smoothly
+			# but clamp camera position to not go below the limit
 			var alpha_y: float = 1.0 - exp(-follow_smooth_speed * delta)
 			var new_y: float = lerpf(y, desired.y, alpha_y)
-			# Reset vertical velocity khi ra khỏi vùng soft-limit
+			
+			# Clamp camera to not go below bottom_limit (allow overshoot for smoothness)
+			var max_y: float = bottom_limit_y + overshoot_px
+			new_y = min(new_y, max_y)
+			
 			_vel.y = 0.0
 			y = new_y
 			if fmod(Time.get_ticks_msec() / 1000.0, 0.5) < 0.016:
-				print("[Camera]   -> NORMAL MODE: desired.y=%f <= limit=%f, old_y=%f, new_y=%f" % [desired.y, bottom_limit_y, global_position.y, y])
-		else:
-			# Near/under ground: cho overshoot nhẹ rồi kéo bằng lò xo
-			var max_y: float = bottom_limit_y + overshoot_px
-			y = min(y, max_y)
-			var displacement: float = y - bottom_limit_y
-			var force: float = -spring_k * displacement - damping_c * _vel.y
-			_vel.y += force * delta
-			y += _vel.y * delta
-			y = clamp(y, -INF, max_y)
-			if fmod(Time.get_ticks_msec() / 1000.0, 0.5) < 0.016:
-				print("[Camera]   -> SPRING MODE: desired.y=%f > limit=%f, y=%f, max_y=%f" % [desired.y, bottom_limit_y, y, max_y])
+				print("[Camera]   -> LIMIT MODE: desired.y=%f, limit=%f, camera.y=%f" % [desired.y, bottom_limit_y, y])
 
 		final_pos = Vector2(next_x, y)
 
