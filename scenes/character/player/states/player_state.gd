@@ -3,7 +3,7 @@ extends FSMState
 
 @export var dash_mana : int = 10
 @export var giant_mana : int = 100
-@export var heal_amount : int = 20
+@export var heal_amount : int = 30
 #Control moving and changing state to run
 #Return true if moving
 #Add friction and acceleration effects

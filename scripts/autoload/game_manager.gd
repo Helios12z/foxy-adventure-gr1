@@ -3,6 +3,7 @@ extends Node
 # Hack mode
 signal hack_mode_changed(enabled)
 var hack_mode_enabled: bool = false
+var is_scene_boss: bool = false
 
 #target portal name is the name of the portal to which the player will be teleported
 var target_portal_name: String = ""

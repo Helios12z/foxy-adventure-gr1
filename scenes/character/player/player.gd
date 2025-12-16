@@ -82,17 +82,12 @@ var giant_cooldown_timer: Timer = null
 @onready var hit_collision: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 @onready var hurt_collision: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
 @onready var effect_sprite: AnimatedSprite2D = $Direction/HealEffect
+@onready var transform_giant_sprite: AnimatedSprite2D = $Direction/TransformGiant
+@onready var transform_normal_sprite: AnimatedSprite2D = $Direction/TransformNormal
 var _orig_max_health: int
 var _orig_jump_speed: float
 var _orig_attack_damage: float
 var _orig_movement_speed: float
-var _orig_body_shape: CapsuleShape2D
-var _orig_hurt_shape: CapsuleShape2D
-var _orig_hit_shape_size: Vector2
-var _orig_body_pos: Vector2
-var _orig_hurt_pos: Vector2
-var _orig_hit_pos: Vector2
-var _orig_sprite: Node = null
 var _orig_has_blade: bool 
 
 #timer
@@ -207,6 +202,7 @@ func _process(_delta: float) -> void:
 		room_cooldown_updated.emit(room_cooldown_timer.time_left)
 	if giant_on_cooldown and giant_cooldown_timer != null:
 		giant_cooldown_updated.emit(giant_cooldown_timer.time_left)
+
 
 
 
@@ -562,6 +558,13 @@ func _on_mana_regen_timeout() -> void:
 # giant_foxy
 func activate_giant_form() -> void:
 	# ----- SAVE ORIGINAL STATES -----
+	animated_sprite.visible = false
+	transform_giant_sprite.visible = true
+	transform_giant_sprite.play("default")
+	await transform_giant_sprite.animation_finished
+	transform_giant_sprite.visible = false
+	animated_sprite.visible = true
+	set_animated_sprite($Direction/GiantAnimatedSprite2D)
 	is_giant_mode = true
 	_orig_jump_speed = jump_speed
 	_orig_attack_damage = $Direction/HitArea2D.damage
@@ -582,7 +585,6 @@ func activate_giant_form() -> void:
 	emit_signal("hp_changed", health, max_health)
 	movement_speed *= giant_speed_multiplier
 	jump_speed *= giant_jump_multiplier
-	set_animated_sprite($Direction/GiantAnimatedSprite2D)
 	$Timer/GiantDuration.start(giant_duration)
 
 
@@ -607,6 +609,12 @@ func resize_all_collisions():
 	
 func inactive_giant_form():
 	# ----- RESET GIANT STATE -----
+	animated_sprite.visible = false
+	transform_normal_sprite.visible = true
+	transform_normal_sprite.play("default")
+	await transform_normal_sprite.animation_finished
+	transform_normal_sprite.visible = false
+	animated_sprite.visible = true
 	is_giant_mode = false
 	set_animated_sprite($Direction/BladeAnimatedSprite2D)
 
@@ -621,8 +629,13 @@ func inactive_giant_form():
 	emit_signal("hp_changed", health, max_health)
 
 	# ----- RESET COLLISIONS (THEO 3 ẢNH) -----
+	_restore_collision_shape()
+	# Cooldown
+	can_use_giant = false
+	start_giant_cooldown()
 
-	# Body Collision
+func _restore_collision_shape() -> void:
+		# Body Collision
 	var body_shape := body_collision.shape as CapsuleShape2D
 	body_shape.radius = 10.0
 	body_shape.height = 30.0
@@ -639,10 +652,6 @@ func inactive_giant_form():
 	hit_shape.size = Vector2(35.833, 33.0)
 	hit_collision.position = Vector2(17.917, -15.5)
 
-	# Cooldown
-	can_use_giant = false
-	start_giant_cooldown()
-
 
 func _on_giant_duration_timeout() -> void:
 	inactive_giant_form()
@@ -654,12 +663,19 @@ func _on_giant_cooldown_timeout() -> void:
 
 func use_heal_potion(amount: int) -> void:
 	if GameManager.inventory_system.use_heal_potion():
+		$HealSound.play()
 		heal(amount)
 		play_heal_effect()
 		
 func play_heal_effect():
+	if is_giant_mode:
+		effect_sprite.scale = Vector2(0.7,0.7)
+	else:
+		effect_sprite.scale = Vector2(0.3,0.3)
 	effect_sprite.visible = true
 	effect_sprite.play("heal")
 	await effect_sprite.animation_finished
-	effect_sprite.visible = false	
+	effect_sprite.visible = false
+
+
 	
