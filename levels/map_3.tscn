@@ -354,7 +354,6 @@ scale = Vector2(1.8, 1.8)
 position = Vector2(10207.5, 463.75)
 scale = Vector2(0.5, 0.5)
 target_stage = "uid://bhwnd0dvsqev8"
-target_door = "Teleport"
 is_cross_scene = true
 
 [node name="UI" type="CanvasLayer" parent="."]
