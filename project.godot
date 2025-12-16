@@ -48,6 +48,7 @@ directories/dtl_directory={
 "water_fairy_blade": "res://timelines/water_fairy_blade.dtl",
 "water_fairy_self_talk": "res://timelines/water_fairy_self_talk.dtl",
 "water_goddess_awakening": "res://timelines/water_goddess_awakening.dtl",
+"water_goddess_death": "res://timelines/water_goddess_death.dtl",
 "water_goddess_phase3": "res://timelines/water_goddess_phase3.dtl",
 "water_paw_gem_collected": "res://timelines/water_paw_gem_collected.dtl",
 "water_priestess_awakening": "res://timelines/water_priestess_awakening.dtl",

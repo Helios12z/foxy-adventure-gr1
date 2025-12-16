@@ -1,10 +1,10 @@
 [gd_scene load_steps=28 format=4 uid="uid://du7hahnxorxmd"]
 
-[ext_resource type="Script" uid="uid://bum0u6kcrp01i" path="res://levels/map_3.gd" id="1_v7snb"]
+[ext_resource type="Script" path="res://levels/map_3.gd" id="1_v7snb"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="2_qhmmx"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="3_eoo8e"]
-[ext_resource type="PackedScene" uid="uid://72ullgkrurgm" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="4_h1kon"]
-[ext_resource type="PackedScene" uid="uid://o0l0aag5601w" path="res://scenes/bosses/platform_boss_water_guard_02.tscn" id="5_g80ft"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="4_h1kon"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/platform_boss_water_guard_02.tscn" id="5_g80ft"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="6_cdk1v"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="7_j6y88"]
 [ext_resource type="PackedScene" uid="uid://fp8qfvpe8i5o" path="res://scenes/enemies/pearl_fairy/pearl_fairy.tscn" id="8_ws0ms"]
@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cfhl3s5dh27jq" path="res://asset/level_3_water_palace/background/background_layer_1.png" id="14_5uw15"]
 [ext_resource type="PackedScene" uid="uid://cfhmqw0q4i4lg" path="res://scenes/enemies/cray_fish/cray_fish.tscn" id="16_m3c0n"]
 [ext_resource type="PackedScene" uid="uid://dgwlv5lvkntgn" path="res://scenes/enemies/golden_carp/golden_carp.tscn" id="17_d0h85"]
-[ext_resource type="PackedScene" uid="uid://dqrpvlvc54tyk" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_7rwwu"]
+[ext_resource type="PackedScene" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_7rwwu"]
 [ext_resource type="PackedScene" uid="uid://nx0guycix2h4" path="res://scenes/enemies/turtle_light/turtle_light.tscn" id="19_gxm5u"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="20_2g2fv"]
 [ext_resource type="PackedScene" uid="uid://c6vomwflyb5ek" path="res://levels/objects/camera_limit_zone.tscn" id="20_li3tj"]
@@ -134,7 +134,7 @@ scale = Vector2(0.505, 0.505)
 texture = ExtResource("14_5uw15")
 
 [node name="Player" parent="." instance=ExtResource("6_cdk1v")]
-position = Vector2(-5700, 472.5)
+position = Vector2(10222.499, 474.99994)
 scale = Vector2(1.15, 1.15)
 has_blade = true
 has_fire_gem = true

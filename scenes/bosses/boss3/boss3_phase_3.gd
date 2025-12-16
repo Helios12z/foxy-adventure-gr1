@@ -576,13 +576,41 @@ func _handle_death() -> void:
 	# IMPORTANT: Clear all active skills and spawned objects
 	_clear_all_active_skills()
 
-	# Switch to dead sprite
-	obj.switch_sprite(obj.dead_sprite)
+	# Hide the ultimate blingbling effect immediately when death begins
+	obj.set_ultimate_blingbling_effect(false)
+
+	# Emit boss died signal to hide health bar
+	obj.emit_signal("boss_died")
+	print("[Boss3 Phase3] boss_died signal emitted")
 
 	# Disable hurt area so boss can't take more damage
 	if obj.hurt_area:
 		obj.hurt_area.monitoring = false
 		obj.hurt_area.monitorable = false
+
+	# Play scream animation on phase3 sprite (current sprite in phase 3)
+	print("[Boss3 Phase3] Playing scream animation...")
+	if obj.phase3_sprite.sprite_frames and obj.phase3_sprite.sprite_frames.has_animation("scream_before_dead"):
+		obj.phase3_sprite.play("scream_before_dead")
+
+		# Play scream sound
+		if obj.scream_sound:
+			obj.scream_sound.play()
+			print("[Boss3 Phase3] Playing scream sound")
+
+		# Wait for scream animation to finish
+		await obj.phase3_sprite.animation_finished
+		print("[Boss3 Phase3] Scream animation finished")
+	else:
+		print("[Boss3 Phase3] WARNING: scream_before_dead animation not found")
+		await get_tree().create_timer(0.5).timeout
+
+	# Start death dialogue
+	print("[Boss3 Phase3] Starting death dialogue...")
+	await _start_death_dialogue()
+
+	# Switch to dead sprite
+	obj.switch_sprite(obj.dead_sprite)
 
 	# Play the death animation (it's called "default" in the SpriteFrames)
 	if obj.dead_sprite.sprite_frames:
@@ -629,6 +657,26 @@ func _handle_death() -> void:
 	obj.queue_free()
 
 
+func _start_death_dialogue() -> void:
+	"""Show death dialogue before playing death animation"""
+	print("[Boss3 Phase3] Death dialogue starting...")
+
+	# Pause player during dialogue
+	var player = get_tree().get_first_node_in_group("Player")
+	if player and player.has_method("set_can_move"):
+		player.set_can_move(false)
+
+	# Start the death dialogue timeline
+	Dialogic.start("water_goddess_death")
+	await Dialogic.timeline_ended
+
+	print("[Boss3 Phase3] Death dialogue finished")
+
+	# Resume player movement
+	if player and player.has_method("set_can_move"):
+		player.set_can_move(true)
+
+
 func _clear_all_active_skills() -> void:
 	"""Clear all active skill objects when boss dies to prevent game from getting stuck"""
 	print("[Boss3 Phase3] Clearing all active skills...")
@@ -638,30 +686,35 @@ func _clear_all_active_skills() -> void:
 	# Clear WaterBalls
 	for node in get_tree().get_nodes_in_group("WaterBall"):
 		if is_instance_valid(node):
+			node.hide()  # Hide immediately for instant visual feedback
 			node.queue_free()
 			cleared_count += 1
 
 	# Clear WaterPagodas
 	for node in get_tree().get_nodes_in_group("WaterPagoda"):
 		if is_instance_valid(node):
+			node.hide()  # Hide immediately
 			node.queue_free()
 			cleared_count += 1
 
 	# Clear WaterColumns
 	for node in get_tree().get_nodes_in_group("WaterColumn"):
 		if is_instance_valid(node):
+			node.hide()  # Hide immediately
 			node.queue_free()
 			cleared_count += 1
 
 	# Clear WaterTornados
 	for node in get_tree().get_nodes_in_group("WaterTornado"):
 		if is_instance_valid(node):
+			node.hide()  # Hide immediately
 			node.queue_free()
 			cleared_count += 1
 
 	# Clear HealthBalls
 	for node in get_tree().get_nodes_in_group("HealthBall"):
 		if is_instance_valid(node):
+			node.hide()  # Hide immediately
 			node.queue_free()
 			cleared_count += 1
 
@@ -671,6 +724,7 @@ func _clear_all_active_skills() -> void:
 			# Check if it contains WaterLaser children
 			for child in node.get_children():
 				if "WaterLaser" in child.scene_file_path if child.scene_file_path else "":
+					node.hide()  # Hide immediately
 					node.queue_free()
 					cleared_count += 1
 					break
