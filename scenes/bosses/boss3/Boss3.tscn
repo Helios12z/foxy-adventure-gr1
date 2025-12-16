@@ -30,11 +30,8 @@
 [ext_resource type="Texture2D" uid="uid://eeifeg3g6740" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_3.png" id="14_hsgt3"]
 [ext_resource type="Texture2D" uid="uid://b2y56tlnv66c5" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_prepare_skill01_4.png" id="15_dmnor"]
 [ext_resource type="Texture2D" uid="uid://rj76tywdau3r" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_02.tres" id="17_fa86v"]
-[ext_resource type="Texture2D" uid="uid://dtunndk7og8yn" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_108mwi108mwi108m-Photoroom.png" id="17_fleln"]
-[ext_resource type="Texture2D" uid="uid://cng4ukj1ybh8e" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_ks8ka3ks8ka3ks8k-Photoroom.png" id="18_ojejk"]
 [ext_resource type="Texture2D" uid="uid://b8wrx822kv63v" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_07.tres" id="18_w12rv"]
 [ext_resource type="Texture2D" uid="uid://drn7knywxqna8" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_idle_08.tres" id="19_qi10k"]
-[ext_resource type="Texture2D" uid="uid://qpi63wr8xrej" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_flhn3kflhn3kflhn-Photoroom.png" id="19_rc171"]
 [ext_resource type="Texture2D" uid="uid://dmolbpssthsef" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom1.png" id="20_dmnor"]
 [ext_resource type="Texture2D" uid="uid://b7a4ju1h1avc1" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_67tp6967tp6967tp-Photoroom.png" id="20_k032u"]
 [ext_resource type="Script" uid="uid://dsynr3clvqlf1" path="res://scenes/bosses/boss3/boss3_phase_1.gd" id="20_w12rv"]
@@ -61,6 +58,8 @@
 [ext_resource type="AudioStream" uid="uid://dhg7rp0njqt8n" path="res://asset/sounds/boss 3/hurt_sound.mp3" id="53_ecrbq"]
 [ext_resource type="AudioStream" uid="uid://cxvqpy1bornmu" path="res://asset/sounds/boss 3/laugh_sound.mp3" id="54_52xfl"]
 [ext_resource type="AudioStream" uid="uid://dv22tc3rfo8sv" path="res://asset/sounds/boss 3/show_bubbles_sound.mp3" id="55_7aori"]
+[ext_resource type="Texture2D" uid="uid://cuml3hx8gsrmn" path="res://asset/level_3_water_palace/water_goddess/states/cry_daed.png" id="55_fc0hl"]
+[ext_resource type="Texture2D" uid="uid://b7n2f0ojgy30b" path="res://asset/level_3_water_palace/water_goddess/states/bloody_cry_dead.png" id="56_g5kht"]
 [ext_resource type="AudioStream" uid="uid://c3x7nhp8neroa" path="res://asset/sounds/boss 3/tornado_sound.mp3" id="56_lnx7a"]
 [ext_resource type="AudioStream" uid="uid://re6868gimj8d" path="res://asset/sounds/boss 3/water_eruption_sound.mp3" id="57_6q7er"]
 [ext_resource type="AudioStream" uid="uid://u7skotdyjley" path="res://asset/sounds/boss 3/water_laser_prepare_sound.mp3" id="58_7aori"]
@@ -73,6 +72,7 @@
 [ext_resource type="AudioStream" uid="uid://cnkhat6iqkbph" path="res://asset/sounds/boss 3/intro_boss_phase_3.mp3" id="65_intro3"]
 [ext_resource type="AudioStream" uid="uid://cpfcumn7ayffy" path="res://asset/sounds/boss 3/loop_phase_3.mp3" id="66_loop3"]
 [ext_resource type="AudioStream" uid="uid://eds17v5qb4u5" path="res://asset/sounds/boss 3/battle end music.mp3" id="67_battleend"]
+[ext_resource type="AudioStream" uid="uid://bpiugnk5cx1s6" path="res://asset/sounds/boss 3/scream.mp3" id="75_g5kht"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xf2r0"]
 
@@ -279,15 +279,6 @@ animations = [{
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("17_fleln")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_ojejk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("19_rc171")
-}, {
-"duration": 1.0,
 "texture": ExtResource("20_k032u")
 }, {
 "duration": 1.0,
@@ -313,6 +304,17 @@ animations = [{
 "loop": false,
 "name": &"default",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("55_fc0hl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_g5kht")
+}],
+"loop": false,
+"name": &"scream_before_dead",
+"speed": 1.0
 }]
 
 [node name="Boss3" type="CharacterBody2D"]
@@ -372,8 +374,8 @@ polygon = PackedVector2Array(4, -10, 22, -120, 54, -14, 52, 162, -110, 164, -120
 
 [node name="AnimatedSprite2DDead" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_egjne")
-position = Vector2(2.0000038, 5.999998)
-scale = Vector2(0.3539063, 0.3539063)
+position = Vector2(2.0000038, 27.250015)
+scale = Vector2(0.3539063, 0.32070315)
 sprite_frames = SubResource("SpriteFrames_rc171")
 
 [node name="AnimatedSprite2DPhase3" type="AnimatedSprite2D" parent="Direction"]
@@ -448,3 +450,6 @@ volume_db = -5.0
 [node name="BattleEndSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("67_battleend")
 volume_db = -5.0
+
+[node name="Scream" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("75_g5kht")

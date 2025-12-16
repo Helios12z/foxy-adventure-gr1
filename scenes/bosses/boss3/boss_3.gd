@@ -2,6 +2,7 @@ extends BaseCharacter
 
 signal health_changed(current: float, max_health: float)
 signal intro_finished
+signal boss_died
 
 @export var boss3_max_health: int = 2500
 @export var is_sleeping: bool = true
@@ -36,6 +37,7 @@ signal intro_finished
 @onready var boss_phase3_intro_sound: AudioStreamPlayer = $BossPhase3IntroSound
 @onready var boss_phase3_loop_sound: AudioStreamPlayer = $BossPhase3LoopSound
 @onready var battle_end_sound: AudioStreamPlayer = $BattleEndSound
+@onready var scream_sound: AudioStreamPlayer = $Scream
 
 var anchors: Array[Node2D] = []
 var _flash_tw: Tween
