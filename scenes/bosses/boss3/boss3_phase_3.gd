@@ -652,9 +652,21 @@ func _handle_death() -> void:
 	# Wait a moment to let player see the death
 	await get_tree().create_timer(2.0).timeout
 
-	# Remove the boss from the scene
-	print("[Boss3 Phase3] Removing boss from scene")
-	obj.queue_free()
+	# Fade out the boss sprite before starting cutscene
+	print("[Boss3 Phase3] Fading out boss sprite")
+	var tween = obj.create_tween()
+	tween.tween_property(obj.dead_sprite, "modulate:a", 0.0, 1.0)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+	await tween.finished
+
+	# Signal that boss is ready for cutscene (boss visual is gone)
+	print("[Boss3 Phase3] Boss faded out - ready for cutscene")
+	# Emit custom signal to level to start cutscene
+	if obj.has_signal("cutscene_ready"):
+		obj.emit_signal("cutscene_ready")
+
+	# Don't queue_free yet - let the cutscene handle boss cleanup
 
 
 func _start_death_dialogue() -> void:

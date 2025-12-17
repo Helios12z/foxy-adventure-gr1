@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dufomu7dd3vmb"]
+[gd_scene load_steps=13 format=3 uid="uid://dufomu7dd3vmb"]
 
 [ext_resource type="Texture2D" uid="uid://cttdl6a4xto6t" path="res://asset/ui/player/dash_avatar1.png" id="2_46tuk"]
 [ext_resource type="Texture2D" uid="uid://2s8dkuop4sqi" path="res://asset/ui/player/dash_avatar1 (1).png" id="3_65txv"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://b6snm2lb4borl" path="res://asset/ui/player/giant_avatar1.png" id="6_fjwn0"]
 [ext_resource type="Texture2D" uid="uid://cphh3hpa2g0ka" path="res://asset/ui/player/giant_avatar1 (1).png" id="7_ub6w8"]
 [ext_resource type="Texture2D" uid="uid://btk5dgncj12a1" path="res://asset/ui/player/susanoo_avatar1_cooldown.png" id="9_lid57"]
+[ext_resource type="Texture2D" uid="uid://qaiocj5pjrct" path="res://asset/level_3_water_palace/objects/potions/use_heal_potion.png" id="11_2cfu4"]
+[ext_resource type="Texture2D" uid="uid://pd1qljtum8sy" path="res://asset/level_3_water_palace/objects/potions/heal_overlay.png" id="12_fjwn0"]
 
 [node name="SkillBar" type="Control"]
 layout_mode = 3
@@ -245,3 +247,49 @@ text = "20"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="Heal" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 99.0
+offset_top = 608.0
+offset_right = 139.00002
+offset_bottom = 648.0
+scale = Vector2(2.4, 2.4)
+
+[node name="Icon" type="TextureRect" parent="Heal"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("11_2cfu4")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Overlay" type="TextureRect" parent="Heal"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("12_fjwn0")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HealButtonLabel" type="Label" parent="Heal"]
+layout_mode = 0
+offset_left = 17.083332
+offset_top = 36.24999
+offset_right = 32.283333
+offset_bottom = 130.65001
+scale = Vector2(0.4, 0.4)
+theme_override_fonts/font = ExtResource("4_65txv")
+theme_override_font_sizes/font_size = 12
+text = "4
+"
+
+[node name="HealNumberLabel" type="Label" parent="Heal"]
+layout_mode = 0
+offset_left = 11.666667
+offset_top = 14.999999
+offset_right = 51.666668
+offset_bottom = 38.0
+scale = Vector2(0.5, 0.5)
+text = "3 / 3"

@@ -1,10 +1,10 @@
-[gd_scene load_steps=28 format=4 uid="uid://du7hahnxorxmd"]
+[gd_scene load_steps=29 format=4 uid="uid://du7hahnxorxmd"]
 
-[ext_resource type="Script" path="res://levels/map_3.gd" id="1_v7snb"]
+[ext_resource type="Script" uid="uid://bum0u6kcrp01i" path="res://levels/map_3.gd" id="1_v7snb"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="2_qhmmx"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="3_eoo8e"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="4_h1kon"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/platform_boss_water_guard_02.tscn" id="5_g80ft"]
+[ext_resource type="PackedScene" uid="uid://72ullgkrurgm" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="4_h1kon"]
+[ext_resource type="PackedScene" uid="uid://o0l0aag5601w" path="res://scenes/bosses/platform_boss_water_guard_02.tscn" id="5_g80ft"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="6_cdk1v"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="7_j6y88"]
 [ext_resource type="PackedScene" uid="uid://fp8qfvpe8i5o" path="res://scenes/enemies/pearl_fairy/pearl_fairy.tscn" id="8_ws0ms"]
@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cfhl3s5dh27jq" path="res://asset/level_3_water_palace/background/background_layer_1.png" id="14_5uw15"]
 [ext_resource type="PackedScene" uid="uid://cfhmqw0q4i4lg" path="res://scenes/enemies/cray_fish/cray_fish.tscn" id="16_m3c0n"]
 [ext_resource type="PackedScene" uid="uid://dgwlv5lvkntgn" path="res://scenes/enemies/golden_carp/golden_carp.tscn" id="17_d0h85"]
-[ext_resource type="PackedScene" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_7rwwu"]
+[ext_resource type="PackedScene" uid="uid://dqrpvlvc54tyk" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_7rwwu"]
 [ext_resource type="PackedScene" uid="uid://nx0guycix2h4" path="res://scenes/enemies/turtle_light/turtle_light.tscn" id="19_gxm5u"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="20_2g2fv"]
 [ext_resource type="PackedScene" uid="uid://c6vomwflyb5ek" path="res://levels/objects/camera_limit_zone.tscn" id="20_li3tj"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://btj7ilbg28lwi" path="res://ui/PlayerHUD.tscn" id="24_j5txl"]
 [ext_resource type="PackedScene" uid="uid://dytm3c86oshmd" path="res://screens/game_screen/hud.tscn" id="25_lmidc"]
 [ext_resource type="PackedScene" uid="uid://3jekpoeelwr4" path="res://levels/objects/checkpoint/checkpoint_map3.tscn" id="26_j5txl"]
+[ext_resource type="PackedScene" uid="uid://cg88ymtkt485w" path="res://levels/objects/door/door_map3.tscn" id="27_lmidc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j565u"]
 size = Vector2(17222, 1610)
@@ -134,12 +135,9 @@ scale = Vector2(0.505, 0.505)
 texture = ExtResource("14_5uw15")
 
 [node name="Player" parent="." instance=ExtResource("6_cdk1v")]
-position = Vector2(10222.499, 474.99994)
+position = Vector2(-5752.5005, 501.25)
 scale = Vector2(1.15, 1.15)
-has_blade = true
-has_fire_gem = true
-has_water_paw_gem = true
-has_water_room_gem = true
+max_health = 100
 
 [node name="PlatformBossWaterGuard02" parent="." instance=ExtResource("5_g80ft")]
 position = Vector2(4088.75, 294.99997)
@@ -354,7 +352,6 @@ scale = Vector2(1.8, 1.8)
 position = Vector2(10207.5, 463.75)
 scale = Vector2(0.5, 0.5)
 target_stage = "uid://bhwnd0dvsqev8"
-target_door = "Teleport"
 is_cross_scene = true
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -383,3 +380,9 @@ position = Vector2(-1016.25, 844.99994)
 
 [node name="CheckpointMap4" parent="." instance=ExtResource("26_j5txl")]
 position = Vector2(7198.75, 556.25)
+
+[node name="Door" parent="." instance=ExtResource("27_lmidc")]
+position = Vector2(10205, 516.25)
+scale = Vector2(1.77, 1.77)
+target_stage = "uid://bhwnd0dvsqev8"
+is_cross_scene = true

@@ -22,10 +22,18 @@ extends Control
 @onready var giant_label = $Giant/CoolDownLabel
 @onready var giant_button_label = $Giant/ButtonLabel
 
+@onready var heal_container = $Heal
+@onready var heal_icon = $Heal/Icon
+@onready var heal_overlay = $Heal/Overlay
+@onready var heal_button_label =$Heal/HealButtonLabel
+@onready var heal_number_label = $Heal/HealNumberLabel
+
 var player: Node = null
 var sus_state: Node = null
 
 func _ready() -> void:
+	
+	heal_container.visible = false
 	# Luôn hiển thị tất cả skill containers
 	dash_overlay.visible = false
 	dash_label.visible = false
@@ -71,6 +79,8 @@ func _process(_dt: float) -> void:
 	_update_room_visibility()
 	_update_giant_visibility()
 	_update_mana_availability()
+	if GameManager.is_scene_boss:
+		_update_heal_visibility()
 
 func _connect_player(p: Node) -> void:
 	if p.has_signal("dash_cooldown_started"):
@@ -336,3 +346,15 @@ func _update_mana_availability() -> void:
 			giant_overlay.visible = false
 			giant_icon.visible = true
 			giant_label.visible = false
+
+func _update_heal_visibility():
+	heal_container.visible = true
+	heal_button_label.visible = true
+	if not GameManager.inventory_system.has_heal_potion():
+		heal_icon.visible = false
+		heal_overlay.visible = true
+		heal_number_label.text = "0 / 3"
+	else:
+		heal_icon.visible = true
+		heal_overlay.visible = false
+		heal_number_label.text = str(GameManager.inventory_system.get_heal_potion()) + " / 3"
