@@ -455,7 +455,7 @@ is_cross_scene = true
 [node name="Teleport" parent="." instance=ExtResource("19_ixb2s")]
 position = Vector2(9391, 99)
 scale = Vector2(0.5, 0.5)
-target_stage = "uid://k0emccpu8xrk"
+target_stage = "uid://cpw3nrru4osil"
 target_door = "LeftDoor"
 is_cross_scene = true
 

@@ -21,7 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://dcyxh7eep8web" path="res://scenes/objects/chest.tscn" id="12_myin1"]
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="13_wcg3s"]
 [ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="14_7gl8q"]
-[ext_resource type="PackedScene" uid="uid://bx2xcf02m4m0r" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="14_7i7cj"]
+[ext_resource type="PackedScene" path="res://scenes/collectibles/waterroomgem/water_room_gem.tscn" id="14_7i7cj"]
 [ext_resource type="AudioStream" uid="uid://d24jcdo6d6n0k" path="res://asset/sounds/king_crab_sound/level_craking.mp3" id="16_x24gd"]
 [ext_resource type="AudioStream" uid="uid://bfmjl0sopd8ah" path="res://asset/sounds/war_lord_turtle_sound/level_ambient.mp3" id="17_8kqfi"]
 
@@ -106,7 +106,7 @@ tile_set = ExtResource("1_i0g7a")
 
 [node name="RightDoor" parent="World/BossPlatformController/RightPlatform" instance=ExtResource("4_8jrbq")]
 position = Vector2(1566, 576)
-target_stage = "uid://du7hahnxorxmd"
+target_stage = "uid://cpw3nrru4osil"
 target_door = "Teleport4"
 is_cross_scene = true
 

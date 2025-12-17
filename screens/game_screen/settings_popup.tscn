@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://da4qaod1wbx0q"]
+[gd_scene load_steps=10 format=3 uid="uid://da4qaod1wbx0q"]
 
 [ext_resource type="Script" uid="uid://l3yeloi5jupe" path="res://screens/game_screen/settings_popup.gd" id="1_a4it1"]
 [ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="1_ry1hr"]
@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="3_a4it1"]
 [ext_resource type="Texture2D" uid="uid://cf5bryhe8pjyb" path="res://asset/ui/on_button.png" id="4_43ojk"]
 [ext_resource type="Texture2D" uid="uid://bvxx77qm55k1l" path="res://asset/ui/off_button.png" id="5_ovj3y"]
+[ext_resource type="PackedScene" uid="uid://dbqe8dpc5emay" path="res://scenes/ui/pop_up_label.tscn" id="7_5ccg2"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_rbs2k"]
 
@@ -115,6 +116,13 @@ offset_bottom = 132.0
 scale = Vector2(2, 2)
 theme_override_icons/checked = ExtResource("4_43ojk")
 theme_override_icons/unchecked = ExtResource("5_ovj3y")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+
+[node name="PopUpLabel" parent="Button" instance=ExtResource("7_5ccg2")]
+layout_mode = 0
+text = "WORLD MAP"
 
 [connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]
 [connection signal="pressed" from="NinePatchRect/CloseTextureButton" to="." method="_on_close_texture_button_pressed"]

@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpk7syd4ptwdb"]
+
+[ext_resource type="PackedScene" uid="uid://dbqe8dpc5emay" path="res://scenes/ui/pop_up_label.tscn" id="1_q5bgb"]
+
+[node name="VictoryScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="WorldMapButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="PopUpLabel" parent="WorldMapButton" instance=ExtResource("1_q5bgb")]
+layout_mode = 0
+text = "WORLD MAP"

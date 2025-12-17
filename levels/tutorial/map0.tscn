@@ -523,7 +523,7 @@ key_text = "C"
 
 [node name="Door" parent="." instance=ExtResource("42_vaqrb")]
 position = Vector2(2221, 69)
-target_stage = "uid://65dl3olpohwm"
+target_stage = "uid://cpw3nrru4osil"
 is_cross_scene = true
 
 [node name="Node2" parent="." instance=ExtResource("36_21dun")]
