@@ -16,8 +16,9 @@ func _enter_tree() -> void:
 	GameManager.current_stage = self
 
 func _ready() -> void:
-	if not GameManager.respawn_at_portal():
-		GameManager.respawn_at_checkpoint()
+	# Only handle portal/door spawning, NOT auto-respawn
+	# Defeat screen will handle respawning now
+	GameManager.respawn_at_portal()
 	
 	# Hiển thị tutorial tự động khi vào map 1 lần đầu
 	if show_tutorial_on_start and not _tutorial_shown:

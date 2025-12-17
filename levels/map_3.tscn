@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=4 uid="uid://du7hahnxorxmd"]
 
-[ext_resource type="Script" path="res://levels/map_3.gd" id="1_v7snb"]
+[ext_resource type="Script" uid="uid://bum0u6kcrp01i" path="res://levels/map_3.gd" id="1_v7snb"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="2_qhmmx"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="3_eoo8e"]
 [ext_resource type="PackedScene" uid="uid://72ullgkrurgm" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="4_h1kon"]
@@ -246,6 +246,8 @@ scale = Vector2(0.5, 0.5)
 target_stage = "uid://cpw3nrru4osil"
 target_door = "Door1"
 is_cross_scene = true
+completes_stage_id = 6
+triggers_victory_screen = true
 
 [node name="Teleport2" parent="." instance=ExtResource("21_2g2fv")]
 position = Vector2(3205, 180)
@@ -356,6 +358,8 @@ scale = Vector2(0.5, 0.5)
 target_stage = "uid://cpw3nrru4osil"
 target_door = "Teleport"
 is_cross_scene = true
+completes_stage_id = 8
+triggers_victory_screen = true
 
 [node name="UI" type="CanvasLayer" parent="."]
 

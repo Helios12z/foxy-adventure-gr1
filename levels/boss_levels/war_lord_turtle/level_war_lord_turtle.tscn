@@ -109,6 +109,8 @@ position = Vector2(1566, 576)
 target_stage = "uid://cpw3nrru4osil"
 target_door = "Teleport4"
 is_cross_scene = true
+completes_stage_id = 5
+triggers_victory_screen = true
 
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
 position = Vector2(-317, 535)

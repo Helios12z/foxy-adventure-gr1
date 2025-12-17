@@ -630,7 +630,7 @@ metadata/_custom_type_script = "uid://bss631ltk5rcm"
 position = Vector2(6228, 1026)
 shape = SubResource("RectangleShape2D_imecc")
 
-[node name="Door" parent="." instance=ExtResource("44_imecc")]
+[node name="StartDoor" parent="." instance=ExtResource("44_imecc")]
 position = Vector2(-219, 69)
 
 [node name="Music2" type="AudioStreamPlayer" parent="."]
@@ -685,6 +685,8 @@ scale = Vector2(0.5, 0.5)
 target_stage = "uid://cpw3nrru4osil"
 target_door = "LeftDoor"
 is_cross_scene = true
+completes_stage_id = 2
+triggers_victory_screen = true
 
 [node name="LeftBoundary" type="StaticBody2D" parent="."]
 position = Vector2(-522, -113)

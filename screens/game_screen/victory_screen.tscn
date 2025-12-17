@@ -1,16 +1,310 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpk7syd4ptwdb"]
+[gd_scene load_steps=16 format=3 uid="uid://cpk7syd4ptwdb"]
 
+[ext_resource type="Script" path="res://screens/game_screen/victory_screen.gd" id="1_gd_script"]
 [ext_resource type="PackedScene" uid="uid://dbqe8dpc5emay" path="res://scenes/ui/pop_up_label.tscn" id="1_q5bgb"]
+[ext_resource type="Texture2D" uid="uid://bx7gfgp8tkcvw" path="res://asset/ui/result/cloud_bg.png" id="2_cloud"]
+[ext_resource type="Texture2D" uid="uid://qjy4jmwpefx5" path="res://asset/ui/result/rainbow.png" id="3_rainbow"]
+[ext_resource type="Texture2D" uid="uid://dn24s7uu6fdry" path="res://asset/ui/result/foxy.png" id="4_foxy"]
+[ext_resource type="Texture2D" uid="uid://ddctnmkr4j0rg" path="res://asset/ui/result/star_1.png" id="5_star1"]
+[ext_resource type="Texture2D" uid="uid://dyppcfk0waxjj" path="res://asset/ui/result/star_2.png" id="6_star2"]
+[ext_resource type="Texture2D" uid="uid://0yc5qoqfmk25" path="res://asset/ui/result/star_trail_1.png" id="7_trail1"]
+[ext_resource type="Texture2D" uid="uid://ceqvmv2xtg0c5" path="res://asset/ui/result/star_trail_2.png" id="8_trail2"]
+[ext_resource type="Texture2D" uid="uid://dgd3u01pbuv7r" path="res://asset/ui/result/banner.png" id="9_banner"]
+[ext_resource type="Texture2D" uid="uid://c00fh0lxhh1jj" path="res://asset/ui/result/wheel.png" id="10_wheel"]
+[ext_resource type="Texture2D" uid="uid://dtb2frcqf1sxu" path="res://asset/ui/result/fx_spark.png" id="11_spark"]
 
-[node name="VictoryScreen" type="Control"]
+[sub_resource type="Animation" id="Animation_star_twinkle"]
+resource_name = "star_twinkle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.5), Color(1, 1, 1, 1), Color(1, 1, 1, 0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.9, 0.9), Vector2(1.1, 1.1), Vector2(0.9, 0.9)]
+}
+
+[sub_resource type="Animation" id="Animation_wheel_rotate"]
+resource_name = "wheel_rotate"
+length = 8.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_victory"]
+_data = {
+"star_twinkle": SubResource("Animation_star_twinkle"),
+"wheel_rotate": SubResource("Animation_wheel_rotate")
+}
+
+[node name="VictoryScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_gd_script")
+
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="WorldMapButton" type="Button" parent="."]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="OverlayColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
 
-[node name="PopUpLabel" parent="WorldMapButton" instance=ExtResource("1_q5bgb")]
-layout_mode = 0
+[node name="VictoryComposite" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_cloud")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Rainbow" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_rainbow")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="FoxyVictory" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_foxy")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Stars" type="Node2D" parent="Control/VictoryComposite"]
+position = Vector2(400, 300)
+
+[node name="Star1" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = -350.0
+offset_top = -250.0
+offset_right = -290.0
+offset_bottom = -190.0
+texture = ExtResource("5_star1")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Star2" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = 290.0
+offset_top = -250.0
+offset_right = 350.0
+offset_bottom = -190.0
+texture = ExtResource("6_star2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Star3" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = -380.0
+offset_top = -50.0
+offset_right = -320.0
+offset_bottom = 10.0
+texture = ExtResource("5_star1")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Star4" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = 320.0
+offset_top = -50.0
+offset_right = 380.0
+offset_bottom = 10.0
+texture = ExtResource("6_star2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="StarTrail1" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = -300.0
+offset_top = -200.0
+offset_right = -250.0
+offset_bottom = -150.0
+texture = ExtResource("7_trail1")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="StarTrail2" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = 250.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = -150.0
+texture = ExtResource("8_trail2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Banner" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_banner")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Wheel1" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = 150.0
+offset_right = -270.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+texture = ExtResource("10_wheel")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Wheel2" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 270.0
+offset_top = 150.0
+offset_right = 350.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+texture = ExtResource("10_wheel")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Sparkles" type="CPUParticles2D" parent="Control/VictoryComposite"]
+position = Vector2(400, 300)
+amount = 50
+lifetime = 3.0
+speed_scale = 0.8
+explosiveness = 0.2
+randomness = 0.5
+texture = ExtResource("11_spark")
+emission_shape = 3
+emission_rect_extents = Vector2(300, 250)
+gravity = Vector2(0, -50)
+initial_velocity_min = 20.0
+initial_velocity_max = 80.0
+angular_velocity_min = -100.0
+angular_velocity_max = 100.0
+scale_amount_min = 0.3
+scale_amount_max = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/VictoryComposite"]
+libraries = {
+"": SubResource("AnimationLibrary_victory")
+}
+autoplay = "star_twinkle"
+
+[node name="WorldMapButton" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 280.0
+offset_right = 100.0
+offset_bottom = 340.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PopUpLabel" parent="Control/WorldMapButton" instance=ExtResource("1_q5bgb")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.5
+offset_top = -26.0
+offset_right = 69.5
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "WORLD MAP"

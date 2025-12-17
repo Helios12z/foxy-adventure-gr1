@@ -361,6 +361,9 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	if !is_invulnerable: 
 		fsm.current_state.take_damage(_damage, _direction)
 		if(health <= 0):
+			print("🔴 PLAYER HEALTH <= 0! Changing to dead state...")
+			print("Current state: ", fsm.current_state.name if fsm.current_state else "none")
+			print("FSM has dead state: ", fsm.states.has("dead"))
 			fsm.change_state(fsm.states.dead)
 		else: 
 			fsm.change_state(fsm.states.hurt)
