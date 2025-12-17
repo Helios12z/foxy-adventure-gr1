@@ -32,7 +32,7 @@ func _on_boss_died() -> void:
 	visible = false
 	
 func _on_boss_into_phase2() -> void:
-	boss_health_label.text = "GATEKEEPER OF THE WATER PALACE"
+	boss_health_label.text = "FAIRY MAID OF THE WATER GODDESS"
 	
 func reset() -> void:
 	if _boss:

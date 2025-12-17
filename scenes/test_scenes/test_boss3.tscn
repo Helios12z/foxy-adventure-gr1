@@ -86,17 +86,13 @@ texture = ExtResource("2_1myvi")
 
 [node name="Player" parent="." instance=ExtResource("2_imhqq")]
 position = Vector2(40, -76)
-has_blade = true
-has_fire_gem = true
-has_water_paw_gem = true
-has_water_room_gem = true
 susanoo_level = 3
 room_level = 3
 max_health = 100
 
 [node name="Boss3" parent="." instance=ExtResource("3_gtfhx")]
 position = Vector2(329, -135)
-boss3_max_health = 100
+boss3_max_health = 2500
 player_path = NodePath("../Player")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]

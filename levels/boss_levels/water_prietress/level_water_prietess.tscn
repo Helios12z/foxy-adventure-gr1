@@ -361,10 +361,7 @@ position = Vector2(447, 461)
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
 position = Vector2(-200, 575)
-has_blade = true
-has_fire_gem = true
-has_water_paw_gem = true
-has_water_room_gem = true
+max_health = 100
 
 [node name="WaterPrietest" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("3_y7w5y")]
 position = Vector2(421, 485)
@@ -415,7 +412,6 @@ debug_color = Color(0.8645528, 0.2529613, 0.639173, 0.41960785)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BossHUD" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -458,12 +454,12 @@ offset_right = 77.5
 offset_bottom = -65.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.046000957, 0.2838379, 0.9999997, 1)
+theme_override_colors/font_color = Color(12.821828, 6.453975, 11.577773, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
-theme_override_colors/font_outline_color = Color(0.773859, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.6886343, 0.191156, 0.3679556, 1)
 theme_override_fonts/font = ExtResource("11_icah2")
 theme_override_font_sizes/font_size = 24
-text = "WATER PRIETESS"
+text = "GUARDIAN OF THE WATER PALACE"
 horizontal_alignment = 1
 vertical_alignment = 1
 

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://boxtx31pd7iur" path="res://scenes/enemies/pearl_fairy/pearl_fairy.gd" id="1_sx7rj"]
 [ext_resource type="Texture2D" uid="uid://cykpbcu10tcwr" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_1.png" id="2_0aroe"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="2_badou"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_g7me5"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_g7me5"]
 [ext_resource type="Texture2D" uid="uid://coi0t1oglo5a6" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_2.png" id="3_buft8"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_g6qhf"]
 [ext_resource type="Texture2D" uid="uid://cy5glcu5qswf1" path="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_3.png" id="4_hm4u3"]
@@ -122,6 +122,7 @@ shape = SubResource("CapsuleShape2D_buft8")
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("3_g6qhf")
+damage = 20
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
