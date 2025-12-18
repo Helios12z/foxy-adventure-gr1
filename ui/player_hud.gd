@@ -48,6 +48,46 @@ func _ready():
 	if skill_button:
 		skill_button.pressed.connect(_on_skill_button_pressed)
 
+# Called when player is respawned to reconnect signals
+func reconnect_player(new_player) -> void:
+	print("PlayerHUD: Reconnecting to new player")
+	
+	# Disconnect from old player if exists
+	if player != null and is_instance_valid(player):
+		if player.is_connected("hp_changed", Callable(self, "_on_hp_changed")):
+			player.disconnect("hp_changed", Callable(self, "_on_hp_changed"))
+		if player.is_connected("mana_changed", Callable(self, "_on_mana_changed")):
+			player.disconnect("mana_changed", Callable(self, "_on_mana_changed"))
+	
+	# Set new player
+	player = new_player
+	
+	# Connect to new player
+	if player != null:
+		player.connect("hp_changed", Callable(self, "_on_hp_changed"))
+		player.connect("mana_changed", Callable(self, "_on_mana_changed"))
+		
+		# Init displays
+		_on_hp_changed(player.health, player.max_health)
+		hp_display = player.health
+		hp_target = player.health
+		
+		_on_mana_changed(player.mana, player.max_mana)
+		player_mana_display = player.mana
+		player_mana_target = player.mana
+		
+		# Reset Susanoo (new player won't have susanoo active)
+		susanoo_spirit = null
+		if susanoo_control:
+			susanoo_control.visible = false
+			susanoo_control.modulate.a = 0.0
+		susanoo_visible = false
+		
+		print("PlayerHUD: Reconnected successfully!")
+	else:
+		print("PlayerHUD: Warning - new player is null!")
+
+
 func _on_skill_button_pressed() -> void:
 	var skill_screen_scene = load("res://screens/game_screen/skill_screen.tscn")
 	if skill_screen_scene:
@@ -70,7 +110,9 @@ func _on_hp_changed(current: int, max: int) -> void:
 		hp_bar.max_value = max
 		hp_target = current
 	if hp_label:
-		hp_label.text = str(current) + " / " + str(max)
+		# Clamp to 0 minimum to prevent negative display
+		var display_hp = max(0, current)
+		hp_label.text = str(display_hp) + " / " + str(max)
 
 
 func _on_mana_changed(current: int, max: int) -> void:

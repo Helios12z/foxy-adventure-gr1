@@ -1,37 +1,29 @@
-[gd_scene load_steps=10 format=3 uid="uid://na5uco8os364"]
+[gd_scene load_steps=12 format=3 uid="uid://dllvt6r0v3slh"]
 
-[ext_resource type="Script" path="res://screens/game_screen/defeat_screen.gd" id="1_defeat_script"]
-[ext_resource type="PackedScene" uid="uid://dbqe8dpc5emay" path="res://scenes/ui/pop_up_label.tscn" id="2_popup"]
-[ext_resource type="Texture2D" uid="uid://cchtyj3acgwfm" path="res://asset/ui/result/cloud_bg2.png" id="3_cloud2"]
-[ext_resource type="Texture2D" uid="uid://dnbsppwqpj36t" path="res://asset/ui/result/fox_cry_1.png" id="4_foxcry1"]
-[ext_resource type="Texture2D" uid="uid://c6gx1iu35dkqd" path="res://asset/ui/result/fox_cry_2.png" id="5_foxcry2"]
-[ext_resource type="Texture2D" uid="uid://ddctnmkr4j0rg" path="res://asset/ui/result/star_1.png" id="6_star"]
+[ext_resource type="Script" uid="uid://cu53eidbkkrrf" path="res://screens/game_screen/defeat_screen.gd" id="1_defeat_script"]
+[ext_resource type="Texture2D" uid="uid://ur53pqf7napa" path="res://asset/ui/result/cloud_bg2.png" id="3_cloud2"]
+[ext_resource type="Texture2D" uid="uid://0oxl8yjpg1k5" path="res://asset/ui/result/wheel_l.png" id="3_mkh42"]
+[ext_resource type="Texture2D" uid="uid://dn2gj4ombwspe" path="res://asset/ui/result/fox_cry_1.png" id="4_foxcry1"]
+[ext_resource type="Texture2D" uid="uid://dxr2mh56qa6wb" path="res://asset/ui/result/fox_cry_2.png" id="5_foxcry2"]
+[ext_resource type="Texture2D" uid="uid://duomksnipflnc" path="res://asset/ui/result/banner_l.png" id="5_y0ag1"]
+[ext_resource type="Texture2D" uid="uid://s8giej6c6v68" path="res://asset/ui/result/gun_l1.png" id="6_8o520"]
+[ext_resource type="Texture2D" uid="uid://bgnc68qb62pp6" path="res://asset/ui/result/star_1.png" id="6_star"]
+[ext_resource type="Texture2D" uid="uid://k3ykj6aqi2j7" path="res://asset/ui/result/gun_l2.png" id="7_jv1mh"]
+[ext_resource type="PackedScene" uid="uid://c8j6y3q4n2p5v" path="res://scenes/ui/pop_up_button.tscn" id="7_popup_btn"]
 
-[sub_resource type="Animation" id="Animation_cry"]
-resource_name = "cry_animation"
-length = 0.6
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Control/DefeatComposite/FoxyCry:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [ExtResource("4_foxcry1"), ExtResource("5_foxcry2")]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_defeat"]
-_data = {
-"cry_animation": SubResource("Animation_cry")
-}
-
-[sub_resource type="Gradient" id="Gradient_dark"]
-offsets = PackedFloat32Array(0, 1)
-colors = PackedColorArray(0.3, 0.3, 0.4, 1, 0.1, 0.1, 0.15, 1)
+[sub_resource type="SpriteFrames" id="SpriteFrames_8o520"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_foxcry1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_foxcry2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="DefeatScreen" type="CanvasLayer"]
 process_mode = 3
@@ -62,12 +54,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -300.0
-offset_right = 400.0
-offset_bottom = 300.0
+offset_left = -250.0
+offset_top = -231.0
+offset_right = 550.0
+offset_bottom = 369.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.65, 0.65)
 
 [node name="Background" type="TextureRect" parent="Control/DefeatComposite"]
 layout_mode = 1
@@ -80,26 +73,24 @@ texture = ExtResource("3_cloud2")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="FoxyCry" type="TextureRect" parent="Control/DefeatComposite"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -150.0
-offset_right = 150.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_foxcry1")
-expand_mode = 1
-stretch_mode = 6
+[node name="WheelLose" type="TextureRect" parent="Control/DefeatComposite"]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 34.000008
+offset_right = 321.0
+offset_bottom = 195.0
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("3_mkh42")
+
+[node name="FoxyCry" type="AnimatedSprite2D" parent="Control/DefeatComposite"]
+position = Vector2(398.46155, 307.69232)
+scale = Vector2(3.6, 3.6)
+sprite_frames = SubResource("SpriteFrames_8o520")
+autoplay = "default"
 
 [node name="DarkStars" type="Node2D" parent="Control/DefeatComposite"]
-position = Vector2(400, 300)
 modulate = Color(0.5, 0.5, 0.6, 0.7)
+position = Vector2(400, 300)
 
 [node name="Star1" type="TextureRect" parent="Control/DefeatComposite/DarkStars"]
 offset_left = -350.0
@@ -119,86 +110,70 @@ texture = ExtResource("6_star")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="Control/DefeatComposite"]
+[node name="Star3" type="TextureRect" parent="Control/DefeatComposite/DarkStars"]
+offset_left = 35.384583
+offset_top = -356.9231
+offset_right = 75.38458
+offset_bottom = -316.9231
+texture = ExtResource("6_star")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Gun" type="TextureRect" parent="Control/DefeatComposite"]
+layout_mode = 0
+offset_left = 147.0
+offset_top = 324.0
+offset_right = 219.0
+offset_bottom = 375.0
+scale = Vector2(2.3, 2.3)
+texture = ExtResource("6_8o520")
+
+[node name="Gun2" type="TextureRect" parent="Control/DefeatComposite"]
+layout_mode = 0
+offset_left = 437.0
+offset_top = 335.0
+offset_right = 509.0
+offset_bottom = 386.0
+scale = Vector2(2.3, 2.3)
+texture = ExtResource("7_jv1mh")
+flip_h = true
+
+[node name="BannerL" type="Sprite2D" parent="Control/DefeatComposite"]
+position = Vector2(386, 459)
+scale = Vector2(2.6, 2.6)
+texture = ExtResource("5_y0ag1")
+
+[node name="WorldMapButton" parent="Control" instance=ExtResource("7_popup_btn")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = 120.0
-offset_right = 150.0
-offset_bottom = 180.0
+offset_left = -229.0
+offset_top = 174.0
+offset_right = -69.0
+offset_bottom = 248.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.7, 0.3, 0.3, 1)
-theme_override_font_sizes/font_size = 48
-text = "DEFEATED"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_defeat")
-}
-autoplay = "cry_animation"
-
-[node name="WorldMapButton" type="Button" parent="Control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -180.0
-offset_top = 280.0
-offset_right = -20.0
-offset_bottom = 340.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PopUpLabel" parent="Control/WorldMapButton" instance=ExtResource("2_popup")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -69.5
-offset_top = -26.0
-offset_right = 69.5
-offset_bottom = 26.0
-grow_horizontal = 2
-grow_vertical = 2
+scale = Vector2(1.4, 1.4)
+pivot_offset = Vector2(80, 37)
 text = "WORLD MAP"
 
-[node name="RespawnButton" type="Button" parent="Control"]
+[node name="RespawnButton" parent="Control" instance=ExtResource("7_popup_btn")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 20.0
-offset_top = 280.0
-offset_right = 180.0
-offset_bottom = 340.0
+offset_left = 60.0
+offset_top = 172.99997
+offset_right = 226.0
+offset_bottom = 247.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="PopUpLabel" parent="Control/RespawnButton" instance=ExtResource("2_popup")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -69.5
-offset_top = -26.0
-offset_right = 69.5
-offset_bottom = 26.0
-grow_horizontal = 2
-grow_vertical = 2
+scale = Vector2(1.4, 1.4)
+pivot_offset = Vector2(83, 37)
 text = "RESPAWN AT
 CHECKPOINT"

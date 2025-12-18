@@ -6,11 +6,11 @@
 [ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="4_font"]
 [ext_resource type="Texture2D" uid="uid://cf5bryhe8pjyb" path="res://asset/ui/on_button.png" id="5_on"]
 [ext_resource type="Texture2D" uid="uid://bvxx77qm55k1l" path="res://asset/ui/off_button.png" id="6_off"]
-[ext_resource type="PackedScene" uid="uid://dbqe8dpc5emay" path="res://scenes/ui/pop_up_label.tscn" id="7_label"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_1"]
+[ext_resource type="PackedScene" uid="uid://c8j6y3q4n2p5v" path="res://scenes/ui/pop_up_button.tscn" id="8_popup_btn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1"]
 
 [node name="SettingsPopup" type="MarginContainer"]
 process_mode = 3
@@ -28,7 +28,7 @@ layout_mode = 2
 color = Color(0, 0.0117647, 0.0352941, 0.85098)
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
-custom_minimum_size = Vector2(380, 280)
+custom_minimum_size = Vector2(460, 380)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -40,13 +40,24 @@ patch_margin_bottom = 32
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
+[node name="Label4" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 41.0
+offset_right = 228.0
+offset_bottom = 64.0
+scale = Vector2(2.2, 2.2)
+theme_override_fonts/font = ExtResource("4_font")
+text = "SETTINGS"
+label_settings = SubResource("LabelSettings_2")
+
 [node name="CloseTextureButton" type="TextureButton" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 355.0
-offset_top = -9.0
-offset_right = 369.0
-offset_bottom = 6.0
-scale = Vector2(2, 2)
+offset_left = 428.0
+offset_top = -10.0
+offset_right = 442.0
+offset_bottom = 5.0
+scale = Vector2(3, 3)
 toggle_mode = true
 texture_normal = ExtResource("3_close")
 texture_pressed = ExtResource("3_close")
@@ -56,10 +67,10 @@ texture_focused = ExtResource("3_close")
 
 [node name="Label" type="Label" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 34.0
-offset_top = 29.0
-offset_right = 101.0
-offset_bottom = 52.0
+offset_left = 61.0
+offset_top = 102.0
+offset_right = 128.0
+offset_bottom = 125.0
 scale = Vector2(2, 2)
 theme_override_fonts/font = ExtResource("4_font")
 text = "MUSIC"
@@ -67,10 +78,10 @@ label_settings = SubResource("LabelSettings_1")
 
 [node name="Label2" type="Label" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 34.0
-offset_top = 73.0
-offset_right = 132.0
-offset_bottom = 96.0
+offset_left = 61.0
+offset_top = 146.0
+offset_right = 159.0
+offset_bottom = 169.0
 scale = Vector2(2, 2)
 theme_override_fonts/font = ExtResource("4_font")
 text = "SOUND FX"
@@ -78,10 +89,10 @@ label_settings = SubResource("LabelSettings_2")
 
 [node name="Label3" type="Label" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 34.0
-offset_top = 117.0
-offset_right = 145.0
-offset_bottom = 140.0
+offset_left = 61.0
+offset_top = 190.0
+offset_right = 172.0
+offset_bottom = 213.0
 scale = Vector2(2, 2)
 theme_override_fonts/font = ExtResource("4_font")
 text = "HACK MODE"
@@ -89,54 +100,42 @@ label_settings = SubResource("LabelSettings_2")
 
 [node name="MusicCheckButton" type="CheckButton" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 300.0
-offset_top = 22.0
-offset_right = 324.0
-offset_bottom = 43.0
-scale = Vector2(2, 2)
+offset_left = 361.0
+offset_top = 90.0
+offset_right = 385.0
+offset_bottom = 111.0
+scale = Vector2(2.5, 2.5)
 theme_override_icons/checked = ExtResource("5_on")
 theme_override_icons/unchecked = ExtResource("6_off")
 
 [node name="SoundCheckButton" type="CheckButton" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 300.0
-offset_top = 66.0
-offset_right = 324.0
-offset_bottom = 87.0
-scale = Vector2(2, 2)
+offset_left = 361.0
+offset_top = 134.0
+offset_right = 385.0
+offset_bottom = 155.0
+scale = Vector2(2.5, 2.5)
 theme_override_icons/checked = ExtResource("5_on")
 theme_override_icons/unchecked = ExtResource("6_off")
 
 [node name="ModeHackCheckButton" type="CheckButton" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 300.0
-offset_top = 111.0
-offset_right = 324.0
-offset_bottom = 132.0
-scale = Vector2(2, 2)
+offset_left = 361.0
+offset_top = 179.0
+offset_right = 385.0
+offset_bottom = 200.0
+scale = Vector2(2.5, 2.5)
 theme_override_icons/checked = ExtResource("5_on")
 theme_override_icons/unchecked = ExtResource("6_off")
 
-[node name="WorldMapButton" type="Button" parent="NinePatchRect"]
+[node name="WorldMapButton" parent="NinePatchRect" instance=ExtResource("8_popup_btn")]
 layout_mode = 0
-offset_left = 90.0
-offset_top = 220.0
-offset_right = 290.0
-offset_bottom = 260.0
-
-[node name="PopUpLabel" parent="NinePatchRect/WorldMapButton" instance=ExtResource("7_label")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -69.5
-offset_top = -26.0
-offset_right = 69.5
-offset_bottom = 26.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 167.0
+offset_top = 278.0
+offset_right = 310.0
+offset_bottom = 335.0
+scale = Vector2(1.4, 1.4)
+pivot_offset = Vector2(71.5, 28.5)
 text = "WORLD MAP"
 
 [connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]

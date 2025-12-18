@@ -131,10 +131,14 @@ func _update_health_bar_after_damage() -> void:
 	_health_bar_timer = health_bar_hide_delay
 
 func set_hurt_collision(enabled):
-	$Direction/HurtArea2D/CollisionShape2D.set_deferred("disabled",not enabled)
+	var hurt_collision_shape = get_node_or_null("Direction/HurtArea2D/CollisionShape2D")
+	if hurt_collision_shape:
+		hurt_collision_shape.set_deferred("disabled", not enabled)
 	
 func set_hit_collision(enabled : bool):
-	$Direction/HitArea2D/CollisionShape2D.set_deferred("disabled",not enabled)
+	var hit_collision_shape = get_node_or_null("Direction/HitArea2D/CollisionShape2D")
+	if hit_collision_shape:
+		hit_collision_shape.set_deferred("disabled", not enabled)
 
 func run_to(pos: Vector2) -> void:
 	scripted_mode = true
