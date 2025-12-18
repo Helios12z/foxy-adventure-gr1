@@ -213,6 +213,7 @@ animations = [{
 
 [node name="AtomicBomb" type="Node2D"]
 script = ExtResource("1_rctpd")
+damage = 30
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -9.536743e-07)
