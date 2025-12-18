@@ -11,6 +11,23 @@ class_name WorldMapScreen
 @export var debug_completed_stages_count: int = 0 
 
 func _ready() -> void:
+	# RESET LOGIC: When entering World Map, we reset "run" specific progress
+	# 1. Reset Bosses
+	GameManager.boss_defeated_by_stage.clear()
+	
+	# 2. Reset Checkpoints (keep completed_stages and init)
+	var keys_to_remove = []
+	for key in GameManager.checkpoint_data.keys():
+		if key != "completed_stages" and key != "init" and not key.begins_with("collected_"):
+			keys_to_remove.append(key)
+	
+	for key in keys_to_remove:
+		GameManager.checkpoint_data.erase(key)
+		
+	GameManager.current_checkpoint_id = ""
+	GameManager.save_checkpoint_data() # Save the clean slate
+	print("World Map Loaded: Reset bosses and checkpoints.")
+
 	# Clean up any leftover UI overlays (Victory/Defeat screens, etc.)
 	cleanup_overlay_screens()
 	

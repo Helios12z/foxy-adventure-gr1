@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dey5mu31155wh"]
+[gd_scene load_steps=15 format=3 uid="uid://blassf1djfrhf"]
 
 [ext_resource type="Script" uid="uid://dsw1xosulimm3" path="res://screens/game_screen/world_map_screen.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://ddgxxpln1dndj" path="res://asset/ui/world_map/full_world_map.jpg" id="2_bg"]
@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bsjr4fktty6hy" path="res://asset/ui/world_map/world_map_7.png" id="11_map7"]
 [ext_resource type="Texture2D" uid="uid://b6u5kb817k45o" path="res://asset/ui/world_map/world_map_8.png" id="12_map8"]
 [ext_resource type="Texture2D" uid="uid://cpernpfcpvbaf" path="res://asset/level_3_water_palace/background/water_goddess_platform.png" id="13_map9"]
-[ext_resource type="PackedScene" uid="uid://dbqe8dpc5emay" path="res://scenes/ui/pop_up_label.tscn" id="14_popup"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pop_up_label.tscn" id="14_popup"]
 
 [node name="WorldMapScreen" type="Control"]
 layout_mode = 3
@@ -23,7 +23,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
-debug_completed_stages_count = 8
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0

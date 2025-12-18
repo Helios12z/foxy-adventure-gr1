@@ -201,8 +201,25 @@ func _on_world_map_button_pressed() -> void:
 func _on_respawn_button_pressed() -> void:
 	# Unpause game
 	get_tree().paused = false
+	
+	# Safety cleanup
+	GameManager.target_portal_name = ""
+	
 	if GameManager.has_checkpoint():
-		GameManager.respawn_at_checkpoint()
+		var checkpoint_info = GameManager.load_checkpoint(GameManager.current_checkpoint_id)
+		var stage_path = checkpoint_info.get("stage_path", "")
+		
+		# If checkpoint is in a different map -> Change stage
+		if stage_path != "" and stage_path != get_tree().current_scene.scene_file_path:
+			GameManager.change_stage(stage_path)
+		else:
+			# Same map -> Reload scene to reset all state (enemies, items, etc.)
+			# Stage._ready() or similar logic will handle jumping to checkpoint upon reload
+			get_tree().reload_current_scene()
+	else:
+		# Fallback: Just reload
+		get_tree().reload_current_scene()
+		
 	queue_free()
 
 func _exit_tree() -> void:

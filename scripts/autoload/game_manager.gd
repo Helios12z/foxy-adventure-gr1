@@ -129,9 +129,11 @@ func respawn_at_portal() -> bool:
 		player.global_position = (portal as Node2D).global_position
 		target_portal_name = ""
 		_apply_checkpoint_inventory_only()
-		# Đồng bộ stage_path của checkpoint sang stage hiện tại và cập nhật vị trí để respawn đúng chỗ
+
+		# Auto-save checkpoint at the portal entry to ensure progress is saved from the start of the level
 		var new_pos = player.global_position
 		update_current_checkpoint_player_state({"position": [new_pos.x, new_pos.y]}, true)
+		
 		print("Successfully spawned at portal")
 		return true
 	print("Failed to spawn at portal. portal is Node2D: ", portal is Node2D, ", player is valid: ", is_instance_valid(player))
@@ -195,19 +197,23 @@ func load_checkpoint(checkpoint_id: String) -> Dictionary:
 
 #respawn at checkpoint
 func respawn_at_checkpoint() -> void:
+	print("[GameManager] respawn_at_checkpoint called. ID: ", current_checkpoint_id)
+	
 	if current_checkpoint_id.is_empty():
-		print("No checkpoint available")
+		print("[GameManager] No checkpoint available (current_checkpoint_id is empty)")
 		return
 	
 	var checkpoint_info = checkpoint_data.get(current_checkpoint_id, {})
 	if checkpoint_info.is_empty():
-		print("Checkpoint data not found")
+		print("[GameManager] Checkpoint data not found for ID: ", current_checkpoint_id)
 		return
 	
 	# Load the stage if different
 	var checkpoint_stage = checkpoint_info.get("stage_path", "")
+	print("[GameManager] Checkpoint Stage: ", checkpoint_stage, " Current Scene: ", current_stage.scene_file_path if current_stage else "None")
 	
-	if current_stage.scene_file_path != checkpoint_stage and not checkpoint_stage.is_empty():
+	if current_stage and current_stage.scene_file_path != checkpoint_stage and not checkpoint_stage.is_empty():
+		print("[GameManager] Checkpoint is in different stage. Not respawning position here.")
 		if not is_instance_valid(player):
 			var p := get_tree().current_scene.find_child("Player", true, false)
 			if p is Player:
@@ -215,20 +221,38 @@ func respawn_at_checkpoint() -> void:
 		_apply_checkpoint_inventory_only()
 		return
 
-	if player == null:
+	# Ensure player reference is valid
+	if not is_instance_valid(player):
+		print("[GameManager] Player reference invalid/null. Searching in scene...")
 		var p := get_tree().current_scene.find_child("Player", true, false)
 		if p is Player:
 			player = p
-	if player != null:
-		var player_state: Dictionary = checkpoint_info.get("player_state")
-		if player_state == null:
+			print("[GameManager] Found Player in scene: ", player)
+		else:
+			print("[GameManager] CRITICAL: Player not found in scene for respawn!")
 			return
+
+	# Apply state
+	if is_instance_valid(player):
+		print("[GameManager] Applying player state from checkpoint...")
+		var player_state: Dictionary = checkpoint_info.get("player_state", {})
+		if player_state.is_empty():
+			print("[GameManager] Player state is empty in checkpoint data!")
+			return
+			
 		player.load_state(player_state)
+		
+		# Verify position
+		if player_state.has("position"):
+			print("[GameManager] Player moved to checkpoint position: ", player.global_position)
+		else:
+			print("[GameManager] Checkpoint data missing 'position' field!")
+		
 		if inventory_system != null:
 			apply_inventory_from_checkpoint()
-		print("Player respawned at checkpoint: ", current_checkpoint_id)
+		print("[GameManager] Player successfully respawned at checkpoint: ", current_checkpoint_id)
 	else:
-		print("Player not found for respawn")
+		print("[GameManager] Player invalid after search - cannot respawn.")
 	
 	if inventory_system != null:
 		var inventory_data = checkpoint_info.get("inventory_data")

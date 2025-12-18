@@ -12,4 +12,8 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	# Only handle portal/door spawning, NOT auto-respawn
 	# Defeat screen will handle respawning now
-	GameManager.respawn_at_portal()
+	# Handle portal/door spawning first
+	if not GameManager.respawn_at_portal():
+		# If no portal target, try to respawn at checkpoint
+		print("[Map3] No portal target, attempting checkpoint respawn...")
+		GameManager.respawn_at_checkpoint()
