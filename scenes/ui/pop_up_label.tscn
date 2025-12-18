@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbqe8dpc5emay"]
+
+[ext_resource type="Script" uid="uid://bj2jsv6gmgmtc" path="res://scenes/ui/pop_up_label.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="3_kwane"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_popup"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+texture = ExtResource("2_bg")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[node name="PopUpLabel" type="PanelContainer"]
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_popup")
+script = ExtResource("1_script")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_kwane")
+text = "TEXT"
+horizontal_alignment = 1
+vertical_alignment = 1

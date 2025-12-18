@@ -470,9 +470,11 @@ is_cross_scene = true
 [node name="Teleport" parent="." instance=ExtResource("19_ixb2s")]
 position = Vector2(9391, 99)
 scale = Vector2(0.5, 0.5)
-target_stage = "uid://k0emccpu8xrk"
+target_stage = "uid://cpw3nrru4osil"
 target_door = "LeftDoor"
 is_cross_scene = true
+completes_stage_id = 4
+triggers_victory_screen = true
 
 [node name="Path2D" parent="." instance=ExtResource("18_sqrxr")]
 position = Vector2(5942, 130)

@@ -1,0 +1,365 @@
+[gd_scene load_steps=15 format=3 uid="uid://blassf1djfrhf"]
+
+[ext_resource type="Script" uid="uid://dsw1xosulimm3" path="res://screens/game_screen/world_map_screen.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ddgxxpln1dndj" path="res://asset/ui/world_map/full_world_map.jpg" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="3_font"]
+[ext_resource type="Script" uid="uid://djoa1vwxy6awi" path="res://screens/game_screen/stage_button.gd" id="4_stage_script"]
+[ext_resource type="Texture2D" uid="uid://xxvvy2ps3y55" path="res://asset/tutorial/house/cluster_normal.png" id="5_tutorial"]
+[ext_resource type="Texture2D" uid="uid://bidirtxwgko0l" path="res://asset/ui/world_map/world_map_2.png" id="6_map2"]
+[ext_resource type="Texture2D" uid="uid://c85l5d0ff6oul" path="res://asset/ui/world_map/world_map_3.png" id="7_map3"]
+[ext_resource type="Texture2D" uid="uid://dnohnhffwef7w" path="res://asset/ui/world_map/world_map_4.png" id="8_map4"]
+[ext_resource type="Texture2D" uid="uid://1u7qoo51uwra" path="res://asset/ui/world_map/world_map_5.png" id="9_map5"]
+[ext_resource type="Texture2D" uid="uid://c2aoo708cvyg7" path="res://asset/ui/world_map/world_map_6.png" id="10_map6"]
+[ext_resource type="Texture2D" uid="uid://bsjr4fktty6hy" path="res://asset/ui/world_map/world_map_7.png" id="11_map7"]
+[ext_resource type="Texture2D" uid="uid://b6u5kb817k45o" path="res://asset/ui/world_map/world_map_8.png" id="12_map8"]
+[ext_resource type="Texture2D" uid="uid://cpernpfcpvbaf" path="res://asset/level_3_water_palace/background/water_goddess_platform.png" id="13_map9"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pop_up_label.tscn" id="14_popup"]
+
+[node name="WorldMapScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 2819.5122
+offset_bottom = 1593.0
+scale = Vector2(0.41, 0.41)
+texture = ExtResource("2_bg")
+
+[node name="StagesLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 20.0
+offset_right = 590.0
+offset_bottom = 87.5
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 46
+text = "WORLD MAP"
+
+[node name="StagesControl" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Stage1" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+target_scene = "res://levels/tutorial/map0.tscn"
+target_door = "StartDoor"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage1"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage1/TextureButton"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 44.0
+offset_right = 1086.0
+offset_bottom = 1068.0
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("5_tutorial")
+
+[node name="PopUpLabel" parent="StagesControl/Stage1" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 51.0
+offset_top = 166.0
+offset_right = 190.0
+offset_bottom = 218.0
+text = "TUTORIAL"
+
+[node name="Stage2" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 2
+target_scene = "res://levels/map1.tscn"
+target_door = "StartDoor"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage2/TextureButton"]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 54.0
+offset_right = 4317.6665
+offset_bottom = 2412.333
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("6_map2")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage2/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(2166.6665, 2150, 2449.9998, 2025, 2466.6665, 1725, 2458.3333, 1483.3333, 2649.9998, 1349.9999, 2724.9998, 1125, 2433.3333, 1041.6666, 2058.3333, 983.33325, 1783.3333, 841.6666, 1591.6665, 583.33325, 1291.6665, 583.33325, 1466.6665, 700, 1475, 858.33325, 1283.3333, 883.33325, 1158.3333, 966.6666, 1266.6665, 1233.3333, 1375, 1449.9999, 1375, 1658.3333, 1575, 1775, 1875, 1841.6665, 2058.3333, 1941.6665)
+
+[node name="PopUpLabel" parent="StagesControl/Stage2" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 276.0
+offset_top = 249.0
+offset_right = 435.0
+offset_bottom = 324.0
+text = "COASTAL 
+BEGINNING"
+
+[node name="Stage3" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 3
+target_scene = "uid://x5qrj66qebnm"
+target_door = "LeftDoor"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage3"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage3/TextureButton"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -4.0
+offset_right = 9418.333
+offset_bottom = 5812.6665
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("7_map3")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage3/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(5999.9995, 458.3333, 6183.333, 658.3333, 6358.333, 833.3333, 6441.666, 1141.6666, 6524.9995, 1500, 6258.333, 1300, 5999.9995, 1241.6666, 5749.9995, 1250, 5424.9995, 1225, 5158.333, 1208.3334, 4908.333, 1291.6666, 4549.9995, 1333.3334, 4399.9995, 1175, 4491.6665, 799.99994, 4691.6665, 1066.6666, 4933.333, 883.33325, 5074.9995, 741.6666, 5124.9995, 441.66666, 5316.6665, 425, 5399.9995, 691.6666, 5608.333, 708.3333, 5774.9995, 583.3333)
+
+[node name="PopUpLabel" parent="StagesControl/Stage3" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 568.0
+offset_top = 184.0
+offset_right = 764.0
+offset_bottom = 236.0
+text = "ANCIENT RUINS"
+
+[node name="Stage4" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 4
+target_scene = "uid://dq7eu5p47t8gv"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage4"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage4/TextureButton"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = -3.0
+offset_right = 9548.666
+offset_bottom = 5813.6665
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("8_map4")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage4/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(9325, 683.3333, 9333.333, 1175, 9325, 2408.3333, 9016.667, 2408.3333, 8633.333, 2325, 8258.333, 2325, 7883.333, 2408.3333, 7491.666, 2383.3333, 7241.666, 2125, 7024.9995, 1783.3333, 7091.666, 1400, 7074.9995, 1075, 7074.9995, 533.3333, 7274.9995, 899.99994, 7558.333, 816.6666, 7924.9995, 841.6666, 8316.667, 791.6666, 8791.667, 808.3333, 8933.333, 341.66666, 9125, 433.3333)
+
+[node name="PopUpLabel" parent="StagesControl/Stage4" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 912.0
+offset_top = 257.0
+offset_right = 1068.0
+offset_bottom = 309.0
+text = "DARK SWAMP"
+
+[node name="Stage5" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 5
+target_scene = "uid://k0emccpu8xrk"
+target_door = "Teleport"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage5"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage5/TextureButton"]
+layout_mode = 0
+offset_left = -5.0
+offset_top = -31.0
+offset_right = 9536.666
+offset_bottom = 5785.6665
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("9_map5")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage5/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(6716.666, 2466.6665, 6283.333, 2358.3333, 5924.9995, 2250, 5724.9995, 2483.3333, 5341.6665, 2624.9998, 5149.9995, 2374.9998, 4849.9995, 2433.3333, 4524.9995, 2474.9998, 4349.9995, 2708.3333, 4366.6665, 2966.6665, 4424.9995, 3241.6665, 4399.9995, 3491.6665, 4666.6665, 3666.6665, 4966.6665, 3783.333, 5383.333, 3783.333, 5766.6665, 3683.333, 6208.333, 3616.6665, 6566.666, 3599.9998, 6716.666, 3366.6665, 6716.666, 2941.6665, 6808.333, 2708.3333)
+
+[node name="PopUpLabel" parent="StagesControl/Stage5" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 552.0
+offset_top = 397.0
+offset_right = 748.0
+offset_bottom = 449.0
+text = "AUTUMN FOREST"
+
+[node name="Stage6" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 6
+target_scene = "uid://du7hahnxorxmd"
+target_door = "Teleport4"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage6"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage6/TextureButton"]
+layout_mode = 0
+offset_left = -49.0
+offset_top = -37.0
+offset_right = 9934.333
+offset_bottom = 5779.6665
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("10_map6")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage6/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(9799.999, 3274.9998, 9766.666, 5575, 9399.999, 5591.6665, 9091.666, 5408.3335, 8858.333, 5133.3335, 8641.666, 4850, 8266.666, 4458.3335, 8125, 4066.6665, 8300, 3808.333, 8558.333, 3699.9998, 8791.666, 3308.3333, 8999.999, 3541.6665, 9383.333, 3483.3333)
+
+[node name="PopUpLabel" parent="StagesControl/Stage6" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 961.0
+offset_top = 530.0
+offset_right = 1117.0
+offset_bottom = 582.0
+text = "MOSS HAVEN"
+
+[node name="Stage7" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 7
+target_scene = "uid://kv02hvhfsd8k"
+target_door = "Door1"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage7"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage7/TextureButton"]
+layout_mode = 0
+offset_left = -42.0
+offset_top = -50.0
+offset_right = 9941.333
+offset_bottom = 5766.6665
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("11_map7")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage7/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(6741.6665, 4599.9995, 6575, 4691.6665, 6533.333, 4833.333, 6491.6665, 5049.9995, 6325, 5083.333, 6075, 5124.9995, 6016.6665, 5299.9995, 6150, 5483.333, 6391.6665, 5699.9995, 6666.6665, 5774.9995, 6933.333, 5716.6665, 7133.333, 5724.9995, 7349.9995, 5608.333, 7449.9995, 5474.9995, 7416.6665, 5266.6665, 7324.9995, 5124.9995, 7224.9995, 4941.6665, 7133.333, 4833.333)
+
+[node name="PopUpLabel" parent="StagesControl/Stage7" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 679.0
+offset_top = 594.0
+offset_right = 862.0
+offset_bottom = 646.0
+text = "MINOR SHRINE"
+
+[node name="Stage8" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 8
+target_scene = "uid://du7hahnxorxmd"
+target_door = "Teleport2"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage8"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage8/TextureButton"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = -46.0
+offset_right = 9406.0
+offset_bottom = 5812.333
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("12_map8")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage8/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(3449.9998, 4341.6665, 3624.9998, 4458.333, 3716.6665, 4625, 3949.9998, 4700, 4166.6665, 4700, 4375, 4566.6665, 4683.333, 4766.6665, 4750, 5016.6665, 4925, 5233.3335, 4925, 5533.3335, 4791.6665, 5666.6665, 2675, 5666.6665, 2516.6665, 5325, 2591.6665, 5075, 2741.6665, 4858.3335, 2983.3333, 4766.6665, 3233.3333, 4683.3335)
+
+[node name="PopUpLabel" parent="StagesControl/Stage8" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 332.0
+offset_top = 588.0
+offset_right = 515.0
+offset_bottom = 640.0
+text = "PALACE RUINS"
+
+[node name="Stage9" type="Control" parent="StagesControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("4_stage_script")
+stage_id = 9
+target_scene = "uid://bhwnd0dvsqev8"
+
+[node name="TextureButton" type="TextureButton" parent="StagesControl/Stage9"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Icon" type="TextureRect" parent="StagesControl/Stage9/TextureButton"]
+layout_mode = 0
+offset_left = -16.0
+offset_top = 278.0
+offset_right = 6783.9995
+offset_bottom = 6497.9995
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("13_map9")
+
+[node name="Polygon2D" type="Polygon2D" parent="StagesControl/Stage9/TextureButton/Icon"]
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(6359.9995, 5219.9995, 6359.9995, 3899.9995, 6399.9995, 3079.9995, 5879.9995, 2699.9995, 5559.9995, 2399.9995, 5559.9995, 1440, 5159.9995, 1120, 4039.9998, 860, 2879.9998, 900, 1779.9999, 1080, 1319.9999, 1400, 1299.9999, 2359.9995, 979.9999, 2659.9995, 419.99997, 3039.9995, 439.99994, 3999.9995, 419.99997, 5199.9995)
+
+[node name="PopUpLabel" parent="StagesControl/Stage9" instance=ExtResource("14_popup")]
+visible = false
+layout_mode = 0
+offset_left = 68.0
+offset_top = 557.0
+offset_right = 238.0
+offset_bottom = 609.0
+text = "AQUA PALACE"

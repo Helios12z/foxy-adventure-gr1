@@ -1,0 +1,267 @@
+[gd_scene load_steps=11 format=3 uid="uid://drf7whcpashbj"]
+
+[ext_resource type="Script" uid="uid://bwom1fhgt8a80" path="res://screens/game_screen/victory_screen.gd" id="1_gd_script"]
+[ext_resource type="Texture2D" uid="uid://cfyt85w4nbsuq" path="res://asset/ui/result/cloud_bg.png" id="2_cloud"]
+[ext_resource type="Texture2D" uid="uid://dfiebiy8ljmoj" path="res://asset/ui/result/rainbow.png" id="3_rainbow"]
+[ext_resource type="Texture2D" uid="uid://no2qdg1me4do" path="res://asset/ui/result/foxy.png" id="4_foxy"]
+[ext_resource type="Texture2D" uid="uid://bgnc68qb62pp6" path="res://asset/ui/result/star_1.png" id="5_star1"]
+[ext_resource type="Texture2D" uid="uid://bfskynekv5rbd" path="res://asset/ui/result/star_2.png" id="6_star2"]
+[ext_resource type="Texture2D" uid="uid://ctjsjkppoyhpi" path="res://asset/ui/result/gun.png" id="8_ngt65"]
+[ext_resource type="Texture2D" uid="uid://v6r4ybanfawx" path="res://asset/ui/result/banner.png" id="9_banner"]
+[ext_resource type="Texture2D" uid="uid://cx1do1pr5jq6x" path="res://asset/ui/result/wheel.png" id="10_wheel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pop_up_button.tscn" id="12_popup_btn"]
+[ext_resource type="Texture2D" uid="uid://dn4w7ns1g2n6" path="res://asset/ui/result/paper_color.png" id="13_paper"]
+
+[node name="VictoryScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_gd_script")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OverlayColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="VictoryComposite" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -288.0
+offset_right = 530.0
+offset_bottom = 312.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.7, 0.7)
+
+[node name="Rainbow" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -261.0
+offset_top = -199.0
+offset_right = 268.0
+offset_bottom = 118.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_rainbow")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Background" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.2222223
+offset_top = 28.888891
+offset_right = -2.222229
+offset_bottom = 28.888916
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_cloud")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Stars" type="Node2D" parent="Control/VictoryComposite"]
+position = Vector2(400, 300)
+
+[node name="Star1" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = -350.0
+offset_top = -250.0
+offset_right = -290.0
+offset_bottom = -190.0
+texture = ExtResource("5_star1")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Star2" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = 290.0
+offset_top = -250.0
+offset_right = 350.0
+offset_bottom = -190.0
+texture = ExtResource("6_star2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Star3" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = -380.0
+offset_top = -50.0
+offset_right = -320.0
+offset_bottom = 10.0
+texture = ExtResource("5_star1")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Star4" type="TextureRect" parent="Control/VictoryComposite/Stars"]
+offset_left = 320.0
+offset_top = -50.0
+offset_right = 380.0
+offset_bottom = 10.0
+texture = ExtResource("6_star2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Wheel1" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.00003
+offset_top = -56.666687
+offset_right = 49.99997
+offset_bottom = 28.042328
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4.2, 4.2)
+pivot_offset = Vector2(40, 40)
+texture = ExtResource("10_wheel")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="FoxyVictory" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -171.11111
+offset_top = -148.88889
+offset_right = 128.88892
+offset_bottom = 151.11111
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_foxy")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Gun1" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -251.11111
+offset_top = 18.888885
+offset_right = 146.66675
+offset_bottom = 318.8888
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_ngt65")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Gun2" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 65.5556
+offset_top = 17.777802
+offset_right = 476.66675
+offset_bottom = 317.7777
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_ngt65")
+expand_mode = 1
+stretch_mode = 6
+flip_h = true
+
+[node name="Banner" type="TextureRect" parent="Control/VictoryComposite"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -232.22223
+offset_top = 91.111115
+offset_right = 167.77777
+offset_bottom = 251.11108
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("9_banner")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="WorldMapButton" parent="Control" instance=ExtResource("12_popup_btn")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = 170.0
+offset_right = 123.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(100, 30)
+text = "WORLD MAP"
+
+[node name="Fireworks1" type="CPUParticles2D" parent="Control"]
+emitting = false
+amount = 40
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("13_paper")
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 300.0
+initial_velocity_max = 600.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+scale_amount_min = 0.5
+scale_amount_max = 1.2
+color = Color(1, 0, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="Fireworks2" type="CPUParticles2D" parent="Control"]
+emitting = false
+amount = 40
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("13_paper")
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 300.0
+initial_velocity_max = 600.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+scale_amount_min = 0.5
+scale_amount_max = 1.2
+color = Color(1, 0, 0, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0

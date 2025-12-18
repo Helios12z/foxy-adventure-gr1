@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8j6y3q4n2p5v"]
+
+[ext_resource type="Script" path="res://scenes/ui/pop_up_button.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="3_font"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_normal"]
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+texture = ExtResource("2_bg")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pressed"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+texture = ExtResource("2_bg")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+modulate_color = Color(0.8, 0.8, 0.8, 1)
+
+[node name="PopUpButton" type="Button"]
+offset_right = 132.0
+offset_bottom = 50.0
+pivot_offset = Vector2(66, 25)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 0, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_styles/normal = SubResource("StyleBoxTexture_normal")
+theme_override_styles/hover = SubResource("StyleBoxTexture_normal")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_pressed")
+theme_override_styles/focus = SubResource("StyleBoxTexture_normal")
+text = "BUTTON"
+script = ExtResource("1_script")
