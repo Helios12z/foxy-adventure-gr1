@@ -103,7 +103,7 @@ size = Vector2(28, 50)
 [node name="WaterTornado" type="CharacterBody2D" groups=["bullet_enemy"]]
 collision_layer = 8
 script = ExtResource("1_pg56c")
-tornado_damage = 50
+tornado_damage = 5
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="Water" type="AnimatedSprite2D" parent="."]

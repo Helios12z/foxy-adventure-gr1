@@ -10,6 +10,9 @@ func _enter() -> void:
 	if obj.hit_collision_shape_2d:
 		obj.hit_collision_shape_2d.disabled = true
 
+	# Xóa tất cả minions khi King Crab chết
+	_remove_all_minions()
+
 	if obj.camera:
 		obj.camera.camera_shake(0.4, 24)
 
@@ -84,3 +87,10 @@ func _on_dialogue_finished() -> void:
 
 func _final_remove() -> void:
 	obj.queue_free()
+
+func _remove_all_minions() -> void:
+	# Lấy tất cả minions trong group và xóa chúng
+	var minions = obj.get_tree().get_nodes_in_group("king_crab_minion")
+	for minion in minions:
+		if is_instance_valid(minion):
+			minion.queue_free()

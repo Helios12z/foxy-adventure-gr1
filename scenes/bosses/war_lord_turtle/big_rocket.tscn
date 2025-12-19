@@ -53,6 +53,7 @@ collision_mask = 2
 contact_monitor = true
 max_contacts_reported = 4
 script = ExtResource("1_uodo2")
+damage = 15
 explosion = ExtResource("2_uodo2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
