@@ -1,14 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://ocavr6vbm2kn"]
+[gd_scene load_steps=12 format=3 uid="uid://ocavr6vbm2kn"]
 
 [ext_resource type="Script" uid="uid://bcyftdn6lkutn" path="res://scenes/enemies/pearl_altar/pearl_altar.gd" id="1_m1xd6"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="2_sm6nd"]
 [ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_vueo6"]
-[ext_resource type="Texture2D" uid="uid://dnyg4ks6lulmi" path="res://asset/level_3_water_palace/enemies/pearl_altar/pearl_altar_1.png" id="3_6foxq"]
-[ext_resource type="Texture2D" uid="uid://cguxreefxhe40" path="res://asset/level_3_water_palace/enemies/pearl_altar/pearl_altar_2.png" id="4_4v52e"]
-[ext_resource type="Texture2D" uid="uid://ch2p2xdnn8qia" path="res://asset/level_3_water_palace/enemies/pearl_altar/pearl_altar_3.png" id="5_3mhnk"]
-[ext_resource type="Texture2D" uid="uid://cipvupt7kno6t" path="res://asset/level_3_water_palace/enemies/pearl_altar/pearl_altar_5.png" id="5_sk8q6"]
 [ext_resource type="Texture2D" uid="uid://27hsu0rh17aq" path="res://asset/level_3_water_palace/enemies/pearl_altar/pearl_altar_6.png" id="6_2nmmg"]
-[ext_resource type="Texture2D" uid="uid://b60qoyig0r3o7" path="res://asset/level_3_water_palace/enemies/pearl_altar/pearl_altar_4.png" id="6_sk8q6"]
 [ext_resource type="Script" uid="uid://tqxa0q7sq85g" path="res://scenes/effects/flicker_light_2d.gd" id="9_sk8q6"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="10_under"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="11_full"]
@@ -17,34 +12,7 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_6foxq")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_4v52e")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_3mhnk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_sk8q6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_sk8q6")
-}, {
-"duration": 1.0,
 "texture": ExtResource("6_2nmmg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_sk8q6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_sk8q6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_3mhnk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_4v52e")
 }],
 "loop": true,
 "name": &"idle",

@@ -391,3 +391,5 @@ position = Vector2(10205, 516.25)
 scale = Vector2(1.77, 1.77)
 target_stage = "uid://bhwnd0dvsqev8"
 is_cross_scene = true
+completes_stage_id = 8
+triggers_victory_screen = true
