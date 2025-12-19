@@ -197,10 +197,11 @@ func _emit_plus_icon(tex: Texture2D, s: Vector2) -> void:
 	# Start at player's feet (approx global_position)
 	# Add slight random X offset (-18 to 2 range)
 	var start_pos = player.global_position + Vector2(randf_range(-15, 5), 0)
-	p.global_position = start_pos
-	p.scale = s
 	p.z_index = 10 # Ensure it's above player
 	get_tree().current_scene.add_child(p)
+	
+	p.global_position = start_pos
+	p.scale = s
 	
 	# Tween up and fade out
 	var tw = create_tween()
