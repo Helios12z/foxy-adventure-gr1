@@ -331,7 +331,8 @@ position = Vector2(4624, -260)
 position = Vector2(7190, 76)
 
 [node name="Player" parent="." instance=ExtResource("3_hrn5s")]
-position = Vector2(97, 62)
+position = Vector2(4743, -129)
+has_blade = true
 max_health = 100
 
 [node name="PointLight2D" type="PointLight2D" parent="Player"]
