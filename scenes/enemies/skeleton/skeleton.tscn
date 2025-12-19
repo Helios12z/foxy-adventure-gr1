@@ -1,8 +1,8 @@
-[gd_scene load_steps=46 format=3 uid="uid://g3pj503kap4d"]
+[gd_scene load_steps=48 format=3 uid="uid://g3pj503kap4d"]
 
-[ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_p222q"]
+[ext_resource type="Script" uid="uid://b66fihd5yugfg" path="res://scenes/enemies/skeleton/skeleton.gd" id="1_yjy0a"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_pk2ch"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_wkpb5"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_wkpb5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://ws3vcducc3x8" path="res://asset/enemy/Skeleton/Attack.png" id="4_p222q"]
 [ext_resource type="Texture2D" uid="uid://bc13jptnfkne6" path="res://asset/enemy/Skeleton/Death.png" id="5_pk2ch"]
@@ -17,6 +17,8 @@
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_qfitn"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_kdl81"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_wkpb5"]
+[ext_resource type="Script" uid="uid://ow80w8bxucfv" path="res://scenes/enemies/skeleton/temporary_dead.gd" id="16_yjy0a"]
+[ext_resource type="Script" uid="uid://lflfmd2nkjr8" path="res://scenes/enemies/skeleton/resurrect.gd" id="17_adimu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
 size = Vector2(37, 54)
@@ -59,18 +61,6 @@ region = Rect2(900, 0, 150, 150)
 atlas = ExtResource("4_p222q")
 region = Rect2(1050, 0, 150, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qfitn"]
-atlas = ExtResource("5_pk2ch")
-region = Rect2(0, 0, 150, 150)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3iuyr"]
-atlas = ExtResource("5_pk2ch")
-region = Rect2(150, 0, 150, 150)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2fy76"]
-atlas = ExtResource("5_pk2ch")
-region = Rect2(300, 0, 150, 150)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_2qmsc"]
 atlas = ExtResource("5_pk2ch")
 region = Rect2(450, 0, 150, 150)
@@ -106,6 +96,18 @@ region = Rect2(300, 0, 150, 150)
 [sub_resource type="AtlasTexture" id="AtlasTexture_h76nu"]
 atlas = ExtResource("7_03bn8")
 region = Rect2(450, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2fy76"]
+atlas = ExtResource("5_pk2ch")
+region = Rect2(300, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3iuyr"]
+atlas = ExtResource("5_pk2ch")
+region = Rect2(150, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfitn"]
+atlas = ExtResource("5_pk2ch")
+region = Rect2(0, 0, 150, 150)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ub0gc"]
 atlas = ExtResource("8_8eo2u")
@@ -156,15 +158,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qfitn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3iuyr")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2fy76")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_2qmsc")
 }],
 "loop": false,
@@ -207,6 +200,31 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_2qmsc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2fy76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3iuyr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qfitn")
+}],
+"loop": false,
+"name": &"resurrect",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2qmsc")
+}],
+"loop": true,
+"name": &"temporary_dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ub0gc")
 }, {
 "duration": 1.0,
@@ -226,9 +244,7 @@ animations = [{
 [node name="Sekeleton" type="CharacterBody2D"]
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
-script = ExtResource("1_p222q")
-coin_drop_count = 2
-max_health = 150
+script = ExtResource("1_yjy0a")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -344,6 +360,12 @@ script = ExtResource("13_u0q46")
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_qfitn")
 metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="TemporaryDead" type="Node" parent="States"]
+script = ExtResource("16_yjy0a")
+
+[node name="Resurrect" type="Node" parent="States"]
+script = ExtResource("17_adimu")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = -15.714287
