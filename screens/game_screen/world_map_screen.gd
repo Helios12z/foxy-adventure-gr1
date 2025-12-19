@@ -11,22 +11,34 @@ class_name WorldMapScreen
 @export var debug_completed_stages_count: int = 0 
 
 func _ready() -> void:
-	# RESET LOGIC: When entering World Map, we reset "run" specific progress
-	# 1. Reset Bosses
+	# RESET LOGIC: When entering World Map
+	# 1. Clear boss defeated status
 	GameManager.boss_defeated_by_stage.clear()
 	
-	# 2. Reset Checkpoints (keep completed_stages and init)
+	# 2. Preserve latest checkpoint as "world_map_state" for next run
+	if not GameManager.current_checkpoint_id.is_empty():
+		var latest_data = GameManager.load_checkpoint(GameManager.current_checkpoint_id)
+		if not latest_data.is_empty():
+			# Store the complete latest checkpoint under a global key
+			GameManager.checkpoint_data["world_map_state"] = latest_data
+			print("Saved latest checkpoint to world_map_state: coins=", latest_data.get("inventory_data", {}).get("coins", 0))
+	
+	# 3. Delete level-specific checkpoint IDs (so they can be reactivated)
+	# Keep only: completed_stages, collected_coins_by_stage, world_map_state, init
 	var keys_to_remove = []
 	for key in GameManager.checkpoint_data.keys():
-		if key != "completed_stages" and key != "init" and not key.begins_with("collected_"):
+		# Check if it's a checkpoint ID (contains "/root/" or starts with "Checkpoint")
+		if (key.begins_with("/root/") or key.begins_with("Checkpoint")) and key != "world_map_state":
 			keys_to_remove.append(key)
 	
 	for key in keys_to_remove:
 		GameManager.checkpoint_data.erase(key)
-		
-	GameManager.current_checkpoint_id = ""
-	GameManager.save_checkpoint_data() # Save the clean slate
-	print("World Map Loaded: Reset bosses and checkpoints.")
+		print("Removed checkpoint ID: ", key)
+	
+	# 4. Set current checkpoint to world_map_state
+	GameManager.current_checkpoint_id = "world_map_state"
+	GameManager.save_checkpoint_data()
+	print("World Map: Reset complete. Current checkpoint: ", GameManager.current_checkpoint_id)
 
 	# Clean up any leftover UI overlays (Victory/Defeat screens, etc.)
 	cleanup_overlay_screens()
