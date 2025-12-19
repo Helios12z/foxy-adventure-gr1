@@ -1,20 +1,21 @@
-[gd_scene load_steps=48 format=3 uid="uid://g3pj503kap4d"]
+[gd_scene load_steps=50 format=3 uid="uid://g3pj503kap4d"]
 
 [ext_resource type="Script" uid="uid://b66fihd5yugfg" path="res://scenes/enemies/skeleton/skeleton.gd" id="1_yjy0a"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_pk2ch"]
 [ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_wkpb5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://ws3vcducc3x8" path="res://asset/enemy/Skeleton/Attack.png" id="4_p222q"]
+[ext_resource type="Shader" uid="uid://ca6d8wlgymi5d" path="res://resources/effects/dissolve_anime.gdshader" id="5_adimu"]
 [ext_resource type="Texture2D" uid="uid://bc13jptnfkne6" path="res://asset/enemy/Skeleton/Death.png" id="5_pk2ch"]
 [ext_resource type="Texture2D" uid="uid://dai4akr5x1pio" path="res://asset/enemy/Skeleton/Take Hit.png" id="6_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://cjwlrhvwu2qu0" path="res://asset/enemy/Skeleton/Idle.png" id="7_03bn8"]
 [ext_resource type="Texture2D" uid="uid://c08exc80o10pj" path="res://asset/enemy/Skeleton/Walk.png" id="8_8eo2u"]
 [ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_lsssd"]
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_e0ypk"]
-[ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_cm4hu"]
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_yptew"]
-[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="13_u0q46"]
+[ext_resource type="Script" uid="uid://dn3vpefsahorn" path="res://scenes/enemies/skeleton/hurt.gd" id="13_pewhb"]
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_qfitn"]
+[ext_resource type="Script" uid="uid://ca1fnnw62g68l" path="res://scenes/enemies/skeleton/dead.gd" id="15_adimu"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_kdl81"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_wkpb5"]
 [ext_resource type="Script" uid="uid://ow80w8bxucfv" path="res://scenes/enemies/skeleton/temporary_dead.gd" id="16_yjy0a"]
@@ -28,6 +29,13 @@ size = Vector2(39, 55)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jdvj0"]
 size = Vector2(44, 54)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ts8ke"]
+shader = ExtResource("5_adimu")
+shader_parameter/progress = 0.0
+shader_parameter/glow_color = Vector4(1, 0.92, 0.5, 1)
+shader_parameter/glow_strength = 0.9
+shader_parameter/outline_thickness = 1.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vpm5s"]
 atlas = ExtResource("4_p222q")
@@ -298,8 +306,9 @@ position = Vector2(6, 0)
 shape = SubResource("RectangleShape2D_jdvj0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+material = SubResource("ShaderMaterial_ts8ke")
 sprite_frames = SubResource("SpriteFrames_ogm1e")
-animation = &"dead"
+animation = &"hit"
 autoplay = "walk"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
@@ -349,13 +358,13 @@ script = ExtResource("9_lsssd")
 script = ExtResource("10_e0ypk")
 
 [node name="Hurt" type="Node" parent="States"]
-script = ExtResource("11_cm4hu")
+script = ExtResource("13_pewhb")
 
 [node name="Attack" type="Node" parent="States"]
 script = ExtResource("12_yptew")
 
 [node name="Dead" type="Node" parent="States"]
-script = ExtResource("13_u0q46")
+script = ExtResource("15_adimu")
 
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_qfitn")

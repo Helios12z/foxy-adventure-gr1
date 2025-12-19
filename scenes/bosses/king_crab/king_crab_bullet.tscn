@@ -30,7 +30,7 @@ height = 46.0
 [node name="KingCrabBullet" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_7r4pa")
-spike_damage = 200
+spike_damage = 10
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

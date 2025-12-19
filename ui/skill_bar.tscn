@@ -258,8 +258,10 @@ scale = Vector2(2.4, 2.4)
 
 [node name="Icon" type="TextureRect" parent="Heal"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -2.5
+offset_top = -29.583336
+offset_right = 21.666668
+offset_bottom = -6.666664
 texture = ExtResource("11_2cfu4")
 expand_mode = 1
 stretch_mode = 6
@@ -267,29 +269,44 @@ stretch_mode = 6
 [node name="Overlay" type="TextureRect" parent="Heal"]
 visible = false
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -2.083334
+offset_top = -30.416664
+offset_right = 22.083666
+offset_bottom = -7.4996643
 texture = ExtResource("12_fjwn0")
 expand_mode = 1
 stretch_mode = 6
 
 [node name="HealButtonLabel" type="Label" parent="Heal"]
 layout_mode = 0
-offset_left = 17.083332
-offset_top = 36.24999
-offset_right = 32.283333
-offset_bottom = 130.65001
-scale = Vector2(0.4, 0.4)
+offset_left = -9.166666
+offset_top = -14.583333
+offset_right = 64.833336
+offset_bottom = 8.416667
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("4_65txv")
-theme_override_font_sizes/font_size = 12
-text = "4
-"
+theme_override_font_sizes/font_size = 8
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="HealNumberLabel" type="Label" parent="Heal"]
 layout_mode = 0
-offset_left = 11.666667
-offset_top = 14.999999
-offset_right = 51.666668
-offset_bottom = 38.0
+offset_left = -7.083332
+offset_top = -34.16667
+offset_right = 62.500004
+offset_bottom = -11.666672
 scale = Vector2(0.5, 0.5)
-text = "3 / 3"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("4_65txv")
+theme_override_font_sizes/font_size = 8
+text = "3/3"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
