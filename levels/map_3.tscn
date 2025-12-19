@@ -241,9 +241,11 @@ shape = SubResource("RectangleShape2D_j565u")
 [node name="Teleport" parent="." instance=ExtResource("21_2g2fv")]
 position = Vector2(1808.75, 540)
 scale = Vector2(0.5, 0.5)
-target_stage = "uid://kv02hvhfsd8k"
+target_stage = "uid://cpw3nrru4osil"
 target_door = "Door1"
 is_cross_scene = true
+completes_stage_id = 6
+triggers_victory_screen = true
 
 [node name="Teleport2" parent="." instance=ExtResource("21_2g2fv")]
 position = Vector2(3205, 180)
@@ -351,8 +353,11 @@ scale = Vector2(1.8, 1.8)
 [node name="Teleport3" parent="." instance=ExtResource("21_2g2fv")]
 position = Vector2(10207.5, 463.75)
 scale = Vector2(0.5, 0.5)
-target_stage = "uid://bhwnd0dvsqev8"
+target_stage = "uid://cpw3nrru4osil"
+target_door = "Teleport"
 is_cross_scene = true
+completes_stage_id = 8
+triggers_victory_screen = true
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -386,3 +391,5 @@ position = Vector2(10205, 516.25)
 scale = Vector2(1.77, 1.77)
 target_stage = "uid://bhwnd0dvsqev8"
 is_cross_scene = true
+completes_stage_id = 8
+triggers_victory_screen = true

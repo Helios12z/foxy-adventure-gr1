@@ -281,6 +281,101 @@ func _format_integer(v: float) -> String:
 	var t := int(ceil(max(0.0, v)))
 	return str(t)
 
+# Reset all cooldowns (called on player respawn)
+func reset_cooldowns() -> void:
+	print("SkillBar: Resetting all cooldowns")
+	
+	# Dash
+	dash_overlay.visible = false
+	dash_icon.visible = true
+	dash_label.visible = false
+	
+	# Susanoo
+	sus_label.visible = false
+	_update_susanoo_visibility()
+	
+	# Room
+	room_label.visible = false
+	_update_room_visibility()
+	
+	# Giant
+	giant_label.visible = false
+	_update_giant_visibility()
+
+# Reload skill bar with new player (called on player respawn)
+func reload_skill_bar(new_player: Node) -> void:
+	print("SkillBar: Reloading with new player")
+	
+	# Disconnect from old player
+	if player != null and is_instance_valid(player):
+		_disconnect_player(player)
+	
+	# Disconnect from old susanoo state
+	if sus_state != null and is_instance_valid(sus_state):
+		_disconnect_susanoo(sus_state)
+	
+	# Set new player
+	player = new_player
+	sus_state = null
+	
+	# Connect to new player
+	if player != null:
+		_connect_player(player)
+		
+		# Find and connect to susanoo state
+		var states := player.get_node_or_null("States")
+		if states != null:
+			sus_state = states.get_node_or_null("Susanoo")
+			if sus_state != null:
+				_connect_susanoo(sus_state)
+	
+	# Reset all UI states
+	reset_cooldowns()
+	_update_susanoo_visibility()
+	_update_room_visibility()
+	_update_giant_visibility()
+	_update_mana_availability()
+	
+	print("SkillBar: Reload complete!")
+
+# Disconnect all signals from a player
+func _disconnect_player(p: Node) -> void:
+	if p.has_signal("dash_cooldown_started") and p.is_connected("dash_cooldown_started", Callable(self, "_on_dash_cd_started")):
+		p.disconnect("dash_cooldown_started", Callable(self, "_on_dash_cd_started"))
+	if p.has_signal("dash_cooldown_updated") and p.is_connected("dash_cooldown_updated", Callable(self, "_on_dash_cd_updated")):
+		p.disconnect("dash_cooldown_updated", Callable(self, "_on_dash_cd_updated"))
+	if p.has_signal("dash_cooldown_finished") and p.is_connected("dash_cooldown_finished", Callable(self, "_on_dash_cd_finished")):
+		p.disconnect("dash_cooldown_finished", Callable(self, "_on_dash_cd_finished"))
+	if p.has_signal("susanoo_cooldown_started") and p.is_connected("susanoo_cooldown_started", Callable(self, "_on_sus_cd_started")):
+		p.disconnect("susanoo_cooldown_started", Callable(self, "_on_sus_cd_started"))
+	if p.has_signal("susanoo_cooldown_updated") and p.is_connected("susanoo_cooldown_updated", Callable(self, "_on_sus_cd_updated")):
+		p.disconnect("susanoo_cooldown_updated", Callable(self, "_on_sus_cd_updated"))
+	if p.has_signal("susanoo_cooldown_finished") and p.is_connected("susanoo_cooldown_finished", Callable(self, "_on_sus_cd_finished")):
+		p.disconnect("susanoo_cooldown_finished", Callable(self, "_on_sus_cd_finished"))
+	if p.has_signal("room_cooldown_started") and p.is_connected("room_cooldown_started", Callable(self, "_on_room_cd_started")):
+		p.disconnect("room_cooldown_started", Callable(self, "_on_room_cd_started"))
+	if p.has_signal("room_cooldown_updated") and p.is_connected("room_cooldown_updated", Callable(self, "_on_room_cd_updated")):
+		p.disconnect("room_cooldown_updated", Callable(self, "_on_room_cd_updated"))
+	if p.has_signal("room_cooldown_finished") and p.is_connected("room_cooldown_finished", Callable(self, "_on_room_cd_finished")):
+		p.disconnect("room_cooldown_finished", Callable(self, "_on_room_cd_finished"))
+	if p.has_signal("giant_cooldown_started") and p.is_connected("giant_cooldown_started", Callable(self, "_on_giant_cd_started")):
+		p.disconnect("giant_cooldown_started", Callable(self, "_on_giant_cd_started"))
+	if p.has_signal("giant_cooldown_updated") and p.is_connected("giant_cooldown_updated", Callable(self, "_on_giant_cd_updated")):
+		p.disconnect("giant_cooldown_updated", Callable(self, "_on_giant_cd_updated"))
+	if p.has_signal("giant_cooldown_finished") and p.is_connected("giant_cooldown_finished", Callable(self, "_on_giant_cd_finished")):
+		p.disconnect("giant_cooldown_finished", Callable(self, "_on_giant_cd_finished"))
+
+# Disconnect all signals from susanoo state
+func _disconnect_susanoo(s: Node) -> void:
+	if s.has_signal("susanoo_cooldown_started") and s.is_connected("susanoo_cooldown_started", Callable(self, "_on_sus_cd_started")):
+		s.disconnect("susanoo_cooldown_started", Callable(self, "_on_sus_cd_started"))
+	if s.has_signal("susanoo_cooldown_updated") and s.is_connected("susanoo_cooldown_updated", Callable(self, "_on_sus_cd_updated")):
+		s.disconnect("susanoo_cooldown_updated", Callable(self, "_on_sus_cd_updated"))
+	if s.has_signal("susanoo_cooldown_finished") and s.is_connected("susanoo_cooldown_finished", Callable(self, "_on_sus_cd_finished")):
+		s.disconnect("susanoo_cooldown_finished", Callable(self, "_on_sus_cd_finished"))
+
+
+
 func _update_mana_availability() -> void:
 	if player == null:
 		return

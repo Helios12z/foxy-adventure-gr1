@@ -523,8 +523,10 @@ key_text = "C"
 
 [node name="Door" parent="." instance=ExtResource("42_vaqrb")]
 position = Vector2(2221, 69)
-target_stage = "uid://65dl3olpohwm"
+target_stage = "uid://cpw3nrru4osil"
 is_cross_scene = true
+completes_stage_id = 1
+triggers_victory_screen = true
 
 [node name="Node2" parent="." instance=ExtResource("36_21dun")]
 position = Vector2(2180, -48)
@@ -569,3 +571,6 @@ scale = Vector2(0.7, 0.7)
 
 [node name="WaterFairy" parent="Node2D" instance=ExtResource("44_7ilwd")]
 position = Vector2(752, 75)
+
+[node name="StartDoor" parent="." instance=ExtResource("42_vaqrb")]
+position = Vector2(-1072, 70)

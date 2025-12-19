@@ -112,8 +112,10 @@ tile_set = ExtResource("1_n68t6")
 
 [node name="RightDoor" parent="World/BossPlatformController/RightPlatform" instance=ExtResource("4_fe663")]
 position = Vector2(1122, 513)
-target_stage = "uid://dq7eu5p47t8gv"
+target_stage = "uid://cpw3nrru4osil"
 is_cross_scene = true
+completes_stage_id = 3
+triggers_victory_screen = true
 
 [node name="Player" parent="World" instance=ExtResource("3_wyfuh")]
 position = Vector2(-186, 579)
