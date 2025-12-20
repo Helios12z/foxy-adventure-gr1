@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ca4qcwysg1ugi"
-path="res://.godot/imported/loading_war_lord_turtle_1.png-9981476d951c05cd78385d14ddb7349a.ctex"
+path.s3tc="res://.godot/imported/loading_war_lord_turtle_1.png-9981476d951c05cd78385d14ddb7349a.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://asset/ui/loading/loading_content/images/war_lord_turtle/loading_war_lord_turtle_1.png"
-dest_files=["res://.godot/imported/loading_war_lord_turtle_1.png-9981476d951c05cd78385d14ddb7349a.ctex"]
+dest_files=["res://.godot/imported/loading_war_lord_turtle_1.png-9981476d951c05cd78385d14ddb7349a.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

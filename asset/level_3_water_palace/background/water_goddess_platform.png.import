@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpernpfcpvbaf"
-path="res://.godot/imported/water_goddess_platform.png-d4ae6e9ff9854d64b9aabd47a7eb109e.ctex"
+path.s3tc="res://.godot/imported/water_goddess_platform.png-d4ae6e9ff9854d64b9aabd47a7eb109e.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/background/water_goddess_platform.png"
-dest_files=["res://.godot/imported/water_goddess_platform.png-d4ae6e9ff9854d64b9aabd47a7eb109e.ctex"]
+dest_files=["res://.godot/imported/water_goddess_platform.png-d4ae6e9ff9854d64b9aabd47a7eb109e.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
