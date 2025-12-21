@@ -11,7 +11,7 @@ signal start_fight
 @export var spike_damage: int = 15
 @export var speed: float = 50.0
 @export var king_crab_gravity: float = 700.0
-@export var phase2_threshold_ratio: float = 0.7    
+@export var phase2_threshold_ratio: float = 0.6    
 
 @export var roll_speed_mult: float = 5.5
 @export var roll_brake: float = 5000

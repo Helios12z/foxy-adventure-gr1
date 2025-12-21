@@ -1143,10 +1143,8 @@ reverse_direction = false
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"atk4"
+animation = &"idle_atk"
 autoplay = "walk"
-frame = 4
-frame_progress = 1.0
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.363076, 0.00241337, 0.0310119, 1)

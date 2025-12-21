@@ -12,6 +12,7 @@ signal hit_player
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 
 var origin: Vector2
+var boss_position: Vector2
 var player_target_pos: Vector2
 var going_out := true
 var owner_crab: Node = null
@@ -34,6 +35,12 @@ func launch(_owner: Node, _origin: Vector2, _target: Vector2) -> void:
 	global_position = _origin
 	target_pos = _target
 
+	# Store the boss's current position for return check
+	if owner_crab and owner_crab.obj:
+		boss_position = owner_crab.obj.global_position
+	else:
+		boss_position = _origin  # fallback to origin if no boss reference
+
 	dir = (_target - origin).normalized()
 	velocity = dir * speed
 	_face_by_dir(dir)
@@ -48,10 +55,10 @@ func _physics_process(delta: float) -> void:
 		traveled += speed * delta
 		if _hit_wall() or traveled >= max_range or global_position.distance_to(origin) >= max_range:
 			going_out = false
-			dir = (origin - global_position).normalized()
+			dir = (boss_position - global_position).normalized()
 			_face_by_dir(dir)
 	elif not has_hit_boss:
-		if global_position.distance_to(origin) <= return_stop_radius:
+		if global_position.distance_to(boss_position) <= return_stop_radius:
 			hit_the_boss()
 			return
 

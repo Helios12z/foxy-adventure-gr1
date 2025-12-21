@@ -349,13 +349,7 @@ func check_boomerang_formation() -> bool:
 	return false
 
 func spawn_boomerang(first_claw: Node, second_claw: Node) -> void:
-	if obj.boomerang_scene == null:
-		push_error("Boomerang scene not set in king crab")
-		return
-
 	var boomerang = obj.boomerang_scene.instantiate()
-	if not boomerang:
-		return
 
 	get_tree().current_scene.add_child(boomerang)
 
@@ -370,14 +364,9 @@ func spawn_boomerang(first_claw: Node, second_claw: Node) -> void:
 	elif boomerang.has_signal("returned"):
 		boomerang.connect("returned", Callable(self, "on_boomerang_hit_boss"))
 
-	if boomerang.has_method("launch_as_boomerang"):
-		var target = obj._get_player()
-		if target:
-			boomerang.launch_as_boomerang(mid_point, target.global_position)
-	elif boomerang.has_method("launch"):
-		var target = obj._get_player()
-		if target:
-			boomerang.launch(self, mid_point, target.global_position)
+	var target = obj._get_player()
+	if target:
+		boomerang.launch(self, mid_point, target.global_position)
 
 	first_claw.queue_free()
 	second_claw.queue_free()

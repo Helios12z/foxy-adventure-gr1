@@ -44,9 +44,7 @@ func _physics_process(delta: float) -> void:
 			_face_by_dir(dir)
 	else:
 		if global_position.distance_to(origin) <= return_stop_radius:
-			print("DEBUG: Claw returning to origin, emitting returned signal. Groups before removal: ", get_groups())
 			emit_signal("returned")
-			print("DEBUG: After emitting returned signal, about to queue_free")
 			queue_free()
 			return
 

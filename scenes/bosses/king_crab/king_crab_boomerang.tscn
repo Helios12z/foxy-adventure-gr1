@@ -7,7 +7,7 @@
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7rp6u"]
 radius = 17.0
-height = 46.0
+height = 87.99999
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7r4pa"]
 animations = [{
@@ -33,25 +33,27 @@ script = ExtResource("1_q7u67")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4, -2)
+position = Vector2(0, -2)
 rotation = -1.5708
 shape = SubResource("CapsuleShape2D_7rp6u")
 
 [node name="Direction" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+position = Vector2(-19, 0)
 sprite_frames = SubResource("SpriteFrames_7r4pa")
 autoplay = "default"
 frame_progress = 0.597221
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="Direction"]
-position = Vector2(38, 0)
+position = Vector2(19, 0)
 sprite_frames = SubResource("SpriteFrames_7r4pa")
 autoplay = "default"
 frame_progress = 0.23736663
 flip_h = true
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
+position = Vector2(-18, 0)
 collision_layer = 8
 collision_mask = 4
 script = ExtResource("4_7lwb8")

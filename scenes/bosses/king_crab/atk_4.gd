@@ -27,7 +27,7 @@ func _update(d: float) -> void:
 			obj.camera.camera_shake()
 			first_claw_node = spawn_first_claw_with_dir(obj.queued_bullet_dir_x)
 			first_claw_shot = true
-			obj.change_animation("atk_idle")
+			obj.change_animation("idle_atk")
 			timer = 0.75
 		elif not atk4_animation_started:
 			obj.change_animation("atk4")
