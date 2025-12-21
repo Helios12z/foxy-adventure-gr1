@@ -272,12 +272,12 @@ func _trigger_meteor_shower() -> void:
 		var margin: float = meteor_top_margin
 		if top_world_y < camera_top_y + margin:
 			desired_pos.y += (camera_top_y + margin - top_world_y)
-	meteor.global_position = desired_pos
 	meteor.z_index = 100
 	# Add to current scene first so tweens/timers work
 	var root: Node = get_tree().current_scene
 	if root:
 		root.add_child(meteor)
+		meteor.global_position = desired_pos
 	# Start the sequence after it is in the tree
 	if meteor.has_method("start"):
 		meteor.call_deferred("start")

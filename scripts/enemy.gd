@@ -118,7 +118,8 @@ func _on_player_not_in_sight():
 	pass
 
 func _take_damage_from_dir(_damage_dir: Vector2, _damage: float):
-	fsm.current_state.take_damage(_damage_dir, _damage)
+	if fsm.current_state != null and fsm.current_state.has_method("take_damage"):
+		fsm.current_state.take_damage(_damage_dir, _damage)
 	_update_health_bar_after_damage()
 	
 func _update_health_bar_after_damage() -> void:

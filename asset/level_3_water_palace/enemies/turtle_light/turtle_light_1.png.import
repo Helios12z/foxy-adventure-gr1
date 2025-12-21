@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0frpv6sspej6"
-path="res://.godot/imported/turtle_light_1.png-365970dc8dc6f7bb0ba9ef38b66f3e93.ctex"
+path.s3tc="res://.godot/imported/turtle_light_1.png-365970dc8dc6f7bb0ba9ef38b66f3e93.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/turtle_light/turtle_light_1.png"
-dest_files=["res://.godot/imported/turtle_light_1.png-365970dc8dc6f7bb0ba9ef38b66f3e93.ctex"]
+dest_files=["res://.godot/imported/turtle_light_1.png-365970dc8dc6f7bb0ba9ef38b66f3e93.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
