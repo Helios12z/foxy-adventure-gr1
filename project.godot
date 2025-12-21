@@ -226,6 +226,7 @@ use_mana_potion={
 2d_physics/layer_9="peligan_limitation"
 2d_physics/layer_10="magnet_area"
 2d_physics/layer_11="item"
+2d_physics/layer_14="king_crab_bullet"
 
 [rendering]
 

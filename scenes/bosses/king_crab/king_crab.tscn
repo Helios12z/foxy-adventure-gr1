@@ -1,4 +1,4 @@
-[gd_scene load_steps=245 format=3 uid="uid://bunssbth60xh8"]
+[gd_scene load_steps=256 format=3 uid="uid://bunssbth60xh8"]
 
 [ext_resource type="Script" uid="uid://dip3w00ctebg3" path="res://scenes/bosses/king_crab/king_crab.gd" id="1_3obn1"]
 [ext_resource type="Texture2D" uid="uid://cy2q5bnp3vgaa" path="res://asset/King_Crab/King_Crab_17.png" id="2_51n07"]
@@ -12,8 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://dhnpal80arkyc" path="res://scenes/bosses/king_crab/king_crab_shockwave.tscn" id="4_daqye"]
 [ext_resource type="Texture2D" uid="uid://ss4fejx02hnc" path="res://asset/King_Crab/King_Crab_19.png" id="4_dg743"]
 [ext_resource type="Texture2D" uid="uid://4dreojahella" path="res://asset/King_Crab/King_Crab_23.png" id="4_vq8wd"]
+[ext_resource type="PackedScene" uid="uid://46hi7j8pv3rw" path="res://scenes/bosses/king_crab/king_crab_boomerang.tscn" id="5_8nfyu"]
 [ext_resource type="Texture2D" uid="uid://bwtwoimhi7vsp" path="res://asset/King_Crab/King_Crab_22.png" id="5_8t8c3"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="5_ctus2"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="5_ctus2"]
 [ext_resource type="Texture2D" uid="uid://bf8kvj2al6xut" path="res://asset/King_Crab/King_Crab_27.png" id="5_dg743"]
 [ext_resource type="Texture2D" uid="uid://b1025qsl7bvwi" path="res://asset/King_Crab/King_Crab_20.png" id="5_pr7tb"]
 [ext_resource type="Texture2D" uid="uid://bqdlq6j7saohj" path="res://asset/King_Crab/King_Crab_24.png" id="5_whuld"]
@@ -43,10 +44,17 @@
 [ext_resource type="Texture2D" uid="uid://cndcbn3i4e7lk" path="res://asset/King_Crab/King_Crab_35.png" id="23_nw15n"]
 [ext_resource type="Texture2D" uid="uid://be0coa70valqw" path="res://asset/King_Crab/King_Crab_36.png" id="24_5jg2x"]
 [ext_resource type="Texture2D" uid="uid://b8r5h015hlyfw" path="res://asset/King_Crab/King_Crab_34.png" id="24_wwxs8"]
+[ext_resource type="Texture2D" uid="uid://dna60ypvyax2y" path="res://asset/King_Crab/King_Crab_42.png" id="27_t6rdf"]
+[ext_resource type="Texture2D" uid="uid://bfxn6ci8ghmba" path="res://asset/King_Crab/King_Crab_43.png" id="28_2oyuv"]
+[ext_resource type="Texture2D" uid="uid://duo46hh2hx3x5" path="res://asset/King_Crab/King_Crab_44.png" id="29_3pql8"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="29_n7tu5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="30_3obn1"]
+[ext_resource type="Texture2D" uid="uid://bnfsa1tvj71jy" path="res://asset/King_Crab/King_Crab_45.png" id="30_etrbg"]
+[ext_resource type="Texture2D" uid="uid://cgxxvvqhnvhjn" path="res://asset/King_Crab/King_Crab_46.png" id="31_8nfyu"]
+[ext_resource type="Texture2D" uid="uid://v5805ophukou" path="res://asset/King_Crab/King_Crab_47.png" id="32_5r3s5"]
 [ext_resource type="Script" uid="uid://d3ovudg8sgn0n" path="res://scenes/bosses/king_crab/idle_atk.gd" id="33_34k3w"]
 [ext_resource type="Script" uid="uid://en6o0uceyq4o" path="res://scenes/bosses/king_crab/walk.gd" id="33_bs65c"]
+[ext_resource type="Texture2D" uid="uid://dvljciwsn328j" path="res://asset/King_Crab/King_Crab_48.png" id="33_p5lcx"]
 [ext_resource type="Script" uid="uid://4otqwe78nvsq" path="res://scenes/bosses/king_crab/idle_stun.gd" id="34_ybokd"]
 [ext_resource type="Texture2D" uid="uid://bv78buj2d402j" path="res://asset/King_Crab/King_Crab_38.png" id="35_i2k7a"]
 [ext_resource type="Script" uid="uid://n6bt82hxgq1b" path="res://scenes/bosses/king_crab/hurt.gd" id="36_cgg3e"]
@@ -189,7 +197,7 @@
 [ext_resource type="Texture2D" uid="uid://d0kst1pv442c5" path="res://asset/effects/electric_effect.png" id="167_gncue"]
 [ext_resource type="Script" uid="uid://dggrb3yqglexl" path="res://scenes/bosses/king_crab/atk_3_fly_and_hit.gd" id="184_0mt3f"]
 [ext_resource type="Script" uid="uid://34awkybwg3fs" path="res://scenes/bosses/king_crab/sleep.gd" id="189_h0v77"]
-[ext_resource type="Script" path="res://scenes/bosses/king_crab/cast_into_phase_2.gd" id="190_6w262"]
+[ext_resource type="Script" uid="uid://dk5kdicp2nxum" path="res://scenes/bosses/king_crab/cast_into_phase_2.gd" id="190_6w262"]
 [ext_resource type="AudioStream" uid="uid://q7m5ru2q56h7" path="res://asset/sounds/king_crab_sound/shoot.mp3" id="190_45o64"]
 [ext_resource type="Script" uid="uid://blo6btsoa0yf4" path="res://scenes/bosses/king_crab/cast_after_sleep.gd" id="190_bsmmm"]
 [ext_resource type="AudioStream" uid="uid://dtj8enf5cb5cd" path="res://asset/sounds/king_crab_sound/rolling.mp3" id="192_ck4wx"]
@@ -199,6 +207,9 @@
 [ext_resource type="AudioStream" uid="uid://dsafms5eborjs" path="res://asset/sounds/king_crab_sound/roaring.mp3" id="195_ilp01"]
 [ext_resource type="AudioStream" uid="uid://cc3gxoxfpggem" path="res://asset/sounds/king_crab_sound/phase2_intro.mp3" id="196_hyvv3"]
 [ext_resource type="AudioStream" uid="uid://buvwe8m1k5foa" path="res://asset/sounds/king_crab_sound/phase2.mp3" id="197_daor2"]
+[ext_resource type="Script" uid="uid://c3taq5i2a55g5" path="res://scenes/bosses/king_crab/atk_4.gd" id="199_2oyuv"]
+[ext_resource type="Script" uid="uid://cmslqmscnium5" path="res://scenes/bosses/king_crab/atk_4_idle.gd" id="200_3pql8"]
+[ext_resource type="Script" uid="uid://cvpliwpwfmhkk" path="res://scenes/bosses/king_crab/atk_4_windup.gd" id="201_etrbg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6162a"]
 radius = 20.0
@@ -309,6 +320,37 @@ animations = [{
 }],
 "loop": true,
 "name": &"atk3_windup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("27_t6rdf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_2oyuv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_3pql8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_etrbg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_8nfyu")
+}],
+"loop": false,
+"name": &"atk4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("32_5r3s5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_p5lcx")
+}],
+"loop": true,
+"name": &"atk4_idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -1078,10 +1120,10 @@ animations = [{
 collision_layer = 8
 script = ExtResource("1_3obn1")
 king_crab_max_health = 300
-spike_damage = 10
 bullet_scene = ExtResource("2_vlw8a")
 minion_scene = ExtResource("3_skber")
 king_crab_shockwave_scene = ExtResource("4_daqye")
+boomerang_scene = ExtResource("5_8nfyu")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -1101,8 +1143,10 @@ reverse_direction = false
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_u25ey")
 sprite_frames = SubResource("SpriteFrames_lkrv3")
-animation = &"cast_into_phase2"
+animation = &"atk4"
 autoplay = "walk"
+frame = 4
+frame_progress = 1.0
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.363076, 0.00241337, 0.0310119, 1)
@@ -1140,6 +1184,9 @@ debug_color = Color(0.614439, 0.40928, 0.889592, 0.42)
 
 [node name="ShootPoint" type="Marker2D" parent="Direction"]
 position = Vector2(-44, 3)
+
+[node name="SecondClawShootPoint" type="Marker2D" parent="Direction"]
+position = Vector2(-21, 5)
 
 [node name="Attack1Effect" type="AnimatedSprite2D" parent="Direction"]
 visible = false
@@ -1253,6 +1300,15 @@ script = ExtResource("190_bsmmm")
 
 [node name="CastIntoPhase2" type="Node" parent="States"]
 script = ExtResource("190_6w262")
+
+[node name="Atk4" type="Node" parent="States"]
+script = ExtResource("199_2oyuv")
+
+[node name="Atk4_Idle" type="Node" parent="States"]
+script = ExtResource("200_3pql8")
+
+[node name="Atk4_Windup" type="Node" parent="States"]
+script = ExtResource("201_etrbg")
 
 [node name="Sound" type="Node2D" parent="."]
 

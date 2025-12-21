@@ -132,8 +132,6 @@ func spawn_bullet_with_dir(dir_x: float) -> void:
 
 	if bullet.has_signal("returned"):
 		bullet.connect("returned", Callable(self, "on_bullet_returned"))
-	if "spike_damage" in bullet:
-		bullet.spike_damage = obj.claw_damage
 
 	bullet.launch(self, origin, target)
 	
@@ -338,3 +336,57 @@ func move_hit_collision_at_idle_attack()->void:
 	
 func reset_hit_collision_position()->void:
 	obj.hit_collision_shape_2d.position.x = obj.hit_collision_default_pos.x
+
+func check_boomerang_formation() -> bool:
+	var first_claw = get_tree().get_first_node_in_group("atk4_first_claw")
+	var second_claw = get_tree().get_first_node_in_group("atk4_second_claw")
+
+	if first_claw and second_claw:
+		var distance = first_claw.global_position.distance_to(second_claw.global_position)
+		if distance < 30.0:
+			spawn_boomerang(first_claw, second_claw)
+			return true
+	return false
+
+func spawn_boomerang(first_claw: Node, second_claw: Node) -> void:
+	if obj.boomerang_scene == null:
+		push_error("Boomerang scene not set in king crab")
+		return
+
+	var boomerang = obj.boomerang_scene.instantiate()
+	if not boomerang:
+		return
+
+	get_tree().current_scene.add_child(boomerang)
+
+	var mid_point = (first_claw.global_position + second_claw.global_position) / 2
+	boomerang.global_position = mid_point
+
+	if "is_boomerang" in boomerang:
+		boomerang.is_boomerang = true
+
+	if boomerang.has_signal("hit_boss"):
+		boomerang.connect("hit_boss", Callable(self, "on_boomerang_hit_boss"))
+	elif boomerang.has_signal("returned"):
+		boomerang.connect("returned", Callable(self, "on_boomerang_hit_boss"))
+
+	if boomerang.has_method("launch_as_boomerang"):
+		var target = obj._get_player()
+		if target:
+			boomerang.launch_as_boomerang(mid_point, target.global_position)
+	elif boomerang.has_method("launch"):
+		var target = obj._get_player()
+		if target:
+			boomerang.launch(self, mid_point, target.global_position)
+
+	first_claw.queue_free()
+	second_claw.queue_free()
+
+	first_claw.remove_from_group("atk4_first_claw")
+	second_claw.remove_from_group("atk4_second_claw")
+
+func on_boomerang_hit_boss() -> void:
+	if fsm.current_state == fsm.states.atk4_idle:
+		if obj.in_phase2:
+			obj._chain_after_basic = true
+		change_state(fsm.states.walk)
