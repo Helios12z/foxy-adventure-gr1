@@ -13,7 +13,7 @@ func _enter() -> void:
 	obj.hit_collision_shape_2d.disabled = true
 
 func _update(_delta: float) -> void:
-	if not animation_finished and (not obj.animated_sprite_2d.is_playing() or obj.animated_sprite_2d.animation != "dead"):
+	if not animation_finished and not obj.animated_sprite_2d.is_playing():
 		animation_finished = true
 
 	if animation_finished:

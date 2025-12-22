@@ -25,6 +25,7 @@ func _update(_delta: float) -> void:
 			attack_sound_played = true 
 		
 	if current_frame >= 9:
+		obj.attack.stop()
 		obj.attack_collision_shape_2d.disabled = true
 		attack_sound_played = false 
 
