@@ -6,7 +6,6 @@ signal into_phase2
 signal start_fight
 
 @export var roll_peak_height: float = 30.0
-@export var spike_damage: int = 15
 @export var atk1_damage: int = 25
 @export var atk2_damage: int = 32
 @export var atk3_damage: int = 40
@@ -58,7 +57,6 @@ var jump_markers: Array[JumpMarker2D] = []
 var current_jump_marker: JumpMarker2D = null
 var target_jump_marker: JumpMarker2D = null
 
-@onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 @onready var atk_1_hit_area_2d: HitArea2D = $Direction/Atk1HitArea2D
 @onready var atk_2_hit_area_2d: HitArea2D = $Direction/Atk2HitArea2D
 @onready var atk_2_hit_area_2d_2: HitArea2D = $Direction/Atk2HitArea2D2
@@ -104,8 +102,7 @@ func _ready() -> void:
 	health = max_health
 
 	super._ready()
-
-	hit_area_2d.damage = spike_damage
+	
 	atk_1_hit_area_2d.damage = atk1_damage
 	atk_2_hit_area_2d.damage = atk2_damage
 	atk_2_hit_area_2d_2.damage = atk2_damage
