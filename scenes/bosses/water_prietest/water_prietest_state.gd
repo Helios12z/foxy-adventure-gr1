@@ -209,9 +209,14 @@ func _on_atk1_frame_changed() -> void:
 
 	match f:
 		2:
+			obj.attack_effect.frame = 0
+			obj.attack_effect.visible = true 
+			obj.attack_effect.play()
 			_shift_body_shapes(12)
 			_play(obj.slash)
 		5:
+			obj.attack_effect.stop()
+			obj.attack_effect.visible = false  
 			_reset_body_shapes_to_base()
 
 	_set_disabled([obj.atk1_collision_shape_2d], not (f == 2 or f == 3))
@@ -634,20 +639,41 @@ func control_move(speed: float, attack_table: Array, _on_reach: Callable, _use_e
 	if obj.in_phase2 and obj.state_transition_cooldown <= 0:
 		if p.global_position.y < obj.global_position.y - 100:
 			var horizontal_distance = abs(p.global_position.x - obj.global_position.x)
-			if horizontal_distance <= 200:
+
+			# If player is directly underneath (too close horizontally), move away first
+			if horizontal_distance <= 80:
+				# Player is too close underneath, move away to create distance
+				var away_direction = -sign(p.global_position.x - obj.global_position.x)
+				if away_direction == 0:
+					away_direction = 1 if not obj.animated_sprite_2d.flip_h else -1
+
+				obj.velocity.x = away_direction * obj.move_speed * 1.5
+				obj.state_transition_cooldown = 0.8
+				return
+			elif horizontal_distance <= 200:
 				obj.state_transition_cooldown = 1.0  # 1 second cooldown
 				change_state(fsm.states.jumpstate)
 				return
 
 		if not _same_platform(p) and p.global_position.y > obj.global_position.y:
 			var horizontal_distance = abs(p.global_position.x - obj.global_position.x)
-			if horizontal_distance <= 300:
+
+			# If player is directly below on different platform, create horizontal distance first
+			if horizontal_distance <= 60:
+				var away_direction = -sign(p.global_position.x - obj.global_position.x)
+				if away_direction == 0:
+					away_direction = 1 if not obj.animated_sprite_2d.flip_h else -1
+
+				obj.velocity.x = away_direction * obj.move_speed * 1.2
+				obj.state_transition_cooldown = 1.0
+				return
+			elif horizontal_distance <= 300:
 				var direction = sign(p.global_position.x - obj.global_position.x)
 				if direction == 0:
-					direction = 1  
+					direction = 1
 				obj.velocity.x = direction * obj.air_horizontal_speed
-				obj.velocity.y = -50  
-				obj.state_transition_cooldown = 1.5  
+				obj.velocity.y = -50
+				obj.state_transition_cooldown = 1.5
 				change_state(fsm.states.fallstate)
 				return
 

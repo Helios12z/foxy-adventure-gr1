@@ -7,15 +7,12 @@ var _boss: Node = null
 
 func set_boss(boss: Node) -> void:
 	_boss = boss
-	if not _boss:
-		print("no boss found in level water prietess")
-		return
 
 	if not _boss.health_changed.is_connected(_on_boss_health_changed):
 		_boss.health_changed.connect(_on_boss_health_changed)
 	if not _boss.boss_died.is_connected(_on_boss_died):
 		_boss.boss_died.connect(_on_boss_died)
-	if not _boss.into_phase2.is_connected(_on_boss_into_phase2):
+	if _boss.has_signal("into_phase2") and not _boss.into_phase2.is_connected(_on_boss_into_phase2):
 		_boss.into_phase2.connect(_on_boss_into_phase2)
 
 	_on_boss_health_changed(_boss.health, _boss.max_health)
@@ -40,7 +37,7 @@ func reset() -> void:
 			_boss.health_changed.disconnect(_on_boss_health_changed)
 		if _boss.boss_died.is_connected(_on_boss_died):
 			_boss.boss_died.disconnect(_on_boss_died)
-		if _boss.into_phase2.is_connected(_on_boss_into_phase2):
+		if _boss.has_signal("into_phase2") and _boss.into_phase2.is_connected(_on_boss_into_phase2):
 			_boss.into_phase2.disconnect(_on_boss_into_phase2)
 
 	_boss = null

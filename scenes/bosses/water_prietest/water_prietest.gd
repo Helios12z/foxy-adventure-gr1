@@ -25,7 +25,7 @@ signal start_fight
 @export var atk2_windup_time: float = 1.0
 @export var atk3_windup_time: float = 0.75
 @export var atk_super_windup_time: float = 0.75
-@export var atk_air_windup_time: float = 0.8
+@export var atk_air_windup_time: float = 0.5
 @export var defend_range: float = 80.0
 @export var defend_cooldown: float = 7.0
 @export var attack_prepare_time: float = 2.5
@@ -75,6 +75,7 @@ var target_jump_marker: JumpMarker2D = null
 @onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 @onready var hurt_collision_shape_2d: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var attack_effect: AnimatedSprite2D = $Direction/AttackEffect
 
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 

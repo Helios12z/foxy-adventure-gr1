@@ -1,4 +1,4 @@
-[gd_scene load_steps=208 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=214 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3donb"]
@@ -177,6 +177,7 @@
 [ext_resource type="Texture2D" uid="uid://d2td2lr7dyb3d" path="res://asset/water_prietest/walk/walk_8.png" id="167_m8xwq"]
 [ext_resource type="Texture2D" uid="uid://cod4epsjfydn7" path="res://asset/water_prietest/walk/walk_9.png" id="168_pm6v4"]
 [ext_resource type="Texture2D" uid="uid://bxc3vnkxgdsx7" path="res://asset/water_prietest/walk/walk_10.png" id="169_im4w0"]
+[ext_resource type="Texture2D" uid="uid://i638lhe6bq6o" path="res://asset/effects/blue_effect_impact.png" id="172_7ipbc"]
 [ext_resource type="Script" uid="uid://cd1i1gkxdqqch" path="res://scenes/bosses/water_prietest/atk_2.gd" id="174_3h4hw"]
 [ext_resource type="Script" uid="uid://dh0lu1paetqta" path="res://scenes/bosses/water_prietest/atk_3.gd" id="175_tyesj"]
 [ext_resource type="Script" uid="uid://cr34jwl1jrydq" path="res://scenes/bosses/water_prietest/atk_air.gd" id="176_d8ret"]
@@ -783,6 +784,42 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tdvmr"]
+atlas = ExtResource("172_7ipbc")
+region = Rect2(352, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_65y5r"]
+atlas = ExtResource("172_7ipbc")
+region = Rect2(384, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmtba"]
+atlas = ExtResource("172_7ipbc")
+region = Rect2(416, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6kdfv"]
+atlas = ExtResource("172_7ipbc")
+region = Rect2(448, 160, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_pkflm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tdvmr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_65y5r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmtba")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6kdfv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktdfs"]
 size = Vector2(8, 34.5)
 
@@ -827,9 +864,16 @@ reverse_direction = false
 material = SubResource("ShaderMaterial_p2we0")
 position = Vector2(0, -50)
 sprite_frames = SubResource("SpriteFrames_ed6l8")
-animation = &"atk_super"
+animation = &"atk_1"
 autoplay = "idle"
-frame = 12
+frame = 2
+
+[node name="AttackEffect" type="AnimatedSprite2D" parent="Direction"]
+visible = false
+position = Vector2(47, -12.5)
+sprite_frames = SubResource("SpriteFrames_pkflm")
+frame_progress = 0.37075403
+flip_h = true
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
 collision_layer = 0

@@ -12,6 +12,7 @@ extends Node2D
 
 @onready var boss_hud: Control = $CanvasLayer/BossHUD
 @onready var boss: CharacterBody2D = $World/WaterPrietest
+@onready var frost_guardian: CharacterBody2D = $World/FrostGuardian
 @onready var boss_platform_controller: Node2D = $World/BossPlatformController
 @onready var room_bound_point_a: Marker2D = $World/RoomBoundPointA
 @onready var room_bound_point_b: Marker2D = $World/RoomBoundPointB
@@ -24,6 +25,7 @@ var _prewave_started: bool = false
 var _prewave_enemies_left: int = 0
 var _boss_intro_started: bool = false
 var _boss_in_parallax: bool = false
+var _frost_guardian_defeated: bool = false
 var cutscene_controller: Node2D = null
 
 func _enter_tree() -> void:
@@ -53,8 +55,6 @@ func _ready() -> void:
 
 		_setup_boss_alive_state()
 
-
-
 func _process(_delta: float) -> void:
 	if GameManager.player.health <= 0:
 		GameManager.inventory_system.heal_potions = 3
@@ -69,9 +69,25 @@ func _on_boss_start_fight() -> void:
 	await get_tree().create_timer(0.75).timeout
 
 func _on_boss_died() -> void:
+	# This is called when water priestess dies - should only happen after frost guardian is defeated
 	boss_platform_controller.return_platform_after_boss_dead()
 	await get_tree().create_timer(2.25).timeout
 	_spawn_chest()
+
+func _on_frost_guardian_died() -> void:
+	_frost_guardian_defeated = true
+
+	# Hide the HUD temporarily while switching to water priestess
+	boss_hud.visible = false
+
+	# Update boss HUD back to water priestess (but keep it hidden for now)
+	boss_hud.reset()
+	boss_hud.set_boss(boss)
+	boss_hud.get_node("BossHealthLabel").text = "WATER PRIESTESS"
+
+	# Start water priestess jump after a short delay
+	await get_tree().create_timer(1.0).timeout
+	_start_boss_intro_jump()
 
 func _on_fight_trigger_body_entered(body: Node) -> void:
 	if not body.is_in_group("Player"):
@@ -126,7 +142,11 @@ func _register_prewave_enemy(enemy: Node) -> void:
 func _on_prewave_enemy_died(_enemy: Node) -> void:
 	_prewave_enemies_left -= 1
 	if _prewave_enemies_left <= 0:
-		_start_boss_intro_jump()
+		_start_frost_guardian_encounter()
+
+func _start_frost_guardian_encounter() -> void:
+	boss_hud.visible = true
+	frost_guardian.start_appearing.emit()
 
 func _start_boss_intro_jump() -> void:
 	if _boss_intro_started:
@@ -234,7 +254,21 @@ func _setup_boss_alive_state() -> void:
 		chest.visible = false
 		_set_chest_collision(chest, false)
 
-	boss_hud.set_boss(boss)
+	frost_guardian.visible = true
+	# Disable all collisions for frost guardian initially
+	frost_guardian.collision_shape_2d.disabled = true
+	frost_guardian.attack_collision_shape_2d.disabled = true
+	frost_guardian.hurt_collision_shape_2d.disabled = true
+	frost_guardian.hit_collision_shape_2d.disabled = true
+
+	if not frost_guardian.boss_died.is_connected(_on_frost_guardian_died):
+		frost_guardian.boss_died.connect(_on_frost_guardian_died)
+
+	# Initially set boss HUD to frost guardian (showing "GOLEM OF THE WATER PALACE" but in sleep state)
+	boss_hud.set_boss(frost_guardian)
+	boss_hud.get_node("BossHealthLabel").text = "GOLEM OF THE WATER PALACE"
+	# Don't show the HUD yet since the guardian is sleeping
+	boss_hud.visible = false
 
 	_place_boss_idle_in_background()
 
@@ -246,7 +280,7 @@ func _setup_boss_alive_state() -> void:
 
 	if not boss.start_fight.is_connected(_on_boss_start_fight):
 		boss.start_fight.connect(_on_boss_start_fight)
-		
+
 	if not boss.into_phase2.is_connected(_on_boss_into_phase2):
 		boss.into_phase2.connect(_on_boss_into_phase2)
 

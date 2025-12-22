@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://kv02hvhfsd8k"]
+[gd_scene load_steps=40 format=3 uid="uid://kv02hvhfsd8k"]
 
 [ext_resource type="Script" uid="uid://nfys250tpsyv" path="res://levels/boss_levels/water_prietress/level_water_prietess.gd" id="1_uutcu"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="2_4si3a"]
@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://cr1c3tm5n3sy0" path="res://screens/game_screen/CoinAndKeyContainer.tscn" id="14_y1l7a"]
 [ext_resource type="Script" uid="uid://f8dvykfeiiit" path="res://levels/boss_levels/water_prietress/boss_hud.gd" id="16_qntum"]
 [ext_resource type="AudioStream" uid="uid://d3fi3k7bfsfo4" path="res://asset/sounds/water_prietess_sound/level_ambient.mp3" id="17_7sno5"]
+[ext_resource type="PackedScene" uid="uid://dgqden2bcecti" path="res://scenes/bosses/frost_guardian/frost_guardian.tscn" id="18_fc2sv"]
 [ext_resource type="Script" uid="uid://beek7o2t13qa5" path="res://scenes/bosses/water_prietest/jump_marker_2d.gd" id="18_jump_marker"]
 [ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="19_6d03a"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="19_xb6hn"]
@@ -375,6 +376,9 @@ max_health_boss = 2500
 bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
 attack_damage = 7
+
+[node name="FrostGuardian" parent="World" instance=ExtResource("18_fc2sv")]
+position = Vector2(611, 568)
 
 [node name="Chest" parent="World" instance=ExtResource("10_tqigs")]
 requires_key = false
