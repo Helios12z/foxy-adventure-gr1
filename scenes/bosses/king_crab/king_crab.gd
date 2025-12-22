@@ -8,11 +8,10 @@ signal start_fight
 @export var king_crab_max_health: int = 2500
 @export var is_sleeping: bool = true 
 @export var sleep_health_max: int = 100
-@export var spike_damage: int = 10
-@export var claw_damage: int = 5
+@export var spike_damage: int = 15
 @export var speed: float = 50.0
 @export var king_crab_gravity: float = 700.0
-@export var phase2_threshold_ratio: float = 0.7    
+@export var phase2_threshold_ratio: float = 0.6    
 
 @export var roll_speed_mult: float = 5.5
 @export var roll_brake: float = 5000
@@ -24,6 +23,7 @@ signal start_fight
 @export var bullet_scene: PackedScene
 @export var minion_scene: PackedScene
 @export var king_crab_shockwave_scene: PackedScene
+@export var boomerang_scene: PackedScene
 
 @export var teleport_proximity_seconds: float = 4.0     
 @export var teleport_proximity_distance: float = 200.0    
@@ -41,12 +41,10 @@ signal start_fight
 @export var atk3_dash_speed: float = 1600.0 
 @export var atk3_strafe_speed: float = 900.0
 
-@export var phase2_slowmo_scale: float = 0.15     # tốc độ khi slow (0.1–0.3)
+@export var phase2_slowmo_scale: float = 0.15    
 @export var phase2_slowmo_duration: float = 0.6   
 @export var phase2_flash_duration: float = 0.4    
 @export var phase2_flash_blinks: int = 4 
-
-@export var chain_after_basic_prob: float = 0.5    
 
 @export var teleport_clearance_margin: float = 0.5
 @export var minion_clearance_margin: float = 0.5
@@ -100,6 +98,7 @@ var queued_roll_dir_x: float = 1.0
 @onready var hurt_collision_shape_2d: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
 @onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 @onready var boss_direction: Node2D = $Direction
+@onready var second_claw_shoot_point: Marker2D = $Direction/SecondClawShootPoint
 
 @onready var shoot: AudioStreamPlayer2D = $Sound/Shoot
 @onready var roll: AudioStreamPlayer2D = $Sound/Roll

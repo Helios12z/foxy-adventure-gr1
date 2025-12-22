@@ -6,7 +6,10 @@ func _enter() -> void:
 func _update(delta: float) -> void:
 	if obj.in_phase2 and obj._chain_after_basic:
 		obj._chain_after_basic = false
-		if randf() < obj.chain_after_basic_prob:
+		var random_value = randf()
+		if random_value < 0.4:
+			change_state(fsm.states.atk4_windup)
+		elif random_value < 0.7:
 			change_state(fsm.states.summon_minion)
 		else:
 			change_state(fsm.states.atk3_cast)

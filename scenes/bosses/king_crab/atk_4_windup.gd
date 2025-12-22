@@ -1,0 +1,33 @@
+extends KingCrabState
+
+func _enter() -> void:
+	_face_player()
+	obj.change_animation("atk1_windup")
+	var dir_x := 1.0
+	if obj.seen_player:
+		dir_x = sign(obj._get_player().global_position.x - obj.global_position.x)
+	else:
+		dir_x = -obj.direction
+
+	if dir_x == 0.0: dir_x = -obj.direction
+	obj.queued_bullet_dir_x = dir_x
+
+	timer = 0.75
+	play_attack_effect(1, timer)
+
+func _update(d: float) -> void:
+	if update_timer(d):
+		disable_attack_effect()
+		change_state(fsm.states.atk4)
+
+func _face_player() -> void:
+	var target_x: float
+	var have := false
+	if obj._get_player() != null:
+		target_x = obj._get_player().global_position.x
+		have = true
+
+	if have:
+		var desired := 1 if (target_x - obj.global_position.x) > 0.0 else -1
+		if desired != obj.direction:
+			obj.change_direction(desired)

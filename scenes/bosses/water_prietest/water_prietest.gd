@@ -6,7 +6,11 @@ signal into_phase2
 signal start_fight
 
 @export var roll_peak_height: float = 30.0
-@export var spike_damage: int = 150 
+@export var spike_damage: int = 15
+@export var atk1_damage: int = 25
+@export var atk2_damage: int = 32
+@export var atk3_damage: int = 40
+@export var atk_super_damage: int = 45
 @export var max_health_boss: int = 1000
 @export var boss_jump_speed: float = 500.0     
 @export var attack_range: float = 140.0
@@ -55,7 +59,14 @@ var current_jump_marker: JumpMarker2D = null
 var target_jump_marker: JumpMarker2D = null
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
+@onready var atk_1_hit_area_2d: HitArea2D = $Direction/Atk1HitArea2D
+@onready var atk_2_hit_area_2d: HitArea2D = $Direction/Atk2HitArea2D
+@onready var atk_2_hit_area_2d_2: HitArea2D = $Direction/Atk2HitArea2D2
+@onready var atk_3_hit_area_2d: HitArea2D = $Direction/Atk3HitArea2D
+@onready var atk_super_hit_area_2d: HitArea2D = $Direction/AtkSuperHitArea2D
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
+
 @onready var atk1_collision_shape_2d: CollisionShape2D = $Direction/Atk1HitArea2D/CollisionShape2D
 @onready var atk2_collision_shape_2d_right: CollisionShape2D = $Direction/Atk2HitArea2D/CollisionShape2D
 @onready var atk2_collision_shape_2d_left: CollisionShape2D = $Direction/Atk2HitArea2D2/CollisionShape2D
@@ -93,8 +104,12 @@ func _ready() -> void:
 
 	super._ready()
 
-	if hit_area_2d:
-		hit_area_2d.damage = spike_damage
+	hit_area_2d.damage = spike_damage
+	atk_1_hit_area_2d.damage = atk1_damage
+	atk_2_hit_area_2d.damage = atk2_damage
+	atk_2_hit_area_2d_2.damage = atk2_damage
+	atk_3_hit_area_2d.damage = atk3_damage
+	atk_super_hit_area_2d.damage = atk_super_damage
 
 	_init_hurt_area()
 	_update_level_bounds_from_markers()
