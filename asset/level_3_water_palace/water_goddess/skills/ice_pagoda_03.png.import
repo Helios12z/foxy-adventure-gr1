@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://31wawl2cqfh"
-path="res://.godot/imported/ice_pagoda_03.png-3e46e7c0d18e5d9dd2338571cd98089a.ctex"
+path.s3tc="res://.godot/imported/ice_pagoda_03.png-3e46e7c0d18e5d9dd2338571cd98089a.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/skills/ice_pagoda_03.png"
-dest_files=["res://.godot/imported/ice_pagoda_03.png-3e46e7c0d18e5d9dd2338571cd98089a.ctex"]
+dest_files=["res://.godot/imported/ice_pagoda_03.png-3e46e7c0d18e5d9dd2338571cd98089a.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

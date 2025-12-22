@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b72l70sj7j3id"
-path="res://.godot/imported/serpent_eel_attack_4.png-c7bac21ef005b081e890dfabecabdf6e.ctex"
+path.s3tc="res://.godot/imported/serpent_eel_attack_4.png-c7bac21ef005b081e890dfabecabdf6e.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_attack_4.png"
-dest_files=["res://.godot/imported/serpent_eel_attack_4.png-c7bac21ef005b081e890dfabecabdf6e.ctex"]
+dest_files=["res://.godot/imported/serpent_eel_attack_4.png-c7bac21ef005b081e890dfabecabdf6e.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

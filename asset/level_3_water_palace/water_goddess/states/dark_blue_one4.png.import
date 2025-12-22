@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://du7omv2o3di8b"
-path="res://.godot/imported/dark_blue_one4.png-78b9e93961717193687bb5422496035d.ctex"
+path.s3tc="res://.godot/imported/dark_blue_one4.png-78b9e93961717193687bb5422496035d.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/states/dark_blue_one4.png"
-dest_files=["res://.godot/imported/dark_blue_one4.png-78b9e93961717193687bb5422496035d.ctex"]
+dest_files=["res://.godot/imported/dark_blue_one4.png-78b9e93961717193687bb5422496035d.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
