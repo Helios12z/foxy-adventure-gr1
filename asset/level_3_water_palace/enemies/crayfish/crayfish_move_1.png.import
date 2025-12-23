@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0wjcftbmu7w5"
-path="res://.godot/imported/crayfish_move_1.png-8c9a1ebae0d6c1b57c506ef9bd0bbceb.ctex"
+path.s3tc="res://.godot/imported/crayfish_move_1.png-8c9a1ebae0d6c1b57c506ef9bd0bbceb.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/crayfish/crayfish_move_1.png"
-dest_files=["res://.godot/imported/crayfish_move_1.png-8c9a1ebae0d6c1b57c506ef9bd0bbceb.ctex"]
+dest_files=["res://.godot/imported/crayfish_move_1.png-8c9a1ebae0d6c1b57c506ef9bd0bbceb.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
