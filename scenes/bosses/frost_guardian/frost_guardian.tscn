@@ -1,6 +1,7 @@
-[gd_scene load_steps=74 format=3 uid="uid://dgqden2bcecti"]
+[gd_scene load_steps=76 format=3 uid="uid://dgqden2bcecti"]
 
 [ext_resource type="Script" uid="uid://ba7ulpc387kk8" path="res://scenes/bosses/frost_guardian/frost_guardian.gd" id="1_n8evd"]
+[ext_resource type="PackedScene" uid="uid://dilgpsot8r5g4" path="res://scenes/bosses/frost_guardian/frost_guardian_bullet.tscn" id="2_kl8se"]
 [ext_resource type="Texture2D" uid="uid://ct43bqdy1nsl6" path="res://asset/frost_guardian/death/death_16.png" id="2_o2ttx"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_rqn72"]
 [ext_resource type="Texture2D" uid="uid://depfcrcqrp8x2" path="res://asset/frost_guardian/death/death_15.png" id="3_2wq5o"]
@@ -65,6 +66,7 @@
 [ext_resource type="Script" uid="uid://c2pr8y3jxgffk" path="res://scenes/bosses/frost_guardian/appear.gd" id="62_iiowq"]
 [ext_resource type="AudioStream" uid="uid://c2rudm81h7ylv" path="res://asset/sounds/frost_guardian_sound/3. Eclipsed Desolation.mp3" id="63_f7ld6"]
 [ext_resource type="Script" uid="uid://bl5og01gkwdub" path="res://scenes/bosses/frost_guardian/sleep.gd" id="64_rqn72"]
+[ext_resource type="Script" uid="uid://c863tc4jdkfqi" path="res://scenes/bosses/frost_guardian/range_attack.gd" id="65_8tfaa"]
 [ext_resource type="AudioStream" uid="uid://daxkugodjbqgg" path="res://asset/sounds/frost_guardian_sound/punch.mp3" id="66_xmbr1"]
 [ext_resource type="AudioStream" uid="uid://dt8qgts7eipex" path="res://asset/sounds/frost_guardian_sound/giant_walking.mp3" id="67_iiowq"]
 
@@ -336,6 +338,7 @@ size = Vector2(121, 32)
 [node name="FrostGuardian" type="CharacterBody2D"]
 collision_layer = 8
 script = ExtResource("1_n8evd")
+bullet_scene = ExtResource("2_kl8se")
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -347,7 +350,7 @@ shape = SubResource("RectangleShape2D_eb7i4")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 material = SubResource("ShaderMaterial_xmbr1")
 sprite_frames = SubResource("SpriteFrames_ndutc")
-animation = &"attack"
+animation = &"idle"
 autoplay = "sleep"
 flip_h = true
 
@@ -407,6 +410,9 @@ target_position = Vector2(45, 0)
 position = Vector2(20, 23)
 target_position = Vector2(0, 28)
 
+[node name="ShootPoint" type="Marker2D" parent="Direction"]
+position = Vector2(86, 6)
+
 [node name="States" type="Node" parent="."]
 
 [node name="Idle" type="Node" parent="States"]
@@ -429,6 +435,9 @@ script = ExtResource("62_iiowq")
 
 [node name="Sleep" type="Node" parent="States"]
 script = ExtResource("64_rqn72")
+
+[node name="RangeAttack" type="Node" parent="States"]
+script = ExtResource("65_8tfaa")
 
 [node name="Sound" type="Node2D" parent="."]
 

@@ -4,11 +4,12 @@ signal boss_died
 signal health_changed(current: float, max_health: float)
 signal start_appearing
 
-@export var attack_windup_time: float = 0.8
+@export var range_attack_windup_time: float = 2.25
 @export var boss_health: int = 650
-@export var boss_attack_damage: int = 30
+@export var boss_attack_damage: int = 40
+@export var boss_spike_damage: int = 20
 @export var boss_speed: float = 40.0
-@export var attack_cooldown: float = 1.25
+@export var bullet_scene: PackedScene
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 @onready var attack_collision_shape_2d: CollisionShape2D = $Direction/AttackHitArea2D/CollisionShape2D
@@ -19,6 +20,8 @@ signal start_appearing
 @onready var detect_back = $Direction/DetectBackRayCast2D
 @onready var attack_scope_ray_cast = $Direction/AttackScopeRayCast2D
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
+@onready var shoot_point: Marker2D = $Direction/ShootPoint
+@onready var attack_hit_area_2d: HitArea2D = $Direction/AttackHitArea2D
 
 @onready var boss_music: AudioStreamPlayer2D = $Sound/BossMusic
 @onready var attack: AudioStreamPlayer2D = $Sound/Attack
@@ -28,7 +31,8 @@ var _flash_tw: Tween
 
 func _ready() -> void:
 	max_health = boss_health
-	hit_area_2d.damage = boss_attack_damage
+	hit_area_2d.damage = boss_spike_damage
+	attack_hit_area_2d.damage = boss_attack_damage
 	super._ready()
 	_init_hurt_area()
 	fsm = FSM.new(self, $States, $States/Sleep)

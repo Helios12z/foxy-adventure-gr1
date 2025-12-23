@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://dilgpsot8r5g4"]
+
+[ext_resource type="Script" uid="uid://dpcqpf0ur3uoo" path="res://scenes/bosses/frost_guardian/frost_guardian_bullet.gd" id="1_tnf4h"]
+[ext_resource type="Texture2D" uid="uid://i638lhe6bq6o" path="res://asset/effects/blue_effect_impact.png" id="2_avia0"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_crqnk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4aywm"]
+size = Vector2(12, 53)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqamx"]
+atlas = ExtResource("2_avia0")
+region = Rect2(64, 256, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m60tf"]
+atlas = ExtResource("2_avia0")
+region = Rect2(96, 256, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1l6a"]
+atlas = ExtResource("2_avia0")
+region = Rect2(128, 256, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lrnxw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqamx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m60tf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h1l6a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bfvln"]
+size = Vector2(13, 53)
+
+[node name="FrostGuardianBullet" type="CharacterBody2D"]
+collision_layer = 8
+script = ExtResource("1_tnf4h")
+metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4, -0.5)
+shape = SubResource("RectangleShape2D_4aywm")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+sprite_frames = SubResource("SpriteFrames_lrnxw")
+frame = 1
+frame_progress = 0.49155995
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("3_crqnk")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(3.5, -0.5)
+shape = SubResource("RectangleShape2D_bfvln")
+debug_color = Color(0.55449635, 0.4426511, 0.89520943, 0.41960785)

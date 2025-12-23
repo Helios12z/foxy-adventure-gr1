@@ -86,6 +86,7 @@ var target_jump_marker: JumpMarker2D = null
 @onready var roll: AudioStreamPlayer2D = $Sound/Roll
 @onready var defend: AudioStreamPlayer2D = $Sound/Defend
 @onready var phase_2_talk: AudioStreamPlayer2D = $Sound/Phase2Talk
+@onready var phase_2_aura: PointLight2D = $Phase2Aura
 
 var seen_player: bool = false
 var _flash_tw: Tween

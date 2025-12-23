@@ -65,7 +65,7 @@ atlas = ExtResource("10_uutcu")
 region = Rect2(106, 227, 1087, 33)
 margin = Rect2(30, 55, 40, 80)
 
-[node name="LevelWaterPrietess" type="Node2D" node_paths=PackedStringArray("fight_trigger_area", "prewave_spawn_markers", "boss_bg_marker", "boss_land_marker", "boss_parallax_layer")]
+[node name="LevelWaterPrietess" type="Node2D" node_paths=PackedStringArray("fight_trigger_area", "prewave_spawn_markers", "boss_bg_marker", "boss_land_marker", "boss_parallax_layer", "monster_bg_spawn_markers", "monster_land_markers")]
 script = ExtResource("1_uutcu")
 serpent_eel_scene = ExtResource("2_4si3a")
 golden_carp_scene = ExtResource("3_kibuc")
@@ -74,6 +74,8 @@ prewave_spawn_markers = [NodePath("World/SpawnPoint1"), NodePath("World/SpawnPoi
 boss_bg_marker = NodePath("World/ParallaxBackground/ParallaxLayerFront/BossBackgroundStandPoint")
 boss_land_marker = NodePath("World/BossLandingPoint")
 boss_parallax_layer = NodePath("World/ParallaxBackground/ParallaxLayerFront")
+monster_bg_spawn_markers = [NodePath("World/ParallaxBackground/ParallaxLayerFront/MonsterBgSpawnPoint1"), NodePath("World/ParallaxBackground/ParallaxLayerFront/MonsterBgSpawnPoint2"), NodePath("World/ParallaxBackground/ParallaxLayerFront/MonsterBgSpawnPoint3"), NodePath("World/ParallaxBackground/ParallaxLayerFront/MonsterBgSpawnPoint4")]
+monster_land_markers = [NodePath("World/BossPlatformController/RectPlatform/MonsterLandMarker1"), NodePath("World/BossPlatformController/RectPlatform/MonsterLandMarker2"), NodePath("World/BossPlatformController/RectPlatform/MonsterLandMarker3"), NodePath("World/BossPlatformController/RectPlatform/MonsterLandMarker4")]
 
 [node name="World" type="Node2D" parent="."]
 
@@ -118,6 +120,18 @@ collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/BossPlatformController/RectPlatform/JumpMarker/Area2D"]
 shape = SubResource("CircleShape2D_1")
+
+[node name="MonsterLandMarker1" type="Marker2D" parent="World/BossPlatformController/RectPlatform"]
+position = Vector2(128, -59)
+
+[node name="MonsterLandMarker2" type="Marker2D" parent="World/BossPlatformController/RectPlatform"]
+position = Vector2(177, -60)
+
+[node name="MonsterLandMarker3" type="Marker2D" parent="World/BossPlatformController/RectPlatform"]
+position = Vector2(0, -60)
+
+[node name="MonsterLandMarker4" type="Marker2D" parent="World/BossPlatformController/RectPlatform"]
+position = Vector2(66, -60)
 
 [node name="LeftPlatform" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(221, -21)
@@ -361,6 +375,18 @@ flip_v = true
 
 [node name="BossBackgroundStandPoint" type="Marker2D" parent="World/ParallaxBackground/ParallaxLayerFront"]
 position = Vector2(447, 461)
+
+[node name="MonsterBgSpawnPoint1" type="Marker2D" parent="World/ParallaxBackground/ParallaxLayerFront"]
+position = Vector2(376, 450)
+
+[node name="MonsterBgSpawnPoint2" type="Marker2D" parent="World/ParallaxBackground/ParallaxLayerFront"]
+position = Vector2(374, 510)
+
+[node name="MonsterBgSpawnPoint3" type="Marker2D" parent="World/ParallaxBackground/ParallaxLayerFront"]
+position = Vector2(516, 446)
+
+[node name="MonsterBgSpawnPoint4" type="Marker2D" parent="World/ParallaxBackground/ParallaxLayerFront"]
+position = Vector2(518, 515)
 
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
 position = Vector2(-200, 575)

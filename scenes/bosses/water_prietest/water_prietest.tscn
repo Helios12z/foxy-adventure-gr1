@@ -1035,3 +1035,14 @@ bus = &"SFX"
 stream = ExtResource("198_7ipbc")
 volume_db = 5.0
 bus = &"SFX"
+
+[node name="Phase2Aura" type="PointLight2D" parent="."]
+position = Vector2(0, -50)
+color = Color(0.2, 0.6, 1, 1)
+energy = 1.0
+blend_mode = 2
+range_layer_min = -4096
+range_layer_max = 4096
+range_z_min = -4096
+range_z_max = 4096
+visible = false
