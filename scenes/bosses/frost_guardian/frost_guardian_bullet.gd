@@ -22,8 +22,10 @@ func launch(_origin: Vector2, _direction: Vector2) -> void:
 	origin = _origin
 	global_position = _origin
 
-	if _direction.length_squared() <= 0.000001:
-		_direction = Vector2.RIGHT
+	if _direction.x > 0: 
+		direction = -1
+	else: 
+		direction = 1
 
 	dir = _direction.normalized()
 	velocity = dir * bullet_speed

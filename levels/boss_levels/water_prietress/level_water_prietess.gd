@@ -23,6 +23,7 @@ extends Node2D
 
 @onready var ambient: AudioStreamPlayer2D = $Sound/Ambient
 @onready var boss_entry_sfx: AudioStreamPlayer2D = get_node_or_null("Sound/BossEntry")
+@onready var craking: AudioStreamPlayer2D = $Sound/Craking
 
 var _prewave_started: bool = false
 var _prewave_enemies_left: int = 0
@@ -74,7 +75,6 @@ func _on_boss_start_fight() -> void:
 	await get_tree().create_timer(0.75).timeout
 
 func _on_boss_died() -> void:
-	# This is called when water priestess dies - should only happen after frost guardian is defeated
 	boss_platform_controller.return_platform_after_boss_dead()
 	await get_tree().create_timer(2.25).timeout
 	_spawn_chest()

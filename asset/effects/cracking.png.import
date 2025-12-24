@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cekcngrbrfsl6"
-path.s3tc="res://.godot/imported/bg_7_0001_layer_1.png-4736003aa383587172341dc47d8064bb.s3tc.ctex"
+uid="uid://p2vx5v414u0k"
+path="res://.godot/imported/cracking.png-dd7b8dc58de623283dee46e9d6969aa5.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/boss_levels/level_king_crab/bg_7_0001_layer_1.png"
-dest_files=["res://.godot/imported/bg_7_0001_layer_1.png-4736003aa383587172341dc47d8064bb.s3tc.ctex"]
+source_file="res://asset/effects/cracking.png"
+dest_files=["res://.godot/imported/cracking.png-dd7b8dc58de623283dee46e9d6969aa5.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
