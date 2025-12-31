@@ -90,6 +90,31 @@ var _orig_attack_damage: float
 var _orig_movement_speed: float
 var _orig_has_blade: bool 
 
+# Transform interpolation variables
+var _is_transforming: bool = false
+var _transform_to_giant: bool = false  # true = giant, false = normal
+var _transform_timer: float = 0.0
+var _transform_duration: float = 0.7  # Thời gian transform (đồng bộ với animation)
+
+# Original collision values for interpolation
+const NORMAL_BODY_RADIUS: float = 10.0
+const NORMAL_BODY_HEIGHT: float = 30.0
+const NORMAL_BODY_POS: Vector2 = Vector2(0.0, -14.0)
+const NORMAL_HURT_RADIUS: float = 10.0
+const NORMAL_HURT_HEIGHT: float = 30.0
+const NORMAL_HURT_POS: Vector2 = Vector2(0.0, -14.0)
+const NORMAL_HIT_SIZE: Vector2 = Vector2(35.833, 33.0)
+const NORMAL_HIT_POS: Vector2 = Vector2(17.917, -15.5)
+
+const GIANT_BODY_RADIUS: float = 40.0
+const GIANT_BODY_HEIGHT: float = 100.0
+const GIANT_BODY_POS: Vector2 = Vector2(-11.0, -10.0)
+const GIANT_HURT_RADIUS: float = 40.0
+const GIANT_HURT_HEIGHT: float = 100.0
+const GIANT_HURT_POS: Vector2 = Vector2(-11.0, -10.0)
+const GIANT_HIT_SIZE: Vector2 = Vector2(100.0, 90.0)
+const GIANT_HIT_POS: Vector2 = Vector2(38.0, -3.839)
+
 #timer
 @export var giant_duration = 30
 @export var giant_cool_down = 20
@@ -202,6 +227,24 @@ func _process(_delta: float) -> void:
 		room_cooldown_updated.emit(room_cooldown_timer.time_left)
 	if giant_on_cooldown and giant_cooldown_timer != null:
 		giant_cooldown_updated.emit(giant_cooldown_timer.time_left)
+	
+	# Handle transform interpolation
+	if _is_transforming:
+		_transform_timer += _delta
+		var t: float = clamp(_transform_timer / _transform_duration, 0.0, 1.0)
+		
+		if _transform_to_giant:
+			_interpolate_collisions_to_giant(t)
+		else:
+			_interpolate_collisions_to_normal(t)
+		
+		# Transform complete
+		if t >= 1.0:
+			_is_transforming = false
+			if _transform_to_giant:
+				_on_transform_giant_complete()
+			else:
+				_on_transform_normal_complete()
 
 
 
@@ -561,25 +604,26 @@ func _on_mana_regen_timeout() -> void:
 # giant_foxy
 func activate_giant_form() -> void:
 	# ----- SAVE ORIGINAL STATES -----
-	animated_sprite.visible = false
-	transform_giant_sprite.visible = true
-	transform_giant_sprite.play("default")
-	await transform_giant_sprite.animation_finished
-	transform_giant_sprite.visible = false
-	animated_sprite.visible = true
-	set_animated_sprite($Direction/GiantAnimatedSprite2D)
-	is_giant_mode = true
 	_orig_jump_speed = jump_speed
 	_orig_attack_damage = $Direction/HitArea2D.damage
 	_orig_movement_speed = movement_speed
 	_orig_has_blade = has_blade
 	_orig_max_health = max_health
-
-	# ----- APPLY GIANT MODE -----
+	
+	# ----- START TRANSFORM ANIMATION -----
+	animated_sprite.visible = false
+	transform_giant_sprite.visible = true
+	transform_giant_sprite.play("default")
+	
+	# ----- START COLLISION INTERPOLATION (song song với animation) -----
+	_is_transforming = true
+	_transform_to_giant = true
+	_transform_timer = 0.0
+	can_move = false  # Tắt input khi đang transform
+	
+	# ----- APPLY GIANT MODE STATS IMMEDIATELY -----
 	is_giant_mode = true
-
 	print("Activate Giant Form for: ", giant_duration, " seconds")
-	resize_all_collisions()
 	has_blade = true
 	$Direction/HitArea2D.damage = giant_damage
 	
@@ -590,38 +634,63 @@ func activate_giant_form() -> void:
 	jump_speed *= giant_jump_multiplier
 	$Timer/GiantDuration.start(giant_duration)
 
+func _on_transform_giant_complete() -> void:
+	# Khi transform hoàn thành
+	transform_giant_sprite.visible = false
+	animated_sprite.visible = true
+	set_animated_sprite($Direction/GiantAnimatedSprite2D)
+	can_move = true  # Bật lại input khi transform xong
+	# Đảm bảo collision cuối cùng chính xác
+	_set_giant_collisions()
 
-
-func resize_all_collisions():
-	# --- Body Collision (CapsuleShape2D) ---
+func _interpolate_collisions_to_giant(t: float) -> void:
+	# Interpolate body collision
 	var body_shape := body_collision.shape as CapsuleShape2D
-	body_shape.radius = 40
-	body_shape.height = 100
-	body_collision.position = Vector2(-11.0, -10.0)
-
-	# --- Hurt Collision (CapsuleShape2D) ---
-	var hurt_shape := hurt_collision.shape as CapsuleShape2D
-	hurt_shape.radius = 40
-	hurt_shape.height = 100
-	hurt_collision.position = Vector2(-11.0, -10.0)  # từ ảnh trước của bạn
-
-	# --- Hit Collision (RectangleShape2D) ---
-	var hit_shape := hit_collision.shape as RectangleShape2D
-	hit_shape.size = Vector2(100, 90)
-	hit_collision.position = Vector2(38.0, -3.839)
+	body_shape.radius = lerp(NORMAL_BODY_RADIUS, GIANT_BODY_RADIUS, t)
+	body_shape.height = lerp(NORMAL_BODY_HEIGHT, GIANT_BODY_HEIGHT, t)
+	body_collision.position = NORMAL_BODY_POS.lerp(GIANT_BODY_POS, t)
 	
+	# Interpolate hurt collision
+	var hurt_shape := hurt_collision.shape as CapsuleShape2D
+	hurt_shape.radius = lerp(NORMAL_HURT_RADIUS, GIANT_HURT_RADIUS, t)
+	hurt_shape.height = lerp(NORMAL_HURT_HEIGHT, GIANT_HURT_HEIGHT, t)
+	hurt_collision.position = NORMAL_HURT_POS.lerp(GIANT_HURT_POS, t)
+	
+	# Interpolate hit collision
+	var hit_shape := hit_collision.shape as RectangleShape2D
+	hit_shape.size = NORMAL_HIT_SIZE.lerp(GIANT_HIT_SIZE, t)
+	hit_collision.position = NORMAL_HIT_POS.lerp(GIANT_HIT_POS, t)
+
+func _set_giant_collisions() -> void:
+	var body_shape := body_collision.shape as CapsuleShape2D
+	body_shape.radius = GIANT_BODY_RADIUS
+	body_shape.height = GIANT_BODY_HEIGHT
+	body_collision.position = GIANT_BODY_POS
+	
+	var hurt_shape := hurt_collision.shape as CapsuleShape2D
+	hurt_shape.radius = GIANT_HURT_RADIUS
+	hurt_shape.height = GIANT_HURT_HEIGHT
+	hurt_collision.position = GIANT_HURT_POS
+	
+	var hit_shape := hit_collision.shape as RectangleShape2D
+	hit_shape.size = GIANT_HIT_SIZE
+	hit_collision.position = GIANT_HIT_POS
+
+
 func inactive_giant_form():
-	# ----- RESET GIANT STATE -----
+	# ----- START TRANSFORM ANIMATION -----
 	animated_sprite.visible = false
 	transform_normal_sprite.visible = true
 	transform_normal_sprite.play("default")
-	await transform_normal_sprite.animation_finished
-	transform_normal_sprite.visible = false
-	animated_sprite.visible = true
+	
+	# ----- START COLLISION INTERPOLATION (song song với animation) -----
+	_is_transforming = true
+	_transform_to_giant = false
+	_transform_timer = 0.0
+	can_move = false  # Tắt input khi đang transform
+	
+	# ----- RESET GIANT STATE IMMEDIATELY -----
 	is_giant_mode = false
-	set_animated_sprite($Direction/BladeAnimatedSprite2D)
-
-	# Reset stats
 	has_blade = _orig_has_blade
 	jump_speed = _orig_jump_speed
 	$Direction/HitArea2D.damage = _orig_attack_damage
@@ -630,30 +699,52 @@ func inactive_giant_form():
 	health = min((health * 100 / max_health) * _orig_max_health / 100, _orig_max_health)
 	max_health = _orig_max_health
 	emit_signal("hp_changed", health, max_health)
-
-	# ----- RESET COLLISIONS (THEO 3 ẢNH) -----
-	_restore_collision_shape()
+	
 	# Cooldown
 	can_use_giant = false
 	start_giant_cooldown()
 
-func _restore_collision_shape() -> void:
-		# Body Collision
+func _on_transform_normal_complete() -> void:
+	# Khi transform hoàn thành
+	transform_normal_sprite.visible = false
+	animated_sprite.visible = true
+	set_animated_sprite($Direction/BladeAnimatedSprite2D)
+	can_move = true  # Bật lại input khi transform xong
+	# Đảm bảo collision cuối cùng chính xác
+	_restore_collision_shape()
+
+func _interpolate_collisions_to_normal(t: float) -> void:
+	# Interpolate body collision
 	var body_shape := body_collision.shape as CapsuleShape2D
-	body_shape.radius = 10.0
-	body_shape.height = 30.0
-	body_collision.position = Vector2(0.0, -14.0)
-
-	# Hurt Collision
+	body_shape.radius = lerp(GIANT_BODY_RADIUS, NORMAL_BODY_RADIUS, t)
+	body_shape.height = lerp(GIANT_BODY_HEIGHT, NORMAL_BODY_HEIGHT, t)
+	body_collision.position = GIANT_BODY_POS.lerp(NORMAL_BODY_POS, t)
+	
+	# Interpolate hurt collision
 	var hurt_shape := hurt_collision.shape as CapsuleShape2D
-	hurt_shape.radius = 10.0
-	hurt_shape.height = 30.0
-	hurt_collision.position = Vector2(0.0, -14.0)
-
-	# Hit Collision
+	hurt_shape.radius = lerp(GIANT_HURT_RADIUS, NORMAL_HURT_RADIUS, t)
+	hurt_shape.height = lerp(GIANT_HURT_HEIGHT, NORMAL_HURT_HEIGHT, t)
+	hurt_collision.position = GIANT_HURT_POS.lerp(NORMAL_HURT_POS, t)
+	
+	# Interpolate hit collision
 	var hit_shape := hit_collision.shape as RectangleShape2D
-	hit_shape.size = Vector2(35.833, 33.0)
-	hit_collision.position = Vector2(17.917, -15.5)
+	hit_shape.size = GIANT_HIT_SIZE.lerp(NORMAL_HIT_SIZE, t)
+	hit_collision.position = GIANT_HIT_POS.lerp(NORMAL_HIT_POS, t)
+
+func _restore_collision_shape() -> void:
+	var body_shape := body_collision.shape as CapsuleShape2D
+	body_shape.radius = NORMAL_BODY_RADIUS
+	body_shape.height = NORMAL_BODY_HEIGHT
+	body_collision.position = NORMAL_BODY_POS
+
+	var hurt_shape := hurt_collision.shape as CapsuleShape2D
+	hurt_shape.radius = NORMAL_HURT_RADIUS
+	hurt_shape.height = NORMAL_HURT_HEIGHT
+	hurt_collision.position = NORMAL_HURT_POS
+
+	var hit_shape := hit_collision.shape as RectangleShape2D
+	hit_shape.size = NORMAL_HIT_SIZE
+	hit_collision.position = NORMAL_HIT_POS
 
 
 func _on_giant_duration_timeout() -> void:

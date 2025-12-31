@@ -5,6 +5,8 @@ var hurt_area: Area2D
 var original_direction_offset := Vector2.ZERO
 var original_hurt_offset := Vector2.ZERO
 var forward_offset := 20
+var elapsed_time: float = 0.0  # Track thời gian đã trôi qua
+var giant_hit_enabled: bool = false  # Đánh dấu đã bật hit collision cho giant chưa
 
 func _enter():
 	# Get Direction node and HurtArea2D
@@ -12,11 +14,22 @@ func _enter():
 	hurt_area = obj.get_node("Direction/HurtArea2D")
 
 	obj.attack_sound.play()
+	
+	# Reset tracking variables
+	elapsed_time = 0.0
+	giant_hit_enabled = false
 
 	if obj.current_animation != "attack":
 		obj.change_animation("attack")
-
-	obj.set_hit_collision(true)
+	
+	if obj.is_giant_mode:
+		timer = 0.5
+		obj.velocity.x = 0
+	else:
+		timer = 0.3
+	
+	if not obj.is_giant_mode:
+		obj.set_hit_collision(true)
 
 	# Save original offsets
 	original_direction_offset = direction_node.position
@@ -32,13 +45,18 @@ func _enter():
 		# Compensate hurt area backward (note: Direction.scale.x = -1 when facing left, so sign is inverted)
 		hurt_area.position = Vector2(original_hurt_offset.x - forward_offset, original_hurt_offset.y)
 
-	if obj.is_giant_mode:
-		timer = 0.5
-	else:
-		timer = 0.3
+
 
 
 func _update(delta: float):
+	# Track elapsed time
+	elapsed_time += delta
+	
+	# Bật hit collision cho giant mode sau 0.2s (delay để khớp animation)
+	if obj.is_giant_mode and not giant_hit_enabled and elapsed_time > 0.2:
+		obj.set_hit_collision(true)
+		giant_hit_enabled = true
+		
 	if update_timer(delta):
 		change_state(fsm.previous_state)
 
