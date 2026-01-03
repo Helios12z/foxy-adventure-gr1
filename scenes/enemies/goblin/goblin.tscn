@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_pxkrn"]
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_swxqt"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_83gjm"]
+[ext_resource type="Script" path="res://scenes/enemies/goblin/retreat.gd" id="18_retreat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
 size = Vector2(31, 39)
@@ -370,6 +371,9 @@ script = ExtResource("16_swxqt")
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_wj18h")
 metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="Retreat" type="Node" parent="States"]
+script = ExtResource("18_retreat")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = -22.0

@@ -14,6 +14,11 @@ func _exit() -> void:
 
 
 func _update(delta: float) -> void:
+	# Check if health is below 50% and retreat
+	if obj.should_retreat():
+		change_state(fsm.states.retreat)
+		return
+
 	var sprite = obj.animated_sprite_2d
 	if not hit_started \
 		and sprite.animation == "attack" \
