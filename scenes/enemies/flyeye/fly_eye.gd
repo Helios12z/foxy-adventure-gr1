@@ -32,7 +32,6 @@ func _ready() -> void:
 
 	# Store home position before FSM starts
 	home_position = global_position
-	print("[FlyEye] Spawned at home position: ", home_position)
 
 	fsm = FSM.new(self, $States, $States/Walk)
 	set_hit_collision(false)

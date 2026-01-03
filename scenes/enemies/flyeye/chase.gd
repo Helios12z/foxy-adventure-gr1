@@ -6,6 +6,7 @@ extends EnemyState
 @export var chase_speed: float = 80.0
 @export var vertical_speed: float = 100.0
 @export var vertical_threshold: float = 15.0  # Distance to consider "on same level"
+@export var horizontal_deadzone: float = 10.0  # Don't flip direction if player is within this X distance
 
 enum VerticalState {
 	LEVEL,
@@ -28,12 +29,9 @@ func _update(delta: float) -> void:
 	# Check if still detecting player
 	if not obj.can_detect_player():
 		# Return to home position instead of just walking
-		print("[Chase] Player lost, returning home")
-		if fsm.states.has("return_home"):
-			print("[Chase] Transitioning to ReturnHome state")
-			change_state(fsm.states.return_home)
+		if fsm.states.has("returnhome"):
+			change_state(fsm.states.returnhome)
 		else:
-			print("[Chase] No ReturnHome state, going to Walk")
 			change_state(fsm.states.walk)
 		return
 
@@ -69,15 +67,20 @@ func _update(delta: float) -> void:
 
 	# Horizontal movement towards player
 	var x_diff = player.global_position.x - obj.global_position.x
-	if x_diff > 0:
+
+	# Check if player is in the horizontal deadzone (centered)
+	if abs(x_diff) < horizontal_deadzone:
+		# Player is centered - don't flip direction, just stop or keep current direction
+		obj.velocity.x = 0
+	elif x_diff > 0:
 		# Player to the right
 		if obj.direction != 1:
-			obj.change_direction(1)  # Use change_direction instead
+			obj.change_direction(1)
 		obj.velocity.x = chase_speed
 	else:
 		# Player to the left
 		if obj.direction != -1:
-			obj.change_direction(-1)  # Use change_direction instead
+			obj.change_direction(-1)
 		obj.velocity.x = -chase_speed
 
 	# Check for wall ahead and handle it

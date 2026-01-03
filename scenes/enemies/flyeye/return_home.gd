@@ -10,22 +10,17 @@ extends EnemyState
 
 func _enter() -> void:
 	obj.change_animation("walk")
-	print("[ReturnHome] Flying back to home position")
-	print("[ReturnHome] Current pos: ", obj.global_position)
-	print("[ReturnHome] Home pos: ", obj.get("home_position"))
 
 
 func _update(delta: float) -> void:
 	# Check if player detected (interrupt return home)
 	if obj.can_detect_player():
-		print("[ReturnHome] Player detected, interrupting")
 		change_state(fsm.states.chase)
 		return
 
 	# Get home position
 	var home_pos = obj.get("home_position")
 	if not home_pos or home_pos == null:
-		print("[ReturnHome] ERROR: No home position!")
 		change_state(fsm.states.walk)
 		return
 
@@ -34,11 +29,8 @@ func _update(delta: float) -> void:
 	var x_diff = home_pos.x - obj.global_position.x
 	var distance = obj.global_position.distance_to(home_pos)
 
-	print("[ReturnHome] Distance to home: ", distance, " Y diff: ", y_diff, " X diff: ", x_diff)
-
 	# Check if arrived at home
 	if distance < home_threshold:
-		print("[ReturnHome] Arrived at home position")
 		change_state(fsm.states.walk)
 		return
 
@@ -60,12 +52,12 @@ func _update(delta: float) -> void:
 	elif x_diff > 0:
 		# Home is to the right
 		if obj.direction != 1:
-			obj.change_direction(1)  # Use change_direction instead
+			obj.change_direction(1)
 		obj.velocity.x = return_speed
 	else:
 		# Home is to the left
 		if obj.direction != -1:
-			obj.change_direction(-1)  # Use change_direction instead
+			obj.change_direction(-1)
 		obj.velocity.x = -return_speed
 
 	# Check for wall ahead
@@ -78,4 +70,4 @@ func _update(delta: float) -> void:
 
 
 func _exit() -> void:
-	print("[ReturnHome] Exited return home state")
+	pass

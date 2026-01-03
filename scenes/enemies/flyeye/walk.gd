@@ -17,9 +17,10 @@ func _enter() -> void:
 	obj.change_animation("walk")
 	vertical_state = VerticalState.LEVEL
 
-	# Check if we need to return home first
+	# Only return home if we're not at home AND didn't just come from ReturnHome
 	if obj.has_method("is_at_home") and not obj.is_at_home():
-		change_state(fsm.states.return_home if fsm.states.has("return_home") else fsm.states.walk)
+		if fsm.previous_state and fsm.previous_state.name.to_lower() != "returnhome":
+			change_state(fsm.states.returnhome if fsm.states.has("returnhome") else fsm.states.walk)
 
 
 func _update(delta: float) -> void:
@@ -40,7 +41,7 @@ func _update(delta: float) -> void:
 		obj.turn_around()
 		obj._check_changed_direction()
 
-	# No gravity handling since it's a flying enemy (gravity = 0)
+	# Move
 	obj.move_and_slide()
 
 
