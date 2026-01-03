@@ -17,7 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://72ullgkrurgm" path="res://scenes/bosses/platform_boss_water_guard.tscn" id="15_dksfx"]
 [ext_resource type="Texture2D" uid="uid://cfhl3s5dh27jq" path="res://asset/level_3_water_palace/background/background_layer_1.png" id="17_hpg5y"]
 [ext_resource type="PackedScene" uid="uid://dqrpvlvc54tyk" path="res://scenes/bosses/water_goddess_platform.tscn" id="18_721lu"]
-[ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/gobin/gobin.tscn" id="18_c4r65"]
+[ext_resource type="PackedScene" uid="uid://c3034u380fcvt" path="res://scenes/enemies/goblin/goblin.tscn" id="18_c4r65"]
 [ext_resource type="PackedScene" uid="uid://nx0guycix2h4" path="res://scenes/enemies/turtle_light/turtle_light.tscn" id="19_721lu"]
 
 [node name="TestPear" type="Node2D"]
