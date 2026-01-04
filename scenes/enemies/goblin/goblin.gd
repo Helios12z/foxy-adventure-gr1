@@ -12,6 +12,7 @@ extends EnemyCharacter
 
 var nearby_goblins: Array[EnemyCharacter] = []
 var nearest_goblin: EnemyCharacter = null
+var retreat_safety_cooldown: float = 0.0  # Cooldown after reaching safety before retreating again
 
 func _ready() -> void:
 	max_health = minion_health
@@ -24,6 +25,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
+	_update_retreat_cooldown(delta)
 	_update_nearby_goblins()
 
 # Update the list of nearby goblins
@@ -44,9 +46,18 @@ func _update_nearby_goblins() -> void:
 			if global_position.distance_to(goblin.global_position) < global_position.distance_to(nearest_goblin.global_position):
 				nearest_goblin = goblin
 
-# Check if should retreat (health below 50%)
+# Check if should retreat (health below 50% and not on safety cooldown)
 func should_retreat() -> bool:
+	if retreat_safety_cooldown > 0:
+		return false
 	return health < max_health * 0.5
+
+# Update retreat cooldown
+func _update_retreat_cooldown(delta: float) -> void:
+	if retreat_safety_cooldown > 0:
+		retreat_safety_cooldown -= delta
+		if retreat_safety_cooldown < 0:
+			retreat_safety_cooldown = 0.0
 
 # Check if near any goblin
 func is_near_goblin() -> bool:

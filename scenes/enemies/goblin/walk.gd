@@ -4,6 +4,11 @@ func _enter() -> void:
 	obj.change_animation("walk")
 
 func _update(delta):
+	# Check if should retreat
+	if obj.should_retreat():
+		change_state(fsm.states.retreat)
+		return
+
 	obj.velocity.x = obj.direction * 50
 	if obj.can_detect_player():
 		change_state(fsm.states.chase)

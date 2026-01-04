@@ -2,9 +2,12 @@ extends EnemyState
 
 var retreat_direction: int = 1  # Direction to run away (1 = right, -1 = left)
 var safety_threshold: float = 80.0  # Distance to be considered "near" other goblins
+const SAFETY_COOLDOWN_TIME: float = 3.0  # Seconds to stay with allies before retreating again
 
 func _enter() -> void:
 	obj.change_animation("walk")
+	# Force update nearby goblins when entering retreat state
+	obj._update_nearby_goblins()
 	_determine_retreat_direction()
 
 func _update(delta: float) -> void:
@@ -29,7 +32,9 @@ func _update(delta: float) -> void:
 
 	# Check if reached safety (near other goblins)
 	if _is_near_other_goblins():
-		# Reached safety, go back to fight
+		# Reached safety, set cooldown so we don't immediately retreat again
+		obj.retreat_safety_cooldown = SAFETY_COOLDOWN_TIME
+		# Go back to fight
 		if obj.can_detect_player():
 			if obj.is_in_attack_scope():
 				change_state(fsm.states.attack)
@@ -51,9 +56,13 @@ func _determine_retreat_direction() -> void:
 	goblins_center /= obj.nearby_goblins.size()
 
 	# Run in the direction where goblins are located
-	var direction_to_goblins = sign(goblins_center.x - obj.global_position.x)
+	var direction_vector = goblins_center - obj.global_position
+	var direction_to_goblins = sign(direction_vector.x)
+
+	# If sign returns 0 (very close alignment), use the full direction vector
 	if direction_to_goblins == 0:
-		direction_to_goblins = 1  # Default to right if directly aligned
+		direction_to_goblins = 1 if direction_vector.x >= 0 else -1
+
 	retreat_direction = direction_to_goblins
 
 # Check if close enough to other goblins
