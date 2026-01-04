@@ -70,7 +70,6 @@ func _enter() -> void:
 			_base_sprite_scale * inflate_target_scale,
 			settle_time
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-
 	# Bật collider/hurt riêng cho hover, tắt collider/hurt mặc định
 	_normal_body_collision = obj.get_node("CollisionShape2D") if obj.has_node("CollisionShape2D") else null
 	_hover_body_collision = obj.get_node("HoverCollisionShape2D") if obj.has_node("HoverCollisionShape2D") else null
@@ -187,6 +186,17 @@ func _request_exit(to_state) -> void:
 		return
 	_exiting = true
 	_next_state = to_state
+	
+	# Play shrinking/exit sound (same stretched sound)
+	var dash_snd = AudioStreamPlayer.new()
+	dash_snd.stream = load("res://asset/sounds/dash.mp3")
+	dash_snd.bus = "SFX"
+	dash_snd.volume_db = -5.0
+	dash_snd.pitch_scale = 0.5 
+	obj.add_child(dash_snd)
+	dash_snd.play(0.2) 
+	dash_snd.finished.connect(dash_snd.queue_free)
+
 	# Thu nhỏ từ từ về undershoot rồi settle về baseline
 	if obj.animated_sprite != null:
 		if _tween:

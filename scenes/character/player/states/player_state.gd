@@ -51,6 +51,16 @@ func control_hover() -> bool:
 	# - In the air and not on a wall
 	if Input.is_action_just_pressed("jump") and not obj.can_jump() and not obj.is_on_floor():
 		if not obj.is_on_wall():
+			# Play hover/dash sound immediately (pitched down and quieter)
+			var dash_snd = AudioStreamPlayer.new()
+			dash_snd.stream = load("res://asset/sounds/dash.mp3")
+			dash_snd.bus = "SFX"
+			dash_snd.volume_db = -5.0
+			dash_snd.pitch_scale = 0.5 # Stretched/slower effect
+			obj.add_child(dash_snd)
+			dash_snd.play(0.2) # Skip first 1 second
+			dash_snd.finished.connect(dash_snd.queue_free)
+			
 			change_state(fsm.states.hover)
 			return true
 	return false
