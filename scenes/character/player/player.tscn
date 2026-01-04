@@ -1,10 +1,11 @@
-[gd_scene load_steps=80 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=81 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
 [ext_resource type="SpriteFrames" uid="uid://cpyd1m1lmtb7o" path="res://scenes/character/foxy_hat.tres" id="3_i0j1t"]
 [ext_resource type="Texture2D" uid="uid://dnlqrttv445u1" path="res://asset/level_3_water_palace/objects/potions/heal_effect.png" id="3_w3kqy"]
 [ext_resource type="SpriteFrames" uid="uid://de50f6k6l0j1d" path="res://scenes/character/foxy_hat_blade.tres" id="4_68dt2"]
+[ext_resource type="Texture2D" uid="uid://dwrcxs8iocctf" path="res://asset/foxy/foxy/effects/hit_particle/foxy_hit_particle.png" id="5_7w01e"]
 [ext_resource type="Shader" uid="uid://cjpl0hseqana0" path="res://scenes/character/player/shaders/dash_warp.gdshader" id="5_dash_shader"]
 [ext_resource type="Texture2D" uid="uid://cv1omqfyyi3aj" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_1.png" id="6_7w01e"]
 [ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="6_qnn1i"]
@@ -55,7 +56,7 @@
 [ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
 [ext_resource type="Script" uid="uid://bdb4rp0xqby5i" path="res://scenes/character/player/states/susanoo.gd" id="46_susanoo"]
 [ext_resource type="Script" uid="uid://dpwira2jef5n4" path="res://scenes/character/player/states/water_paw.gd" id="47_waterpaw"]
-[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
 [ext_resource type="AudioStream" uid="uid://dqva3yvclwb47" path="res://asset/sounds/heal_sound.mp3" id="61_3pj2o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkxg8"]
@@ -368,7 +369,9 @@ frame_progress = 1.0
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("48_hitparticle")]
 visible = false
 scale = Vector2(0.99999994, 0.99999994)
-base_scale = 0.012
+particle_texture = ExtResource("5_7w01e")
+base_scale = 0.015
+particle_count = 22
 particle_opacity = 0.7
 reverse_direction = false
 
