@@ -1,11 +1,12 @@
-[gd_scene load_steps=50 format=3 uid="uid://g3pj503kap4d"]
+[gd_scene load_steps=51 format=3 uid="uid://g3pj503kap4d"]
 
 [ext_resource type="Script" uid="uid://b66fihd5yugfg" path="res://scenes/enemies/skeleton/skeleton.gd" id="1_yjy0a"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_pk2ch"]
-[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_wkpb5"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_wkpb5"]
+[ext_resource type="Texture2D" uid="uid://caxbje1tccaqh" path="res://asset/foxy/foxy/effects/hit_particle/black_hit_particle.png" id="3_pewhb"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://ws3vcducc3x8" path="res://asset/enemy/Skeleton/Attack.png" id="4_p222q"]
-[ext_resource type="Shader" uid="uid://ca6d8wlgymi5d" path="res://resources/effects/dissolve_anime.gdshader" id="5_adimu"]
+[ext_resource type="Shader" path="res://resources/effects/dissolve_anime.gdshader" id="5_adimu"]
 [ext_resource type="Texture2D" uid="uid://bc13jptnfkne6" path="res://asset/enemy/Skeleton/Death.png" id="5_pk2ch"]
 [ext_resource type="Texture2D" uid="uid://dai4akr5x1pio" path="res://asset/enemy/Skeleton/Take Hit.png" id="6_wmf8p"]
 [ext_resource type="Texture2D" uid="uid://cjwlrhvwu2qu0" path="res://asset/enemy/Skeleton/Idle.png" id="7_03bn8"]
@@ -13,9 +14,9 @@
 [ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_lsssd"]
 [ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_e0ypk"]
 [ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_yptew"]
-[ext_resource type="Script" uid="uid://dn3vpefsahorn" path="res://scenes/enemies/skeleton/hurt.gd" id="13_pewhb"]
+[ext_resource type="Script" path="res://scenes/enemies/skeleton/hurt.gd" id="13_pewhb"]
 [ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_qfitn"]
-[ext_resource type="Script" uid="uid://ca1fnnw62g68l" path="res://scenes/enemies/skeleton/dead.gd" id="15_adimu"]
+[ext_resource type="Script" path="res://scenes/enemies/skeleton/dead.gd" id="15_adimu"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_kdl81"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_wkpb5"]
 [ext_resource type="Script" uid="uid://ow80w8bxucfv" path="res://scenes/enemies/skeleton/temporary_dead.gd" id="16_yjy0a"]
@@ -263,7 +264,9 @@ shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_wkpb5")]
 scale = Vector2(0.99999976, 0.99999976)
-base_scale = 0.012
+particle_texture = ExtResource("3_pewhb")
+base_scale = 0.006
+particle_count = 28
 particle_opacity = 0.7
 reverse_direction = false
 

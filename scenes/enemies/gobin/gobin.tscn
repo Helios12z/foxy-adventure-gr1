@@ -1,9 +1,10 @@
-[gd_scene load_steps=50 format=3 uid="uid://c3034u380fcvt"]
+[gd_scene load_steps=51 format=3 uid="uid://c3034u380fcvt"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_y6kf8"]
 [ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_pxkrn"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_sebhr"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_xxunx"]
+[ext_resource type="Texture2D" uid="uid://caxbje1tccaqh" path="res://asset/foxy/foxy/effects/hit_particle/black_hit_particle.png" id="3_yr0v4"]
 [ext_resource type="Texture2D" uid="uid://bqgqp31un4ywg" path="res://asset/enemy/Goblin/Attack.png" id="4_0o6d4"]
 [ext_resource type="Texture2D" uid="uid://ual3iijmm67i" path="res://asset/enemy/Goblin/Death.png" id="5_y6kf8"]
 [ext_resource type="Texture2D" uid="uid://cc0iusqt6xbwc" path="res://asset/enemy/Goblin/Take Hit.png" id="6_g41d4"]
@@ -267,7 +268,9 @@ shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_pxkrn")]
 scale = Vector2(0.99999976, 0.99999976)
-base_scale = 0.012
+particle_texture = ExtResource("3_yr0v4")
+base_scale = 0.006
+particle_count = 28
 particle_opacity = 0.7
 reverse_direction = false
 

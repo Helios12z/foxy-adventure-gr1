@@ -20,6 +20,10 @@ func _ready() -> void:
 			_balls.append(child)
 
 func start() -> void:
+	var sound = get_node_or_null("CastSound")
+	if sound:
+		sound.play()
+	
 	# Circle appears and scales up smoothly
 	if _circle and _circle.has_method("appear"):
 		_circle.call("appear")

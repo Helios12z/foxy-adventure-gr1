@@ -44,6 +44,7 @@ var enemy_targets := {} # body -> Vector2
 var player_display_item: CanvasItem = null
 var player_display_modulate_saved: Color = Color(1,1,1,1)
 var player_flicker_phase: float = 0.0
+var _heal_loop_snd: AudioStreamPlayer = null
 
 func _ready() -> void:
 	# find player
@@ -135,10 +136,24 @@ func _ready() -> void:
 		heal_timer.autostart = true
 		heal_timer.timeout.connect(_spawn_heal_particle)
 		add_child(heal_timer)
+		
+		# Continuous heal loop sound
+		_heal_loop_snd = AudioStreamPlayer.new()
+		_heal_loop_snd.stream = load("res://asset/sounds/heal_sound.mp3")
+		_heal_loop_snd.bus = "SFX"
+		_heal_loop_snd.volume_db = -12.0 # Quieter
+		add_child(_heal_loop_snd)
+		_heal_loop_snd.play()
+		_heal_loop_snd.finished.connect(_heal_loop_snd.play) # Loop manually
 
 	# Level 3: Show persistent Shield Room icon above player
 	if skill_level >= 3:
 		_setup_shield_effect()
+		
+	# Play cast sound on start
+	var snd = get_node_or_null("Sound")
+	if snd and snd is AudioStreamPlayer2D:
+		snd.play()
 
 var _shield_icon: Sprite2D = null
 
@@ -356,6 +371,13 @@ func _on_lift_finished() -> void:
 
 func _on_hold_finished() -> void:
 	state = "ending"
+	
+	# Stop looped heal sound
+	if _heal_loop_snd:
+		_heal_loop_snd.stop()
+		_heal_loop_snd.queue_free()
+		_heal_loop_snd = null
+	
 	# blink the room then cleanup
 	var tw := create_tween()
 	if sprite:
@@ -394,6 +416,7 @@ func _cleanup() -> void:
 			(player_display_item as CanvasItem).self_modulate = player_display_modulate_saved
 			player_flicker_phase = 0.0
 		player.start_room_cooldown()
+
 	queue_free()
 
 func _on_body_entered(body: Node) -> void:
@@ -496,6 +519,11 @@ func _on_bullet_entered(body: Node) -> void:
 	if skill_level >= 3:
 		# Strip script to prevent internal logic errors (e.g. null access) during dissolve sequence
 		body.set_script(null)
+		
+		# Play destroy sound
+		var snd = get_node_or_null("Sound")
+		if snd and snd is AudioStreamPlayer2D:
+			snd.play()
 		
 		captured_bullets.append(body) # Track it so we can force-kill on cleanup
 		if body is Node2D:

@@ -78,6 +78,18 @@ func _ready() -> void:
 	# Ensure both process loops are active
 	set_physics_process(true)
 	set_process(true)
+	
+	# Prepare impact sound (King Crab explosion style)
+	var snd := AudioStreamPlayer2D.new()
+	snd.name = "ImpactSound"
+	snd.stream = load("res://asset/sounds/king_crab_sound/explosion.mp3")
+	snd.bus = "SFX"
+	snd.volume_db = -2.0 # Slightly lower volume for spammy fireballs
+	# Add to PathFollow2D so it moves with the ball until impact
+	if _pf:
+		_pf.add_child(snd)
+	else:
+		add_child(snd)
 
 func start(delay: float) -> void:
 	# Staggered appearance per ball
@@ -238,6 +250,23 @@ func _spawn_firehole(pos: Vector2) -> void:
 	if root:
 		root.add_child(hole)
 		hole.global_position = pos + Vector2(0, -2)
+		
+	# Play impact sound if available
+	var snd = null
+	if _pf:
+		snd = _pf.get_node_or_null("ImpactSound")
+	else:
+		snd = get_node_or_null("ImpactSound")
+		
+	if snd and snd is AudioStreamPlayer2D:
+		# Detach sound to play it fully even if ball vanishes
+		var sound_root = snd.duplicate()
+		if root:
+			root.add_child(sound_root)
+			sound_root.global_position = pos
+			sound_root.play()
+			# Auto-cleanup sound object
+			sound_root.finished.connect(sound_root.queue_free)
 
 func vanish() -> void:
 	_falling = false

@@ -203,6 +203,23 @@ func start_attack() -> void:
 		_attack_timer.wait_time = 0.65
 		_attack_timer.start()
 		combo_index = 0
+		
+	# Schedule attack impact sound (fire burst) near the end of the swing
+	var blast_stream = load("res://asset/sounds/king_crab_sound/explosion.mp3")
+	if blast_stream:
+		var delay_time = 0.35 # Approximate timing for impact frame
+		var t = get_tree().create_timer(delay_time)
+		t.timeout.connect(func():
+			if is_instance_valid(self):
+				var attack_snd = AudioStreamPlayer2D.new()
+				attack_snd.stream = blast_stream
+				attack_snd.bus = "SFX"
+				add_child(attack_snd)
+				attack_snd.volume_db = -10.0 # Quieter
+				attack_snd.pitch_scale = randf_range(1.1, 1.3) # Higher pitch for swiftness
+				attack_snd.play()
+				attack_snd.finished.connect(attack_snd.queue_free)
+		)
 
 func _on_attack_timeout() -> void:
 	attacking = false
@@ -350,6 +367,11 @@ func play_appear_effect() -> void:
 	_sprite.material = mat
 	_sprite.modulate.a = 0.58 # Set target alpha
 	
+	# Play appear sound
+	var snd = get_node_or_null("SpiritSound")
+	if snd:
+		snd.play()
+	
 	# Animate from dissolved (1.0) to fully visible (0.0)
 	var tw := create_tween()
 	tw.tween_method(func(p): mat.set_shader_parameter("progress", p), 1.0, 0.0, 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
@@ -367,6 +389,11 @@ func play_disappear_and_free() -> void:
 	# Ensure hit disabled
 	_set_hit_area_enabled(_hit, false)
 	_set_hit_area_enabled(_hit2, false)
+	
+	# Play disappear sound
+	var snd = get_node_or_null("SpiritSound")
+	if snd:
+		snd.play()
 	
 	# Load the gold ash dissolve shader
 	var shader := load("res://resources/effects/gold_ash_dissolve.gdshader")

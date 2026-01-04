@@ -97,6 +97,12 @@ func _spawn_shield(pos: Vector2, normal: Vector2) -> void:
 	var shield := shield_scene.instantiate()
 	get_tree().current_scene.add_child(shield)
 	shield.global_position = pos
+	
+	# Play shield sound
+	var snd = shield.get_node_or_null("Sound")
+	if snd and snd is AudioStreamPlayer2D:
+		snd.play()
+		
 	# Xoay rời rạc theo pháp tuyến để tránh lộn sprite khi va chạm bên trái
 	var rot := 0.0
 	if abs(normal.x) > abs(normal.y):

@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://8r1w7dguekgr" path="res://asset/foxy/foxy/skill_room_paw/room_5.png" id="5_a4pj6"]
 [ext_resource type="Script" uid="uid://c056mho1any6v" path="res://scenes/skills/room_paw/room.gd" id="6_room_script"]
 [ext_resource type="Texture2D" uid="uid://cik58f22k10pk" path="res://asset/foxy/foxy/skill_room_paw/plus_icon.png" id="8_y0inw"]
+[ext_resource type="AudioStream" uid="uid://b0upod035k5en" path="res://asset/sounds/king_crab_sound/cast.mp3" id="9_sound"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4hew7"]
 animations = [{
@@ -85,3 +86,7 @@ position = Vector2(-400, -160)
 visible = false
 scale = Vector2(0.05, 0.05)
 texture = ExtResource("8_y0inw")
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_sound")
+bus = &"SFX"

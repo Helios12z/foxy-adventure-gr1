@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bwy7wwnx328fl" path="res://asset/foxy/foxy/fox_susanoo/fire_shield.png" id="1_tdurk"]
 [ext_resource type="Script" uid="uid://tqxa0q7sq85g" path="res://scenes/effects/flicker_light_2d.gd" id="2_4y25f"]
+[ext_resource type="AudioStream" uid="uid://bf88fnkwbixfj" path="res://asset/sounds/king_crab_sound/explosion.mp3" id="3_sound"]
 
 [node name="FireShield" type="Node2D"]
 self_modulate = Color(1, 1, 1, 0.811765)
@@ -18,3 +19,8 @@ texture = ExtResource("1_tdurk")
 [node name="FlickerLight2D" type="PointLight2D" parent="."]
 script = ExtResource("2_4y25f")
 metadata/_custom_type_script = "uid://tqxa0q7sq85g"
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_sound")
+volume_db = -4.0
+bus = &"SFX"
