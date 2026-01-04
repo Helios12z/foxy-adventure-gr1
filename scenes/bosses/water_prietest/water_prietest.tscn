@@ -1,10 +1,11 @@
-[gd_scene load_steps=213 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=214 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3donb"]
-[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_dmvcu"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_dmvcu"]
 [ext_resource type="Texture2D" uid="uid://ql4kgokw80wq" path="res://asset/water_prietest/atk_1/1_atk_1.png" id="2_isiw1"]
 [ext_resource type="Texture2D" uid="uid://blwdd0gcgryio" path="res://asset/water_prietest/atk_1/1_atk_2.png" id="3_3h4hw"]
+[ext_resource type="Texture2D" uid="uid://cbeek45r14ep6" path="res://asset/foxy/foxy/effects/hit_particle/prietest_hit_particle.png" id="3_tdvmr"]
 [ext_resource type="Texture2D" uid="uid://cqrxrsxns43bi" path="res://asset/water_prietest/atk_1/1_atk_3.png" id="4_tyesj"]
 [ext_resource type="Texture2D" uid="uid://b2obyc1nmls2b" path="res://asset/water_prietest/atk_1/1_atk_4.png" id="5_7q7q2"]
 [ext_resource type="Texture2D" uid="uid://blk36buhesg47" path="res://asset/water_prietest/atk_1/1_atk_5.png" id="6_d8ret"]
@@ -853,7 +854,8 @@ shape = SubResource("RectangleShape2D_nk125")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_dmvcu")]
 scale = Vector2(0.9999998, 0.9999998)
-base_scale = 0.012
+particle_texture = ExtResource("3_tdvmr")
+base_scale = 0.014
 particle_opacity = 0.7
 reverse_direction = false
 
@@ -1037,12 +1039,11 @@ volume_db = 5.0
 bus = &"SFX"
 
 [node name="Phase2Aura" type="PointLight2D" parent="."]
+visible = false
 position = Vector2(0, -50)
 color = Color(0.2, 0.6, 1, 1)
-energy = 1.0
 blend_mode = 2
-range_layer_min = -4096
-range_layer_max = 4096
 range_z_min = -4096
 range_z_max = 4096
-visible = false
+range_layer_min = -4096
+range_layer_max = 4096

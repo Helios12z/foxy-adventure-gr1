@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://drem1inlnoymq"]
+[gd_scene load_steps=84 format=3 uid="uid://drem1inlnoymq"]
 
 [ext_resource type="Script" uid="uid://b5ht8frfquhry" path="res://scenes/bosses/boss3/boss_3.gd" id="1_dj6mc"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3t3rw"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://67pksmvb8xmx" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_onetyaonetyaonet2-Photoroom.png" id="3_0opad"]
 [ext_resource type="Texture2D" uid="uid://bpqx2m7kje4lb" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_04.png" id="3_2yyk8"]
 [ext_resource type="Texture2D" uid="uid://bgrfw16dtl8vu" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_gawyrugawyrugawy-Photoroom2.png" id="3_cg2bd"]
+[ext_resource type="Texture2D" uid="uid://d04ve75umlc8c" path="res://asset/foxy/foxy/effects/hit_particle/goddess_hit_particle.png" id="3_g5kht"]
 [ext_resource type="Texture2D" uid="uid://bevhovnvcxq2i" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_onetyaonetyaonet3-Photoroom.png" id="4_1sgbt"]
 [ext_resource type="Texture2D" uid="uid://dle6loxyp83cx" path="res://asset/level_3_water_palace/water_goddess/states/water_goddess_attack_03.png" id="4_q16wh"]
 [ext_resource type="Texture2D" uid="uid://csg3j0e46h3ff" path="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_gawyrugawyrugawy-Photoroom3.png" id="4_rll1l"]
@@ -368,8 +369,9 @@ shape = SubResource("CapsuleShape2D_xf2r0")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_g4e8d")]
 scale = Vector2(0.9999998, 0.9999998)
-base_scale = 0.018
-particle_count = 12
+particle_texture = ExtResource("3_g5kht")
+base_scale = 0.024
+particle_count = 14
 particle_opacity = 0.7
 reverse_direction = false
 

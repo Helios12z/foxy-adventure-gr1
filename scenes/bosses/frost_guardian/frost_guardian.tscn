@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://dgqden2bcecti"]
+[gd_scene load_steps=78 format=3 uid="uid://dgqden2bcecti"]
 
 [ext_resource type="Script" uid="uid://ba7ulpc387kk8" path="res://scenes/bosses/frost_guardian/frost_guardian.gd" id="1_n8evd"]
 [ext_resource type="PackedScene" uid="uid://dilgpsot8r5g4" path="res://scenes/bosses/frost_guardian/frost_guardian_bullet.tscn" id="2_kl8se"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="3_1ja7m"]
 [ext_resource type="Texture2D" uid="uid://depfcrcqrp8x2" path="res://asset/frost_guardian/death/death_15.png" id="3_2wq5o"]
 [ext_resource type="Texture2D" uid="uid://cwd2lncjqecik" path="res://asset/frost_guardian/death/death_14.png" id="4_85mvy"]
+[ext_resource type="Texture2D" uid="uid://djyab0d2quqwy" path="res://asset/foxy/foxy/effects/hit_particle/frost_guardian_hit_particle.png" id="4_aa2tg"]
 [ext_resource type="Texture2D" uid="uid://dtm6gkc0aprjq" path="res://asset/frost_guardian/death/death_13.png" id="5_64hmn"]
 [ext_resource type="Texture2D" uid="uid://0qqfuklanc84" path="res://asset/frost_guardian/death/death_12.png" id="6_05i0f"]
 [ext_resource type="Texture2D" uid="uid://dfgix6nw38oif" path="res://asset/frost_guardian/death/death_11.png" id="7_dois2"]
@@ -350,7 +351,8 @@ shape = SubResource("RectangleShape2D_eb7i4")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("3_1ja7m")]
 scale = Vector2(0.9999998, 0.9999998)
-base_scale = 0.014
+particle_texture = ExtResource("4_aa2tg")
+base_scale = 0.026
 particle_count = 10
 particle_opacity = 0.7
 reverse_direction = false
