@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://c3034u380fcvt"]
+[gd_scene load_steps=51 format=3 uid="uid://c3034u380fcvt"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/goblin/goblin.gd" id="1_y6kf8"]
 [ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_pxkrn"]
@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_pxkrn"]
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_swxqt"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_83gjm"]
-[ext_resource type="Script" path="res://scenes/enemies/goblin/retreat.gd" id="18_retreat"]
+[ext_resource type="Script" uid="uid://dvrxo4uv6i24v" path="res://scenes/enemies/goblin/retreat.gd" id="18_retreat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
 size = Vector2(31, 39)
@@ -316,7 +316,7 @@ frame = 6
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.685657, 0.170201, 0.197746, 1)
 position = Vector2(-4.2574744e-08, 17.857143)
-target_position = Vector2(150, 0)
+target_position = Vector2(300, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
@@ -327,7 +327,7 @@ collision_mask = 2
 
 [node name="AttackScopeRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0.714286, 9.28571)
-target_position = Vector2(34, 0)
+target_position = Vector2(43, 0)
 collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false
@@ -335,7 +335,7 @@ collide_with_bodies = false
 [node name="DetectFrontRayCast2D2" type="RayCast2D" parent="Direction"]
 modulate = Color(0.685657, 0.170201, 0.197746, 1)
 position = Vector2(-4.25747e-08, -4.28571)
-target_position = Vector2(150, 0)
+target_position = Vector2(300, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D2" type="RayCast2D" parent="Direction"]
@@ -346,7 +346,7 @@ collision_mask = 2
 
 [node name="AttackScopeRayCast2D2" type="RayCast2D" parent="Direction"]
 position = Vector2(0.714286, -3.57143)
-target_position = Vector2(34, 0)
+target_position = Vector2(43, 0)
 collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false

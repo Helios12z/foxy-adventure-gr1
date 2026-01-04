@@ -1,19 +1,65 @@
 extends EnemyState
 
-var retreat_direction: int = 1  # Direction to run away (1 = right, -1 = left)
-var safety_threshold: float = 80.0  # Distance to be considered "near" other goblins
-const SAFETY_COOLDOWN_TIME: float = 3.0  # Seconds to stay with allies before retreating again
+var flee_direction: int = 1  # Direction to run away from player
+var returning_to_spawn: bool = false  # True when returning to spawn position
+var spawn_position: Vector2  # Cached spawn position
 
 func _enter() -> void:
 	obj.change_animation("walk")
-	# Force update nearby goblins when entering retreat state
-	obj._update_nearby_goblins()
-	_determine_retreat_direction()
+	# Cache spawn position
+	spawn_position = obj.get_spawn_position()
+	returning_to_spawn = false
+	_determine_flee_direction()
 
 func _update(delta: float) -> void:
-	# Check if health is restored or no more goblins - return to fight
-	if not obj.should_retreat() or not obj.is_near_goblin():
-		# Health is back above 50% or no goblins left, stop retreating
+	# Recover health over time
+	if obj.health < obj.max_health:
+		obj.health += obj.health_recovery_rate * delta
+		if obj.health > obj.max_health:
+			obj.health = obj.max_health
+
+	# Check if health is fully recovered
+	if obj.health >= obj.max_health:
+		# Health full, return to spawn if not already there
+		if not returning_to_spawn:
+			returning_to_spawn = true
+		_return_to_spawn()
+		return
+
+	# Health still recovering, run away from player
+	returning_to_spawn = false
+	_run_away_from_player()
+
+# Run away from the player
+func _run_away_from_player() -> void:
+	# Determine which direction is away from player
+	var player = get_tree().get_first_node_in_group("Player")
+	if player == null:
+		# No player, just wander
+		obj.velocity.x = obj.direction * 50
+		return
+
+	# Calculate direction away from player
+	var direction_away = sign(obj.global_position.x - player.global_position.x)
+	if direction_away == 0:
+		direction_away = 1  # Default to right if aligned
+
+	# Check if we should turn around (wall or canyon)
+	if _should_turn_for_obstacle(direction_away):
+		obj.turn_around()
+		direction_away = -direction_away
+
+	# Run in that direction
+	obj.velocity.x = direction_away * obj.retreat_speed
+	obj.change_direction(direction_away)  # Face the direction of movement
+
+# Return to spawn position
+func _return_to_spawn() -> void:
+	var distance_to_spawn = obj.global_position.distance_to(spawn_position)
+
+	# Check if we're at spawn position
+	if distance_to_spawn < 10:
+		# Back at spawn, check if player detected
 		if obj.can_detect_player():
 			if obj.is_in_attack_scope():
 				change_state(fsm.states.attack)
@@ -23,51 +69,38 @@ func _update(delta: float) -> void:
 			change_state(fsm.states.walk)
 		return
 
-	# Update retreat direction periodically (in case goblins moved)
-	_determine_retreat_direction()
+	# Move toward spawn position
+	var direction_to_spawn = sign(spawn_position.x - obj.global_position.x)
+	if direction_to_spawn == 0:
+		direction_to_spawn = 1
 
-	# Run away in the calculated direction
-	obj.velocity.x = retreat_direction * obj.retreat_speed
-	obj.change_direction(retreat_direction)
+	# Check if should turn around (avoid obstacles)
+	if _should_turn_for_obstacle(direction_to_spawn):
+		obj.turn_around()
+		direction_to_spawn = -direction_to_spawn
 
-	# Check if reached safety (near other goblins)
-	if _is_near_other_goblins():
-		# Reached safety, set cooldown so we don't immediately retreat again
-		obj.retreat_safety_cooldown = SAFETY_COOLDOWN_TIME
-		# Go back to fight
-		if obj.can_detect_player():
-			if obj.is_in_attack_scope():
-				change_state(fsm.states.attack)
-			else:
-				change_state(fsm.states.chase)
-		else:
-			change_state(fsm.states.walk)
+	# Move toward spawn (slower when returning)
+	obj.velocity.x = direction_to_spawn * 100
+	obj.change_direction(direction_to_spawn)  # Face the direction of movement
 
-# Determine which direction to run (toward where goblins are)
-func _determine_retreat_direction() -> void:
-	if obj.nearby_goblins.is_empty():
-		retreat_direction = -obj.direction  # Run opposite to current facing if no goblins
-		return
+# Determine initial flee direction
+func _determine_flee_direction() -> void:
+	var player = get_tree().get_first_node_in_group("Player")
+	if player != null:
+		var direction_away = sign(obj.global_position.x - player.global_position.x)
+		if direction_away != 0:
+			flee_direction = direction_away
 
-	# Calculate the center point of all nearby goblins
-	var goblins_center = Vector2.ZERO
-	for goblin in obj.nearby_goblins:
-		goblins_center += goblin.global_position
-	goblins_center /= obj.nearby_goblins.size()
+# Check if should turn around (wall or fall ahead)
+func _should_turn_for_obstacle(movement_direction: int) -> bool:
+	# Check for wall in movement direction
+	if movement_direction > 0 and obj.is_touch_wall():
+		return true
+	if movement_direction < 0 and obj.is_touch_wall():
+		return true
 
-	# Run in the direction where goblins are located
-	var direction_vector = goblins_center - obj.global_position
-	var direction_to_goblins = sign(direction_vector.x)
+	# Check for fall ahead
+	if obj.is_on_floor() and obj.is_can_fall():
+		return true
 
-	# If sign returns 0 (very close alignment), use the full direction vector
-	if direction_to_goblins == 0:
-		direction_to_goblins = 1 if direction_vector.x >= 0 else -1
-
-	retreat_direction = direction_to_goblins
-
-# Check if close enough to other goblins
-func _is_near_other_goblins() -> bool:
-	for goblin in obj.nearby_goblins:
-		if obj.global_position.distance_to(goblin.global_position) < safety_threshold:
-			return true
 	return false
