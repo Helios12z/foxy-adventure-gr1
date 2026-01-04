@@ -25,3 +25,5 @@ func _ready() -> void:
 	music_player.bus = "SFX"
 	add_child(music_player)
 	music_player.play()
+	# Ensure music loops
+	music_player.finished.connect(music_player.play)
