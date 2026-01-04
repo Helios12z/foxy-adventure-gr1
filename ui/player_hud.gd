@@ -175,6 +175,14 @@ func _connect_susanoo(s: Node) -> void:
 		if susanoo_hp_label:
 			susanoo_hp_label.text = str(left) + " / " + str(m)
 	var threshold := 0
+	
+	if player and "susanoo_level" in player:
+		var show_hp: bool = (player.susanoo_level >= 2)
+		if susanoo_hp_bar:
+			susanoo_hp_bar.visible = show_hp
+		if susanoo_hp_label:
+			susanoo_hp_label.visible = show_hp
+
 	if susanoo_spirit.has_method("get"):
 		threshold = int(susanoo_spirit.get("meteor_attack_threshold"))
 	if susanoo_mana_bar:

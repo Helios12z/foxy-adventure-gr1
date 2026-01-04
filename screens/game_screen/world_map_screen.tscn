@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://b6u5kb817k45o" path="res://asset/ui/world_map/world_map_8.png" id="12_map8"]
 [ext_resource type="Texture2D" uid="uid://cpernpfcpvbaf" path="res://asset/level_3_water_palace/background/water_goddess_platform.png" id="13_map9"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pop_up_label.tscn" id="14_popup"]
+[ext_resource type="AudioStream" uid="uid://bphupht8j5lpn" path="res://asset/sounds/Sea Waves - Sound Effect - Sound Effects.mp3" id="15_sea"]
+[ext_resource type="AudioStream" uid="uid://dtl6nhxvi2mxk" path="res://asset/sounds/Winter Morning Ambience Sound Effect  Copyright Free Nature Sounds - Audio Wind.mp3" id="16_wind"]
 
 [node name="WorldMapScreen" type="Control"]
 layout_mode = 3
@@ -363,3 +365,17 @@ offset_top = 557.0
 offset_right = 238.0
 offset_bottom = 609.0
 text = "AQUA PALACE"
+
+[node name="Music2" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("15_sea")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
+
+[node name="Music3" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("16_wind")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
