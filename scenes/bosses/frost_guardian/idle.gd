@@ -7,6 +7,7 @@ func _enter() -> void:
 	obj.hit_collision_shape_2d.disabled = false
 	obj.attack_collision_shape_2d.disabled = true
 	obj.gravity = 700.0 
+	obj.velocity.x = 0
 	timer = obj.range_attack_windup_time
 	
 func _update( _delta ):
@@ -15,4 +16,5 @@ func _update( _delta ):
 	else:
 		if update_timer(_delta):
 			change_state(fsm.states.rangeattack)
-	change_state(fsm.states.walk)
+	if obj.can_detect_player(): 
+		change_state(fsm.states.walk)

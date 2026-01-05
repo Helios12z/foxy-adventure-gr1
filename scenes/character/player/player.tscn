@@ -58,6 +58,7 @@
 [ext_resource type="Script" uid="uid://dpwira2jef5n4" path="res://scenes/character/player/states/water_paw.gd" id="47_waterpaw"]
 [ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
 [ext_resource type="AudioStream" uid="uid://dqva3yvclwb47" path="res://asset/sounds/heal_sound.mp3" id="61_3pj2o"]
+[ext_resource type="Script" uid="uid://c2v03gx2sigpx" path="res://scenes/character/player/states/throw_blade.gd" id="62_throwblade"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkxg8"]
 
@@ -304,8 +305,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lcjji"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gfavw"]
 size = Vector2(35.8333, 33)
 
@@ -395,14 +394,13 @@ sprite_frames = ExtResource("2_v051h")
 animation = &"dark_and_smile"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-visible = false
 light_mask = 2
 material = SubResource("ShaderMaterial_dash")
+position = Vector2(0, -13)
 sprite_frames = ExtResource("3_i0j1t")
 animation = &"hover"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-visible = false
 light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
@@ -418,6 +416,7 @@ animation = &"hover"
 frame_progress = 0.055968463
 
 [node name="GiantAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+visible = false
 position = Vector2(0, 6)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_ibcdq")
@@ -432,8 +431,8 @@ script = ExtResource("10_68dt2")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
-position = Vector2(0, -14)
-shape = SubResource("CapsuleShape2D_lcjji")
+position = Vector2(0, -16)
+shape = SubResource("CapsuleShape2D_rkxg8")
 
 [node name="HoverHurtArea2D" type="Area2D" parent="Direction"]
 self_modulate = Color(1, 0.407843, 0.266667, 1)
@@ -448,6 +447,7 @@ shape = SubResource("CircleShape2D_b1yw4")
 disabled = true
 
 [node name="HitArea2D" type="Area2D" parent="Direction"]
+visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("7_t4wjd")
@@ -535,6 +535,9 @@ script = ExtResource("47_waterpaw")
 
 [node name="Giant" type="Node" parent="States"]
 script = ExtResource("29_rkxg8")
+
+[node name="ThrowBlade" type="Node" parent="States"]
+script = ExtResource("62_throwblade")
 
 [node name="Attack" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("25_65puw")

@@ -39,6 +39,9 @@ var orig_pos_gun2: Vector2
 var orig_pos_stars: Vector2
 var orig_pos_btn: Vector2
 
+var audio_player: AudioStreamPlayer
+const SUCCESS_SOUND_PATH = "res://asset/sounds/success.mp3"
+
 func _ready() -> void:
 	# Set layer to be on top of everything
 	layer = 100
@@ -55,6 +58,8 @@ func _ready() -> void:
 	get_tree().paused = true
 	
 	print("VictoryScreen ready!")
+	
+	_setup_audio()
 	
 	# Setup Initial State (Hidden & Offset DOwn)
 	var offset_y = 60.0
@@ -122,6 +127,20 @@ func _ready() -> void:
 	# Connect button
 	if world_map_button:
 		world_map_button.pressed.connect(_on_world_map_button_pressed)
+
+func _setup_audio():
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	
+	if FileAccess.file_exists(SUCCESS_SOUND_PATH):
+		var stream = load(SUCCESS_SOUND_PATH)
+		if stream:
+			stream.loop = false
+			audio_player.stream = stream
+			audio_player.bus = "SFX" # Assuming SFX bus, fallback to Master if not exists
+			audio_player.play()
+	else:
+		push_warning("Success sound file not found at: " + SUCCESS_SOUND_PATH)
 
 func apply_bounce_shader(node: CanvasItem, speed: float, start_amp: float, duration: float, loop: bool, pivot_y: float = 0.5, sway: float = 0.0) -> void:
 	if not node: return

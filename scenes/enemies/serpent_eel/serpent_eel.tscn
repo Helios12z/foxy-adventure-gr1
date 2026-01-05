@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://b5smghvvubfxp"]
+[gd_scene load_steps=24 format=3 uid="uid://b5smghvvubfxp"]
 
 [ext_resource type="Script" uid="uid://sv28gsawe44h" path="res://scenes/enemies/serpent_eel/serpent_eel.gd" id="1_nt4uo"]
 [ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_q51py"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_01h8l"]
+[ext_resource type="Texture2D" uid="uid://bxxea44llk7pd" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_weapon.png" id="3_2b4bw"]
 [ext_resource type="Texture2D" uid="uid://rfsmmmafwg06" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_attack_1.png" id="4_q51py"]
 [ext_resource type="Texture2D" uid="uid://b424m5awto3ll" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_attack_2.png" id="5_2b4bw"]
 [ext_resource type="Texture2D" uid="uid://bhgv1wu5786dd" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_attack_3.png" id="6_87ym8"]
@@ -15,7 +16,7 @@
 [ext_resource type="Script" uid="uid://uavra2l206fu" path="res://scenes/enemies/serpent_eel/walk.gd" id="11_iq7vx"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="12_1oasb"]
 [ext_resource type="Script" uid="uid://cfx3rrythw07w" path="res://scenes/enemies/serpent_eel/attack.gd" id="13_duo06"]
-[ext_resource type="Script" path="res://scenes/enemies/serpent_eel/dead.gd" id="15_01h8l"]
+[ext_resource type="Script" uid="uid://cjdx8mupt3n8k" path="res://scenes/enemies/serpent_eel/dead.gd" id="15_01h8l"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="16_mfgog"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="17_btsph"]
 [ext_resource type="Script" uid="uid://brpej3m2qw6e1" path="res://scenes/enemies/serpent_eel/attacking.gd" id="18_attacking"]
@@ -121,7 +122,8 @@ shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_q51py")]
 scale = Vector2(0.99999994, 0.99999994)
-base_scale = 0.012
+particle_texture = ExtResource("3_2b4bw")
+base_scale = 0.019
 particle_opacity = 0.7
 reverse_direction = false
 

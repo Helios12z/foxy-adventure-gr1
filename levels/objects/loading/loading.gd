@@ -12,10 +12,27 @@ var current_tip: String
 var loading_complete: bool = false
 var target_scene_path: String
 
+var audio_player: AudioStreamPlayer
+const LOADING_MUSIC_PATH = "res://asset/sounds/Loading_music.mp3"
+
 func _ready():
 	continue_prompt.modulate.a = 0.0
 	loading_bar.value = 0.0
 	loading_dots.text = "Loading..."
+	
+	_setup_audio()
+
+func _setup_audio():
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	
+	if FileAccess.file_exists(LOADING_MUSIC_PATH):
+		var stream = load(LOADING_MUSIC_PATH)
+		audio_player.stream = stream
+		audio_player.bus = "Music" # Assuming there is a Music bus, otherwise it defaults to Master
+		audio_player.play()
+	else:
+		push_warning("Loading music file not found at: " + LOADING_MUSIC_PATH)
 
 func start_loading(target_scene_path: String):
 	# Legacy method - fallback to destination-based loading
@@ -209,6 +226,10 @@ func _hide_loading_screen():
 	# Fade out the loading screen
 	var tween = create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.3)
+	
+	if audio_player and audio_player.playing:
+		var audio_tween = create_tween()
+		audio_tween.tween_property(audio_player, "volume_db", -80.0, 0.3)
 
 	# Wait for fade to complete, then queue_free
 	await tween.finished

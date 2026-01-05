@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkpocqiw2tuli"]
+
+[ext_resource type="Script" uid="uid://wqcpcm512ym6" path="res://scenes/enemies/serpent_eel/dropped_weapon.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bxxea44llk7pd" path="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_weapon.png" id="2_tex"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 5.0
+
+[node name="DroppedWeapon" type="CharacterBody2D"]
+collision_layer = 0
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+scale = Vector2(0.051, 0.051)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_1")

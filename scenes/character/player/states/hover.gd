@@ -108,6 +108,10 @@ func _enter() -> void:
 	# Set stable hover fall speed immediately (no acceleration inheritance)
 	obj.velocity.y = hover_fall_speed
 
+	# Reset tốc độ rơi ngay lập tức nếu đang rơi quá nhanh (bỏ qua quán tính cũ)
+	if obj.velocity.y > hover_fall_speed:
+		obj.velocity.y = hover_fall_speed
+
 # (Không dùng shader nữa)
 
 func _update(delta: float) -> void:

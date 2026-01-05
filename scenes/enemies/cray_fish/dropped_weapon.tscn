@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://06n5xvhxbxtk"]
+
+[ext_resource type="Script" uid="uid://5ldilxvcgeym" path="res://scenes/enemies/cray_fish/dropped_weapon.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://kvlqyw3idit1" path="res://asset/level_3_water_palace/enemies/crayfish/crayfish_weapon.png" id="2_tex"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1"]
+radius = 5.0
+
+[node name="DroppedWeapon" type="CharacterBody2D"]
+collision_layer = 0
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -3.9999998)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_1")

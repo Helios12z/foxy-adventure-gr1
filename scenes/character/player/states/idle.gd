@@ -26,6 +26,8 @@ func _update(_delta: float) -> void:
 			return
 		if control_giant_mode():
 			return
+		if 	control_throw_blade():
+			return
 
 	control_jump()
 	#Control moving
