@@ -112,6 +112,8 @@ func _update(delta: float) -> void:
 			return
 		if control_hover():
 			return
+		if 	control_throw_blade():
+			return
 
 	# --------------------------------------------------
 	# MOVEMENT + AIR CONTROL

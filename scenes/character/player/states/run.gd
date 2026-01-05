@@ -99,6 +99,8 @@ func _update(delta: float) -> void:
 			return
 		if control_giant_mode():
 			return
+		if 	control_throw_blade():
+			return
 
 
 	# --------------------------------------------------

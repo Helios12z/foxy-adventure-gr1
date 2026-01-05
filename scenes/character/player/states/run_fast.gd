@@ -41,6 +41,8 @@ func _update(delta: float) -> void:
 			return
 		if control_giant_mode():
 			return
+		if 	control_throw_blade():
+			return
 	# Nhấn Jump trong run_fast sẽ dash chéo lên theo hướng hiện tại
 	if Input.is_action_just_pressed("jump") and obj.can_dash():
 		change_state(fsm.states.dashdiagonal)
