@@ -2,8 +2,7 @@ extends PlayerState
 
 # Hover state: slow fall using dedicated hover animation with inflate/deflate and sway
 
-var hover_fall_speed: float = 40.0
-var hover_accel: float = 220.0
+var hover_fall_speed: float = 60.0
 var sway_amp: float = 8.0
 var sway_freq: float = 1.6
 var sway_time: float = 0.0
@@ -106,8 +105,8 @@ func _enter() -> void:
 	# Ensure initial sync so colliders match current sprite immediately
 	_sync_hover_colliders_to_sprite()
 
-	# Giảm nhẹ tốc độ ngang để cảm giác bay bổng
-	obj.velocity.x = move_toward(obj.velocity.x, obj.velocity.x, 0)  # giữ nguyên hiện tại
+	# Set stable hover fall speed immediately (no acceleration inheritance)
+	obj.velocity.y = hover_fall_speed
 
 	# Reset tốc độ rơi ngay lập tức nếu đang rơi quá nhanh (bỏ qua quán tính cũ)
 	if obj.velocity.y > hover_fall_speed:
@@ -140,8 +139,8 @@ func _update(delta: float) -> void:
 		var current_deccel = obj.deccel if obj.is_on_floor() else obj.air_deccel
 		obj.velocity.x = move_toward(obj.velocity.x, 0, current_deccel * delta)
 
-	# Rơi chậm về tốc độ mục tiêu
-	obj.velocity.y = move_toward(obj.velocity.y, hover_fall_speed, hover_accel * delta)
+	# Maintain stable fall speed (no acceleration)
+	obj.velocity.y = hover_fall_speed
 
 	# Sway nhẹ bằng position + tilt; và hiệu ứng thân trên kéo dẫn
 	if obj.animated_sprite != null:
