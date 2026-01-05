@@ -508,12 +508,21 @@ func _ensure_body_shapes_cached() -> void:
 
 func _shift_body_shapes(offset_x: float) -> void:
 	_ensure_body_shapes_cached()
+
+	# Get the facing direction (1 for right, -1 for left)
+	var facing_dir := 1
+	if obj.animated_sprite_2d and obj.animated_sprite_2d.flip_h:
+		facing_dir = -1
+
+	# Adjust offset based on facing direction since these shapes are under Direction node
+	var adjusted_offset := offset_x * facing_dir
+
 	if obj.hit_collision_shape_2d:
-		obj.hit_collision_shape_2d.position = _hit_shape_base_position + Vector2(offset_x, 0.0)
+		obj.hit_collision_shape_2d.position = _hit_shape_base_position + Vector2(adjusted_offset, 0.0)
 	if obj.hurt_collision_shape_2d:
-		obj.hurt_collision_shape_2d.position = _hurt_shape_base_position + Vector2(offset_x, 0.0)
+		obj.hurt_collision_shape_2d.position = _hurt_shape_base_position + Vector2(adjusted_offset, 0.0)
 	if obj.collision_shape_2d:
-		obj.collision_shape_2d.position = _body_shape_base_position + Vector2(offset_x, 0.0)
+		obj.collision_shape_2d.position = _body_shape_base_position + Vector2(adjusted_offset, 0.0)
 
 func _reset_body_shapes_to_base() -> void:
 	if not _body_shapes_cached:

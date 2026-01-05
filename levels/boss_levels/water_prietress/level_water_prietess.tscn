@@ -463,6 +463,7 @@ attack_damage = 7
 
 [node name="FrostGuardian" parent="World" instance=ExtResource("18_fc2sv")]
 position = Vector2(611, 568)
+boss_health = 100
 
 [node name="Chest" parent="World" instance=ExtResource("10_tqigs")]
 requires_key = false
