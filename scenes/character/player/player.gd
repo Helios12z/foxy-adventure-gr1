@@ -22,6 +22,8 @@ var is_invulnerable: bool = false
 var invincible_zone: bool = false
 var blade_boomerang_active: bool = false
 var can_move: bool = true
+var is_in_quicksand: bool = false
+const QUICKSAND_COLOR: Color = Color(0.7, 0.6, 0.9, 1.0)  # Màu tím xanh sáng hơn
 var _base_movement_speed: float = 0.0
 var _base_gravity: float = 0.0
 var _base_max_jump_count: int = 0
@@ -246,6 +248,11 @@ func _process(_delta: float) -> void:
 				_on_transform_giant_complete()
 			else:
 				_on_transform_normal_complete()
+	
+	# QuickSand shader tint override
+	if is_in_quicksand:
+		if animated_sprite and animated_sprite.material:
+			animated_sprite.material.set_shader_parameter("tint_color", QUICKSAND_COLOR)
 
 
 
@@ -772,5 +779,21 @@ func play_heal_effect():
 	await effect_sprite.animation_finished
 	effect_sprite.visible = false
 
+# QuickSand methods
+func enter_quicksand(speed_multiplier: float = 0.5) -> void:
+	is_in_quicksand = true
+	_base_movement_speed = _base_movement_speed * speed_multiplier
+	movement_speed = _base_movement_speed
+	print("[Player] Entered QuickSand - Speed: ", movement_speed)
+	# Set shader tint
+	if animated_sprite and animated_sprite.material:
+		animated_sprite.material.set_shader_parameter("tint_color", QUICKSAND_COLOR)
 
-	
+func exit_quicksand(original_speed: float) -> void:
+	is_in_quicksand = false
+	_base_movement_speed = original_speed
+	movement_speed = original_speed
+	# Reset shader tint to white (no tint)
+	if animated_sprite and animated_sprite.material:
+		animated_sprite.material.set_shader_parameter("tint_color", Color.WHITE)
+	print("[Player] Exited QuickSand - Speed: ", movement_speed)
