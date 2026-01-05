@@ -215,7 +215,7 @@ func start_attack() -> void:
 				attack_snd.stream = blast_stream
 				attack_snd.bus = "SFX"
 				add_child(attack_snd)
-				attack_snd.volume_db = -10.0 # Quieter
+				attack_snd.volume_db = -6.0 # Louder
 				attack_snd.pitch_scale = randf_range(1.1, 1.3) # Higher pitch for swiftness
 				attack_snd.play()
 				attack_snd.finished.connect(attack_snd.queue_free)

@@ -40,10 +40,16 @@ func spawn_particles(hit_direction: Vector2) -> void:
 	for i in range(particle_count):
 		_create_particle(particle_direction)
 
+# Track active particles for cleanup
+var _active_particles: Array[Sprite2D] = []
+
 func _create_particle(base_direction: Vector2) -> void:
 	var particle = Sprite2D.new()
 	particle.texture = particle_texture
 	particle.centered = true
+	
+	# Add to tracking array
+	_active_particles.append(particle)
 	
 	# Random scale variation (70% to 130% of base scale)
 	var scale_variation = randf_range(0.7, 1.3) * base_scale
@@ -96,7 +102,9 @@ func _animate_particle(particle: Sprite2D, initial_velocity: Vector2, rotation_s
 	physics_timer.timeout.connect(func():
 		if elapsed_time >= lifetime:
 			physics_timer.stop()
-			particle.queue_free()
+			if is_instance_valid(particle):
+				particle.queue_free()
+				_active_particles.erase(particle)
 			return
 		
 		var delta = physics_timer.wait_time
@@ -125,8 +133,16 @@ func _animate_particle(particle: Sprite2D, initial_velocity: Vector2, rotation_s
 	# Fade out (smooth disappearance)
 	tween.tween_property(particle, "modulate:a", 0.0, fade_out_duration).set_delay(lifetime - fade_out_duration)
 	
-	# Cleanup after lifetime
+	# Cleanup after lifetime (backup in case timer fails or tween finishes first)
 	tween.finished.connect(func():
 		if is_instance_valid(particle):
 			particle.queue_free()
+			_active_particles.erase(particle)
 	)
+
+## Clear all active particles immediately
+func clear_particles() -> void:
+	for p in _active_particles:
+		if is_instance_valid(p):
+			p.queue_free()
+	_active_particles.clear()
