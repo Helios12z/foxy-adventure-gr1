@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=3 uid="uid://cprco73wob6um"]
+
+[ext_resource type="Script" uid="uid://d0w5bsa55n1eb" path="res://scenes/enemies/QuickSand/quick_sand.gd" id="1_ihmwd"]
+[ext_resource type="Texture2D" uid="uid://p86wmcmhikxj" path="res://asset/enemy/QuickSand/QuickSand.png" id="2_rm81q"]
+[ext_resource type="AudioStream" uid="uid://p8ys0jw72ctp" path="res://scenes/enemies/QuickSand/quicksand.mp3" id="3_audio"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qg2l7"]
+atlas = ExtResource("2_rm81q")
+region = Rect2(0, 0, 213, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slrgo"]
+atlas = ExtResource("2_rm81q")
+region = Rect2(213, 0, 213, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajsq8"]
+atlas = ExtResource("2_rm81q")
+region = Rect2(426, 0, 213, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqj4c"]
+atlas = ExtResource("2_rm81q")
+region = Rect2(639, 0, 213, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slhev"]
+atlas = ExtResource("2_rm81q")
+region = Rect2(852, 0, 213, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycuh8"]
+atlas = ExtResource("2_rm81q")
+region = Rect2(1065, 0, 213, 320)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2bkvo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qg2l7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slrgo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajsq8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqj4c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slhev")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ycuh8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ap7ku"]
+size = Vector2(196.14899, 138.42224)
+
+[node name="QuickSand" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_ihmwd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1.9999999, 10.999999)
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_2bkvo")
+autoplay = "default"
+frame_progress = 0.98595655
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 8)
+scale = Vector2(0.17601955, -0.22161631)
+shape = SubResource("RectangleShape2D_ap7ku")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_audio")
+bus = &"SFX"
