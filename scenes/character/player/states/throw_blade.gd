@@ -29,7 +29,7 @@ func _update(delta: float) -> void:
 		_spawn_blade()
 		blade_spawned = true
 		# Đổi sang HatAnimatedSprite2D (không có blade trong tay)
-		obj.set_animated_sprite(obj.get_node("Direction/HatAnimatedSprite2D"))
+		_switch_sprite_with_modulate_sync(obj.get_node("Direction/HatAnimatedSprite2D"))
 	
 	# Return to previous state after throw animation
 	if elapsed >= throw_duration and blade_spawned:
@@ -58,7 +58,22 @@ func _on_blade_returned() -> void:
 	obj.blade_boomerang_active = false
 	obj.has_blade = true  # Player có blade trở lại
 	# Đổi lại BladeAnimatedSprite2D (có blade trong tay)
-	obj.set_animated_sprite(obj.get_node("Direction/BladeAnimatedSprite2D"))
+	_switch_sprite_with_modulate_sync(obj.get_node("Direction/BladeAnimatedSprite2D"))
+
+func _switch_sprite_with_modulate_sync(new_sprite: AnimatedSprite2D) -> void:
+	# Lưu modulate từ sprite cũ (để sync hiệu ứng invulnerable)
+	var old_modulate_a: float = 1.0
+	if obj.animated_sprite:
+		old_modulate_a = obj.animated_sprite.modulate.a
+		obj.animated_sprite.visible = false
+	
+	# Switch sang sprite mới
+	obj.set_animated_sprite(new_sprite)
+	
+	# Sync modulate để hiệu ứng invulnerable tiếp tục hoạt động đúng
+	if obj.animated_sprite:
+		obj.animated_sprite.modulate.a = old_modulate_a
+		obj.animated_sprite.visible = true
 
 func _exit() -> void:
 	# Disconnect signal nếu còn connect
