@@ -1,6 +1,5 @@
 extends EnemyState
 
-var has_spawned_reinforcements: bool = false
 var returning_to_fight: bool = false
 var retreat_start_position: Vector2
 var retreat_direction: int = 1  # Direction chosen for retreat (left or right)
@@ -9,12 +8,12 @@ var cached_goblin_scene: PackedScene = null  # Cache loaded scene
 
 func _enter() -> void:
 	obj.change_animation("walk")
-	has_spawned_reinforcements = false
 	returning_to_fight = false
 
 	# Store starting position
 	retreat_start_position = obj.global_position
 	print("Goblin entered retreat at position: ", retreat_start_position)
+	print("Has already summoned reinforcements: ", obj.has_summoned_reinforcements)
 
 	# Determine best retreat direction (left or right)
 	_determine_retreat_direction()
@@ -28,14 +27,18 @@ func _update(delta: float) -> void:
 	# Run away from player
 	_run_away_from_player()
 
-	# Check if traveled far enough to spawn reinforcements
-	if not has_spawned_reinforcements:
+	# Check if traveled far enough to spawn reinforcements (only if haven't spawned before)
+	if not obj.has_summoned_reinforcements:
 		var distance = abs(obj.global_position.x - retreat_start_position.x)
 		if distance >= RETREAT_DISTANCE:
 			print("Traveled ", distance, " pixels, spawning reinforcements!")
 			_spawn_reinforcements()
-			has_spawned_reinforcements = true
+			obj.has_summoned_reinforcements = true  # Mark as spawned (persistent)
 			returning_to_fight = true
+	else:
+		# Already spawned reinforcements before, just return to fight
+		print("Already spawned reinforcements before, returning to fight directly")
+		returning_to_fight = true
 
 # Determine best retreat direction (left or right based on available space)
 func _determine_retreat_direction() -> void:
@@ -103,9 +106,17 @@ func _has_traveled_far_enough() -> bool:
 func _return_and_fight() -> void:
 	var player = get_tree().get_first_node_in_group("Player")
 	if player == null:
+		# No player, go back to patrol at spawn position
+		_return_to_spawn()
 		return
 
-	# Move toward player
+	# Check if player is detected
+	if not obj.can_detect_player():
+		# Player out of sight, return to spawn position and patrol
+		_return_to_spawn()
+		return
+
+	# Player detected, move toward player
 	var direction_to_player = sign(player.global_position.x - obj.global_position.x)
 	if direction_to_player == 0:
 		direction_to_player = 1
@@ -121,15 +132,41 @@ func _return_and_fight() -> void:
 	# Move toward player
 	obj.velocity.x = direction_to_player * (obj.retreat_speed * 0.8)
 
-	# If player detected and close, start fighting
-	if obj.can_detect_player():
-		var distance_to_player = obj.global_position.distance_to(player.global_position)
-		if distance_to_player < 200:
-			# Close enough to fight
-			if obj.is_in_attack_scope():
-				change_state(fsm.states.attack)
-			else:
-				change_state(fsm.states.chase)
+	# If close enough, start fighting
+	var distance_to_player = obj.global_position.distance_to(player.global_position)
+	if distance_to_player < 200:
+		# Close enough to fight
+		if obj.is_in_attack_scope():
+			change_state(fsm.states.attack)
+		else:
+			change_state(fsm.states.chase)
+
+# Return to spawn position for patrol
+func _return_to_spawn() -> void:
+	var spawn_position = obj.get_spawn_position()
+	var distance_to_spawn = obj.global_position.distance_to(spawn_position)
+
+	# Check if at spawn position
+	if distance_to_spawn < 20:
+		# Back at spawn, go to patrol mode
+		change_state(fsm.states.walk)
+		return
+
+	# Move toward spawn position
+	var direction_to_spawn = sign(spawn_position.x - obj.global_position.x)
+	if direction_to_spawn == 0:
+		direction_to_spawn = 1
+
+	# Update facing direction
+	obj.change_direction(direction_to_spawn)
+
+	# Check for obstacles
+	if _should_turn_for_obstacle():
+		direction_to_spawn = -direction_to_spawn
+		obj.change_direction(direction_to_spawn)
+
+	# Move toward spawn position
+	obj.velocity.x = direction_to_spawn * 100
 
 # Spawn reinforcement goblins
 func _spawn_reinforcements() -> void:
@@ -161,7 +198,14 @@ func _spawn_reinforcements() -> void:
 		# Set health to full
 		new_goblin.health = new_goblin.max_health
 
-		print("Successfully spawned reinforcement goblin ", (i + 1), " at: ", new_goblin.global_position)
+		# Prevent spawned goblins from retreating/spawning more goblins
+		new_goblin.can_retreat = false
+
+		# Make spawned goblins run in the same direction as original
+		new_goblin.velocity.x = retreat_direction * obj.retreat_speed
+		new_goblin.change_direction(retreat_direction)
+
+		print("Successfully spawned reinforcement goblin ", (i + 1), " at: ", new_goblin.global_position, " moving in direction: ", retreat_direction)
 
 	print("Finished spawning reinforcements")
 

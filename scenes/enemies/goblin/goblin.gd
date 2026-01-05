@@ -11,6 +11,8 @@ extends EnemyCharacter
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 
 var spawn_position: Vector2  # Store original spawn position
+var can_retreat: bool = true  # Can this goblin enter retreat state? (false for spawned reinforcements)
+var has_summoned_reinforcements: bool = false  # Has this goblin already spawned reinforcements? (one-time only)
 
 func _ready() -> void:
 	max_health = minion_health
@@ -24,9 +26,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 
-# Check if should retreat (health below 50%)
+# Check if should retreat (health below 70% and allowed to retreat)
 func should_retreat() -> bool:
-	return health < max_health * 0.5
+	return can_retreat and health < max_health * 0.7
 
 # Get spawn position
 func get_spawn_position() -> Vector2:
