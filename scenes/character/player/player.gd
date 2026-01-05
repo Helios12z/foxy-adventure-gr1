@@ -20,6 +20,7 @@ signal susanoo_level_changed(level)
 signal room_level_changed(level)
 var is_invulnerable: bool = false
 var invincible_zone: bool = false
+var blade_boomerang_active: bool = false
 var can_move: bool = true
 var _base_movement_speed: float = 0.0
 var _base_gravity: float = 0.0

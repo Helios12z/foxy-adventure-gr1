@@ -192,6 +192,7 @@ func do_atk1() -> void:
 		return
 	_reset_windup(&"_atk1_windup_done", &"_atk1_windup_waiting")
 	sprite.speed_scale = 1.0
+	obj.attack_effect.play()
 	_connect_signals(_on_atk1_frame_changed, _on_atk1_anim_finished)
 
 func _on_atk1_frame_changed() -> void:
@@ -211,7 +212,6 @@ func _on_atk1_frame_changed() -> void:
 		2:
 			obj.attack_effect.frame = 0
 			obj.attack_effect.visible = true 
-			obj.attack_effect.play()
 			_shift_body_shapes(12)
 			_play(obj.slash)
 		5:

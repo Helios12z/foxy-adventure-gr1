@@ -170,3 +170,19 @@ func control_heal_potion() -> bool:
 		obj.use_heal_potion(heal_amount) 
 		return true
 	return false
+
+func control_throw_blade() -> bool:
+	# Throw blade boomerang with X key
+	# Requires: has_blade, blade not already flying, not in susanoo
+	if Input.is_action_just_pressed("throw_blade"):
+		if not obj.has_blade:
+			return false
+		if obj.blade_boomerang_active:
+			return false
+		# Không cho ném blade khi đang có Susanoo
+		if obj.get_node_or_null("SusanooSpirit") != null:
+			return false
+		if fsm.states.has("throwblade"):
+			change_state(fsm.states.throwblade)
+			return true
+	return false

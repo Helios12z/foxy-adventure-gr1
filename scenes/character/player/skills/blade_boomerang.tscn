@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://csbpbmnc12hvr"]
+
+[ext_resource type="Script" uid="uid://cdbmss0p4adjy" path="res://scenes/character/player/skills/blade_boomerang.gd" id="1_blade"]
+[ext_resource type="Texture2D" uid="uid://bg5dunexnubae" path="res://asset/island/images/blade/blade_throw_1.png" id="2_7ie01"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="6_hitarea"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_spin"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7ie01")
+}],
+"loop": true,
+"name": &"spin",
+"speed": 15.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_main"]
+radius = 13.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hit"]
+radius = 13.0
+
+[node name="BladeBoomerang" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_blade")
+damage = 25
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.3, 1.3)
+sprite_frames = SubResource("SpriteFrames_spin")
+animation = &"spin"
+autoplay = "spin"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_main")
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 16
+script = ExtResource("6_hitarea")
+damage = 20
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+shape = SubResource("CircleShape2D_hit")
+debug_color = Color(0.9, 0.2, 0.3, 0.42)

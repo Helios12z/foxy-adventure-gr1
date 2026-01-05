@@ -1,7 +1,7 @@
 [gd_scene load_steps=51 format=3 uid="uid://c3034u380fcvt"]
 
-[ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_y6kf8"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_pxkrn"]
+[ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/goblin/goblin.gd" id="1_y6kf8"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_pxkrn"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_sebhr"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_xxunx"]
 [ext_resource type="Texture2D" uid="uid://caxbje1tccaqh" path="res://asset/foxy/foxy/effects/hit_particle/black_hit_particle.png" id="3_yr0v4"]
@@ -11,13 +11,14 @@
 [ext_resource type="Texture2D" uid="uid://djs1a2kyshej5" path="res://asset/enemy/Goblin/Idle.png" id="7_wj18h"]
 [ext_resource type="Texture2D" uid="uid://wvmqaqgupikv" path="res://asset/enemy/Goblin/Run.png" id="8_pxkrn"]
 [ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_yr0v4"]
-[ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_y6kf8"]
-[ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_g41d4"]
-[ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_wj18h"]
+[ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/goblin/walk.gd" id="10_y6kf8"]
+[ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/goblin/attack.gd" id="12_g41d4"]
+[ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/goblin/chase.gd" id="14_wj18h"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_wj18h"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_pxkrn"]
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="16_swxqt"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="17_83gjm"]
+[ext_resource type="Script" uid="uid://dvrxo4uv6i24v" path="res://scenes/enemies/goblin/retreat.gd" id="18_retreat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
 size = Vector2(31, 39)
@@ -256,6 +257,7 @@ animations = [{
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
 script = ExtResource("1_y6kf8")
+goblin_scene = null
 coin_drop_count = 1
 max_health = 100
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
@@ -318,7 +320,7 @@ frame = 6
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.685657, 0.170201, 0.197746, 1)
 position = Vector2(-4.2574744e-08, 17.857143)
-target_position = Vector2(150, 0)
+target_position = Vector2(300, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
@@ -329,7 +331,7 @@ collision_mask = 2
 
 [node name="AttackScopeRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0.714286, 9.28571)
-target_position = Vector2(34, 0)
+target_position = Vector2(43, 0)
 collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false
@@ -337,7 +339,7 @@ collide_with_bodies = false
 [node name="DetectFrontRayCast2D2" type="RayCast2D" parent="Direction"]
 modulate = Color(0.685657, 0.170201, 0.197746, 1)
 position = Vector2(-4.25747e-08, -4.28571)
-target_position = Vector2(150, 0)
+target_position = Vector2(300, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D2" type="RayCast2D" parent="Direction"]
@@ -348,7 +350,7 @@ collision_mask = 2
 
 [node name="AttackScopeRayCast2D2" type="RayCast2D" parent="Direction"]
 position = Vector2(0.714286, -3.57143)
-target_position = Vector2(34, 0)
+target_position = Vector2(43, 0)
 collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false
@@ -373,6 +375,9 @@ script = ExtResource("16_swxqt")
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_wj18h")
 metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="Retreat" type="Node" parent="States"]
+script = ExtResource("18_retreat")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = -22.0
