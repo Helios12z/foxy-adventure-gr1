@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://bkm0htjnkf35e" path="res://scenes/enemies/cray_fish/walk.gd" id="10_vgapn"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_mjqi6"]
 [ext_resource type="Script" uid="uid://dotc7yktc812o" path="res://scenes/enemies/cray_fish/attack.gd" id="12_vxlka"]
-[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="13_ro2d7"]
+[ext_resource type="Script" path="res://scenes/enemies/cray_fish/dead.gd" id="13_ro2d7"]
 [ext_resource type="Script" uid="uid://coe5wqqdgro0y" path="res://scenes/enemies/cray_fish/chase.gd" id="14_pgjpf"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_l2joc"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_nyvw1"]

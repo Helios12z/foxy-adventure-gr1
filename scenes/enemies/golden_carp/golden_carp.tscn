@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://bfcjcafe6icw0" path="res://scenes/enemies/golden_carp/walk.gd" id="11_y255k"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="12_0nq03"]
 [ext_resource type="Script" uid="uid://beifqirm7ehv7" path="res://scenes/enemies/golden_carp/attack.gd" id="13_2yow8"]
-[ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="14_cclet"]
+[ext_resource type="Script" path="res://scenes/enemies/golden_carp/dead.gd" id="14_cclet"]
 [ext_resource type="Script" uid="uid://c7x652cpq6uxt" path="res://scenes/enemies/golden_carp/chase.gd" id="15_pglui"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="16_t5yfm"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="17_di4su"]
