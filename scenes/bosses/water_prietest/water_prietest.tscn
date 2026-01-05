@@ -1,4 +1,4 @@
-[gd_scene load_steps=222 format=3 uid="uid://sciyw0j5f5yo"]
+[gd_scene load_steps=224 format=3 uid="uid://sciyw0j5f5yo"]
 
 [ext_resource type="Script" uid="uid://62c87tch1sxa" path="res://scenes/bosses/water_prietest/water_prietest.gd" id="1_llnvn"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_3donb"]
@@ -896,6 +896,13 @@ height = 46.999996
 [sub_resource type="CircleShape2D" id="CircleShape2D_i0py4"]
 radius = 19.006578
 
+[sub_resource type="Gradient" id="Gradient_aura"]
+offsets = PackedFloat32Array(0, 0.3, 0.6, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.6, 1, 1, 1, 0.2, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aura"]
+gradient = SubResource("Gradient_aura")
+
 [node name="WaterPrietest" type="CharacterBody2D"]
 scale = Vector2(2, 2)
 collision_layer = 8
@@ -1098,10 +1105,12 @@ bus = &"SFX"
 
 [node name="Phase2Aura" type="PointLight2D" parent="."]
 visible = false
-position = Vector2(0, -50)
+position = Vector2(3.5, -5.000001)
+scale = Vector2(0.21875, 0.44335938)
 color = Color(0.2, 0.6, 1, 1)
 blend_mode = 2
 range_z_min = -4096
 range_z_max = 4096
 range_layer_min = -4096
 range_layer_max = 4096
+texture = SubResource("GradientTexture2D_aura")
