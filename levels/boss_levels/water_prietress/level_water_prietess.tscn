@@ -453,14 +453,14 @@ max_health = 100
 
 [node name="WaterPrietest" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("3_y7w5y")]
 position = Vector2(421, 485)
-max_health_boss = 600
+max_health_boss = 2500
 bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
 attack_damage = 7
 
 [node name="FrostGuardian" parent="World" instance=ExtResource("18_fc2sv")]
 position = Vector2(611, 568)
-boss_health = 100
+boss_health = 800
 
 [node name="Chest" parent="World" instance=ExtResource("10_tqigs")]
 requires_key = false
