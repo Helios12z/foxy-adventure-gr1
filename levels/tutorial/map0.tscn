@@ -452,7 +452,7 @@ offset = Vector2(0, 44.505)
 zoom = Vector2(1.44, 1.44)
 
 [node name="WaterFairyDoor" parent="Node2D" instance=ExtResource("45_scw3o")]
-position = Vector2(894, 73)
+position = Vector2(782.99994, 73.00001)
 scale = Vector2(0.7, 0.7)
 
 [node name="WaterFairy" parent="Node2D" instance=ExtResource("44_7ilwd")]
