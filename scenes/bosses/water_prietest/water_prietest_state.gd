@@ -718,6 +718,15 @@ func control_jump_enter(extra_jump_height: float = 24.0) -> void:
 		change_state(fsm.states.idle)
 		return
 
+	# In phase 2, prioritize jumping to safe floating platforms
+	if obj.in_phase2 and not obj.jump_markers.is_empty():
+		var target_marker = obj.get_best_jump_marker_to_player()
+		if target_marker:
+			# For phase 2, use minimal height - just enough to clear the gap
+			_perform_jump_to_position(target_marker.global_position, 0.0)
+			return
+
+	# Fallback to original logic if no marker found or not in phase 2
 	if p.global_position.y < obj.global_position.y:
 		var jump_direction = sign(p.global_position.x - obj.global_position.x)
 		if jump_direction == 0:
@@ -781,24 +790,53 @@ func _perform_jump_to_position(target_pos: Vector2, extra_jump_height: float) ->
 	var dx := target_pos.x - start_pos.x
 	var g := _get_gravity_value()
 
-	var base_extra = max(extra_jump_height, 10.0)
+	# In phase 2, use much more conservative jump calculations
+	var base_extra: float
+	if obj.in_phase2:
+		base_extra = 0.0  # No extra height in phase 2
+	else:
+		base_extra = max(extra_jump_height, 10.0)
 
-	var needed_up_height = max(0.0, (start_pos.y - target_pos.y) + base_extra)
+	# Calculate needed jump height - reduced for phase 2
+	var y_diff = start_pos.y - target_pos.y
+	var needed_up_height: float
+
+	if obj.in_phase2:
+		# For phase 2: Only jump as high as needed to reach the target vertically
+		# If target is below (negative y_diff), only add small arc height
+		# If target is above (positive y_diff), jump to reach it with minimal clearance
+		if y_diff < 0:
+			# Target is below - minimal arc
+			needed_up_height = max(10.0, abs(y_diff) * 0.3)
+		else:
+			# Target is above - reach it with small buffer
+			needed_up_height = max(0.0, y_diff + 10.0)
+	else:
+		# Original calculation for phase 1
+		needed_up_height = max(0.0, y_diff + base_extra)
+
 	var vy := -sqrt(2.0 * g * max(1.0, needed_up_height))
 
-	var dy := target_pos.y - start_pos.y  
+	var dy := target_pos.y - start_pos.y
 	var disc := vy * vy + 2.0 * g * dy
 	if disc < 0.0:
 		disc = 0.0
 	var t := (-vy + sqrt(disc)) / g
-	t = clamp(t, 0.35, 1.2)
+
+	# In phase 2, allow more time for the jump (less forced height)
+	var max_t = 2.0 if obj.in_phase2 else 1.2
+	var min_t = 0.5 if obj.in_phase2 else 0.35
+	t = clamp(t, min_t, max_t)
 
 	var max_air = max(1.0, obj.air_horizontal_speed)
 	var t_need = abs(dx) / max_air
 	var iter := 0
+
+	# Use smaller height increments for more controlled jumping
+	var height_increment = 10.0 if obj.in_phase2 else 40.0
 	while t < t_need and iter < 6:
 		iter += 1
-		needed_up_height += 40.0
+		needed_up_height += height_increment
 		vy = -sqrt(2.0 * g * needed_up_height)
 
 		dy = target_pos.y - start_pos.y
@@ -920,8 +958,14 @@ func control_roll_enter() -> void:
 	var start_x := obj.global_position.x
 	var bounds = _get_roll_bounds(ROLL_BOUND_MARGIN)
 
-	var player = obj.get_player()
-	var plan := _compute_roll_plan(start_x, player, bounds) 
+	# In phase 2, prioritize rolling towards safe platforms
+	var plan: Dictionary
+	if obj.in_phase2 and not obj.jump_markers.is_empty():
+		plan = _compute_roll_plan_phase2(start_x, bounds)
+	else:
+		var player = obj.get_player()
+		plan = _compute_roll_plan(start_x, player, bounds)
+
 	_roll_dir = plan.dir
 	_roll_target_x = plan.target
 
@@ -941,6 +985,26 @@ func control_roll_enter() -> void:
 	obj.change_direction(_roll_dir)
 
 	_sync_roll_anim_speed(sprite, _roll_total_time)
+
+func _compute_roll_plan_phase2(start_x: float, bounds: Variant) -> Dictionary:
+	# In phase 2, try to roll towards the nearest safe platform
+	var nearest_marker = obj.get_nearest_jump_marker()
+
+	if nearest_marker:
+		# Roll towards the platform marker
+		var target_x = nearest_marker.global_position.x
+		var dir = sign(target_x - start_x)
+		if dir == 0:
+			dir = 1 if not obj.animated_sprite_2d.flip_h else -1
+
+		if bounds != null:
+			target_x = clamp(target_x, bounds.x, bounds.y)
+
+		return {"dir": dir, "target": target_x}
+	else:
+		# Fallback to rolling away from player direction
+		var player = obj.get_player()
+		return _compute_roll_plan(start_x, player, bounds)
 
 
 func control_roll_update(delta: float) -> void:

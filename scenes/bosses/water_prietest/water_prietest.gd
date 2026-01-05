@@ -586,3 +586,39 @@ func get_marker_at_pos(pos: Vector2) -> JumpMarker2D:
 				best = m
 
 	return best
+
+func _boss_marker() -> JumpMarker2D:
+	return get_marker_at_pos(global_position)
+
+func _marker_for_pos(pos: Vector2) -> JumpMarker2D:
+	var best: JumpMarker2D = null
+	var best_score := INF
+
+	for m in jump_markers:
+		var jm := m as JumpMarker2D
+		if jm == null or not jm.is_active:
+			continue
+
+		var half = jm.platform_size * 0.5
+		var dx = abs(pos.x - jm.global_position.x)
+		var dy = pos.y - jm.global_position.y  # has sign
+
+		var x_tol = max(half.x, 16.0) + 10.0  # MARKER_X_PAD
+
+		var base_y = max(half.y, 10.0)
+		var y_up = min(base_y + 10.0, 70.0)  # MARKER_Y_UP_PAD, MARKER_Y_CAP
+		var y_down = min(base_y + 40.0, 70.0)  # MARKER_Y_DOWN_PAD, MARKER_Y_CAP
+
+		if dx > x_tol:
+			continue
+		if dy < -y_up:
+			continue
+		if dy > y_down:
+			continue
+
+		var score = dx + abs(dy) * 2.0
+		if score < best_score:
+			best_score = score
+			best = jm
+
+	return best
