@@ -2,7 +2,7 @@ extends EnemyCharacter
 
 @export var minion_health: int = 100
 @export var retreat_speed: float = 180.0
-@export var health_recovery_rate: float = 10.0  # Health recovered per second
+@export var goblin_scene: PackedScene
 
 @onready var detect_front = $Direction/DetectFrontRayCast2D
 @onready var detect_back = $Direction/DetectBackRayCast2D

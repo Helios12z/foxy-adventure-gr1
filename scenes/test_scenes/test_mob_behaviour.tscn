@@ -15,18 +15,6 @@ tile_set = ExtResource("1_hkf3r")
 [node name="Gobin" parent="Enemy" instance=ExtResource("2_hkf3r")]
 position = Vector2(369.99997, 472.99997)
 
-[node name="Gobin2" parent="Enemy" instance=ExtResource("2_hkf3r")]
-position = Vector2(955.99994, 472.99997)
-
-[node name="Gobin3" parent="Enemy" instance=ExtResource("2_hkf3r")]
-position = Vector2(1089, 477)
-
-[node name="Gobin4" parent="Enemy" instance=ExtResource("2_hkf3r")]
-position = Vector2(2356, 466)
-
-[node name="Gobin5" parent="Enemy" instance=ExtResource("2_hkf3r")]
-position = Vector2(2200, 466)
-
 [node name="Player" parent="." instance=ExtResource("3_4xjwe")]
 position = Vector2(93, 445)
 has_blade = true

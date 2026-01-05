@@ -256,6 +256,7 @@ animations = [{
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
 script = ExtResource("1_y6kf8")
+goblin_scene = null
 coin_drop_count = 1
 max_health = 100
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
