@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_3vu3r"]
 [ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_ib1x5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_7uwem"]
+[ext_resource type="Texture2D" uid="uid://caxbje1tccaqh" path="res://asset/foxy/foxy/effects/hit_particle/black_hit_particle.png" id="3_fvscq"]
 [ext_resource type="Texture2D" uid="uid://ld1ak7j1mr5q" path="res://asset/enemy/Flying eye/Attack.png" id="4_k3trt"]
 [ext_resource type="Texture2D" uid="uid://8kwxdwe8jwp0" path="res://asset/enemy/Flying eye/Death.png" id="5_he1hr"]
 [ext_resource type="Texture2D" uid="uid://b8ua7mw4t73if" path="res://asset/enemy/Flying eye/Take Hit.png" id="6_3vu3r"]
@@ -237,7 +238,9 @@ shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_ib1x5")]
 scale = Vector2(0.9999998, 0.9999998)
-base_scale = 0.012
+particle_texture = ExtResource("3_fvscq")
+base_scale = 0.006
+particle_count = 28
 particle_opacity = 0.7
 reverse_direction = false
 

@@ -17,3 +17,13 @@ func _ready() -> void:
 		# If no portal target, try to respawn at checkpoint
 		print("[Map3] No portal target, attempting checkpoint respawn...")
 		GameManager.respawn_at_checkpoint()
+
+	# Add background music like Water Prietest level
+	var music_player = AudioStreamPlayer.new()
+	music_player.stream = load("res://asset/sounds/water_prietess_sound/level_ambient.mp3")
+	music_player.volume_db = 6.0
+	music_player.bus = "SFX"
+	add_child(music_player)
+	music_player.play()
+	# Ensure music loops
+	music_player.finished.connect(music_player.play)

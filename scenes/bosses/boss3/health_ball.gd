@@ -11,9 +11,24 @@ var _is_destroyed: bool = false
 
 var _flash_tw: Tween
 
+const HitParticleEffectScene = preload("res://scenes/effects/HitParticleEffect.tscn")
+const GODDESS_PARTICLE_TEXTURE = preload("res://asset/foxy/foxy/effects/hit_particle/goddess_hit_particle.png")
+var hit_particle_effect: Node2D
+
 func _ready() -> void:
 	health = max_health
 	sprite.play("idle")
+	
+	# Add hit particle effect
+	var particle_node = HitParticleEffectScene.instantiate()
+	particle_node.particle_texture = GODDESS_PARTICLE_TEXTURE
+	particle_node.base_scale = 0.024
+	particle_node.particle_count = 14
+	particle_node.particle_opacity = 0.7
+	particle_node.reverse_direction = false
+	
+	add_child(particle_node)
+	hit_particle_effect = particle_node
 
 	# Connect hurt signal
 	if hurt_area:
@@ -22,6 +37,10 @@ func _ready() -> void:
 func _on_hurt(_direction: Vector2, damage: float) -> void:
 	if _is_destroyed:
 		return
+
+	# Spawn hit particles
+	if hit_particle_effect:
+		hit_particle_effect.spawn_particles(_direction)
 
 	health -= damage
 	print("[HealthBall] Took %d damage, health: %d/%d" % [damage, health, max_health])
@@ -69,4 +88,14 @@ func _break() -> void:
 
 	# Wait for animation to finish then remove
 	await sprite.animation_finished
+	
+	# Clear particles immediately when ball disappears
+	if hit_particle_effect and hit_particle_effect.has_method("clear_particles"):
+		hit_particle_effect.clear_particles()
+		
 	queue_free()
+
+func _exit_tree() -> void:
+	# Ensure particles are cleared if object is removed in other ways
+	if hit_particle_effect and hit_particle_effect.has_method("clear_particles"):
+		hit_particle_effect.clear_particles()

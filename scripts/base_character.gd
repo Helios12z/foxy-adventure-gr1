@@ -102,6 +102,16 @@ func take_damage(damage: int, hit_direction: Vector2 = Vector2.ZERO) -> void:
 	if enable_hit_particles and hit_particle_effect != null:
 		hit_particle_effect.spawn_particles(hit_direction)
 
+	# Play hurt sound (global for all characters)
+	var hurt_snd = AudioStreamPlayer2D.new()
+	hurt_snd.stream = load("res://asset/sounds/frost_guardian_sound/punch.mp3")
+	hurt_snd.bus = "SFX"
+	hurt_snd.volume_db = -5.0 # Slightly quieter
+	hurt_snd.pitch_scale = 1.25 # Slightly faster
+	add_child(hurt_snd)
+	hurt_snd.play(0.2) # Skip first 0.2s for faster impact
+	hurt_snd.finished.connect(hurt_snd.queue_free)
+
 # Change the animation of the character on the next frame
 func change_animation(new_animation: String) -> void:
 	_next_animation = new_animation

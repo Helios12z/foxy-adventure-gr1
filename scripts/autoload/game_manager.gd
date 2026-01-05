@@ -42,6 +42,10 @@ func change_stage(stage_path: String, _target_portal_name: String = "") -> void:
 	get_tree().change_scene_to_file(stage_path) 
 
 func change_stage_with_loading(path: String):
+	# Special-case: map0 should load directly without loading overlay
+	if path.ends_with("levels/tutorial/map0.tscn"):
+		get_tree().change_scene_to_file(path)
+		return
 	# Store current scene for transition context
 	var current_scene_path = _get_current_stage_path()
 

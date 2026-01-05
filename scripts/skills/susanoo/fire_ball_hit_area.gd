@@ -16,7 +16,32 @@ func _on_area_entered(area: Area2D) -> void:
 		var dmg := _get_susanoo_damage()
 		area.take_damage(hit_dir.normalized(), dmg)
 		# Sau khi gây damage lên enemy, làm fireball biến mất
+		_play_impact_sound()
 		_vanish_fireball()
+		
+func _play_impact_sound() -> void:
+	# Tìm node cha FireBall (Path2D) để lấy AudioStreamPlayer2D "ImpactSound"
+	# (Node này được fire_ball.gd tạo ra ở _ready)
+	var parent_ball: Node = self
+	while parent_ball != null and not parent_ball.has_method("vanish"):
+		parent_ball = parent_ball.get_parent()
+		
+	if parent_ball:
+		var sound = null
+		if parent_ball.has_node("ImpactSound"):
+			sound = parent_ball.get_node("ImpactSound")
+		elif parent_ball.has_node("PathFollow2D/ImpactSound"):
+			sound = parent_ball.get_node("PathFollow2D/ImpactSound")
+			
+		if sound and sound is AudioStreamPlayer2D:
+			# Clone để phát âm thanh mà không bị ngắt khi fireball biến mất
+			var root = get_tree().current_scene
+			if root:
+				var snd_clone = sound.duplicate()
+				root.add_child(snd_clone)
+				snd_clone.global_position = global_position
+				snd_clone.play()
+				snd_clone.finished.connect(snd_clone.queue_free)
 # Khi chạm body (platform), không tự spawn hole để tránh trùng với RayCast trong fire_ball.gd
 func _on_body_entered(body: Node) -> void:
 	pass

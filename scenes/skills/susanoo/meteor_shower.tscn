@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dvwm5amd6h3ao" path="res://scenes/skills/susanoo/fire_circle.tscn" id="1_qgobl"]
 [ext_resource type="PackedScene" uid="uid://qljrylvsqdhf" path="res://scenes/skills/susanoo/fire_ball.tscn" id="2_vpscj"]
 [ext_resource type="Script" uid="uid://75oosdfndfps" path="res://scripts/skills/susanoo/meteor_shower.gd" id="3_meteor"]
+[ext_resource type="AudioStream" uid="uid://b0upod035k5en" path="res://asset/sounds/king_crab_sound/cast.mp3" id="4_sound"]
 
 [node name="MeteorShower" type="Node2D"]
 position = Vector2(-1, 299)
@@ -115,3 +116,7 @@ bob_damping = 0.12
 [node name="FireBall25" parent="FireBalls" instance=ExtResource("2_vpscj")]
 position = Vector2(77, -447)
 bob_damping = 0.12
+
+[node name="CastSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_sound")
+bus = &"SFX"

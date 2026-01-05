@@ -15,7 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://pslk5e8sjfhx" path="res://asset/foxy/foxy/fox_susanoo/giant_firefox_idle_04.tres" id="9_g6cjf"]
 [ext_resource type="PackedScene" uid="uid://b5bu5nk05qwvp" path="res://scenes/effects/flicker_light_2d.tscn" id="10_flicker"]
 [ext_resource type="Script" uid="uid://djc2seng61pag" path="res://scripts/skills/susanoo/hit_area_platform_fx.gd" id="11_hit_fx"]
+[ext_resource type="Script" uid="uid://djc2seng61pag" path="res://scripts/skills/susanoo/hit_area_platform_fx.gd" id="11_hit_fx"]
 [ext_resource type="Script" uid="uid://xlqj4e7wfr2p" path="res://scripts/skills/susanoo/defense_hit_area_2d.gd" id="12_defense_fx"]
+[ext_resource type="AudioStream" uid="uid://b0upod035k5en" path="res://asset/sounds/king_crab_sound/cast.mp3" id="13_sound"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7fdps"]
 animations = [{
@@ -137,3 +139,7 @@ position = Vector2(37, 5)
 
 [node name="FlickerLight2D" parent="." instance=ExtResource("10_flicker")]
 z_index = 10
+
+[node name="SpiritSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_sound")
+bus = &"SFX"

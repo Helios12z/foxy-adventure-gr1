@@ -52,8 +52,14 @@ func _auto_load_comic_pages() -> void:
 	dir.list_dir_begin()
 	var f := dir.get_next()
 	while f != "":
-		if not dir.current_is_dir() and (f.ends_with(".png") or f.ends_with(".jpg") or f.ends_with(".webp")):
-			files.append(f)
+		if not dir.current_is_dir():
+			var check_name: String = f
+			if check_name.ends_with(".import"):
+				check_name = check_name.trim_suffix(".import")
+				
+			if check_name.ends_with(".png") or check_name.ends_with(".jpg") or check_name.ends_with(".webp"):
+				if not files.has(check_name):
+					files.append(check_name)
 		f = dir.get_next()
 	dir.list_dir_end()
 	files.sort() # đảm bảo thứ tự ổn định theo tên file

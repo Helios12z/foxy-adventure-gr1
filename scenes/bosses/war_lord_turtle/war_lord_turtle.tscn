@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://dqawcb458fxlf"]
+[gd_scene load_steps=97 format=3 uid="uid://dqawcb458fxlf"]
 
 [ext_resource type="Script" uid="uid://dsog20jheeudr" path="res://scenes/bosses/war_lord_turtle/war_lord_turtle.gd" id="1_lsjki"]
 [ext_resource type="Texture2D" uid="uid://cxgrnhjcelaod" path="res://asset/war_lord/war_lord_turtle1.png" id="1_ufaww"]
@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" path="res://scenes/bosses/war_lord_turtle/laser_beam.tscn" id="9_sr0mj"]
 [ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="10_7g14b"]
 [ext_resource type="Texture2D" uid="uid://7c76aihswb45" path="res://asset/war_lord/war_lord_turtle14.png" id="10_td4te"]
+[ext_resource type="Texture2D" uid="uid://c7coikthgsmo1" path="res://asset/foxy/foxy/effects/hit_particle/war_turtle_hit_particle.png" id="11_amvgl"]
 [ext_resource type="Texture2D" uid="uid://bwvaceiepbqp4" path="res://asset/war_lord/war_lord_turtle15.png" id="11_giamn"]
 [ext_resource type="Texture2D" uid="uid://c83oawvrsnyw6" path="res://asset/war_lord/war_lord_turtle16.png" id="12_ioqo5"]
 [ext_resource type="Texture2D" uid="uid://bnregom3whkjh" path="res://asset/war_lord/war_lord_turtle17.png" id="13_gx74n"]
@@ -484,7 +485,9 @@ shape = SubResource("RectangleShape2D_k7whc")
 
 [node name="HitParticleEffect" parent="Direction" instance=ExtResource("10_7g14b")]
 scale = Vector2(0.9999998, 0.9999998)
-base_scale = 0.012
+particle_texture = ExtResource("11_amvgl")
+base_scale = 0.02
+particle_count = 10
 particle_opacity = 0.7
 reverse_direction = false
 

@@ -7,9 +7,10 @@ func _enter() -> void:
 	obj.velocity = Vector2.ZERO
 	obj.movement_speed = 0.0
 
-	if obj.hit_area_2d:
-		obj.hit_area_2d.monitoring = false
-		obj.hit_area_2d.monitorable = false
+	var hit_area = obj.get_node_or_null("Direction/HitArea2D")
+	if hit_area:
+		hit_area.monitoring = false
+		hit_area.monitorable = false
 
 	if obj.has_node("Direction/HurtArea2D"):
 		var hurt_area := obj.get_node("Direction/HurtArea2D") as Area2D
