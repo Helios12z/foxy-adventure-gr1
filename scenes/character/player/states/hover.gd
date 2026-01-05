@@ -109,6 +109,10 @@ func _enter() -> void:
 	# Giảm nhẹ tốc độ ngang để cảm giác bay bổng
 	obj.velocity.x = move_toward(obj.velocity.x, obj.velocity.x, 0)  # giữ nguyên hiện tại
 
+	# Reset tốc độ rơi ngay lập tức nếu đang rơi quá nhanh (bỏ qua quán tính cũ)
+	if obj.velocity.y > hover_fall_speed:
+		obj.velocity.y = hover_fall_speed
+
 # (Không dùng shader nữa)
 
 func _update(delta: float) -> void:
