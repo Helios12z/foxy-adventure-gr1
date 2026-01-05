@@ -135,7 +135,7 @@ shape = SubResource("RectangleShape2D_3nmlv")
 debug_color = Color(0.9527126, 0.123495005, 0.45814937, 0.41960785)
 
 [node name="ShootPoint" type="Marker2D" parent="Direction"]
-position = Vector2(9, -16)
+position = Vector2(9, -6)
 
 [node name="States" type="Node" parent="."]
 
