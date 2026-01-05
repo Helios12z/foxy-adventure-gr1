@@ -22,7 +22,7 @@
 size = Vector2(16, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3jqcw"]
-size = Vector2(41, 20)
+size = Vector2(16, 27)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2svrk"]
 shader = ExtResource("4_toaug")
@@ -69,7 +69,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_86med"]
-size = Vector2(42, 25)
+size = Vector2(23, 29)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_explosion"]
 radius = 26.076809
@@ -181,7 +181,7 @@ damage = 15
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(-0.5, 0)
+position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_3jqcw")
 debug_color = Color(0.929265, 0.225519, 0.365746, 0.42)
 
@@ -198,7 +198,7 @@ script = ExtResource("8_iuaad")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
-position = Vector2(-1, 0.5)
+position = Vector2(1.5, 0.5)
 shape = SubResource("RectangleShape2D_86med")
 debug_color = Color(0.0942014, 0.623105, 0.514201, 0.42)
 
