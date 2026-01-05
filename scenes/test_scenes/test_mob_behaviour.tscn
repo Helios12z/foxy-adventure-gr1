@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://1nhbn3arro3p"]
+[gd_scene load_steps=7 format=4 uid="uid://1nhbn3arro3p"]
 
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_hkf3r"]
 [ext_resource type="PackedScene" uid="uid://cnt8ey2jdqrgv" path="res://scenes/enemies/mushroom_zoombie/mushroom_zombie.tscn" id="2_hkf3r"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="3_4xjwe"]
+[ext_resource type="PackedScene" uid="uid://t6vtn81e7w6p" path="res://scenes/enemies/mushroom/mushroom.tscn" id="3_xaycl"]
+[ext_resource type="PackedScene" uid="uid://cyqop2sl0gftf" path="res://scenes/enemies/coconut/coconut.tscn" id="4_xaycl"]
 [ext_resource type="PackedScene" uid="uid://dkcdsoely1pos" path="res://scenes/objects/compulsory_wall.tscn" id="4_xju3p"]
 
 [node name="TestMobBehaviour" type="Node2D"]
@@ -16,6 +18,12 @@ tile_set = ExtResource("1_hkf3r")
 [node name="MushroomZombie" parent="Enemy" instance=ExtResource("2_hkf3r")]
 position = Vector2(275, 473)
 
+[node name="Mushroom" parent="Enemy" instance=ExtResource("3_xaycl")]
+position = Vector2(666, 302)
+
+[node name="Coconut" parent="Enemy" instance=ExtResource("4_xaycl")]
+position = Vector2(1127, 478)
+
 [node name="Player" parent="." instance=ExtResource("3_4xjwe")]
 position = Vector2(93, 445)
 has_blade = true
@@ -23,4 +31,4 @@ has_blade = true
 [node name="CompulsoryWall" parent="." instance=ExtResource("4_xju3p")]
 position = Vector2(544, 319)
 slide_direction = 1
-required_enemies = Array[NodePath]([NodePath("../Enemy/MushroomZombie")])
+required_enemies = Array[NodePath]([NodePath("../Enemy/MushroomZombie"), NodePath("../Enemy/Mushroom")])

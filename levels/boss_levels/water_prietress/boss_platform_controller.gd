@@ -17,23 +17,34 @@ signal complete_moving_up
 @onready var camera: Camera2D = get_tree().get_first_node_in_group("Camera")
 @onready var crack_sfx: AudioStreamPlayer2D = $"../../Sound/Craking"
 @onready var water_priestess: CharacterBody2D = $"../WaterPrietest"
+@onready var cracking_effect: AnimatedSprite2D = $"../../World/BossPlatformController/RectPlatform/CrackingEffect"
 
 var is_phase_2_active: bool = false
 var _intro_done: bool = false
 var _phase2_started: bool = false
 var _returned: bool = false
 var _col_cache := {}
+var _rect_platform_original_pos: Vector2
+var _rect_platform_visible: bool = true
 
 func _ready() -> void:
 	randomize()
 	_setup_initial_platforms()
 	_connect_boss_signals()
 
+	if rect_platform:
+		_rect_platform_original_pos = rect_platform.global_position
+
+	if cracking_effect:
+		cracking_effect.visible = false
+		cracking_effect.stop()
+
 func _setup_initial_platforms() -> void:
 	if rect_platform:
 		rect_platform.visible = true
 		rect_platform.modulate.a = 1.0
 		_set_platform_collision(rect_platform, true)
+		_rect_platform_visible = true
 
 	if left_platform:
 		left_platform.visible = true
@@ -64,6 +75,9 @@ func _connect_boss_signals() -> void:
 
 	if not water_priestess.into_phase2.is_connected(_on_phase_2_start):
 		water_priestess.into_phase2.connect(_on_phase_2_start)
+
+	if not water_priestess.boss_died.is_connected(_on_boss_died):
+		water_priestess.boss_died.connect(_on_boss_died)
 
 func _hide_side_platforms() -> void:
 	if left_platform:
@@ -125,10 +139,126 @@ func _on_phase_2_start() -> void:
 
 	is_phase_2_active = true
 
-	if phase_2_start_delay > 0.0:
-		await get_tree().create_timer(phase_2_start_delay).timeout
+	# Wait 2 seconds after phase 2 starts
+	await get_tree().create_timer(2.0).timeout
 
-	start_phase2_platforms()
+	# Show floating platforms FIRST (so boss always has somewhere to stand)
+	_show_floating_platforms_only()
+
+	# Enable jump markers BEFORE boss jumps
+	_enable_floating_platform_markers()
+
+	# Small delay for platforms to be ready
+	await get_tree().create_timer(0.2).timeout
+
+	# Make boss jump to a higher platform
+	_make_boss_jump_to_higher_platform()
+
+	# Wait for boss to land (approximately 1 second)
+	await get_tree().create_timer(1.0).timeout
+
+	# Then play cracking effect and destroy platform
+	await _destroy_rect_platform_with_cracking()
+
+func _show_floating_platforms_only() -> void:
+	# Show floating platforms but don't enable jump markers yet
+	for platform in platforms:
+		platform.visible = true
+		platform.modulate.a = 1.0
+		_set_platform_collision(platform, true)
+
+	# Camera shake to indicate platforms appearing
+	if camera:
+		camera.camera_shake(0.3, 16)
+
+func _enable_floating_platform_markers() -> void:
+	# Enable only floating platform markers (not rect platform)
+	for platform in platforms:
+		var markers := _get_markers_for_platform(platform)
+		for marker in markers:
+			if marker:
+				marker.set_active(true)
+
+func _make_boss_jump_to_higher_platform() -> void:
+	if not water_priestess or not water_priestess.fsm:
+		return
+
+	# Force boss to jump state
+	water_priestess.fsm.change_state(water_priestess.fsm.states.jumpstate)
+
+func _destroy_rect_platform_with_cracking() -> void:
+	if not rect_platform:
+		return
+
+	# Play cracking sound
+	if crack_sfx:
+		crack_sfx.play()
+
+	# Show and play cracking effect
+	if cracking_effect:
+		cracking_effect.visible = true
+		cracking_effect.frame = 0
+		cracking_effect.play()
+
+		# Wait for cracking animation to complete
+		await cracking_effect.animation_finished
+
+	# Hide the cracking effect
+	if cracking_effect:
+		cracking_effect.visible = false
+		cracking_effect.stop()
+
+	# Hide and disable the rect platform
+	_hide_rect_platform()
+
+	# Stop the crack sound
+	if crack_sfx:
+		crack_sfx.stop()
+
+func _hide_rect_platform() -> void:
+	if not rect_platform:
+		return
+
+	# Disable the jump marker on rect platform
+	var rect_markers := _get_markers_for_platform(rect_platform)
+	for marker in rect_markers:
+		if marker:
+			marker.set_active(false)
+
+	# Create a tween to fade out the platform
+	var tween := create_tween()
+	tween.parallel().tween_property(rect_platform, "modulate:a", 0.0, 0.5)
+
+	# Wait for fade to complete
+	await tween.finished
+
+	# Hide and disable collision
+	rect_platform.visible = false
+	_set_platform_collision(rect_platform, false)
+	_rect_platform_visible = false
+
+func _show_rect_platform() -> void:
+	if not rect_platform:
+		return
+
+	# Show and enable collision
+	rect_platform.visible = true
+	_set_platform_collision(rect_platform, true)
+	_rect_platform_visible = true
+
+	# Re-enable the jump marker on rect platform
+	var rect_markers := _get_markers_for_platform(rect_platform)
+	for marker in rect_markers:
+		if marker:
+			marker.set_active(true)
+
+	# Create a tween to fade in the platform
+	var tween := create_tween()
+	tween.tween_property(rect_platform, "modulate:a", 1.0, 0.5)
+
+func _on_boss_died() -> void:
+	# Restore the rect platform when boss dies
+	_show_rect_platform()
 
 func start_phase2_platforms() -> void:
 	print("start phase 2 platforms")
@@ -136,23 +266,12 @@ func start_phase2_platforms() -> void:
 		return
 	_phase2_started = true
 
-	if camera:
-		camera.camera_shake(0.4, 24)
-	if crack_sfx:
-		crack_sfx.play(2.0)
-
-	for platform in platforms:
-		platform.visible = true
-		platform.modulate.a = 1.0
-		_set_platform_collision(platform, true)
-
+	# Enable jump markers so boss can use the platforms
 	for marker in jump_markers:
 		if marker:
 			marker.set_active(true)
 
 	emit_signal("complete_moving_up")
-	if crack_sfx:
-		crack_sfx.stop()
 
 func return_platform_after_boss_dead() -> void:
 	if _returned:
