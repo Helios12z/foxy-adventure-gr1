@@ -8,6 +8,7 @@ extends EnemyCharacter
 @onready var animated_sprite_2d: AnimatedSprite2D = $Direction/AnimatedSprite2D
 @onready var hurt_area = $Direction/HurtArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
+@onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
 
 func _ready() -> void:
 	max_health = minion_health
@@ -44,9 +45,10 @@ func shoot_bullet() -> void:
 
 	bullet_instance.global_position = shoot_point.global_position
 
-	var direction_to_player = (player.global_position - bullet_instance.global_position).normalized()
+	# Only shoot horizontally (roll on ground)
+	var direction_to_player = sign(player.global_position.x - bullet_instance.global_position.x)
 	var speed = 300.0
-	bullet_instance.linear_velocity = direction_to_player * speed
+	bullet_instance.linear_velocity = Vector2(direction_to_player * speed, 0)
 
 func _on_hurt_area_2d_hurt(_direction: Vector2, _damage: float) -> void:
 	_take_damage_from_dir(_direction, _damage)

@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgw1wod1cpci6"]
+[gd_scene load_steps=7 format=3 uid="uid://cgw1wod1cpci6"]
 
-[ext_resource type="Script" path="res://scenes/enemies/coconut/coconut_bullet.gd" id="1_xwnc6"]
+[ext_resource type="Script" uid="uid://d4jpq1m2m3lei" path="res://scenes/enemies/coconut/coconut_bullet.gd" id="1_xwnc6"]
 [ext_resource type="Texture2D" uid="uid://b3bjsmjpdlq65" path="res://asset/enemy/coconut/coconut.png" id="2_4dnju"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="3_4dnju"]
 
@@ -8,15 +8,16 @@
 atlas = ExtResource("2_4dnju")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4ee74"]
-radius = 9.0
+radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a03dc"]
-radius = 9.0
+radius = 5.0
 
 [node name="CoconutBullet" type="RigidBody2D"]
 script = ExtResource("1_xwnc6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 texture = SubResource("AtlasTexture_4dnju")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -13,13 +13,13 @@
 [ext_resource type="Texture2D" uid="uid://brqmkew8pxxc6" path="res://asset/enemy/coconut/coconut_warrior_moving4.png" id="10_tprt4"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="11_74jo8"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="12_43clw"]
-[ext_resource type="Script" path="res://scenes/enemies/coconut/idle.gd" id="13_co5e5"]
+[ext_resource type="Script" uid="uid://b5t5w1y1sugjd" path="res://scenes/enemies/coconut/idle.gd" id="13_co5e5"]
 [ext_resource type="Script" uid="uid://bm8hm6pcgrie8" path="res://scenes/enemies/coconut/walk.gd" id="14_o8oxm"]
 [ext_resource type="Script" uid="uid://gm80o4sc4wyf" path="res://scenes/enemies/coconut/attack.gd" id="15_i70hk"]
 [ext_resource type="Script" uid="uid://c2t75y32swm7n" path="res://scenes/enemies/coconut/hurt.gd" id="17_co5e5"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="18_h1my8"]
-[ext_resource type="Script" uid="uid://d1cwmbm87s7ye" path="res://scenes/enemies/coconut/dead.gd" id="19_o8oxm"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="19_f84xr"]
+[ext_resource type="Script" uid="uid://d1cwmbm87s7ye" path="res://scenes/enemies/coconut/dead.gd" id="19_o8oxm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n1apa"]
 size = Vector2(28, 29)
@@ -97,13 +97,13 @@ target_position = Vector2(0, 25)
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.685657, 0.170201, 0.197746, 1)
 position = Vector2(0, 5)
-target_position = Vector2(150, 0)
+target_position = Vector2(250, 0)
 collision_mask = 2
 
 [node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
 modulate = Color(0.219501, 0.219501, 0.219501, 1)
 position = Vector2(0, 5)
-target_position = Vector2(-150, 0)
+target_position = Vector2(-100, 0)
 collision_mask = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
@@ -135,7 +135,7 @@ shape = SubResource("RectangleShape2D_3nmlv")
 debug_color = Color(0.9527126, 0.123495005, 0.45814937, 0.41960785)
 
 [node name="ShootPoint" type="Marker2D" parent="Direction"]
-position = Vector2(9, -17)
+position = Vector2(9, -16)
 
 [node name="States" type="Node" parent="."]
 

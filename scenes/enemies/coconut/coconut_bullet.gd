@@ -10,6 +10,8 @@ var _timer: float = 0.0
 func _ready() -> void:
 	hit_area.damage = damage
 	hit_area.hitted.connect(_on_hit)
+	# Disable gravity so bullet rolls on ground instead of flying
+	gravity_scale = 0.0
 
 func _physics_process(delta: float) -> void:
 	_timer += delta
