@@ -12,11 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://cjwlrhvwu2qu0" path="res://asset/enemy/Skeleton/Idle.png" id="7_03bn8"]
 [ext_resource type="Texture2D" uid="uid://c08exc80o10pj" path="res://asset/enemy/Skeleton/Walk.png" id="8_8eo2u"]
 [ext_resource type="Script" uid="uid://vttwkhiq7pxw" path="res://scenes/enemies/idle.gd" id="9_lsssd"]
-[ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_e0ypk"]
-[ext_resource type="Script" uid="uid://cgnh2h2eso1fe" path="res://scenes/enemies/gobin/attack.gd" id="12_yptew"]
-[ext_resource type="Script" path="res://scenes/enemies/skeleton/hurt.gd" id="13_pewhb"]
-[ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_qfitn"]
-[ext_resource type="Script" path="res://scenes/enemies/skeleton/dead.gd" id="15_adimu"]
+[ext_resource type="Script" path="res://scenes/enemies/skeleton/walk.gd" id="10_e0ypk"]
+[ext_resource type="Script" path="res://scenes/enemies/skeleton/attack.gd" id="12_yptew"]
+[ext_resource type="Script" uid="uid://dn3vpefsahorn" path="res://scenes/enemies/skeleton/hurt.gd" id="13_pewhb"]
+[ext_resource type="Script" path="res://scenes/enemies/skeleton/chase.gd" id="14_qfitn"]
+[ext_resource type="Script" uid="uid://ca1fnnw62g68l" path="res://scenes/enemies/skeleton/dead.gd" id="15_adimu"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="15_kdl81"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="16_wkpb5"]
 [ext_resource type="Script" uid="uid://ow80w8bxucfv" path="res://scenes/enemies/skeleton/temporary_dead.gd" id="16_yjy0a"]
@@ -250,7 +250,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Sekeleton" type="CharacterBody2D"]
+[node name="Skeleton" type="CharacterBody2D"]
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
 script = ExtResource("1_yjy0a")

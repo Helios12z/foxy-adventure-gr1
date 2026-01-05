@@ -7,6 +7,10 @@ func _enter() -> void:
 
 
 func _update(delta: float) -> void:
+	# Check if health is below 50% and retreat
+	if obj.should_retreat():
+		change_state(fsm.states.retreat)
+		return
 
 	if obj.can_detect_player():
 		obj.velocity.x = obj.direction * chase_speed

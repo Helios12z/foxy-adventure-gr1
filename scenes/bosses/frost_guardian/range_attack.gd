@@ -46,11 +46,9 @@ func spawn_bullet() -> void:
 	get_tree().current_scene.add_child(b)
 	b.global_position = spawn_pos
 
-	var dir_node: Node2D = obj.get_node("Direction")
-	var sx := dir_node.global_scale.x
-
 	var dir_x: float
-	if sx >= 0.0: dir_x = 1.0
+	if obj.direction > 0:
+		dir_x = 1.0
 	else: dir_x = -1.0
 	var shoot_dir := Vector2(dir_x, 0)
 

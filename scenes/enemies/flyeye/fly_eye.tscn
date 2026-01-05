@@ -1,21 +1,22 @@
-[gd_scene load_steps=45 format=3 uid="uid://d4naxw7byqf3t"]
+[gd_scene load_steps=46 format=3 uid="uid://d4naxw7byqf3t"]
 
-[ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/gobin/gobin.gd" id="1_he1hr"]
+[ext_resource type="Script" uid="uid://cu3i8efy4u4ny" path="res://scenes/enemies/flyeye/fly_eye.gd" id="1_he1hr"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_3vu3r"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_ib1x5"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_ib1x5"]
 [ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="3_7uwem"]
 [ext_resource type="Texture2D" uid="uid://caxbje1tccaqh" path="res://asset/foxy/foxy/effects/hit_particle/black_hit_particle.png" id="3_fvscq"]
 [ext_resource type="Texture2D" uid="uid://ld1ak7j1mr5q" path="res://asset/enemy/Flying eye/Attack.png" id="4_k3trt"]
 [ext_resource type="Texture2D" uid="uid://8kwxdwe8jwp0" path="res://asset/enemy/Flying eye/Death.png" id="5_he1hr"]
 [ext_resource type="Texture2D" uid="uid://b8ua7mw4t73if" path="res://asset/enemy/Flying eye/Take Hit.png" id="6_3vu3r"]
 [ext_resource type="Texture2D" uid="uid://bedvl4c2yg4uo" path="res://asset/enemy/Flying eye/Flight.png" id="7_7uwem"]
-[ext_resource type="Script" uid="uid://bfmkboethovai" path="res://scenes/enemies/gobin/walk.gd" id="10_5efj7"]
+[ext_resource type="Script" uid="uid://c8sqeolg5btlr" path="res://scenes/enemies/flyeye/walk.gd" id="10_5efj7"]
 [ext_resource type="Script" uid="uid://bmq61fof8icwp" path="res://scenes/enemies/flyeye/attack.gd" id="10_ov88m"]
 [ext_resource type="Script" uid="uid://df4dkquwky0gp" path="res://scenes/enemies/hurt.gd" id="11_1y8aa"]
 [ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="13_cmmhk"]
 [ext_resource type="Script" uid="uid://bya40y5dqymyb" path="res://scenes/enemies/dead.gd" id="13_t5cn8"]
 [ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="14_ib1x5"]
-[ext_resource type="Script" uid="uid://c38atpenjaw7d" path="res://scenes/enemies/gobin/chase.gd" id="14_uunq7"]
+[ext_resource type="Script" uid="uid://b84g8cc8l0vpx" path="res://scenes/enemies/flyeye/chase.gd" id="14_uunq7"]
+[ext_resource type="Script" uid="uid://dt8no5j0jebn2" path="res://scenes/enemies/flyeye/return_home.gd" id="15_return_home"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
 size = Vector2(31, 39)
@@ -217,9 +218,13 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
+radius = 250.0
+
 [node name="FlyEye" type="CharacterBody2D"]
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
+collision_mask = 0
 script = ExtResource("1_he1hr")
 gravity = 0.0
 max_health = 100
@@ -243,10 +248,6 @@ reverse_direction = false
 position = Vector2(0, 9.285714)
 target_position = Vector2(37, 0)
 
-[node name="DownRayCast2D" type="RayCast2D" parent="Direction"]
-position = Vector2(15, 0)
-target_position = Vector2(0, 28)
-
 [node name="HitArea2D" type="Area2D" parent="Direction"]
 collision_layer = 0
 collision_mask = 4
@@ -255,7 +256,8 @@ damage = 20
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(16, 5.5)
+position = Vector2(15.999999, 5.4999995)
+scale = Vector2(0.99999994, 0.99999994)
 shape = SubResource("RectangleShape2D_lf3fj")
 debug_color = Color(0.901445, 0.278962, 0.357004, 0.42)
 
@@ -274,24 +276,20 @@ sprite_frames = SubResource("SpriteFrames_ogm1e")
 animation = &"attack"
 autoplay = "walk"
 
-[node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
-modulate = Color(0.685657, 0.170201, 0.197746, 1)
-position = Vector2(0, 9.285714)
-target_position = Vector2(150, 0)
-collision_mask = 2
-
-[node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
-modulate = Color(0.219501, 0.219501, 0.219501, 1)
-position = Vector2(0, 9.285714)
-target_position = Vector2(-150, 0)
-collision_mask = 2
-
 [node name="AttackScopeRayCast2D" type="RayCast2D" parent="Direction"]
 position = Vector2(0, 9.285714)
 target_position = Vector2(34, 0)
 collision_mask = 4
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="DetectionArea2D" type="Area2D" parent="Direction"]
+position = Vector2(0, 9.285714)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/DetectionArea2D"]
+shape = SubResource("CircleShape2D_detection")
 
 [node name="States" type="Node" parent="."]
 
@@ -310,6 +308,9 @@ script = ExtResource("13_t5cn8")
 [node name="Chase" type="Node" parent="States"]
 script = ExtResource("14_uunq7")
 metadata/_custom_type_script = "uid://1yeaxl8cdu5k"
+
+[node name="ReturnHome" type="Node" parent="States"]
+script = ExtResource("15_return_home")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = -22.0

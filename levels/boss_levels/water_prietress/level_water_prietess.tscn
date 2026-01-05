@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://kv02hvhfsd8k"]
+[gd_scene load_steps=47 format=3 uid="uid://kv02hvhfsd8k"]
 
 [ext_resource type="Script" uid="uid://nfys250tpsyv" path="res://levels/boss_levels/water_prietress/level_water_prietess.gd" id="1_uutcu"]
 [ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="2_4si3a"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://ds0nmx20m3qxs" path="res://asset/level_3_water_palace/background/layer_2 (2).png" id="6_a2wmj"]
 [ext_resource type="Texture2D" uid="uid://dkoeobk6q8e8j" path="res://asset/level_3_water_palace/background/platform_boss_water_guard_02.png" id="6_kibuc"]
 [ext_resource type="Texture2D" uid="uid://buj4r0ifcl0q6" path="res://asset/level_3_water_palace/tileset/floating_platform.png" id="6_qntum"]
+[ext_resource type="Texture2D" uid="uid://p2vx5v414u0k" path="res://asset/effects/cracking.png" id="7_gv64d"]
 [ext_resource type="PackedScene" uid="uid://dcyxh7eep8web" path="res://scenes/objects/chest.tscn" id="10_tqigs"]
 [ext_resource type="Texture2D" uid="uid://qodbg1j2plxv" path="res://asset/ui/boss_healthbar.png" id="10_uutcu"]
 [ext_resource type="FontFile" uid="uid://x4u0fnuaebe3" path="res://asset/fonts/ThaleahFat.ttf" id="11_icah2"]
@@ -29,12 +30,61 @@
 [ext_resource type="PackedScene" uid="uid://b0ujpchtpx5wb" path="res://scenes/collectibles/coin/coin.tscn" id="19_6d03a"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="19_xb6hn"]
 [ext_resource type="PackedScene" uid="uid://c700eni2s0ngm" path="res://scenes/collectibles/waterpawgem/water_paw_gem.tscn" id="20_xfi5t"]
+[ext_resource type="AudioStream" uid="uid://d24jcdo6d6n0k" path="res://asset/sounds/king_crab_sound/level_craking.mp3" id="31_5wjs8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wnerh"]
 size = Vector2(953.5, 141.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
 radius = 32.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v577w"]
+atlas = ExtResource("7_gv64d")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y88o3"]
+atlas = ExtResource("7_gv64d")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myqgj"]
+atlas = ExtResource("7_gv64d")
+region = Rect2(0, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_te3mf"]
+atlas = ExtResource("7_gv64d")
+region = Rect2(512, 512, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_x7l3x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v577w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y88o3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myqgj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_te3mf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v577w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y88o3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myqgj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_te3mf")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4si3a"]
 size = Vector2(627, 20)
@@ -132,6 +182,15 @@ position = Vector2(0, -60)
 
 [node name="MonsterLandMarker4" type="Marker2D" parent="World/BossPlatformController/RectPlatform"]
 position = Vector2(66, -60)
+
+[node name="CrackingEffect" type="AnimatedSprite2D" parent="World/BossPlatformController/RectPlatform"]
+visible = false
+position = Vector2(-1, -23)
+scale = Vector2(1.3378906, 0.6738281)
+sprite_frames = SubResource("SpriteFrames_x7l3x")
+autoplay = "default"
+frame = 7
+frame_progress = 1.0
 
 [node name="LeftPlatform" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(221, -21)
@@ -513,3 +572,8 @@ stream = ExtResource("17_7sno5")
 volume_db = 6.0
 bus = &"SFX"
 parameters/looping = true
+
+[node name="Craking" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("31_5wjs8")
+volume_db = 10.0
+bus = &"SFX"
