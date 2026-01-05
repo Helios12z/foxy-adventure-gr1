@@ -19,9 +19,10 @@ func _setup_house_spawn_listener() -> void:
 func _ready() -> void:
 	_ensure_ui_layer()
 	_setup_house_spawn_listener()
-	await _show_intro_comic_if_available()
+	# await _show_intro_comic_if_available()
 	await _await_sword_given()
 	await _await_house_destroyed()
+
 	_spawn_followup_wave()
 
 func _ensure_ui_layer() -> void:

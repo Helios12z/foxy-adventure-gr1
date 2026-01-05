@@ -8,7 +8,10 @@ class_name WorldMapScreen
 @export_group("Debug")
 ## Force unlock stages up to this number (0 = Disabled)
 ## E.g., set to 2 -> Stage 1 & 2 marked completed, Stage 3 becomes Next Stage
-@export var debug_completed_stages_count: int = 0 
+@export var debug_completed_stages_count: int = 0
+
+var loading_music_player: AudioStreamPlayer
+const LOADING_MUSIC_PATH = "res://asset/sounds/Loading_music.mp3" 
 
 func _ready() -> void:
 	# RESET LOGIC: When entering World Map
@@ -58,6 +61,9 @@ func _ready() -> void:
 	
 	# Update all stage buttons
 	update_all_stages()
+	
+	# Play loading music in background
+	_setup_loading_music()
 
 func cleanup_overlay_screens() -> void:
 	# Remove any Victory/Defeat screens that might still be in the scene tree
@@ -89,3 +95,24 @@ func update_all_stages() -> void:
 		var stage_node = stages_control.get_node_or_null("Stage" + str(i))
 		if stage_node and stage_node is StageButton:
 			stage_node.update_stage_status()
+
+func _setup_loading_music() -> void:
+	loading_music_player = AudioStreamPlayer.new()
+	add_child(loading_music_player)
+	
+	if FileAccess.file_exists(LOADING_MUSIC_PATH):
+		var stream = load(LOADING_MUSIC_PATH)
+		if stream:
+			# Make it loop continuously
+			if stream is AudioStreamMP3:
+				stream.loop = true
+			elif stream is AudioStreamOggVorbis:
+				stream.loop = true
+			
+			loading_music_player.stream = stream
+			loading_music_player.bus = "Music"
+			loading_music_player.play()
+			print("World Map: Loading music started")
+	else:
+		push_warning("Loading music file not found at: " + LOADING_MUSIC_PATH)
+
