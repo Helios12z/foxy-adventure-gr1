@@ -1,0 +1,164 @@
+[gd_scene load_steps=25 format=3 uid="uid://cyqop2sl0gftf"]
+
+[ext_resource type="Script" uid="uid://c7svbdeksnvcq" path="res://scenes/enemies/coconut/coconut.gd" id="1_o8oxm"]
+[ext_resource type="Texture2D" uid="uid://cfjqimu0avs5v" path="res://asset/enemy/coconut/coconut_warrior_attack1.png" id="2_co5e5"]
+[ext_resource type="PackedScene" uid="uid://cgw1wod1cpci6" path="res://scenes/enemies/coconut/coconut_bullet.tscn" id="2_i70hk"]
+[ext_resource type="Texture2D" uid="uid://c8matwwydtebi" path="res://asset/enemy/coconut/coconut_warrior_attack2.png" id="3_3nmlv"]
+[ext_resource type="Texture2D" uid="uid://cslhv8mo7xd42" path="res://asset/enemy/coconut/coconut_warrior_attack3.png" id="4_s7cso"]
+[ext_resource type="Texture2D" uid="uid://cnsfw5crtxaug" path="res://asset/enemy/coconut/coconut_warrior_attack4.png" id="5_o8oxm"]
+[ext_resource type="Texture2D" uid="uid://ds22vgt788fam" path="res://asset/enemy/coconut/coconut_warrior_hurt.png" id="6_i70hk"]
+[ext_resource type="Texture2D" uid="uid://b4u607vj88xts" path="res://asset/enemy/coconut/coconut_warrior_moving1.png" id="7_ui50d"]
+[ext_resource type="Texture2D" uid="uid://b4p2t5e3gclys" path="res://asset/enemy/coconut/coconut_warrior_moving2.png" id="8_h1my8"]
+[ext_resource type="Texture2D" uid="uid://dxb5tukh1sohp" path="res://asset/enemy/coconut/coconut_warrior_moving3.png" id="9_f84xr"]
+[ext_resource type="Texture2D" uid="uid://brqmkew8pxxc6" path="res://asset/enemy/coconut/coconut_warrior_moving4.png" id="10_tprt4"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="11_74jo8"]
+[ext_resource type="Script" uid="uid://b5vlq5e21dx67" path="res://scripts/hurt_area_2d.gd" id="12_43clw"]
+[ext_resource type="Script" path="res://scenes/enemies/coconut/idle.gd" id="13_co5e5"]
+[ext_resource type="Script" uid="uid://bm8hm6pcgrie8" path="res://scenes/enemies/coconut/walk.gd" id="14_o8oxm"]
+[ext_resource type="Script" uid="uid://gm80o4sc4wyf" path="res://scenes/enemies/coconut/attack.gd" id="15_i70hk"]
+[ext_resource type="Script" uid="uid://c2t75y32swm7n" path="res://scenes/enemies/coconut/hurt.gd" id="17_co5e5"]
+[ext_resource type="Texture2D" uid="uid://b3npxepukgtpy" path="res://asset/ui/under_healthbar.png" id="18_h1my8"]
+[ext_resource type="Script" uid="uid://d1cwmbm87s7ye" path="res://scenes/enemies/coconut/dead.gd" id="19_o8oxm"]
+[ext_resource type="Texture2D" uid="uid://fqyx2bjflfhe" path="res://asset/ui/full_healthbar.png" id="19_f84xr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n1apa"]
+size = Vector2(28, 29)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8fa8w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_co5e5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_3nmlv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_s7cso")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_o8oxm")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_i70hk")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_ui50d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_h1my8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_f84xr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_tprt4")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_co5e5"]
+size = Vector2(24, 33)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3nmlv"]
+size = Vector2(26, 31)
+
+[node name="Coconut" type="CharacterBody2D"]
+collision_layer = 8
+script = ExtResource("1_o8oxm")
+bullet = ExtResource("2_i70hk")
+metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 8.5)
+shape = SubResource("RectangleShape2D_n1apa")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
+target_position = Vector2(28, 0)
+
+[node name="DownRayCast2D" type="RayCast2D" parent="Direction"]
+position = Vector2(10, 0)
+target_position = Vector2(0, 25)
+
+[node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]
+modulate = Color(0.685657, 0.170201, 0.197746, 1)
+position = Vector2(0, 5)
+target_position = Vector2(150, 0)
+collision_mask = 2
+
+[node name="DetectBackRayCast2D" type="RayCast2D" parent="Direction"]
+modulate = Color(0.219501, 0.219501, 0.219501, 1)
+position = Vector2(0, 5)
+target_position = Vector2(-150, 0)
+collision_mask = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+sprite_frames = SubResource("SpriteFrames_8fa8w")
+animation = &"hurt"
+autoplay = "walk"
+frame_progress = 0.82915545
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("11_74jo8")
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_co5e5")
+debug_color = Color(0.81447536, 0.36567953, 0.48543298, 0.41960785)
+
+[node name="HurtArea2D" type="Area2D" parent="Direction"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("12_43clw")
+metadata/_custom_type_script = "uid://b5vlq5e21dx67"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
+position = Vector2(0, 8.5)
+shape = SubResource("RectangleShape2D_3nmlv")
+debug_color = Color(0.9527126, 0.123495005, 0.45814937, 0.41960785)
+
+[node name="ShootPoint" type="Marker2D" parent="Direction"]
+position = Vector2(9, -17)
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("13_co5e5")
+
+[node name="Walk" type="Node" parent="States"]
+script = ExtResource("14_o8oxm")
+
+[node name="Attack" type="Node" parent="States"]
+script = ExtResource("15_i70hk")
+
+[node name="Hurt" type="Node" parent="States"]
+script = ExtResource("17_co5e5")
+
+[node name="Dead" type="Node" parent="States"]
+script = ExtResource("19_o8oxm")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -21.0
+offset_top = -32.0
+offset_right = 839.0
+offset_bottom = 186.0
+scale = Vector2(0.05, 0.05)
+texture_under = ExtResource("18_h1my8")
+texture_progress = ExtResource("19_f84xr")
