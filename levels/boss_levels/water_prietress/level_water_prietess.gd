@@ -75,7 +75,8 @@ func _on_boss_start_fight() -> void:
 	await get_tree().create_timer(0.75).timeout
 
 func _on_boss_died() -> void:
-	boss_platform_controller.return_platform_after_boss_dead()
+	# Platform transition will now happen after death dialog completes
+	# See dead.gd -> _on_dialogue_finished()
 	await get_tree().create_timer(2.25).timeout
 	_spawn_chest()
 

@@ -84,6 +84,9 @@ func _on_dialogue_finished() -> void:
 	if player and player.has_method("set_can_move"):
 		player.set_can_move(true)
 
+	# Trigger platform transition (floating platforms disappear, rect platform reappears)
+	_trigger_platform_transition()
+
 	# Wait a bit before removing the boss
 	var tw := obj.create_tween()
 	tw.tween_interval(0.6)
@@ -92,3 +95,15 @@ func _on_dialogue_finished() -> void:
 
 func _final_remove() -> void:
 	obj.queue_free()
+
+
+func _trigger_platform_transition() -> void:
+	# Get the platform controller from the level
+	var stage = GameManager.current_stage
+	if not stage:
+		return
+
+	if stage.has_node("World/BossPlatformController"):
+		var platform_controller = stage.get_node("World/BossPlatformController")
+		if platform_controller and platform_controller.has_method("return_platform_after_boss_dead"):
+			platform_controller.return_platform_after_boss_dead()
