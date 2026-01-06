@@ -22,6 +22,7 @@ var silk_line_start_local: Vector2 = Vector2.ZERO  # Vị trí đầu sợi tơ 
 
 # Raycast for player detection
 var detect_raycast: RayCast2D = null
+var detect_raycast_2: RayCast2D = null  # Raycast đối xứng
 
 func _ready() -> void:
 	# Disable gravity
@@ -42,12 +43,25 @@ func _ready() -> void:
 	super._ready()
 
 func _setup_detection_raycast() -> void:
+	var angle_deg := 20
+	var angle_rad := deg_to_rad(angle_deg)
+	
+	# Raycast 1 - nghiêng phải
 	detect_raycast = RayCast2D.new()
 	detect_raycast.name = "DetectPlayerRayCast"
-	detect_raycast.target_position = Vector2(0, detection_range)  # Raycast xuống dưới
-	detect_raycast.collision_mask = 2  # Layer 2 = player
+	detect_raycast.target_position = Vector2(0, 1).rotated(angle_rad) * detection_range
+	detect_raycast.collision_mask = 2
 	detect_raycast.enabled = true
 	add_child(detect_raycast)
+	
+	# Raycast 2 - nghiêng trái (đối xứng)
+	detect_raycast_2 = RayCast2D.new()
+	detect_raycast_2.name = "DetectPlayerRayCast2"
+	detect_raycast_2.target_position = Vector2(0, 1).rotated(-angle_rad) * detection_range
+	detect_raycast_2.collision_mask = 2
+	detect_raycast_2.enabled = true
+	add_child(detect_raycast_2)
+
 
 func _setup_silk_line() -> void:
 	silk_line = Line2D.new()
@@ -83,10 +97,18 @@ func _physics_process(delta: float) -> void:
 	_check_changed_direction()
 
 func _check_player_detection() -> void:
+	var detected := false
+	
 	if detect_raycast and detect_raycast.is_colliding():
-		var collider = detect_raycast.get_collider()
-		if collider is Player:
-			_start_attack()
+		if detect_raycast.get_collider() is Player:
+			detected = true
+	
+	if not detected and detect_raycast_2 and detect_raycast_2.is_colliding():
+		if detect_raycast_2.get_collider() is Player:
+			detected = true
+	
+	if detected:
+		_start_attack()
 
 func _start_attack() -> void:
 	is_attacking = true
