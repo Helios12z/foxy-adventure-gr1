@@ -206,7 +206,7 @@ offset_top = 9.0
 offset_bottom = 59.0
 
 [node name="Player" parent="." instance=ExtResource("6_44ejs")]
-position = Vector2(13462, -783)
+position = Vector2(-110, 40)
 has_blade = true
 max_health = 100
 
