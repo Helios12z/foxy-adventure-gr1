@@ -74,6 +74,9 @@ func _ready() -> void:
 			if has_node("WaterFairy"):
 				$WaterFairy.queue_free()
 
+	# Set Camera Limit
+	_set_camera_limit(3350)
+
 func _process(delta: float) -> void:
 	if _challenge_active and not _challenge_completed:
 		_challenge_time -= delta
@@ -329,6 +332,9 @@ func _start_challenge_sequence() -> void:
 	# Zoom out camera by ~25% (1.5 -> 1.125)
 	_zoom_camera(Vector2(1.125, 1.125))
 	
+	# Unlock camera limit
+	_set_camera_limit(10000000)
+	
 	# Start music
 	_play_hover_music()
 
@@ -385,6 +391,9 @@ func _fail_challenge() -> void:
 	# Zoom reset
 	_zoom_camera(Vector2(1.5, 1.5))
 	
+	# Reset limit
+	_set_camera_limit(3350)
+	
 	if GameManager.player:
 		GameManager.player.take_damage(9999999)
 		# Ensure death state is triggered even if take_damage doesn't handle it
@@ -396,3 +405,8 @@ func _zoom_camera(target_zoom: Vector2, duration: float = 1.0) -> void:
 		var cam = GameManager.player.get_node("Camera2D")
 		var tween = create_tween()
 		tween.tween_property(cam, "zoom", target_zoom, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+func _set_camera_limit(limit: int) -> void:
+	if GameManager.player and GameManager.player.has_node("Camera2D"):
+		var cam = GameManager.player.get_node("Camera2D")
+		cam.limit_right = limit
