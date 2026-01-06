@@ -38,7 +38,7 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 	knockback_direction = dir
 
 	var facing := Vector2.RIGHT * direction
-	var attack_from_dir := -dir  
+	var attack_from_dir := -dir
 
 	var from_front := false
 	if attack_from_dir != Vector2.ZERO:
@@ -46,6 +46,9 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 
 	if from_front:
 		# sound shield block played here
+		# Check if already dead before returning
+		if health <= 0:
+			fsm.change_state(fsm.states.dead)
 		return
 
 	# If attacked from behind, start turn around timer
@@ -60,6 +63,10 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
+
+	# Don't process turn timer if dead
+	if health <= 0:
+		return
 
 	if _waiting_turn_from_back:
 		_turn_timer -= delta
