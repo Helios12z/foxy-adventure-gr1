@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=83 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -44,7 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://b6m8jjowdc7xh" path="res://asset/foxy/foxy/giant_foxy/sprite_sheet_foxy_giant_run (1)2.png" id="27_kr5fp"]
 [ext_resource type="Texture2D" uid="uid://c3hok6ppiaqic" path="res://asset/foxy/foxy/giant_foxy/sprite_sheet_foxy_giant_run (1)3.png" id="28_wrv5s"]
 [ext_resource type="Texture2D" uid="uid://gjoypc1iokg2" path="res://asset/foxy/foxy/giant_foxy/sprite_sheet_foxy_giant_run (1)4.png" id="29_5aqwy"]
-[ext_resource type="Script" path="res://scenes/character/player/giant.gd" id="29_rkxg8"]
+[ext_resource type="Script" uid="uid://b5fd8jdgea5dd" path="res://scenes/character/player/giant.gd" id="29_rkxg8"]
 [ext_resource type="Texture2D" uid="uid://csqs8k6xfg0d1" path="res://asset/foxy/foxy/giant_foxy/sprite_sheet_foxy_giant_run (1)5.png" id="30_fvuo4"]
 [ext_resource type="Texture2D" uid="uid://b1pw4yyw4c5bx" path="res://asset/foxy/foxy/giant_foxy/sprite_sheet_foxy_giant_run (1)6.png" id="31_qiyco"]
 [ext_resource type="Script" uid="uid://dp3lba7mnpcyn" path="res://scenes/character/player/states/idle.gd" id="39_art4l"]
@@ -59,6 +59,8 @@
 [ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
 [ext_resource type="AudioStream" uid="uid://dqva3yvclwb47" path="res://asset/sounds/heal_sound.mp3" id="61_3pj2o"]
 [ext_resource type="Script" uid="uid://c2v03gx2sigpx" path="res://scenes/character/player/states/throw_blade.gd" id="62_throwblade"]
+[ext_resource type="AudioStream" uid="uid://bbejbi11pynm5" path="res://asset/foxy/foxy/giant_foxy/giant_attack.mp3" id="63_giantattack"]
+[ext_resource type="AudioStream" uid="uid://b0ok7bw43c2rr" path="res://asset/foxy/foxy/giant_foxy/transform_sound.mp3" id="64_transform"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkxg8"]
 
@@ -177,6 +179,7 @@ shader_parameter/dir = 1.0
 shader_parameter/squash = 0.0
 shader_parameter/lean = 0.0
 shader_parameter/lean_cutoff = 0.58
+shader_parameter/tint_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfavw"]
 animations = [{
@@ -555,6 +558,14 @@ bus = &"SFX"
 
 [node name="HealSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("61_3pj2o")
+bus = &"SFX"
+
+[node name="GiantAttackSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("63_giantattack")
+bus = &"SFX"
+
+[node name="TransformSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("64_transform")
 bus = &"SFX"
 
 [connection signal="timeout" from="Timer/GiantDuration" to="." method="_on_giant_duration_timeout"]

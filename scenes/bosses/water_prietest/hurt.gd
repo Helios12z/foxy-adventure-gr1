@@ -23,9 +23,5 @@ func _update( _delta ):
 				[fsm.states.atk_2, 0.5],
 			]
 
-		# Select attack based on random chance
-		var rand_val = randf()
-		for attack_info in attack_table:
-			if rand_val <= attack_info[1]:
-				change_state(attack_info[0])
-				return
+		# Select attack based on random chance using the proper function
+		_choose_attack_from_table(attack_table)

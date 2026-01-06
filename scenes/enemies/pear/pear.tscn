@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://51ghqdayxr6x" path="res://scenes/enemies/pear/pear.gd" id="1_sxt8t"]
 [ext_resource type="Texture2D" uid="uid://bpe3vxdgu84d0" path="res://asset/spear/spear/spear_11.png" id="2_paj4y"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="2_v4u0k"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_v4u0k"]
 [ext_resource type="Texture2D" uid="uid://ouooimnr6ja1" path="res://asset/spear/spear/spear_12.png" id="3_nw5rn"]
 [ext_resource type="Texture2D" uid="uid://5irql6fft8f2" path="res://asset/spear/spear/spear_9.png" id="4_sxt8t"]
 [ext_resource type="Texture2D" uid="uid://dg15tsxim387g" path="res://asset/spear/spear/spear_10.png" id="5_gsl50"]
@@ -43,6 +43,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_37otq")
+}],
+"loop": true,
+"name": &"dead",
 "speed": 5.0
 }, {
 "frames": [{
@@ -156,7 +164,7 @@ target_position = Vector2(0, 28)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 sprite_frames = SubResource("SpriteFrames_mcdti")
-animation = &"idle"
+animation = &"dead"
 autoplay = "idle"
 
 [node name="DetectFrontRayCast2D" type="RayCast2D" parent="Direction"]

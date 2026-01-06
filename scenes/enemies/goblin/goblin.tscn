@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://c3034u380fcvt"]
+[gd_scene load_steps=52 format=3 uid="uid://c3034u380fcvt"]
 
 [ext_resource type="Script" uid="uid://dt31235yq1bt" path="res://scenes/enemies/goblin/goblin.gd" id="1_y6kf8"]
 [ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_pxkrn"]
@@ -21,13 +21,13 @@
 [ext_resource type="Script" uid="uid://dvrxo4uv6i24v" path="res://scenes/enemies/goblin/retreat.gd" id="18_retreat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t2fbi"]
-size = Vector2(31, 39)
+size = Vector2(31, 37.714287)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf3fj"]
 size = Vector2(43.571426, 40.714287)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jdvj0"]
-size = Vector2(39, 39)
+size = Vector2(39, 37.714287)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n88le"]
 atlas = ExtResource("4_0o6d4")
@@ -257,13 +257,13 @@ animations = [{
 scale = Vector2(1.4, 1.4)
 collision_layer = 8
 script = ExtResource("1_y6kf8")
-goblin_scene = null
 coin_drop_count = 1
 max_health = 100
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.5, 7.5)
+position = Vector2(-1.4999999, 6.8571415)
+scale = Vector2(0.99999994, 0.99999994)
 shape = SubResource("RectangleShape2D_t2fbi")
 
 [node name="Direction" type="Node2D" parent="."]
@@ -308,7 +308,8 @@ script = ExtResource("3_xxunx")
 metadata/_custom_type_script = "uid://b5vlq5e21dx67"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HurtArea2D"]
-position = Vector2(-0.5, 7.5)
+position = Vector2(-0.4999999, 6.8571415)
+scale = Vector2(0.99999994, 0.99999994)
 shape = SubResource("RectangleShape2D_jdvj0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]

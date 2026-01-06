@@ -211,8 +211,10 @@ func _update_room_visibility() -> void:
 
 func _update_giant_visibility() -> void:
 	var has_gem := false
+	var is_giant_mode := false
 	if player != null:
 		has_gem = bool(player.get("has_water_paw_gem"))
+		is_giant_mode = bool(player.get("is_giant_mode"))
 	
 	# Luôn hiển thị container và button label
 	if giant_container:
@@ -220,14 +222,13 @@ func _update_giant_visibility() -> void:
 	if giant_button_label:
 		giant_button_label.visible = true
 	
-	# Nếu chưa có gem -> hiển thị overlay trắng đen (disabled state)
-	# Nếu đã có gem -> ẩn overlay, hiển thị icon bình thường
-	if not has_gem:
+	# Nếu chưa có gem hoặc đang trong giant mode -> hiển thị overlay (disabled state)
+	if not has_gem or is_giant_mode:
 		giant_overlay.visible = true
 		giant_icon.visible = false
 		giant_label.visible = false
 	else:
-		# Đã có gem, kiểm tra cooldown
+		# Đã có gem và không trong giant mode, kiểm tra cooldown
 		var is_on_cooldown: bool = giant_label.visible
 		if not is_on_cooldown:
 			giant_overlay.visible = false

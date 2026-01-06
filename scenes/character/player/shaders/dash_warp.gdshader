@@ -10,6 +10,8 @@ uniform float squash : hint_range(0.0, 1.0) = 0.0;
 uniform float lean : hint_range(0.0, 1.0) = 0.0;
 // Cutoff along UV.y; only pixels above this are leaned (upper body)
 uniform float lean_cutoff : hint_range(0.0, 1.0) = 0.58;
+// Tint color for effects like QuickSand (default white = no tint)
+uniform vec4 tint_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 
 void vertex() {
     // Basic squash and stretch to imply speed
@@ -51,7 +53,10 @@ void fragment() {
         out_a *= fade;
     }
 
+    // Apply tint color (default white = no change)
+    vec3 tinted_rgb = base.rgb * tint_color.rgb;
+    
     // Respect CanvasItem modulate alpha (blink/invulnerability) without darkening RGB
     float mod_a = COLOR.a; // incoming CanvasItem COLOR contains modulate
-    COLOR = vec4(base.rgb, out_a * mod_a);
+    COLOR = vec4(tinted_rgb, out_a * mod_a * tint_color.a);
 }
