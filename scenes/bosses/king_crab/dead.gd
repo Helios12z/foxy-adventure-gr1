@@ -79,26 +79,18 @@ func _on_dialogue_finished() -> void:
 	if player and player.has_method("set_can_move"):
 		player.set_can_move(true)
 
-	# Trigger platform transition and wait for it to complete
-	await _trigger_platform_transition()
+	# Trigger platform fall after boss is freed (platform controller handles everything)
+	_trigger_platform_sequence()
 
-	# Wait 3 seconds after platform returns before spawning chest
-	await get_tree().create_timer(3.0).timeout
-
-	# Spawn the chest after the delay
-	_spawn_chest()
-
-	# Wait a bit before removing the boss
-	var tw := obj.create_tween()
-	tw.tween_interval(0.6)
-	tw.tween_callback(Callable(self, "_final_remove"))
+	# Remove the boss immediately
+	_final_remove()
 
 
 func _final_remove() -> void:
 	obj.queue_free()
 
 
-func _trigger_platform_transition() -> void:
+func _trigger_platform_sequence() -> void:
 	# Get the platform controller from the level
 	var stage = GameManager.current_stage
 	if not stage:
@@ -106,11 +98,9 @@ func _trigger_platform_transition() -> void:
 
 	if stage.has_node("World/BossPlatformController"):
 		var platform_controller = stage.get_node("World/BossPlatformController")
-		if platform_controller and platform_controller.has_method("return_platform_after_boss_dead"):
-			# Call the function first
-			platform_controller.return_platform_after_boss_dead()
-			# Then wait for the platform return complete signal
-			await platform_controller.platform_return_complete
+		if platform_controller and platform_controller.has_method("return_platform_after_boss_dead_delayed"):
+			# This function will wait for boss to be freed, then fall, then spawn chest
+			platform_controller.return_platform_after_boss_dead_delayed(obj)
 
 
 func _spawn_chest() -> void:
