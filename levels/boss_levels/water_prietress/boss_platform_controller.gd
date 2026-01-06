@@ -257,7 +257,12 @@ func _show_rect_platform() -> void:
 	tween.tween_property(rect_platform, "modulate:a", 1.0, 0.5)
 
 func _on_boss_died() -> void:
-	# Restore the rect platform when boss dies
+	# Rect platform restoration will now happen after death dialog completes
+	# See dead.gd -> _on_dialogue_finished() -> _trigger_platform_transition()
+	pass
+
+func restore_rect_platform_after_dialog() -> void:
+	# Public function to restore rect platform after death dialog completes
 	_show_rect_platform()
 
 func start_phase2_platforms() -> void:

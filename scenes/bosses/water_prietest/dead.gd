@@ -108,6 +108,12 @@ func _trigger_platform_transition() -> void:
 
 	if stage.has_node("World/BossPlatformController"):
 		var platform_controller = stage.get_node("World/BossPlatformController")
+
+		# First, restore the rect platform immediately
+		if platform_controller and platform_controller.has_method("restore_rect_platform_after_dialog"):
+			platform_controller.restore_rect_platform_after_dialog()
+
+		# Then wait for the full platform transition to complete
 		if platform_controller and platform_controller.has_method("return_platform_after_boss_dead"):
 			await platform_controller.return_platform_after_boss_dead()
 
