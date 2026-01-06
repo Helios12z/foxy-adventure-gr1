@@ -72,10 +72,15 @@ func _update(delta: float) -> void:
 		if abs(input_dir) > 0.1:
 			obj.change_direction(sign(input_dir))
 
-		# bắt đầu attack
-		obj.attack_sound.play()
+		# bắt đầu attack - giant or normal sound
+		if obj.is_giant_mode:
+			obj.giant_attack_sound.play()
+			attack_active_timer = 0.5
+			obj.velocity.x = 0
+		else:
+			obj.attack_sound.play()
+			attack_active_timer = ATTACK_ACTIVE
 		is_attacking = true
-		attack_active_timer = ATTACK_ACTIVE
 		attack_cooldown_timer = ATTACK_COOLDOWN
 
 		obj.change_animation("attack")

@@ -73,6 +73,7 @@ var giant_cooldown_timer: Timer = null
 @onready var jump_sound = $Jump
 @onready var attack_sound = $Attack
 @onready var dash_sound = $Dash
+@onready var giant_attack_sound = $GiantAttackSound
 
 #giant_mode
 @export var giant_damage = 50
@@ -623,6 +624,9 @@ func activate_giant_form() -> void:
 	transform_giant_sprite.visible = true
 	transform_giant_sprite.play("default")
 	
+	# Play transform sound
+	$TransformSound.play()
+	
 	# ----- START COLLISION INTERPOLATION (song song với animation) -----
 	_is_transforming = true
 	_transform_to_giant = true
@@ -690,6 +694,9 @@ func inactive_giant_form():
 	animated_sprite.visible = false
 	transform_normal_sprite.visible = true
 	transform_normal_sprite.play("default")
+	
+	# Play transform sound
+	$TransformSound.play()
 	
 	# ----- START COLLISION INTERPOLATION (song song với animation) -----
 	_is_transforming = true
@@ -760,7 +767,9 @@ func _on_giant_duration_timeout() -> void:
 
 
 func _on_giant_cooldown_timeout() -> void:
+	giant_on_cooldown = false
 	can_use_giant = true
+	giant_cooldown_finished.emit()
 
 
 func use_heal_potion(amount: int) -> void:
