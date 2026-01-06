@@ -651,9 +651,9 @@ func _calculate_phase2_min_y() -> void:
 			if y_pos < lowest_y:
 				lowest_y = y_pos
 
-	# Add some margin (boss can go slightly below, but not by much)
+	# Add margin so boss can stand on the lowest floating platform
 	if lowest_y != INF:
-		phase2_min_y = lowest_y + 30.0  # Add 30px margin
+		phase2_min_y = lowest_y + 50.0  # Add 50px margin (allows boss to stand on platform)
 	else:
 		phase2_min_y = 0.0
 
