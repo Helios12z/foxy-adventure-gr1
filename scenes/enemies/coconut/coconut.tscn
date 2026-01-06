@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c7svbdeksnvcq" path="res://scenes/enemies/coconut/coconut.gd" id="1_o8oxm"]
 [ext_resource type="Texture2D" uid="uid://cfjqimu0avs5v" path="res://asset/enemy/coconut/coconut_warrior_attack1.png" id="2_co5e5"]
 [ext_resource type="PackedScene" uid="uid://cgw1wod1cpci6" path="res://scenes/enemies/coconut/coconut_bullet.tscn" id="2_i70hk"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="2_particle"]
 [ext_resource type="Texture2D" uid="uid://c8matwwydtebi" path="res://asset/enemy/coconut/coconut_warrior_attack2.png" id="3_3nmlv"]
 [ext_resource type="Texture2D" uid="uid://cslhv8mo7xd42" path="res://asset/enemy/coconut/coconut_warrior_attack3.png" id="4_s7cso"]
 [ext_resource type="Texture2D" uid="uid://cnsfw5crtxaug" path="res://asset/enemy/coconut/coconut_warrior_attack4.png" id="5_o8oxm"]
@@ -76,6 +77,7 @@ size = Vector2(24, 33)
 size = Vector2(26, 31)
 
 [node name="Coconut" type="CharacterBody2D"]
+scale = Vector2(1.195, 1.195)
 collision_layer = 8
 script = ExtResource("1_o8oxm")
 bullet = ExtResource("2_i70hk")
@@ -86,6 +88,12 @@ position = Vector2(-3, 8.5)
 shape = SubResource("RectangleShape2D_n1apa")
 
 [node name="Direction" type="Node2D" parent="."]
+
+[node name="HitParticleEffect" parent="Direction" instance=ExtResource("2_particle")]
+scale = Vector2(0.99999994, 0.99999994)
+base_scale = 0.008
+particle_opacity = 0.7
+reverse_direction = false
 
 [node name="FrontRayCast2D" type="RayCast2D" parent="Direction"]
 target_position = Vector2(28, 0)
@@ -135,7 +143,7 @@ shape = SubResource("RectangleShape2D_3nmlv")
 debug_color = Color(0.9527126, 0.123495005, 0.45814937, 0.41960785)
 
 [node name="ShootPoint" type="Marker2D" parent="Direction"]
-position = Vector2(9, -6)
+position = Vector2(15.06276, 3.34728)
 
 [node name="States" type="Node" parent="."]
 

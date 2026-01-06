@@ -57,7 +57,8 @@ particle_opacity = 0.7
 reverse_direction = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
-scale = Vector2(0.17, 0.17)
+position = Vector2(-0.99999905, 9.999998)
+scale = Vector2(0.12266304, 0.12266304)
 sprite_frames = SubResource("SpriteFrames_3yewo")
 animation = &"off"
 autoplay = "active"
@@ -89,10 +90,10 @@ script = ExtResource("6_mk0bh")
 metadata/_custom_type_script = "uid://tqxa0q7sq85g"
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
-offset_left = -12.0
-offset_top = -105.99999
-offset_right = 848.0
-offset_bottom = 112.00001
+offset_left = -18.0
+offset_top = -73.0
+offset_right = 842.0
+offset_bottom = 145.0
 scale = Vector2(0.06, 0.06)
 texture_under = ExtResource("10_under")
 texture_progress = ExtResource("11_full")

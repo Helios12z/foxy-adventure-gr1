@@ -92,7 +92,7 @@ max_health = 100
 
 [node name="Boss3" parent="." instance=ExtResource("3_gtfhx")]
 position = Vector2(329, -135)
-boss3_max_health = 1900
+boss3_max_health = 2200
 player_path = NodePath("../Player")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
