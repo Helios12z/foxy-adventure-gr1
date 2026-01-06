@@ -32,7 +32,6 @@
 size = Vector2(17222, 1610)
 
 [node name="Map3" type="Node2D"]
-scale = Vector2(0.8, 0.8)
 script = ExtResource("1_v7snb")
 camera_bottom_limit_y = 230.0
 

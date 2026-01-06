@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://luomdvxfdcf"]
+
+[ext_resource type="Script" uid="uid://cdoup68q7pcpv" path="res://levels/tutorial/start_clock.gd" id="1_4d8v5"]
+[ext_resource type="Texture2D" uid="uid://bjkda22fhym4g" path="res://asset/tutorial/start_clock.png" id="1_4x2ko"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="3_e1qqb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kjbs3"]
+size = Vector2(41, 1350)
+
+[node name="Area2D" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_4d8v5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("1_4x2ko")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -606)
+shape = SubResource("RectangleShape2D_kjbs3")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -5.0
+offset_top = -69.0
+offset_right = 35.0
+offset_bottom = -44.0
+theme_override_fonts/font = ExtResource("3_e1qqb")
+theme_override_font_sizes/font_size = 20
+text = "F"

@@ -28,6 +28,7 @@ var _base_max_jump_count: int = 0
 var decorator_manager: DecoratorManager = null
 var hack_mode: HackMode = null
 @export var has_blade: bool = false
+@export var can_hover: bool = false
 @export var has_fire_gem: bool = false
 @export var has_water_paw_gem: bool = false
 @export var has_water_room_gem: bool = false
@@ -308,6 +309,9 @@ func collected_blade() -> void:
 	has_blade = true
 	set_animated_sprite($Direction/BladeAnimatedSprite2D)
 
+func collected_hover_skill() -> void:
+	can_hover = true
+
 func collected_fire_gem() -> void:
 	has_fire_gem = true
 	if susanoo_level < 1:
@@ -327,6 +331,7 @@ func save_state() -> Dictionary:
 	return {
 		"position": [global_position.x, global_position.y],
 		"has_blade": has_blade,
+		"can_hover": can_hover,
 		"has_fire_gem": has_fire_gem,
 		"has_water_paw_gem": has_water_paw_gem,
 		"has_water_room_gem": has_water_room_gem,
@@ -339,6 +344,7 @@ func load_state(data: Dictionary) -> void:
 	
 	# IMPORTANT: Reset all gems and levels to defaults first
 	has_fire_gem = false
+	can_hover = false
 	has_water_paw_gem = false
 	has_water_room_gem = false
 	susanoo_level = 0
@@ -353,6 +359,10 @@ func load_state(data: Dictionary) -> void:
 		Dialogic.VAR.set("HasBlade",has_blade)
 		if has_blade:
 			collected_blade()
+	if data.has("can_hover"):
+		can_hover = data["can_hover"]
+		if can_hover:
+			collected_hover_skill()
 	if data.has("has_fire_gem"):
 		has_fire_gem = data["has_fire_gem"]
 		if has_fire_gem:

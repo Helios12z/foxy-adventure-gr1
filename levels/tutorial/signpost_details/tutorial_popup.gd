@@ -1,5 +1,7 @@
 extends Control
 
+signal closed
+
 @export var text_lines: Array[String] = []
 @export var video_path: String = ""
 @export var keys: Array[String] = []
@@ -94,3 +96,4 @@ func _finalize_close() -> void:
 	var tree := get_tree()
 	if tree:
 		tree.paused = false
+	closed.emit()

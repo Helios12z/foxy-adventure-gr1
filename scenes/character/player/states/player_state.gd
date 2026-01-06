@@ -49,7 +49,7 @@ func control_hover() -> bool:
 	# - Jump receives a NEW press (not held from last jump)
 	# - No jumps left
 	# - In the air and not on a wall
-	if Input.is_action_just_pressed("jump") and not obj.can_jump() and not obj.is_on_floor():
+	if Input.is_action_just_pressed("jump") and obj.can_hover and not obj.can_jump() and not obj.is_on_floor():
 		if not obj.is_on_wall():
 			# Play hover/dash sound immediately (pitched down and quieter)
 			var dash_snd = AudioStreamPlayer.new()

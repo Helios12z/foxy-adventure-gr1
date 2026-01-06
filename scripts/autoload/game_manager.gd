@@ -21,6 +21,7 @@ var inventory_system: InvetorySystem = null
 
 var boss_defeated_by_stage: Dictionary = {}
 var chest_opened_by_stage: Dictionary = {}
+var comic_shown_by_stage: Dictionary = {}
 
 func _ready() -> void:
 	SaveSystem.delete_save_file()
@@ -158,6 +159,7 @@ func _apply_checkpoint_inventory_only() -> void:
 	player.has_fire_gem = false
 	player.has_water_paw_gem = false
 	player.has_water_room_gem = false
+	player.can_hover = false # Reset hover skill
 	player.susanoo_level = 0
 	player.room_level = 0
 	
@@ -173,6 +175,8 @@ func _apply_checkpoint_inventory_only() -> void:
 		player.collected_water_paw_gem()
 	if data.has("has_water_room_gem") and bool(data["has_water_room_gem"]):
 		player.collected_water_room_gem()
+	if data.has("can_hover") and bool(data["can_hover"]):
+		player.collected_hover_skill()
 	if data.has("susanoo_level"):
 		player.susanoo_level = int(data["susanoo_level"])
 		player.susanoo_level_changed.emit(player.susanoo_level)
@@ -277,7 +281,8 @@ func save_checkpoint_data() -> void:
 		"checkpoint_data": checkpoint_data,
 		"collected_coins_by_stage": collected_coins_by_stage,
 		"boss_defeated_by_stage": boss_defeated_by_stage,
-		"chest_opened_by_stage": chest_opened_by_stage
+		"chest_opened_by_stage": chest_opened_by_stage,
+		"comic_shown_by_stage": comic_shown_by_stage
 	}
 	SaveSystem.save_checkpoint_data(save_data)
 
@@ -290,6 +295,7 @@ func load_checkpoint_data() -> void:
 		collected_coins_by_stage = save_data.get("collected_coins_by_stage", {})
 		boss_defeated_by_stage = save_data.get("boss_defeated_by_stage", {})
 		chest_opened_by_stage = save_data.get("chest_opened_by_stage", {})
+		comic_shown_by_stage = save_data.get("comic_shown_by_stage", {})
 		print("Checkpoint data loaded from save file")
 
 # Clear all checkpoint data
@@ -319,6 +325,11 @@ func collect_water_room_gem() -> void:
 	if player:
 		player.collected_water_room_gem()
 		update_current_checkpoint_player_state({"has_water_room_gem": true, "room_level": player.room_level}, true)
+
+func collect_hover_skill() -> void:
+	if player:
+		player.collected_hover_skill()
+		update_current_checkpoint_player_state({"can_hover": true}, true)
 
 func ensure_initial_checkpoint() -> void:
 	# Create or adopt an initial checkpoint with starting position
@@ -439,6 +450,21 @@ func is_chest_opened(stage_path: String = "") -> bool:
 	if stage_path.is_empty():
 		return false
 	return bool(chest_opened_by_stage.get(stage_path, false))
+
+func mark_comic_shown(stage_path: String = "") -> void:
+	if stage_path.is_empty():
+		stage_path = _get_current_stage_path()
+	if stage_path.is_empty():
+		return
+	comic_shown_by_stage[stage_path] = true
+	save_checkpoint_data()
+
+func is_comic_shown(stage_path: String = "") -> bool:
+	if stage_path.is_empty():
+		stage_path = _get_current_stage_path()
+	if stage_path.is_empty():
+		return false
+	return bool(comic_shown_by_stage.get(stage_path, false))
 
 # Loading screen completion callback
 func finish_loading() -> void:

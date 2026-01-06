@@ -464,9 +464,7 @@ position = Vector2(7411, 90)
 
 [node name="Door" parent="." instance=ExtResource("20_nljfo")]
 position = Vector2(99, 128)
-target_stage = "uid://x5qrj66qebnm"
 target_door = "RightDoor"
-is_cross_scene = true
 
 [node name="Teleport" parent="." instance=ExtResource("19_ixb2s")]
 position = Vector2(9391, 99)
