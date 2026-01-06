@@ -147,7 +147,6 @@ size = Vector2(20, 309)
 position = Vector2(1, 0)
 script = ExtResource("1_7hlcu")
 camera_bottom_limit_y = -200.0
-show_comic_on_start = false
 comic_pages_paths = Array[String](["res://asset/comics/start_game/start_game_1.png", "res://asset/comics/start_game/start_game_2.png", "res://asset/comics/start_game/start_game_3.png", "res://asset/comics/start_game/start_game_4.png", "res://asset/comics/start_game/start_game_5.png", "res://asset/comics/start_game/start_game_6.png", "res://asset/comics/start_game/start_game_7.png", "res://asset/comics/start_game/start_game_8.png", "res://asset/comics/start_game/start_game_9.png"])
 
 [node name="Player" parent="." instance=ExtResource("3_ayhlk")]
