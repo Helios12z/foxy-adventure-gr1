@@ -173,7 +173,13 @@ func _black_screen_transition(player: Node2D, target_pos: Vector2) -> void:
 	print("[Boss3CoralSpike] Screen is black, teleporting player to %v" % target_pos)
 
 	# Teleport player while screen is black
-	player.global_position = target_pos + Vector2(0, -20)  # Slightly above platform
+	# In giant mode, need more clearance due to larger hitbox
+	var vertical_offset = -20.0
+	if "is_giant_mode" in player and player.is_giant_mode:
+		vertical_offset = -100.0  # Giant hitbox extends ~80px below, so teleport much higher
+		#print("[Boss3CoralSpike] Player in giant mode, using larger vertical offset: %v" % vertical_offset)
+
+	player.global_position = target_pos + Vector2(0, vertical_offset)
 
 	# Reset player velocity to prevent falling through
 	if "velocity" in player:

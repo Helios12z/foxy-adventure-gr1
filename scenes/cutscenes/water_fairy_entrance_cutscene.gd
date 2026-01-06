@@ -55,8 +55,31 @@ func _on_trigger_area_body_entered(body: Node2D) -> void:
 		# Find player camera
 		player_camera = _find_player_camera()
 
+		# Wait for player to be grounded before starting cutscene
+		await _wait_for_player_grounded()
+
 		# Start cutscene
 		_start_cutscene()
+
+func _wait_for_player_grounded() -> void:
+	if not player:
+		return
+
+	# If player is already on the floor, return immediately
+	if player.is_on_floor():
+		print("[Cutscene] Player is already grounded")
+		return
+
+	print("[Cutscene] Waiting for player to land...")
+
+	# Wait until player is on the floor
+	while player and not player.is_on_floor():
+		await get_tree().process_frame
+
+	# Add a small delay to ensure player is fully settled
+	await get_tree().create_timer(0.1).timeout
+
+	print("[Cutscene] Player is now grounded, starting cutscene")
 
 func _find_player_camera() -> Camera2D:
 	if player:
