@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://d24worgcsfdyn" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_6.png" id="5_6s4o3"]
 [ext_resource type="Texture2D" uid="uid://l11ugr45l17y" path="res://asset/foxy/foxy/fox_hat/fox_fall_1.png" id="5_evsfk"]
 [ext_resource type="Texture2D" uid="uid://gob74tcvho5m" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_7.png" id="6_ckh64"]
-[ext_resource type="Texture2D" uid="uid://bo5f07s7fbgvr" path="res://asset/foxy/foxy/fox_hat_blade/hover_fox.png" id="6_rvlm7"]
+[ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="6_rvlm7"]
 [ext_resource type="Texture2D" uid="uid://yom7r0j05to2" path="res://asset/foxy/foxy/fox_hat/fox_hit_1.png" id="7_338vx"]
 [ext_resource type="Texture2D" uid="uid://m2v8pasxt1go" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_8.png" id="7_tv3gn"]
 [ext_resource type="Texture2D" uid="uid://bqpeymldede8l" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_9.png" id="8_6cblp"]

@@ -15,10 +15,10 @@
 [ext_resource type="Texture2D" uid="uid://8uxe583mhq85" path="res://asset/foxy/foxy/fox_hat_blade/fox_fall_1.png" id="7_e1uk1"]
 [ext_resource type="Texture2D" uid="uid://gg8v11cck4hu" path="res://asset/foxy/foxy/fox_hat_blade/fox_hit_2.png" id="7_xtbvj"]
 [ext_resource type="Texture2D" uid="uid://cbfcke2rlqmtw" path="res://asset/foxy/foxy/fox_hat_blade/fox_hit_3.png" id="8_0tqi8"]
+[ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="8_ijt6p"]
 [ext_resource type="Texture2D" uid="uid://cv1omqfyyi3aj" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_1.png" id="9_4vt26"]
 [ext_resource type="Texture2D" uid="uid://d1wqqv8lwu0w0" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_2.png" id="10_in4n6"]
 [ext_resource type="Texture2D" uid="uid://cjob2r8khe2fs" path="res://asset/foxy/foxy/fox_hat_blade/fox_jump_1.png" id="11_0mbfd"]
-[ext_resource type="Texture2D" uid="uid://bo5f07s7fbgvr" path="res://asset/foxy/foxy/fox_hat_blade/hover_fox.png" id="11_4vt26"]
 [ext_resource type="Texture2D" uid="uid://bv5er34emc8g1" path="res://asset/foxy/foxy/fox_hat_blade/fox_jump_2.png" id="12_qs6ll"]
 [ext_resource type="Texture2D" uid="uid://dgis3lall2gw3" path="res://asset/foxy/foxy/fox_hat_blade/fox_walk_1.png" id="13_tcobl"]
 [ext_resource type="Texture2D" uid="uid://cr8a68nw3dww1" path="res://asset/foxy/foxy/fox_hat_blade/fox_walk_2.png" id="14_113po"]
@@ -84,7 +84,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("11_4vt26")
+"texture": ExtResource("8_ijt6p")
 }],
 "loop": true,
 "name": &"hover",

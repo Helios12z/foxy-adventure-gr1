@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://l11ugr45l17y" path="res://asset/foxy/foxy/fox_hat/fox_fall_1.png" id="5_j5kqd"]
 [ext_resource type="Texture2D" uid="uid://ck8edmupc3gra" path="res://asset/foxy/foxy/fox_hat/fox_hit_2.png" id="5_vngol"]
 [ext_resource type="Texture2D" uid="uid://bqh3qhrimo17x" path="res://asset/foxy/foxy/fox_hat/fox_hit_3.png" id="6_h7mi5"]
-[ext_resource type="Texture2D" uid="uid://bo5f07s7fbgvr" path="res://asset/foxy/foxy/fox_hat_blade/hover_fox.png" id="6_nyml7"]
+[ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="6_nyml7"]
 [ext_resource type="Texture2D" uid="uid://b2iyrbygs0b7c" path="res://asset/foxy/foxy/fox_hat/fox_idle_1.png" id="7_bhp0r"]
 [ext_resource type="Texture2D" uid="uid://c8uke6n7xj17g" path="res://asset/foxy/foxy/fox_hat/fox_idle_2.png" id="8_m0my6"]
 [ext_resource type="Texture2D" uid="uid://b7ko4rnci3koo" path="res://asset/foxy/foxy/fox_hat/fox_jump_1.png" id="9_m7hmf"]

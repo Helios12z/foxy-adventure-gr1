@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://clcv3v6b0xvg5" path="res://scenes/character/player/dead.gd" id="11_m5h5h"]
 [ext_resource type="Texture2D" uid="uid://o1feli5l4id4" path="res://asset/foxy/foxy/giant_foxy/attack_giant_foxy (1)5.png" id="11_w3kqy"]
 [ext_resource type="Texture2D" uid="uid://c8pc1ra10m2md" path="res://asset/foxy/foxy/giant_foxy/hurt 5.png" id="12_ddgkb"]
-[ext_resource type="Texture2D" uid="uid://bo5f07s7fbgvr" path="res://asset/foxy/foxy/fox_hat_blade/hover_fox.png" id="13_7w01e"]
+[ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="13_7w01e"]
 [ext_resource type="Texture2D" uid="uid://ktsbd45ncy00" path="res://asset/foxy/foxy/giant_foxy/hurt 1.png" id="13_gbquk"]
 [ext_resource type="Texture2D" uid="uid://bfmu6md4xu1e5" path="res://asset/foxy/foxy/giant_foxy/hurt 2.png" id="14_0ieq8"]
 [ext_resource type="Script" uid="uid://dugosv23vlsd1" path="res://scenes/character/player/climb.gd" id="14_yuskr"]
@@ -56,16 +56,16 @@
 [ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
 [ext_resource type="Script" uid="uid://bdb4rp0xqby5i" path="res://scenes/character/player/states/susanoo.gd" id="46_susanoo"]
 [ext_resource type="Script" uid="uid://dpwira2jef5n4" path="res://scenes/character/player/states/water_paw.gd" id="47_waterpaw"]
-[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
+[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
 [ext_resource type="AudioStream" uid="uid://dqva3yvclwb47" path="res://asset/sounds/heal_sound.mp3" id="61_3pj2o"]
-[ext_resource type="Script" uid="uid://c2v03gx2sigpx" path="res://scenes/character/player/states/throw_blade.gd" id="62_throwblade"]
+[ext_resource type="Script" path="res://scenes/character/player/states/throw_blade.gd" id="62_throwblade"]
 [ext_resource type="AudioStream" uid="uid://bbejbi11pynm5" path="res://asset/foxy/foxy/giant_foxy/giant_attack.mp3" id="63_giantattack"]
 [ext_resource type="AudioStream" uid="uid://b0ok7bw43c2rr" path="res://asset/foxy/foxy/giant_foxy/transform_sound.mp3" id="64_transform"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkxg8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b1yw4"]
-radius = 23.0
+radius = 19.32
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ddgkb"]
 atlas = ExtResource("3_w3kqy")
@@ -394,7 +394,7 @@ light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("2_v051h")
-animation = &"dark_and_smile"
+animation = &"hover"
 
 [node name="HatAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 light_mask = 2
@@ -413,7 +413,7 @@ animation = &"hover"
 [node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
 light_mask = 2
-scale = Vector2(0.07, 0.07)
+scale = Vector2(0.68, 0.68)
 sprite_frames = SubResource("SpriteFrames_gfavw")
 animation = &"hover"
 frame_progress = 0.055968463
