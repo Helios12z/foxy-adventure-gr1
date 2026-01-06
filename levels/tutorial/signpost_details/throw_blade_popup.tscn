@@ -1,0 +1,115 @@
+[gd_scene load_steps=10 format=3 uid="uid://c2iphn616lsku"]
+
+[ext_resource type="Script" uid="uid://b4gqdv4tl3bgg" path="res://levels/tutorial/signpost_details/tutorial_popup.gd" id="1_7osxt"]
+[ext_resource type="Texture2D" uid="uid://bm66ag0j7y3qi" path="res://asset/ui/popup.png" id="2_jubkh"]
+[ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="3_l3k1h"]
+[ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="4_jt66x"]
+[ext_resource type="FontFile" uid="uid://x4u0fnuaebe3" path="res://asset/fonts/ThaleahFat.ttf" id="5_ktele"]
+[ext_resource type="Texture2D" uid="uid://cx1m1wxkbipxh" path="res://asset/ui/close_button.png" id="6_pgr6v"]
+[ext_resource type="PackedScene" uid="uid://dr1kwjksl4cp5" path="res://levels/tutorial/keyboard_key.tscn" id="7_jubkh"]
+[ext_resource type="Texture2D" uid="uid://bwtkq0qncu247" path="res://asset/tutorial/throw_blade.png" id="7_l3k1h"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rbs2k"]
+
+[node name="TutorialPopup" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7osxt")
+
+[node name="OverlayColorRect" type="ColorRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0.0117647, 0.0352941, 0.85098)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(160, 96)
+layout_mode = 0
+offset_left = 268.0
+offset_top = 109.0
+offset_right = 859.0
+offset_bottom = 529.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_jubkh")
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Description" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 86.0
+offset_top = 333.0
+offset_right = 542.0
+offset_bottom = 376.0
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("5_ktele")
+theme_override_font_sizes/font_size = 36
+text = "Press        to throw balde"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Node" parent="NinePatchRect" instance=ExtResource("7_jubkh")]
+position = Vector2(241, 354)
+key_text = "x"
+
+[node name="Label7" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 403.0
+offset_right = 470.0
+offset_bottom = 457.0
+theme_override_colors/font_color = Color(1, 1, 0.24705882, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_l3k1h")
+text = "
+Press any key to close"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Label" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 17.0
+offset_right = 294.0
+offset_bottom = 40.0
+scale = Vector2(2, 2)
+theme_override_fonts/font = ExtResource("4_jt66x")
+text = "TUTORIAL"
+label_settings = SubResource("LabelSettings_rbs2k")
+
+[node name="CloseTextureButton" type="TextureButton" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 566.0
+offset_top = -17.0
+offset_right = 580.0
+offset_bottom = -2.0
+scale = Vector2(3, 3)
+toggle_mode = true
+texture_normal = ExtResource("6_pgr6v")
+texture_pressed = ExtResource("6_pgr6v")
+texture_hover = ExtResource("6_pgr6v")
+texture_disabled = ExtResource("6_pgr6v")
+texture_focused = ExtResource("6_pgr6v")
+
+[node name="ThrowBlade" type="Sprite2D" parent="NinePatchRect"]
+position = Vector2(302, 190)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("7_l3k1h")
+
+[connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]
+[connection signal="pressed" from="NinePatchRect/CloseTextureButton" to="." method="_on_close_texture_button_pressed"]

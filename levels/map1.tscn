@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=4 uid="uid://65dl3olpohwm"]
+[gd_scene load_steps=69 format=4 uid="uid://65dl3olpohwm"]
 
 [ext_resource type="Script" uid="uid://bxmolop1vx1cu" path="res://levels/map_1.gd" id="1_vf8qv"]
 [ext_resource type="Texture2D" uid="uid://dcrnqve71d36p" path="res://asset/island/background/additional_sky.png" id="2_2oa3t"]
@@ -54,6 +54,7 @@
 [ext_resource type="FontFile" uid="uid://jh40hrd2xw4m" path="res://asset/fonts/PixelOperator8.ttf" id="53_e0w0y"]
 [ext_resource type="PackedScene" uid="uid://dkcdsoely1pos" path="res://scenes/objects/compulsory_wall.tscn" id="56_py74h"]
 [ext_resource type="PackedScene" uid="uid://dme30hj53kiyq" path="res://levels/tutorial/signpost.tscn" id="57_6jest"]
+[ext_resource type="PackedScene" uid="uid://c2iphn616lsku" path="res://levels/tutorial/signpost_details/throw_blade_popup.tscn" id="57_hdm65"]
 [ext_resource type="PackedScene" uid="uid://cb64vaex5bwuw" path="res://levels/tutorial/signpost_details/skill_tutorial_popup.tscn" id="58_0ekna"]
 [ext_resource type="Texture2D" uid="uid://chpluu7t6dgev" path="res://asset/island/background/crab_gate.png" id="59_0ekna"]
 
@@ -205,7 +206,7 @@ offset_top = 9.0
 offset_bottom = 59.0
 
 [node name="Player" parent="." instance=ExtResource("6_44ejs")]
-position = Vector2(13270, 108)
+position = Vector2(-222, 45)
 has_blade = true
 max_health = 100
 
@@ -855,3 +856,7 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
 position = Vector2(7041, -419)
 shape = SubResource("RectangleShape2D_py74h")
+
+[node name="Area2D2" parent="." instance=ExtResource("57_6jest")]
+position = Vector2(698, 28)
+popup_scene = ExtResource("57_hdm65")

@@ -6,7 +6,7 @@
 [ext_resource type="FontFile" uid="uid://bf742t4mxgd7l" path="res://asset/fonts/big_font.fnt" id="4_font"]
 [ext_resource type="Texture2D" uid="uid://cf5bryhe8pjyb" path="res://asset/ui/on_button.png" id="5_on"]
 [ext_resource type="Texture2D" uid="uid://bvxx77qm55k1l" path="res://asset/ui/off_button.png" id="6_off"]
-[ext_resource type="PackedScene" uid="uid://c8j6y3q4n2p5v" path="res://scenes/ui/pop_up_button.tscn" id="8_popup_btn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pop_up_button.tscn" id="8_popup_btn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2"]
 
@@ -130,13 +130,13 @@ theme_override_icons/unchecked = ExtResource("6_off")
 
 [node name="WorldMapButton" parent="NinePatchRect" instance=ExtResource("8_popup_btn")]
 layout_mode = 0
-offset_left = 167.0
-offset_top = 278.0
-offset_right = 310.0
-offset_bottom = 335.0
+offset_left = 183.0
+offset_top = 275.0
+offset_right = 283.4286
+offset_bottom = 328.85712
 scale = Vector2(1.4, 1.4)
-pivot_offset = Vector2(71.5, 28.5)
-text = "WORLD MAP"
+pivot_offset = Vector2(50.214294, 26.928558)
+text = "EXIT"
 
 [connection signal="gui_input" from="OverlayColorRect" to="." method="_on_overlay_color_rect_gui_input"]
 [connection signal="pressed" from="NinePatchRect/CloseTextureButton" to="." method="_on_close_texture_button_pressed"]
