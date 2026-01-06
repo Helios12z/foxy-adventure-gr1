@@ -13,7 +13,12 @@ func _enter():
 	direction_node = obj.get_node("Direction")
 	hurt_area = obj.get_node("Direction/HurtArea2D")
 
-	obj.attack_sound.play()
+	# Play attack sound - giant or normal
+	print("[Attack] is_giant_mode: ", obj.is_giant_mode)
+	if obj.is_giant_mode:
+		obj.giant_attack_sound.play()
+	else:
+		obj.attack_sound.play()
 	
 	# Reset tracking variables
 	elapsed_time = 0.0

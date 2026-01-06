@@ -1,9 +1,8 @@
-[gd_scene load_steps=40 format=4 uid="uid://bhwnd0dvsqev8"]
+[gd_scene load_steps=39 format=4 uid="uid://bhwnd0dvsqev8"]
 
 [ext_resource type="Script" uid="uid://4ch8ctjqh6tg" path="res://scenes/test_scenes/level_boss_3.gd" id="1_aeh5d"]
 [ext_resource type="TileSet" uid="uid://d3c8dnj104u5w" path="res://scenes/test_scenes/tilesetv0.2.tres" id="1_aystw"]
 [ext_resource type="Texture2D" uid="uid://d1ido7w7l526h" path="res://asset/level_3_water_palace/background/layer_3.png" id="1_p0w1l"]
-[ext_resource type="Texture2D" uid="uid://dkp2h6vxltgjn" path="res://asset/level_3_water_palace/background/boss_layer_2.png" id="2_1myvi"]
 [ext_resource type="Texture2D" uid="uid://tofm1rqb0fy1" path="res://asset/level_3_water_palace/background/full bg.jpg" id="2_b5x6u"]
 [ext_resource type="PackedScene" uid="uid://d15uiwk2diixs" path="res://scenes/character/player/player.tscn" id="2_imhqq"]
 [ext_resource type="PackedScene" uid="uid://buo3e54qkst7m" path="res://levels/objects/teleport/teleport.tscn" id="2_u6av4"]
@@ -82,17 +81,18 @@ texture = ExtResource("1_p0w1l")
 modulate = Color(0.454524, 0.454524, 0.454524, 1)
 position = Vector2(1566, -705)
 scale = Vector2(0.838379, 0.818848)
-texture = ExtResource("2_1myvi")
 
 [node name="Player" parent="." instance=ExtResource("2_imhqq")]
 position = Vector2(40, -76)
+has_blade = true
+has_water_paw_gem = true
 susanoo_level = 3
 room_level = 3
 max_health = 100
 
 [node name="Boss3" parent="." instance=ExtResource("3_gtfhx")]
 position = Vector2(329, -135)
-boss3_max_health = 2500
+boss3_max_health = 1900
 player_path = NodePath("../Player")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
