@@ -40,11 +40,9 @@ func _on_boss_start_fight() -> void:
 	boss_platform_controller.start_boss_intro()
 
 func _on_boss_died() -> void:
-	boss_platform_controller.return_platform_after_boss_dead()
-	
-	var fall_time = boss_platform_controller.rise_time if boss_platform_controller.has_method("get") else 1.0
-	await get_tree().create_timer(fall_time + 1.25).timeout
-	_spawn_chest()
+	# Platform transition and chest spawning will now happen after death dialog completes
+	# See king_crab/dead.gd -> _on_dialogue_finished()
+	pass
 	
 func _on_complete_moving_up() -> void:
 	boss.seen_player = true 
