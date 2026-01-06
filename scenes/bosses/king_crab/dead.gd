@@ -79,14 +79,38 @@ func _on_dialogue_finished() -> void:
 	if player and player.has_method("set_can_move"):
 		player.set_can_move(true)
 
-	# Wait a bit before removing the boss
-	var tw := obj.create_tween()
-	tw.tween_interval(0.6)
-	tw.tween_callback(Callable(self, "_final_remove"))
+	# Trigger platform fall after boss is freed (platform controller handles everything)
+	_trigger_platform_sequence()
+
+	# Remove the boss immediately
+	_final_remove()
 
 
 func _final_remove() -> void:
 	obj.queue_free()
+
+
+func _trigger_platform_sequence() -> void:
+	# Get the platform controller from the level
+	var stage = GameManager.current_stage
+	if not stage:
+		return
+
+	if stage.has_node("World/BossPlatformController"):
+		var platform_controller = stage.get_node("World/BossPlatformController")
+		if platform_controller and platform_controller.has_method("return_platform_after_boss_dead_delayed"):
+			# This function will wait for boss to be freed, then fall, then spawn chest
+			platform_controller.return_platform_after_boss_dead_delayed(obj)
+
+
+func _spawn_chest() -> void:
+	# Get the chest from the level
+	var stage = GameManager.current_stage
+	if not stage:
+		return
+
+	if stage.has_method("_spawn_chest"):
+		stage._spawn_chest()
 
 func _remove_all_minions() -> void:
 	# Lấy tất cả minions trong group và xóa chúng

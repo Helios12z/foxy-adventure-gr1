@@ -9,6 +9,8 @@ extends Node2D
 @onready var sprite: Sprite2D = $StaticBody2D/Sprite2D if $StaticBody2D.has_node("Sprite2D") else null
 
 var _player_detector: Area2D = null
+var _player_in_area: Node = null  # Track player currently in detector area
+var _check_timer: Timer = null
 
 # Static variable shared across all platform instances
 static var _camera_triggered: bool = false
@@ -98,20 +100,56 @@ func _setup_player_detector() -> void:
 	detect_shape.shape = rect
 	_player_detector.add_child(detect_shape)
 
-	# Connect signals
-	_player_detector.body_entered.connect(_on_player_landed)
+	# Connect signals for entry and exit
+	_player_detector.body_entered.connect(_on_player_entered_area)
+	_player_detector.body_exited.connect(_on_player_exited_area)
+
+	# Create a timer to check if player is standing on platform
+	_check_timer = Timer.new()
+	_check_timer.wait_time = 0.1
+	_check_timer.one_shot = false
+	_check_timer.timeout.connect(_check_player_standing)
+	add_child(_check_timer)
 
 	print("[UpwardPlatform] ✓ Player detector set up for platform: %s (collision_mask=2)" % name)
 
 
-func _on_player_landed(body: Node) -> void:
-	"""Called when player lands on any platform"""
-	print("[UpwardPlatform] *** body_entered detected on platform %s! Body: %s, Groups: %s" % [name, body.name, body.get_groups()])
+func _on_player_entered_area(body: Node) -> void:
+	"""Called when player enters the detector area"""
+	print("[UpwardPlatform] Body entered area on platform %s: %s" % [name, body.name])
 
 	if not body.is_in_group("Player"):
-		print("[UpwardPlatform] Body is not in Player group, ignoring")
 		return
 
+	_player_in_area = body
+	_check_timer.start()
+	print("[UpwardPlatform] Player entered detector, starting check timer")
+
+
+func _on_player_exited_area(body: Node) -> void:
+	"""Called when player exits the detector area"""
+	if body == _player_in_area:
+		_player_in_area = null
+		_check_timer.stop()
+		print("[UpwardPlatform] Player exited detector on platform %s" % name)
+
+
+func _check_player_standing() -> void:
+	"""Periodically check if player is standing on this platform"""
+	if not _player_in_area or not is_instance_valid(_player_in_area):
+		_check_timer.stop()
+		_player_in_area = null
+		return
+
+	# Check if player is on the floor
+	if "is_on_floor" in _player_in_area and _player_in_area.is_on_floor():
+		print("[UpwardPlatform] Player confirmed standing on platform %s!" % name)
+		_check_timer.stop()
+		_trigger_platform_event()
+
+
+func _trigger_platform_event() -> void:
+	"""Trigger the coral spikes and camera when player stands on platform"""
 	# Track the last platform position for coral spike respawn
 	_last_platform_position = global_position
 	print("[UpwardPlatform] *** Updated last platform position: %v" % _last_platform_position)

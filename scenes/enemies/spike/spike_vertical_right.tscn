@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7p52p4j228dy"]
+
+[ext_resource type="Texture2D" uid="uid://u305lqtw3asd" path="res://asset/enemy/spike/spikes.png" id="1_fwy7e"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="2_r8k5s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sm0o0"]
+size = Vector2(29, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fpo1o"]
+size = Vector2(29, 12)
+
+[node name="Spike" type="StaticBody2D"]
+rotation = -1.5707964
+collision_layer = 32
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_fwy7e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 10)
+shape = SubResource("RectangleShape2D_sm0o0")
+
+[node name="HitArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_r8k5s")
+damage = 20
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
+position = Vector2(-0.5, 10)
+shape = SubResource("RectangleShape2D_fpo1o")

@@ -1,0 +1,104 @@
+[gd_scene load_steps=15 format=3 uid="uid://dq8m8likhd3n"]
+
+[ext_resource type="Script" uid="uid://b3ak5amvudtxb" path="res://scenes/enemies/ceiling_spider/ceiling_spider.gd" id="1_spider"]
+[ext_resource type="Texture2D" uid="uid://2hntmnwqt5ii" path="res://asset/enemy/spider/spider.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://yw87c12b22lu" path="res://scenes/enemies/ceiling_spider/idle.gd" id="3_idle"]
+[ext_resource type="Script" uid="uid://cxi028f61m1un" path="res://scenes/enemies/ceiling_spider/attack.gd" id="4_attack"]
+[ext_resource type="Script" uid="uid://b61b8dfdffss0" path="res://scenes/enemies/ceiling_spider/return.gd" id="5_return"]
+[ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="9_hitarea"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 20.0
+height = 50.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_attack1"]
+atlas = ExtResource("2_texture")
+region = Rect2(532, 0, 266, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_attack2"]
+atlas = ExtResource("2_texture")
+region = Rect2(0, 176, 266, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_attack3"]
+atlas = ExtResource("2_texture")
+region = Rect2(266, 176, 266, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle1"]
+atlas = ExtResource("2_texture")
+region = Rect2(0, 0, 266, 176)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle2"]
+atlas = ExtResource("2_texture")
+region = Rect2(266, 0, 266, 176)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_main"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_attack1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_attack2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_attack3")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hit"]
+radius = 20.0
+height = 50.0
+
+[node name="CeilingSpider" type="CharacterBody2D"]
+position = Vector2(0, -9)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_spider")
+max_health = 9999
+metadata/_custom_type_script = "uid://bowmvuxm14ds4"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="Direction" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
+scale = Vector2(0.4, 0.4)
+sprite_frames = SubResource("SpriteFrames_main")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="HitArea2D" type="Area2D" parent="Direction"]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("9_hitarea")
+damage = 20
+metadata/_custom_type_script = "uid://bss631ltk5rcm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
+shape = SubResource("CapsuleShape2D_hit")
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+script = ExtResource("3_idle")
+
+[node name="Attack" type="Node" parent="States"]
+script = ExtResource("4_attack")
+
+[node name="Return" type="Node" parent="States"]
+script = ExtResource("5_return")

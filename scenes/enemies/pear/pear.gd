@@ -48,6 +48,11 @@ func _on_hurt_area_2d_hurt(_direction: Variant, _damage: Variant) -> void:
 		# sound shield block played here
 		return
 
+	# If attacked from behind, start turn around timer
+	if not _waiting_turn_from_back:
+		_waiting_turn_from_back = true
+		_turn_timer = turn_time
+
 	super._on_hurt_area_2d_hurt(knockback_direction, _damage)
 
 	if health <= 0:
@@ -63,6 +68,9 @@ func _physics_process(delta: float) -> void:
 			turn_around()
 			collision_shape_2d.position.x *= -1
 			_check_changed_direction()
+			# After turning around, enter detect state to attack the player
+			if fsm and fsm.states.has("detect"):
+				fsm.change_state(fsm.states.detect)
 
 func can_detect_player() -> bool:
 	if detect_front.is_colliding():

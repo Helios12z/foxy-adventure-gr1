@@ -188,9 +188,6 @@ visible = false
 position = Vector2(-1, -23)
 scale = Vector2(1.3378906, 0.6738281)
 sprite_frames = SubResource("SpriteFrames_x7l3x")
-autoplay = "default"
-frame = 7
-frame_progress = 1.0
 
 [node name="LeftPlatform" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(221, -21)
@@ -239,7 +236,7 @@ completes_stage_id = 7
 triggers_victory_screen = true
 
 [node name="FloatingPlatform1" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(263, 493)
+position = Vector2(271, 510)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform1"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -268,7 +265,7 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform2" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(625, 296)
+position = Vector2(640, 510)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform2"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -297,7 +294,7 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform3" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(982, 492)
+position = Vector2(987, 517)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform3"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -326,7 +323,7 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform4" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(808, 393)
+position = Vector2(819, 423)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform4"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -355,7 +352,7 @@ collision_mask = 10
 shape = SubResource("CircleShape2D_1")
 
 [node name="FloatingPlatform5" type="Node2D" parent="World/BossPlatformController"]
-position = Vector2(440, 393)
+position = Vector2(457, 428)
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BossPlatformController/FloatingPlatform5"]
 modulate = Color(0.7, 0.9, 1, 1)
@@ -456,13 +453,14 @@ max_health = 100
 
 [node name="WaterPrietest" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("3_y7w5y")]
 position = Vector2(421, 485)
-max_health_boss = 2500
+max_health_boss = 2600
 bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
 attack_damage = 7
 
 [node name="FrostGuardian" parent="World" instance=ExtResource("18_fc2sv")]
 position = Vector2(611, 568)
+boss_health = 850
 
 [node name="Chest" parent="World" instance=ExtResource("10_tqigs")]
 requires_key = false

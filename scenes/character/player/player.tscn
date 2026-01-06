@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://d15uiwk2diixs"]
+[gd_scene load_steps=83 format=3 uid="uid://d15uiwk2diixs"]
 
 [ext_resource type="Script" uid="uid://cx68hbcjicw8a" path="res://scenes/character/player/player.gd" id="1_puv7k"]
 [ext_resource type="SpriteFrames" uid="uid://dh2f6po3rm0p7" path="res://scenes/character/foxy.tres" id="2_v051h"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://dwrcxs8iocctf" path="res://asset/foxy/foxy/effects/hit_particle/foxy_hit_particle.png" id="5_7w01e"]
 [ext_resource type="Shader" uid="uid://cjpl0hseqana0" path="res://scenes/character/player/shaders/dash_warp.gdshader" id="5_dash_shader"]
 [ext_resource type="Texture2D" uid="uid://cv1omqfyyi3aj" path="res://asset/foxy/foxy/fox_hat_blade/fox_idle_1.png" id="6_7w01e"]
-[ext_resource type="Texture2D" uid="uid://bpvutatg2g08q" path="res://asset/foxy/foxy/fox_hat_blade/fox_hover.png" id="6_qnn1i"]
 [ext_resource type="Texture2D" uid="uid://dlb6ywwxpr5xd" path="res://asset/foxy/foxy/giant_foxy/transform_1 (1).png" id="7_aiium"]
 [ext_resource type="Script" uid="uid://bss631ltk5rcm" path="res://scripts/hit_area_2d.gd" id="7_t4wjd"]
 [ext_resource type="Texture2D" uid="uid://c3sw5y71owhwi" path="res://asset/foxy/foxy/giant_foxy/attack_giant_foxy (1)2.png" id="8_sgp10"]
@@ -20,6 +19,7 @@
 [ext_resource type="Script" uid="uid://clcv3v6b0xvg5" path="res://scenes/character/player/dead.gd" id="11_m5h5h"]
 [ext_resource type="Texture2D" uid="uid://o1feli5l4id4" path="res://asset/foxy/foxy/giant_foxy/attack_giant_foxy (1)5.png" id="11_w3kqy"]
 [ext_resource type="Texture2D" uid="uid://c8pc1ra10m2md" path="res://asset/foxy/foxy/giant_foxy/hurt 5.png" id="12_ddgkb"]
+[ext_resource type="Texture2D" uid="uid://bo5f07s7fbgvr" path="res://asset/foxy/foxy/fox_hat_blade/hover_fox.png" id="13_7w01e"]
 [ext_resource type="Texture2D" uid="uid://ktsbd45ncy00" path="res://asset/foxy/foxy/giant_foxy/hurt 1.png" id="13_gbquk"]
 [ext_resource type="Texture2D" uid="uid://bfmu6md4xu1e5" path="res://asset/foxy/foxy/giant_foxy/hurt 2.png" id="14_0ieq8"]
 [ext_resource type="Script" uid="uid://dugosv23vlsd1" path="res://scenes/character/player/climb.gd" id="14_yuskr"]
@@ -59,11 +59,13 @@
 [ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
 [ext_resource type="AudioStream" uid="uid://dqva3yvclwb47" path="res://asset/sounds/heal_sound.mp3" id="61_3pj2o"]
 [ext_resource type="Script" uid="uid://c2v03gx2sigpx" path="res://scenes/character/player/states/throw_blade.gd" id="62_throwblade"]
+[ext_resource type="AudioStream" uid="uid://bbejbi11pynm5" path="res://asset/foxy/foxy/giant_foxy/giant_attack.mp3" id="63_giantattack"]
+[ext_resource type="AudioStream" uid="uid://b0ok7bw43c2rr" path="res://asset/foxy/foxy/giant_foxy/transform_sound.mp3" id="64_transform"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkxg8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_b1yw4"]
-radius = 29.76
+radius = 23.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ddgkb"]
 atlas = ExtResource("3_w3kqy")
@@ -177,12 +179,13 @@ shader_parameter/dir = 1.0
 shader_parameter/squash = 0.0
 shader_parameter/lean = 0.0
 shader_parameter/lean_cutoff = 0.58
+shader_parameter/tint_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gfavw"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("6_qnn1i")
+"texture": ExtResource("13_7w01e")
 }],
 "loop": true,
 "name": &"hover",
@@ -398,14 +401,14 @@ light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("3_i0j1t")
-animation = &"idle"
+animation = &"hover"
 
 [node name="BladeAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 light_mask = 2
 material = SubResource("ShaderMaterial_dash")
 position = Vector2(0, -13)
 sprite_frames = ExtResource("4_68dt2")
-animation = &"dead"
+animation = &"hover"
 
 [node name="HoverAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
@@ -413,13 +416,14 @@ light_mask = 2
 scale = Vector2(0.07, 0.07)
 sprite_frames = SubResource("SpriteFrames_gfavw")
 animation = &"hover"
+frame_progress = 0.055968463
 
 [node name="GiantAnimatedSprite2D" type="AnimatedSprite2D" parent="Direction"]
 visible = false
 position = Vector2(0, 6)
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_ibcdq")
-animation = &"walk"
+animation = &"jump"
 autoplay = "walk"
 
 [node name="HurtArea2D" type="Area2D" parent="Direction"]
@@ -434,7 +438,6 @@ position = Vector2(0, -16)
 shape = SubResource("CapsuleShape2D_rkxg8")
 
 [node name="HoverHurtArea2D" type="Area2D" parent="Direction"]
-visible = false
 self_modulate = Color(1, 0.407843, 0.266667, 1)
 collision_layer = 4
 collision_mask = 0
@@ -555,6 +558,14 @@ bus = &"SFX"
 
 [node name="HealSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("61_3pj2o")
+bus = &"SFX"
+
+[node name="GiantAttackSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("63_giantattack")
+bus = &"SFX"
+
+[node name="TransformSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("64_transform")
 bus = &"SFX"
 
 [connection signal="timeout" from="Timer/GiantDuration" to="." method="_on_giant_duration_timeout"]

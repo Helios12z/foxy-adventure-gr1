@@ -40,11 +40,9 @@ func _on_boss_start_fight() -> void:
 	boss_platform_controller.start_boss_intro()
 
 func _on_boss_died() -> void:
-	boss_platform_controller.return_platform_after_boss_dead()
-	
-	var fall_time = boss_platform_controller.rise_time if boss_platform_controller.has_method("get") else 1.0
-	await get_tree().create_timer(fall_time + 1.25).timeout
-	_spawn_chest()
+	# Platform transition and chest spawning will now happen after death dialog completes
+	# See king_crab/dead.gd -> _on_dialogue_finished()
+	pass
 	
 func _on_complete_moving_up() -> void:
 	boss.seen_player = true 
@@ -55,8 +53,12 @@ func _on_complete_moving_up() -> void:
 func _spawn_chest() -> void:
 	if chest == null:
 		return
-	
-	chest.visible = true 
+
+	# Only add child if not already in scene tree
+	if chest.get_parent() == null:
+		add_child(chest)
+
+	chest.visible = true
 	_set_chest_collision(chest, true)
 
 	var feet := chest.get_node("Feet") as Marker2D
@@ -71,7 +73,9 @@ func _spawn_chest() -> void:
 	var start_y = target_y - 300.0
 
 	chest.global_position = Vector2(spawn_x, start_y)
-	add_child(chest)
+
+	# Wait a frame to ensure position is set before animating
+	await get_tree().process_frame
 
 	var tw := create_tween()
 	tw.tween_property(

@@ -84,6 +84,15 @@ func _on_dialogue_finished() -> void:
 	if player and player.has_method("set_can_move"):
 		player.set_can_move(true)
 
+	# Trigger platform transition and wait for it to complete
+	await _trigger_platform_transition()
+
+	# Wait 3 seconds after platform returns before spawning chest
+	await get_tree().create_timer(3.0).timeout
+
+	# Spawn the chest after the delay
+	_spawn_chest()
+
 	# Wait a bit before removing the boss
 	var tw := obj.create_tween()
 	tw.tween_interval(0.6)
@@ -92,3 +101,31 @@ func _on_dialogue_finished() -> void:
 
 func _final_remove() -> void:
 	obj.queue_free()
+
+
+func _trigger_platform_transition() -> void:
+	# Get the platform controller from the level
+	var stage = GameManager.current_stage
+	if not stage:
+		return
+
+	if stage.has_node("World/BossPlatformController"):
+		var platform_controller = stage.get_node("World/BossPlatformController")
+
+		# First, restore the rect platform immediately
+		if platform_controller and platform_controller.has_method("restore_rect_platform_after_dialog"):
+			platform_controller.restore_rect_platform_after_dialog()
+
+		# Then wait for the full platform transition to complete
+		if platform_controller and platform_controller.has_method("return_platform_after_boss_dead"):
+			await platform_controller.return_platform_after_boss_dead()
+
+
+func _spawn_chest() -> void:
+	# Get the chest from the level
+	var stage = GameManager.current_stage
+	if not stage:
+		return
+
+	if stage.has_method("_spawn_chest"):
+		stage._spawn_chest()

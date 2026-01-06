@@ -94,6 +94,8 @@ var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
 var level_bounds: Rect2
 var in_dialogue: bool = false
+var _aura_tw: Tween
+var phase2_min_y: float = 0.0  # Minimum Y position for phase 2 (lowest floating platform)
 
 func _ready() -> void:
 	movement_speed = 0.0
@@ -191,6 +193,7 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 
 	if health <= 0.0:
 		if fsm and fsm.current_state != fsm.states.dead:
+			_hide_phase2_aura()
 			emit_signal("boss_died")
 			fsm.change_state(fsm.states.dead)
 			GameManager.mark_boss_defeated()
@@ -299,6 +302,12 @@ func get_nearest_jump_marker() -> JumpMarker2D:
 	for marker in jump_markers:
 		if not marker.is_active:
 			continue
+
+		# In phase 2, exclude markers below the minimum Y threshold
+		if in_phase2 and phase2_min_y > 0.0:
+			if marker.global_position.y > phase2_min_y:
+				continue
+
 		var distance = global_position.distance_to(marker.global_position)
 		if distance < min_distance:
 			min_distance = distance
@@ -316,6 +325,11 @@ func get_nearest_jump_marker_to_position(pos: Vector2) -> JumpMarker2D:
 	for marker in jump_markers:
 		if not marker or not marker.is_active:
 			continue
+
+		# In phase 2, exclude markers below the minimum Y threshold
+		if in_phase2 and phase2_min_y > 0.0:
+			if marker.global_position.y > phase2_min_y:
+				continue
 
 		var d := pos.distance_to(marker.global_position)
 		if d < min_distance:
@@ -335,6 +349,12 @@ func get_best_jump_marker_to_player() -> JumpMarker2D:
 	for marker in jump_markers:
 		if not marker.is_active:
 			continue
+
+		# In phase 2, exclude markers below the minimum Y threshold
+		# This prevents boss from jumping back to rect platform
+		if in_phase2 and phase2_min_y > 0.0:
+			if marker.global_position.y > phase2_min_y:
+				continue
 
 		var distance_to_player = marker.global_position.distance_to(player.global_position)
 		var distance_to_boss = global_position.distance_to(marker.global_position)
@@ -433,6 +453,26 @@ func _keep_inside_room_and_avoid_fall() -> void:
 			if is_on_floor() and fsm and fsm.current_state != fsm.states.roll:
 				fsm.change_state(fsm.states.roll)
 
+	# Phase 2: Check if boss has fallen below the lowest floating platform
+	if in_phase2 and phase2_min_y > 0.0 and pos.y > phase2_min_y:
+		# Don't recover if already in jumpstate or roll
+		if fsm.current_state == fsm.states.jumpstate or fsm.current_state == fsm.states.roll:
+			return
+
+		# Find nearest safe floating platform marker
+		var safe_markers: Array[JumpMarker2D] = []
+		for marker in jump_markers:
+			if marker and marker.is_active and marker.global_position.y <= phase2_min_y:
+				safe_markers.append(marker)
+
+		if not safe_markers.is_empty():
+			# Boss has fallen below threshold, force recovery
+			if is_on_floor() and can_roll and roll_cooldown_timer <= 0.0:
+				fsm.change_state(fsm.states.roll)
+				start_roll_cooldown()
+			else:
+				fsm.change_state(fsm.states.jumpstate)
+
 func _start_phase2_transition() -> void:
 	if _phase2_transition_running:
 		return
@@ -454,7 +494,7 @@ func _start_phase2_transition() -> void:
 
 func _finish_phase2_transition() -> void:
 	Engine.time_scale = 1.0
-	
+
 	phase_2_talk.play()
 
 	in_phase2 = true
@@ -464,6 +504,61 @@ func _finish_phase2_transition() -> void:
 
 	phase_1.stop()
 	phase_2_intro.play()
+
+	# Show and animate phase 2 aura
+	_show_phase2_aura()
+
+	# Calculate phase 2 minimum Y to prevent boss from falling below floating platforms
+	_calculate_phase2_min_y()
+
+func _show_phase2_aura() -> void:
+	if not phase_2_aura:
+		return
+
+	phase_2_aura.visible = true
+	_start_aura_animation()
+
+func _hide_phase2_aura() -> void:
+	if not phase_2_aura:
+		return
+
+	phase_2_aura.visible = false
+	if _aura_tw and is_instance_valid(_aura_tw):
+		_aura_tw.kill()
+		_aura_tw = null
+
+func _start_aura_animation() -> void:
+	if not phase_2_aura:
+		return
+
+	if _aura_tw and is_instance_valid(_aura_tw):
+		_aura_tw.kill()
+
+	_aura_tw = create_tween().set_loops().set_parallel()
+
+	# Pulse the energy
+	_aura_tw.tween_method(_set_aura_energy, 0.8, 1.5, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	_aura_tw.tween_method(_set_aura_energy, 1.5, 0.8, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_delay(1.5)
+
+	# Pulse the scale slightly
+	var base_scale = phase_2_aura.scale
+	_aura_tw.tween_property(phase_2_aura, "scale", base_scale * 1.2, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	_aura_tw.tween_property(phase_2_aura, "scale", base_scale, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_delay(1.5)
+
+	# Pulse the color hue slightly for shimmering effect
+	_aura_tw.tween_method(_set_aura_color_hue, 0.55, 0.6, 2.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	_aura_tw.tween_method(_set_aura_color_hue, 0.6, 0.55, 2.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_delay(2.0)
+
+func _set_aura_energy(energy: float) -> void:
+	if phase_2_aura:
+		phase_2_aura.energy = energy
+
+func _set_aura_color_hue(hue: float) -> void:
+	if phase_2_aura:
+		var color = phase_2_aura.color
+		# Keep saturation and value, just change hue
+		color.h = hue
+		phase_2_aura.color = color
 		
 func _get_boss_platform_controller() -> Node:
 	var stage = GameManager.current_stage
@@ -530,5 +625,70 @@ func get_marker_at_pos(pos: Vector2) -> JumpMarker2D:
 			if score < best_score:
 				best_score = score
 				best = m
+
+	return best
+
+func _calculate_phase2_min_y() -> void:
+	# Find the lowest Y among active floating platform markers
+	# In phase 2, boss should never go below this
+	phase2_min_y = 0.0
+
+	if jump_markers.is_empty():
+		return
+
+	var controller = _get_boss_platform_controller()
+	if not controller:
+		return
+
+	# Get floating platforms from the platform controller
+	var floating_platforms: Array = controller.platforms
+	var lowest_y = INF
+
+	# Find the lowest floating platform
+	for platform in floating_platforms:
+		if platform:
+			var y_pos = platform.global_position.y
+			if y_pos < lowest_y:
+				lowest_y = y_pos
+
+	# Add margin so boss can stand on the lowest floating platform
+	if lowest_y != INF:
+		phase2_min_y = lowest_y + 50.0  # Add 50px margin (allows boss to stand on platform)
+	else:
+		phase2_min_y = 0.0
+
+func _boss_marker() -> JumpMarker2D:
+	return get_marker_at_pos(global_position)
+
+func _marker_for_pos(pos: Vector2) -> JumpMarker2D:
+	var best: JumpMarker2D = null
+	var best_score := INF
+
+	for m in jump_markers:
+		var jm := m as JumpMarker2D
+		if jm == null or not jm.is_active:
+			continue
+
+		var half = jm.platform_size * 0.5
+		var dx = abs(pos.x - jm.global_position.x)
+		var dy = pos.y - jm.global_position.y  # has sign
+
+		var x_tol = max(half.x, 16.0) + 10.0  # MARKER_X_PAD
+
+		var base_y = max(half.y, 10.0)
+		var y_up = min(base_y + 10.0, 70.0)  # MARKER_Y_UP_PAD, MARKER_Y_CAP
+		var y_down = min(base_y + 40.0, 70.0)  # MARKER_Y_DOWN_PAD, MARKER_Y_CAP
+
+		if dx > x_tol:
+			continue
+		if dy < -y_up:
+			continue
+		if dy > y_down:
+			continue
+
+		var score = dx + abs(dy) * 2.0
+		if score < best_score:
+			best_score = score
+			best = jm
 
 	return best
