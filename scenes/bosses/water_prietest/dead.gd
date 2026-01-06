@@ -87,7 +87,10 @@ func _on_dialogue_finished() -> void:
 	# Trigger platform transition and wait for it to complete
 	await _trigger_platform_transition()
 
-	# Spawn the chest after platforms have settled
+	# Wait 3 seconds after platform returns before spawning chest
+	await get_tree().create_timer(3.0).timeout
+
+	# Spawn the chest after the delay
 	_spawn_chest()
 
 	# Wait a bit before removing the boss

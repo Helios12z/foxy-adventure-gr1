@@ -53,8 +53,12 @@ func _on_complete_moving_up() -> void:
 func _spawn_chest() -> void:
 	if chest == null:
 		return
-	
-	chest.visible = true 
+
+	# Only add child if not already in scene tree
+	if chest.get_parent() == null:
+		add_child(chest)
+
+	chest.visible = true
 	_set_chest_collision(chest, true)
 
 	var feet := chest.get_node("Feet") as Marker2D
@@ -69,7 +73,9 @@ func _spawn_chest() -> void:
 	var start_y = target_y - 300.0
 
 	chest.global_position = Vector2(spawn_x, start_y)
-	add_child(chest)
+
+	# Wait a frame to ensure position is set before animating
+	await get_tree().process_frame
 
 	var tw := create_tween()
 	tw.tween_property(

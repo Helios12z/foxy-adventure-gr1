@@ -1,6 +1,7 @@
 extends Node2D
 
 signal complete_moving_up
+signal platform_return_complete
 
 @export var rect_platform: Node2D
 @export var diamond_platform: Node2D
@@ -105,10 +106,11 @@ func return_platform_after_boss_dead() -> void:
 		craking.stop()
 		spear_platform.visible = false
 		_set_platform_collision(spear_platform, false)
-		right_platform.visible = true 
+		right_platform.visible = true
 		_set_platform_collision(right_platform, true)
 		left_platform.visible = true
 		_set_platform_collision(left_platform, true)
+		emit_signal("platform_return_complete")
 	)
 
 

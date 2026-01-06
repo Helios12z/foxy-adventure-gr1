@@ -82,7 +82,10 @@ func _on_dialogue_finished() -> void:
 	# Trigger platform transition and wait for it to complete
 	await _trigger_platform_transition()
 
-	# Spawn the chest after platforms have settled
+	# Wait 3 seconds after platform returns before spawning chest
+	await get_tree().create_timer(3.0).timeout
+
+	# Spawn the chest after the delay
 	_spawn_chest()
 
 	# Wait a bit before removing the boss
@@ -104,7 +107,10 @@ func _trigger_platform_transition() -> void:
 	if stage.has_node("World/BossPlatformController"):
 		var platform_controller = stage.get_node("World/BossPlatformController")
 		if platform_controller and platform_controller.has_method("return_platform_after_boss_dead"):
-			await platform_controller.return_platform_after_boss_dead()
+			# Call the function first
+			platform_controller.return_platform_after_boss_dead()
+			# Then wait for the platform return complete signal
+			await platform_controller.platform_return_complete
 
 
 func _spawn_chest() -> void:
