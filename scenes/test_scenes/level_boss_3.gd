@@ -40,6 +40,10 @@ func _ready() -> void:
 	_setup_boss_alive_state()
 	_setup_camera_for_boss3()
 
+	# Show health potion tutorial after 0.8s
+	await get_tree().create_timer(0.8).timeout
+	_show_health_potion_tutorial()
+
 	# Fade out the Door node AFTER scene is fully loaded and visible
 	if spawned_at_portal:
 		var door_node = get_node_or_null("Door")
@@ -534,3 +538,23 @@ func _play_ending_cutscene() -> void:
 	# Black screen with text stays forever - player must close the game
 	# The overlay_layer is NOT freed, so it remains on screen
 	# Player control is NOT re-enabled
+
+func _show_health_potion_tutorial() -> void:
+	if not is_inside_tree():
+		return
+		
+	var tutorial_popup = preload("res://levels/tutorial/signpost_details/health_potion_tutorial_popup.tscn").instantiate()
+	var canvas_layer = get_node_or_null("CanvasLayer")
+	if canvas_layer:
+		canvas_layer.add_child(tutorial_popup)
+	else:
+		add_child(tutorial_popup)
+		
+	if tutorial_popup.has_method("show_popup"):
+		tutorial_popup.show_popup()
+	else:
+		tutorial_popup.visible = true
+		
+	# Ensure it covers the whole screen
+	if tutorial_popup is Control:
+		tutorial_popup.set_anchors_preset(Control.PRESET_FULL_RECT)

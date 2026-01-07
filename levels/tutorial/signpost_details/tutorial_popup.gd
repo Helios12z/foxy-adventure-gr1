@@ -58,10 +58,11 @@ func show_popup() -> void:
 		t.tween_property(_panel, "scale", Vector2(1.05, 1.05), 0.18)
 		t.tween_property(_panel, "scale", Vector2(1.0, 1.0), 0.12)
 	if _overlay:
+		_overlay.self_modulate = Color(1, 1, 1, 1) # Reset any editor dampening
 		_overlay.modulate.a = 0.0
 		var to := create_tween()
 		to.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		to.tween_property(_overlay, "modulate:a", 0.35, 0.2)
+		to.tween_property(_overlay, "modulate:a", 0.8, 0.2)
 
 func _input(event: InputEvent) -> void:
 	# Đóng popup khi bấm phím bất kỳ hoặc click chuột
