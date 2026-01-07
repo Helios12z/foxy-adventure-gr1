@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cuml3hx8gsrmn"
-path.s3tc="res://.godot/imported/cry_daed.png-6580339c6e71638c2dbe973562ab36ad.s3tc.ctex"
+path="res://.godot/imported/cry_daed.png-6580339c6e71638c2dbe973562ab36ad.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/states/cry_daed.png"
-dest_files=["res://.godot/imported/cry_daed.png-6580339c6e71638c2dbe973562ab36ad.s3tc.ctex"]
+dest_files=["res://.godot/imported/cry_daed.png-6580339c6e71638c2dbe973562ab36ad.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

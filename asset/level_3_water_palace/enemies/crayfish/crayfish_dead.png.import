@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cva20k2attpw8"
-path.s3tc="res://.godot/imported/crayfish_dead.png-6fa322c80a658b209d5a685c43ebe998.s3tc.ctex"
+path="res://.godot/imported/crayfish_dead.png-6fa322c80a658b209d5a685c43ebe998.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/crayfish/crayfish_dead.png"
-dest_files=["res://.godot/imported/crayfish_dead.png-6fa322c80a658b209d5a685c43ebe998.s3tc.ctex"]
+dest_files=["res://.godot/imported/crayfish_dead.png-6fa322c80a658b209d5a685c43ebe998.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

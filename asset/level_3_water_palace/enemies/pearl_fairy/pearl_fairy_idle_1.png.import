@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cd482tbtyxx6y"
-path.s3tc="res://.godot/imported/pearl_fairy_idle_1.png-cb8a9811876b21c9a261de5e96d86bfb.s3tc.ctex"
+path="res://.godot/imported/pearl_fairy_idle_1.png-cb8a9811876b21c9a261de5e96d86bfb.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_idle_1.png"
-dest_files=["res://.godot/imported/pearl_fairy_idle_1.png-cb8a9811876b21c9a261de5e96d86bfb.s3tc.ctex"]
+dest_files=["res://.godot/imported/pearl_fairy_idle_1.png-cb8a9811876b21c9a261de5e96d86bfb.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

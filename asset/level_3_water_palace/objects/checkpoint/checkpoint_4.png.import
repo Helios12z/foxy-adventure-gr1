@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://btdw0mxrtx3sr"
-path.s3tc="res://.godot/imported/checkpoint_4.png-e32e26ea05c4bc57f26123d0e9c02a45.s3tc.ctex"
+path="res://.godot/imported/checkpoint_4.png-e32e26ea05c4bc57f26123d0e9c02a45.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/objects/checkpoint/checkpoint_4.png"
-dest_files=["res://.godot/imported/checkpoint_4.png-e32e26ea05c4bc57f26123d0e9c02a45.s3tc.ctex"]
+dest_files=["res://.godot/imported/checkpoint_4.png-e32e26ea05c4bc57f26123d0e9c02a45.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

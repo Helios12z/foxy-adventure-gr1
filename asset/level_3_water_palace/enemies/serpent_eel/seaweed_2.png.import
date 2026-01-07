@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cvkooplfi45g7"
-path.s3tc="res://.godot/imported/seaweed_2.png-057a138ec3cc8ff38915e55072fc9f0f.s3tc.ctex"
+path="res://.godot/imported/seaweed_2.png-057a138ec3cc8ff38915e55072fc9f0f.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/serpent_eel/seaweed_2.png"
-dest_files=["res://.godot/imported/seaweed_2.png-057a138ec3cc8ff38915e55072fc9f0f.s3tc.ctex"]
+dest_files=["res://.godot/imported/seaweed_2.png-057a138ec3cc8ff38915e55072fc9f0f.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

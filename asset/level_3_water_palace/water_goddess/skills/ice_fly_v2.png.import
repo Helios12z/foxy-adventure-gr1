@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7demcv6olxaw"
-path.s3tc="res://.godot/imported/ice_fly_v2.png-a9a3658bd168a7b92f3c2c067eb86128.s3tc.ctex"
+path="res://.godot/imported/ice_fly_v2.png-a9a3658bd168a7b92f3c2c067eb86128.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/skills/ice_fly_v2.png"
-dest_files=["res://.godot/imported/ice_fly_v2.png-a9a3658bd168a7b92f3c2c067eb86128.s3tc.ctex"]
+dest_files=["res://.godot/imported/ice_fly_v2.png-a9a3658bd168a7b92f3c2c067eb86128.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

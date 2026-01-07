@@ -3,22 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://byehnf2rvnybh"
-path.s3tc="res://.godot/imported/Gemini_Generated_Image_8hytlc8hytlc8hyt.png-09e6a91dbfc38557fb62928f2f78c24f.s3tc.ctex"
+path="res://.godot/imported/Gemini_Generated_Image_8hytlc8hytlc8hyt.png-09e6a91dbfc38557fb62928f2f78c24f.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/background/Gemini_Generated_Image_8hytlc8hytlc8hyt.png"
-dest_files=["res://.godot/imported/Gemini_Generated_Image_8hytlc8hytlc8hyt.png-09e6a91dbfc38557fb62928f2f78c24f.s3tc.ctex"]
+dest_files=["res://.godot/imported/Gemini_Generated_Image_8hytlc8hytlc8hyt.png-09e6a91dbfc38557fb62928f2f78c24f.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.95
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

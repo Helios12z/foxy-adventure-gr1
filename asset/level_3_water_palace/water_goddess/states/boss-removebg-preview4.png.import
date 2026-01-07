@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkaxeuovdamaj"
-path.s3tc="res://.godot/imported/boss-removebg-preview4.png-c7a5ef65cb412391cd9400586a9c115a.s3tc.ctex"
+path="res://.godot/imported/boss-removebg-preview4.png-c7a5ef65cb412391cd9400586a9c115a.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/states/boss-removebg-preview4.png"
-dest_files=["res://.godot/imported/boss-removebg-preview4.png-c7a5ef65cb412391cd9400586a9c115a.s3tc.ctex"]
+dest_files=["res://.godot/imported/boss-removebg-preview4.png-c7a5ef65cb412391cd9400586a9c115a.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dyij8dhlmrrcn"
-path.s3tc="res://.godot/imported/goden_carp_hurt.png-6362177ea77fa6a22cb887398606d264.s3tc.ctex"
+path="res://.godot/imported/goden_carp_hurt.png-6362177ea77fa6a22cb887398606d264.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/goden_carp/goden_carp_hurt.png"
-dest_files=["res://.godot/imported/goden_carp_hurt.png-6362177ea77fa6a22cb887398606d264.s3tc.ctex"]
+dest_files=["res://.godot/imported/goden_carp_hurt.png-6362177ea77fa6a22cb887398606d264.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

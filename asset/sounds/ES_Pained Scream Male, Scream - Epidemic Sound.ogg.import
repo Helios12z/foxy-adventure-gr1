@@ -1,0 +1,18 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b2ug81k5720fk"
+valid=false
+
+[deps]
+
+source_file="res://asset/sounds/ES_Pained Scream Male, Scream - Epidemic Sound.ogg"
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

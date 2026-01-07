@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1ido7w7l526h"
-path.s3tc="res://.godot/imported/layer_3.png-bc86aec6544ed054599bfa902df1301d.s3tc.ctex"
+path="res://.godot/imported/layer_3.png-bc86aec6544ed054599bfa902df1301d.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/background/layer_3.png"
-dest_files=["res://.godot/imported/layer_3.png-bc86aec6544ed054599bfa902df1301d.s3tc.ctex"]
+dest_files=["res://.godot/imported/layer_3.png-bc86aec6544ed054599bfa902df1301d.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

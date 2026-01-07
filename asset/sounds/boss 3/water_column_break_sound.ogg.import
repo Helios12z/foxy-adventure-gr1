@@ -1,0 +1,18 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://boe0iyu2o4f7"
+valid=false
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/water_column_break_sound.ogg"
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4b2n3q8r81ro"
-path.s3tc="res://.godot/imported/golden_carp_attack_1.png-01263b4ffc7a9a841c2ee648b773b229.s3tc.ctex"
+path="res://.godot/imported/golden_carp_attack_1.png-01263b4ffc7a9a841c2ee648b773b229.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/goden_carp/golden_carp_attack_1.png"
-dest_files=["res://.godot/imported/golden_carp_attack_1.png-01263b4ffc7a9a841c2ee648b773b229.s3tc.ctex"]
+dest_files=["res://.godot/imported/golden_carp_attack_1.png-01263b4ffc7a9a841c2ee648b773b229.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
