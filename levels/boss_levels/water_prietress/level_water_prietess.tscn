@@ -188,6 +188,8 @@ visible = false
 position = Vector2(-1, -23)
 scale = Vector2(1.3378906, 0.6738281)
 sprite_frames = SubResource("SpriteFrames_x7l3x")
+frame = 7
+frame_progress = 1.0
 
 [node name="LeftPlatform" type="Node2D" parent="World/BossPlatformController"]
 position = Vector2(221, -21)

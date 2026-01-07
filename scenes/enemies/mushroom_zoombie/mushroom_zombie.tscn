@@ -23,7 +23,7 @@
 size = Vector2(31, 37.714287)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf3fj"]
-size = Vector2(32, 41.714287)
+size = Vector2(36.428574, 41.714287)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jdvj0"]
 size = Vector2(39, 37.714287)
@@ -291,8 +291,8 @@ damage = 30
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(15.999997, 4.8571415)
-scale = Vector2(0.99999994, 0.99999994)
+position = Vector2(18.21428, 4.8571405)
+scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("RectangleShape2D_lf3fj")
 debug_color = Color(0.901445, 0.278962, 0.357004, 0.42)
 

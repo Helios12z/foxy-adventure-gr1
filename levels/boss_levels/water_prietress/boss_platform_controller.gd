@@ -200,6 +200,10 @@ func _destroy_rect_platform_with_cracking() -> void:
 		cracking_effect.frame = 0
 		cracking_effect.play()
 
+		# Camera shake during cracking effect
+		if camera:
+			camera.camera_shake(1.0, 24)
+
 		# Wait for cracking animation to complete
 		await cracking_effect.animation_finished
 

@@ -1,5 +1,34 @@
 extends Control
 
+# Preload all loading images to ensure they're included in web export
+const PRELOADED_IMAGES = {
+	"dark_forest": [
+		preload("res://asset/ui/loading/loading_content/images/dark_forest/loading_dark_forest_1.png")
+	],
+	"island": [
+		preload("res://asset/ui/loading/loading_content/images/island/loading_island_1.png")
+	],
+	"king_crab": [
+		preload("res://asset/ui/loading/loading_content/images/king_crab/loading_king_crab_1.png")
+	],
+	"map_3": [
+		preload("res://asset/ui/loading/loading_content/images/map_3/loading_map3.png"),
+		preload("res://asset/ui/loading/loading_content/images/loading_map3.png")
+	],
+	"tutorial": [
+		preload("res://asset/ui/loading/loading_content/images/tutorial/tutorial_loading_1.png")
+	],
+	"war_lord_turtle": [
+		preload("res://asset/ui/loading/loading_content/images/war_lord_turtle/loading_war_lord_turtle_1.png")
+	],
+	"water_priestess": [
+		preload("res://asset/ui/loading/loading_content/images/water_priestess/loading_water_pri.png")
+	],
+	"boss3_water_goddess": [
+		preload("res://asset/ui/loading/loading_content/images/boss3_water_goddess/full_bg.jpg")
+	]
+}
+
 @onready var background: TextureRect = $Background
 @onready var area_name: Label = $VBoxContainer/AreaName
 @onready var tip_text: Label = $VBoxContainer/TipText
@@ -54,9 +83,24 @@ func _setup_content():
 		var selected_tip = tips[randi() % tips.size()]
 		tip_text.text = selected_tip
 
-	# Set background image
+	# Set background image using preloaded textures for web export compatibility
+	var content_key = loading_content.get("content_key", "")
+
+	print("Loading screen - content_key: ", content_key)
+
+	# Use preloaded images (these are included in the export)
+	if content_key != "" and PRELOADED_IMAGES.has(content_key):
+		var preloaded_textures = PRELOADED_IMAGES[content_key]
+		print("Loading screen - found preloaded textures: ", preloaded_textures.size())
+		if preloaded_textures.size() > 0:
+			background.texture = preloaded_textures[randi() % preloaded_textures.size()]
+			print("Loading screen - background texture set")
+			return
+
+	# Fallback to dynamic loading if preloaded images not available
 	var images = loading_content.get("images", [])
 	if images.size() > 0:
+		print("Loading screen - falling back to dynamic load, images: ", images)
 		var random_image = images[randi() % images.size()]
 		background.texture = load(random_image)
 
