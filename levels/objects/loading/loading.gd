@@ -229,7 +229,7 @@ func _on_loading_error():
 	# Return to tutorial map as fallback
 	await get_tree().create_timer(3.0).timeout
 	var fallback_scene = "res://levels/tutorial/map0.tscn"
-	if FileAccess.file_exists(fallback_scene):
+	if ResourceLoader.exists(fallback_scene):
 		get_tree().change_scene_to_file(fallback_scene)
 	else:
 		# Last resort: restart the current scene

@@ -100,7 +100,7 @@ func _setup_loading_music() -> void:
 	loading_music_player = AudioStreamPlayer.new()
 	add_child(loading_music_player)
 	
-	if FileAccess.file_exists(LOADING_MUSIC_PATH):
+	if ResourceLoader.exists(LOADING_MUSIC_PATH):
 		var stream = load(LOADING_MUSIC_PATH)
 		if stream:
 			# Make it loop continuously

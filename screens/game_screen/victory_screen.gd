@@ -132,7 +132,7 @@ func _setup_audio():
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
 	
-	if FileAccess.file_exists(SUCCESS_SOUND_PATH):
+	if ResourceLoader.exists(SUCCESS_SOUND_PATH):
 		var stream = load(SUCCESS_SOUND_PATH)
 		if stream:
 			stream.loop = false

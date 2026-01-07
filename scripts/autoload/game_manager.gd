@@ -61,7 +61,7 @@ func change_stage_with_loading(path: String):
 		# For UIDs, we can't check file existence directly, but we can try to resolve
 		# The ResourceLoader will handle UID resolution during loading
 		pass
-	elif not FileAccess.file_exists(path):
+	elif not ResourceLoader.exists(path):
 		push_error("Invalid scene path: " + path)
 		return
 
