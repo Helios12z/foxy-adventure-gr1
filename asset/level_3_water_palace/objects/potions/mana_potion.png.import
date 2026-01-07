@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://iutxaodf75ww"
-path.s3tc="res://.godot/imported/mana_potion.png-a4e4fff90862e814c3766d35f259df7e.s3tc.ctex"
+path="res://.godot/imported/mana_potion.png-a4e4fff90862e814c3766d35f259df7e.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/objects/potions/mana_potion.png"
-dest_files=["res://.godot/imported/mana_potion.png-a4e4fff90862e814c3766d35f259df7e.s3tc.ctex"]
+dest_files=["res://.godot/imported/mana_potion.png-a4e4fff90862e814c3766d35f259df7e.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

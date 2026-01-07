@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://h64rntfnda5s"
-path.s3tc="res://.godot/imported/loading_water_pri.png-42e98b175ac2d45cedc4a44a676f986d.s3tc.ctex"
+path="res://.godot/imported/loading_water_pri.png-42e98b175ac2d45cedc4a44a676f986d.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/ui/loading/loading_content/images/loading_water_pri.png"
-dest_files=["res://.godot/imported/loading_water_pri.png-42e98b175ac2d45cedc4a44a676f986d.s3tc.ctex"]
+dest_files=["res://.godot/imported/loading_water_pri.png-42e98b175ac2d45cedc4a44a676f986d.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

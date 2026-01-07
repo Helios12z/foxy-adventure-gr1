@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1c6cxmgbcehx"
-path.s3tc="res://.godot/imported/boss_healthbar1.png-ffa6a4addc5673a40b8585089235aef7.s3tc.ctex"
+path="res://.godot/imported/boss_healthbar1.png-ffa6a4addc5673a40b8585089235aef7.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/states/boss_healthbar1.png"
-dest_files=["res://.godot/imported/boss_healthbar1.png-ffa6a4addc5673a40b8585089235aef7.s3tc.ctex"]
+dest_files=["res://.godot/imported/boss_healthbar1.png-ffa6a4addc5673a40b8585089235aef7.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

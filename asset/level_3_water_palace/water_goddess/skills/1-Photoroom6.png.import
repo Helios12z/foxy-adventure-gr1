@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://5e6sasdf67ef"
-path.s3tc="res://.godot/imported/1-Photoroom6.png-c95647054649212fff30f81838ee7d11.s3tc.ctex"
+path="res://.godot/imported/1-Photoroom6.png-c95647054649212fff30f81838ee7d11.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/skills/1-Photoroom6.png"
-dest_files=["res://.godot/imported/1-Photoroom6.png-c95647054649212fff30f81838ee7d11.s3tc.ctex"]
+dest_files=["res://.godot/imported/1-Photoroom6.png-c95647054649212fff30f81838ee7d11.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

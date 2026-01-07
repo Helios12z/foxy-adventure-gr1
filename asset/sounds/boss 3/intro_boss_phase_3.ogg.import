@@ -1,0 +1,18 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bxqr0yhoir6j2"
+valid=false
+
+[deps]
+
+source_file="res://asset/sounds/boss 3/intro_boss_phase_3.ogg"
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

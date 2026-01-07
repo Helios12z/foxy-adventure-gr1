@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ksbmvulm55a3"
-path.s3tc="res://.godot/imported/golden_carp_idle_1.png-bd793c2b33d93558ac6e2c3e96b6cd1e.s3tc.ctex"
+path="res://.godot/imported/golden_carp_idle_1.png-bd793c2b33d93558ac6e2c3e96b6cd1e.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/goden_carp/golden_carp_idle_1.png"
-dest_files=["res://.godot/imported/golden_carp_idle_1.png-bd793c2b33d93558ac6e2c3e96b6cd1e.s3tc.ctex"]
+dest_files=["res://.godot/imported/golden_carp_idle_1.png-bd793c2b33d93558ac6e2c3e96b6cd1e.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

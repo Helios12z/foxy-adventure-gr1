@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dxnbv8vsvpajt"
-path.s3tc="res://.godot/imported/ice_ball_07.png-456734f3576f52848a7b8f3e73e1ec40.s3tc.ctex"
+path="res://.godot/imported/ice_ball_07.png-456734f3576f52848a7b8f3e73e1ec40.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/skills/ice_ball_07.png"
-dest_files=["res://.godot/imported/ice_ball_07.png-456734f3576f52848a7b8f3e73e1ec40.s3tc.ctex"]
+dest_files=["res://.godot/imported/ice_ball_07.png-456734f3576f52848a7b8f3e73e1ec40.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://o357kuf0dh8l"
-path.s3tc="res://.godot/imported/pillar_layer_2.png-a42fe676a253cca107dae865c258a5f4.s3tc.ctex"
+path="res://.godot/imported/pillar_layer_2.png-a42fe676a253cca107dae865c258a5f4.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/background/pillar_layer_2.png"
-dest_files=["res://.godot/imported/pillar_layer_2.png-a42fe676a253cca107dae865c258a5f4.s3tc.ctex"]
+dest_files=["res://.godot/imported/pillar_layer_2.png-a42fe676a253cca107dae865c258a5f4.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

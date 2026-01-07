@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ba33lc1ajsutj"
-path.s3tc="res://.godot/imported/start_game_8.png-6f1158d088afba253b8ec333dcb7dc51.s3tc.ctex"
+path="res://.godot/imported/start_game_8.png-6f1158d088afba253b8ec333dcb7dc51.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/comics/start_game/start_game_8.png"
-dest_files=["res://.godot/imported/start_game_8.png-6f1158d088afba253b8ec333dcb7dc51.s3tc.ctex"]
+dest_files=["res://.godot/imported/start_game_8.png-6f1158d088afba253b8ec333dcb7dc51.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

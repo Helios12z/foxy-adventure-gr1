@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7vjwnd0niccd"
-path.s3tc="res://.godot/imported/coral_spike_3.png-d7489e3d14caeaf8821c20263bb26ef3.s3tc.ctex"
+path="res://.godot/imported/coral_spike_3.png-d7489e3d14caeaf8821c20263bb26ef3.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/coral_spike/coral_spike_3.png"
-dest_files=["res://.godot/imported/coral_spike_3.png-d7489e3d14caeaf8821c20263bb26ef3.s3tc.ctex"]
+dest_files=["res://.godot/imported/coral_spike_3.png-d7489e3d14caeaf8821c20263bb26ef3.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

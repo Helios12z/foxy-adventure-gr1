@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b7n2f0ojgy30b"
-path.s3tc="res://.godot/imported/bloody_cry_dead.png-207a2be39bf5612c1a84cd88b20ef678.s3tc.ctex"
+path="res://.godot/imported/bloody_cry_dead.png-207a2be39bf5612c1a84cd88b20ef678.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/states/bloody_cry_dead.png"
-dest_files=["res://.godot/imported/bloody_cry_dead.png-207a2be39bf5612c1a84cd88b20ef678.s3tc.ctex"]
+dest_files=["res://.godot/imported/bloody_cry_dead.png-207a2be39bf5612c1a84cd88b20ef678.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

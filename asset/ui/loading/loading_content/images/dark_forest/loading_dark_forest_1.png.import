@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bub0oqy55t4hc"
-path.s3tc="res://.godot/imported/loading_dark_forest_1.png-b455fa8e52d4699a930d804e881add0e.s3tc.ctex"
+path="res://.godot/imported/loading_dark_forest_1.png-b455fa8e52d4699a930d804e881add0e.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/ui/loading/loading_content/images/dark_forest/loading_dark_forest_1.png"
-dest_files=["res://.godot/imported/loading_dark_forest_1.png-b455fa8e52d4699a930d804e881add0e.s3tc.ctex"]
+dest_files=["res://.godot/imported/loading_dark_forest_1.png-b455fa8e52d4699a930d804e881add0e.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

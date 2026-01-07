@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5fy41hv0lq7q"
-path.s3tc="res://.godot/imported/moving_platform_water.png-8350272339f8ec021a395a49abfa4fa5.s3tc.ctex"
+path="res://.godot/imported/moving_platform_water.png-8350272339f8ec021a395a49abfa4fa5.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/platforms/moving_platform_water.png"
-dest_files=["res://.godot/imported/moving_platform_water.png-8350272339f8ec021a395a49abfa4fa5.s3tc.ctex"]
+dest_files=["res://.godot/imported/moving_platform_water.png-8350272339f8ec021a395a49abfa4fa5.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

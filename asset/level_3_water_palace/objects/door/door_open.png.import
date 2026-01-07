@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b25wv20jaq57f"
-path.s3tc="res://.godot/imported/door_open.png-849264c8fad38cad7baae0a8e9f8e864.s3tc.ctex"
+path="res://.godot/imported/door_open.png-849264c8fad38cad7baae0a8e9f8e864.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/objects/door/door_open.png"
-dest_files=["res://.godot/imported/door_open.png-849264c8fad38cad7baae0a8e9f8e864.s3tc.ctex"]
+dest_files=["res://.godot/imported/door_open.png-849264c8fad38cad7baae0a8e9f8e864.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

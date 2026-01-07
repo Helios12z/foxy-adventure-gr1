@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://n6nm3dqvye27"
-path.s3tc="res://.godot/imported/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom8.png-24d982f283659ae208fba2474026a796.s3tc.ctex"
+path="res://.godot/imported/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom8.png-24d982f283659ae208fba2474026a796.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/states/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom8.png"
-dest_files=["res://.godot/imported/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom8.png-24d982f283659ae208fba2474026a796.s3tc.ctex"]
+dest_files=["res://.godot/imported/Gemini_Generated_Image_3p6pyr3p6pyr3p6p-Photoroom8.png-24d982f283659ae208fba2474026a796.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

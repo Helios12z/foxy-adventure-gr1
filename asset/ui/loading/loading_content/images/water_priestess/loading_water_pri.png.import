@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bmji6n6kcahum"
-path.s3tc="res://.godot/imported/loading_water_pri.png-f6c18e5d45aa9c090da31a52b2fc108c.s3tc.ctex"
+path="res://.godot/imported/loading_water_pri.png-f6c18e5d45aa9c090da31a52b2fc108c.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/ui/loading/loading_content/images/water_priestess/loading_water_pri.png"
-dest_files=["res://.godot/imported/loading_water_pri.png-f6c18e5d45aa9c090da31a52b2fc108c.s3tc.ctex"]
+dest_files=["res://.godot/imported/loading_water_pri.png-f6c18e5d45aa9c090da31a52b2fc108c.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

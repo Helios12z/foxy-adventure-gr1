@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bo1gwo8si1pdq"
-path.s3tc="res://.godot/imported/water_goddess_fire_4.png-a778e3a97fd9f795c2e9664dfc0248ab.s3tc.ctex"
+path="res://.godot/imported/water_goddess_fire_4.png-a778e3a97fd9f795c2e9664dfc0248ab.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/water_goddess/states/water_goddess_fire_4.png"
-dest_files=["res://.godot/imported/water_goddess_fire_4.png-a778e3a97fd9f795c2e9664dfc0248ab.s3tc.ctex"]
+dest_files=["res://.godot/imported/water_goddess_fire_4.png-a778e3a97fd9f795c2e9664dfc0248ab.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

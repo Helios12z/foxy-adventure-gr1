@@ -1,0 +1,18 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://04x4lscq1lti"
+valid=false
+
+[deps]
+
+source_file="res://asset/sounds/Sea Waves - Sound Effect - Sound Effects.ogg"
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

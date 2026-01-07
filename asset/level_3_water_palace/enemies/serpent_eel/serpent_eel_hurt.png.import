@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5sl4ilyc305t"
-path.s3tc="res://.godot/imported/serpent_eel_hurt.png-da1fe63c8ea4b976c4f7d7faa4bfba6f.s3tc.ctex"
+path="res://.godot/imported/serpent_eel_hurt.png-da1fe63c8ea4b976c4f7d7faa4bfba6f.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/serpent_eel/serpent_eel_hurt.png"
-dest_files=["res://.godot/imported/serpent_eel_hurt.png-da1fe63c8ea4b976c4f7d7faa4bfba6f.s3tc.ctex"]
+dest_files=["res://.godot/imported/serpent_eel_hurt.png-da1fe63c8ea4b976c4f7d7faa4bfba6f.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

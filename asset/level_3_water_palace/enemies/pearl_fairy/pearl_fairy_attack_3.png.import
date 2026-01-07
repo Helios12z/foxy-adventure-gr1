@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cy5glcu5qswf1"
-path.s3tc="res://.godot/imported/pearl_fairy_attack_3.png-d84ddcfe43ce5e987192440020f02aec.s3tc.ctex"
+path="res://.godot/imported/pearl_fairy_attack_3.png-d84ddcfe43ce5e987192440020f02aec.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/enemies/pearl_fairy/pearl_fairy_attack_3.png"
-dest_files=["res://.godot/imported/pearl_fairy_attack_3.png-d84ddcfe43ce5e987192440020f02aec.s3tc.ctex"]
+dest_files=["res://.godot/imported/pearl_fairy_attack_3.png-d84ddcfe43ce5e987192440020f02aec.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

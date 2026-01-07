@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bsqkgjgy8pvjk"
-path.s3tc="res://.godot/imported/bg_7_0002_layer_2.png-daced4b5682799dd0fe48cfa2f508e75.s3tc.ctex"
+path="res://.godot/imported/bg_7_0002_layer_2.png-daced4b5682799dd0fe48cfa2f508e75.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/boss_levels/level_king_crab/bg_7_0002_layer_2.png"
-dest_files=["res://.godot/imported/bg_7_0002_layer_2.png-daced4b5682799dd0fe48cfa2f508e75.s3tc.ctex"]
+dest_files=["res://.godot/imported/bg_7_0002_layer_2.png-daced4b5682799dd0fe48cfa2f508e75.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

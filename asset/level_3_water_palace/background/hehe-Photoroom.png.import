@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dxeorp86tskgq"
-path.s3tc="res://.godot/imported/hehe-Photoroom.png-ac44ed0af9895b4e0b9c576a5bd95b00.s3tc.ctex"
+path="res://.godot/imported/hehe-Photoroom.png-ac44ed0af9895b4e0b9c576a5bd95b00.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://asset/level_3_water_palace/background/hehe-Photoroom.png"
-dest_files=["res://.godot/imported/hehe-Photoroom.png-ac44ed0af9895b4e0b9c576a5bd95b00.s3tc.ctex"]
+dest_files=["res://.godot/imported/hehe-Photoroom.png-ac44ed0af9895b4e0b9c576a5bd95b00.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
