@@ -666,3 +666,96 @@ position = Vector2(6816, 534)
 
 [node name="CheckpointMap5" parent="." instance=ExtResource("26_j5txl")]
 position = Vector2(8886, 556)
+
+[node name="CrayFish26" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(3855, 247.00003)
+
+[node name="CrayFish27" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(4306, 250)
+
+[node name="CrayFish28" parent="." instance=ExtResource("16_m3c0n")]
+position = Vector2(3935, 401)
+
+[node name="SerpentEel50" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(4087, 381)
+
+[node name="SerpentEel51" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(4091, 183)
+
+[node name="GoldenCarp27" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(4001.9998, 88.99999)
+
+[node name="GoldenCarp28" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(3997, 182)
+
+[node name="GoldenCarp29" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(4177, 175)
+
+[node name="SerpentEel52" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(4094.9998, 285)
+
+[node name="SerpentEel53" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(3820, 252)
+
+[node name="SerpentEel54" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(4337, 249)
+
+[node name="SerpentEel55" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(5361, 532)
+
+[node name="SerpentEel56" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(5078, 529)
+
+[node name="SerpentEel57" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(5220, 151)
+
+[node name="SerpentEel58" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(5557, 147)
+
+[node name="SerpentEel59" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(5477, 383)
+
+[node name="SerpentEel60" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(6809, 252)
+
+[node name="SerpentEel61" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(6867, 425)
+
+[node name="SerpentEel62" parent="." instance=ExtResource("7_j6y88")]
+position = Vector2(7287, 522)
+
+[node name="GoldenCarp30" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(6274, 538)
+
+[node name="GoldenCarp31" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(7210, 511)
+
+[node name="GoldenCarp32" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(8075, 347)
+
+[node name="GoldenCarp33" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(8295, 348)
+
+[node name="PearlFairy12" parent="." instance=ExtResource("8_ws0ms")]
+position = Vector2(9292, 372)
+
+[node name="PearlFairy13" parent="." instance=ExtResource("8_ws0ms")]
+position = Vector2(9744, 390)
+
+[node name="PearlFairy14" parent="." instance=ExtResource("8_ws0ms")]
+position = Vector2(10029, 424)
+
+[node name="GoldenCarp34" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(6625, 43)
+
+[node name="GoldenCarp35" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(6933, 39)
+
+[node name="GoldenCarp36" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(6736, 112)
+
+[node name="GoldenCarp37" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(6862, 108)
+
+[node name="GoldenCarp38" parent="." instance=ExtResource("17_d0h85")]
+position = Vector2(8538, 170)
