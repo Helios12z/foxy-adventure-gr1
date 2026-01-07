@@ -185,10 +185,15 @@ func _update_health_bar_visibility(delta: float) -> void:
 func drop_coins() -> void:
 	if coin_scene == null:
 		return
-	var parent := get_parent()
-	if parent == null:
+	# Fix: Add to current stage or scene root to avoid scaling issues from parents
+	var parent: Node = null
+	if GameManager.current_stage:
+		parent = GameManager.current_stage
+	else:
 		parent = get_tree().current_scene
+		
 	if parent == null:
+		parent = get_parent()
 		return
 	for i in coin_drop_count:
 		var coin := coin_scene.instantiate()

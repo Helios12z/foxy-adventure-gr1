@@ -1,6 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://o0l0aag5601w"]
+[gd_scene load_steps=16 format=3 uid="uid://o0l0aag5601w"]
 
 [ext_resource type="Texture2D" uid="uid://dkoeobk6q8e8j" path="res://asset/level_3_water_palace/background/platform_boss_water_guard_02.png" id="1_d31ty"]
+[ext_resource type="PackedScene" uid="uid://bvavyowgpxn0m" path="res://scenes/bosses/boss3/Column.tscn" id="2_q0tn7"]
+[ext_resource type="PackedScene" uid="uid://cfhmqw0q4i4lg" path="res://scenes/enemies/cray_fish/cray_fish.tscn" id="3_nfuyt"]
+[ext_resource type="PackedScene" uid="uid://dgwlv5lvkntgn" path="res://scenes/enemies/golden_carp/golden_carp.tscn" id="4_fijtr"]
+[ext_resource type="PackedScene" uid="uid://b5smghvvubfxp" path="res://scenes/enemies/serpent_eel/serpent_eel.tscn" id="5_weyyq"]
+[ext_resource type="PackedScene" uid="uid://caayffphhg6bw" path="res://scenes/bosses/boss3/ColumnSpike.tscn" id="6_weyyq"]
+[ext_resource type="Script" uid="uid://ch7pyhqy325pi" path="res://scenes/bosses/platform_boss_water_guard_02.gd" id="7_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_soo0h"]
 size = Vector2(1201.0212, 47.709244)
@@ -23,9 +29,13 @@ size = Vector2(231.78018, 30.276596)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_amwch"]
 size = Vector2(148.93625, 29.787342)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fijtr"]
+size = Vector2(159.78723, 20)
+
 [node name="PlatformBossWaterGuard02" type="Sprite2D"]
 scale = Vector2(0.47, 0.47)
 texture = ExtResource("1_d31ty")
+script = ExtResource("7_script")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(-152, 380)
@@ -36,7 +46,7 @@ shape = SubResource("RectangleShape2D_soo0h")
 one_way_collision = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(-117.23761, -23.047882)
+position = Vector2(-156.51064, -22.553205)
 shape = SubResource("RectangleShape2D_ogswb")
 one_way_collision = true
 
@@ -81,6 +91,216 @@ shape = SubResource("RectangleShape2D_amwch")
 one_way_collision = true
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(426.46808, -24.680862)
+position = Vector2(466.89362, -20.425543)
 shape = SubResource("RectangleShape2D_ogswb")
 one_way_collision = true
+
+[node name="ColumnRight" type="Node2D" parent="."]
+position = Vector2(-95.74468, 0)
+
+[node name="Normal" type="Node2D" parent="ColumnRight"]
+
+[node name="Column" parent="ColumnRight/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1703, 436.17017)
+
+[node name="Column2" parent="ColumnRight/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1702, -31.914894)
+
+[node name="Column3" parent="ColumnRight/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1702, -508.5106)
+
+[node name="Column4" parent="ColumnRight/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1702, -985.1063)
+
+[node name="Spike" type="Node2D" parent="ColumnRight"]
+position = Vector2(2457.4468, 0)
+
+[node name="ColumnSpike2" parent="ColumnRight/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1212.7659, -948.93616)
+
+[node name="ColumnSpike3" parent="ColumnRight/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1212.7659, -470.21277)
+
+[node name="ColumnSpike4" parent="ColumnRight/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1212.766, 12.765961)
+
+[node name="ColumnSpike" parent="ColumnRight/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1214.8934, 438.29788)
+
+[node name="ColumnLeft" type="Node2D" parent="."]
+position = Vector2(-2234.0427, 10.638298)
+
+[node name="Normal" type="Node2D" parent="ColumnLeft"]
+
+[node name="Column2" parent="ColumnLeft/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1702, -31.914894)
+
+[node name="Column3" parent="ColumnLeft/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1702, -508.51062)
+
+[node name="Column4" parent="ColumnLeft/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1702, -985.1063)
+
+[node name="Column" parent="ColumnLeft/Normal" instance=ExtResource("2_q0tn7")]
+position = Vector2(1236.1702, 425.53186)
+
+[node name="Spike" type="Node2D" parent="ColumnLeft"]
+position = Vector2(2457.4468, -10.638298)
+
+[node name="ColumnSpike2" parent="ColumnLeft/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1212.7659, -948.93616)
+
+[node name="ColumnSpike3" parent="ColumnLeft/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1212.7659, -470.21277)
+
+[node name="ColumnSpike4" parent="ColumnLeft/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1212.766, 12.765961)
+
+[node name="ColumnSpike" parent="ColumnLeft/Spike" instance=ExtResource("6_weyyq")]
+position = Vector2(-1214.8934, 438.29788)
+
+[node name="EnemiesGroup1" type="Node2D" parent="."]
+scale = Vector2(2, 2)
+
+[node name="CrayFish" parent="EnemiesGroup1" instance=ExtResource("3_nfuyt")]
+position = Vector2(-151.06383, 229.78723)
+
+[node name="CrayFish2" parent="EnemiesGroup1" instance=ExtResource("3_nfuyt")]
+position = Vector2(-226.59575, 228.72342)
+
+[node name="CrayFish4" parent="EnemiesGroup1" instance=ExtResource("3_nfuyt")]
+position = Vector2(173.40425, 111.70213)
+
+[node name="CrayFish5" parent="EnemiesGroup1" instance=ExtResource("3_nfuyt")]
+position = Vector2(-30.851067, 229.78725)
+
+[node name="GoldenCarp" parent="EnemiesGroup1" instance=ExtResource("4_fijtr")]
+position = Vector2(147.87234, 239.36168)
+
+[node name="GoldenCarp2" parent="EnemiesGroup1" instance=ExtResource("4_fijtr")]
+position = Vector2(215.95744, 234.04257)
+
+[node name="SerpentEel7" parent="EnemiesGroup1" instance=ExtResource("5_weyyq")]
+position = Vector2(-128.7234, 112.76597)
+
+[node name="SerpentEel6" parent="EnemiesGroup1" instance=ExtResource("5_weyyq")]
+position = Vector2(1.0638297, 89.36171)
+
+[node name="SerpentEel5" parent="EnemiesGroup1" instance=ExtResource("5_weyyq")]
+position = Vector2(153.19147, 111.70213)
+
+[node name="SerpentEel4" parent="EnemiesGroup1" instance=ExtResource("5_weyyq")]
+position = Vector2(185.10638, 229.78725)
+
+[node name="SerpentEel3" parent="EnemiesGroup1" instance=ExtResource("5_weyyq")]
+position = Vector2(11.702128, 229.78725)
+
+[node name="SerpentEel" parent="EnemiesGroup1" instance=ExtResource("5_weyyq")]
+position = Vector2(-110.6383, 224.4681)
+
+[node name="GoldenCarp4" parent="EnemiesGroup1" instance=ExtResource("4_fijtr")]
+position = Vector2(-171.2766, 119.14894)
+
+[node name="ActiveGroup1Area2D" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActiveGroup1Area2D"]
+position = Vector2(0, 529.78723)
+scale = Vector2(4.9999995, 4.9999995)
+shape = SubResource("RectangleShape2D_fijtr")
+
+[node name="EnemiesGroup2" type="Node2D" parent="."]
+
+[node name="SerpentEel3" parent="EnemiesGroup2" instance=ExtResource("5_weyyq")]
+position = Vector2(-157.44681, -34.042553)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel5" parent="EnemiesGroup2" instance=ExtResource("5_weyyq")]
+position = Vector2(172.34042, -21.276596)
+scale = Vector2(2.8, 2.8)
+
+[node name="GoldenCarp" parent="EnemiesGroup2" instance=ExtResource("4_fijtr")]
+position = Vector2(-287.23404, -12.765956)
+scale = Vector2(2.8, 2.8)
+
+[node name="GoldenCarp2" parent="EnemiesGroup2" instance=ExtResource("4_fijtr")]
+position = Vector2(253.19148, -10.638298)
+scale = Vector2(2.8, 2.8)
+
+[node name="CrayFish" parent="EnemiesGroup2" instance=ExtResource("3_nfuyt")]
+position = Vector2(-87.23404, -8.510638)
+scale = Vector2(2.8, 2.8)
+
+[node name="CrayFish2" parent="EnemiesGroup2" instance=ExtResource("3_nfuyt")]
+position = Vector2(87.23404, -19.148935)
+scale = Vector2(2.8, 2.8)
+
+[node name="CrayFish3" parent="EnemiesGroup2" instance=ExtResource("3_nfuyt")]
+position = Vector2(-514.8936, -91.489365)
+scale = Vector2(2.8, 2.8)
+
+[node name="GoldenCarp4" parent="EnemiesGroup2" instance=ExtResource("4_fijtr")]
+position = Vector2(519.1489, -97.87234)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel6" parent="EnemiesGroup2" instance=ExtResource("5_weyyq")]
+position = Vector2(-482.97873, -114.893616)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel7" parent="EnemiesGroup2" instance=ExtResource("5_weyyq")]
+position = Vector2(491.48935, -97.87234)
+scale = Vector2(2.8, 2.8)
+
+[node name="EnemiesGroup3" type="Node2D" parent="."]
+
+[node name="SerpentEel" parent="EnemiesGroup3" instance=ExtResource("5_weyyq")]
+position = Vector2(-189.36168, -229.78723)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel2" parent="EnemiesGroup3" instance=ExtResource("5_weyyq")]
+position = Vector2(134.04256, -234.04256)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel3" parent="EnemiesGroup3" instance=ExtResource("5_weyyq")]
+position = Vector2(-357.4468, -431.9149)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel4" parent="EnemiesGroup3" instance=ExtResource("5_weyyq")]
+position = Vector2(236.17021, -438.29788)
+scale = Vector2(2.8, 2.8)
+
+[node name="GoldenCarp" parent="EnemiesGroup3" instance=ExtResource("4_fijtr")]
+position = Vector2(-40.425533, -221.2766)
+scale = Vector2(2.8, 2.8)
+
+[node name="GoldenCarp2" parent="EnemiesGroup3" instance=ExtResource("4_fijtr")]
+position = Vector2(76.59574, -225.53189)
+scale = Vector2(2.8, 2.8)
+
+[node name="GoldenCarp3" parent="EnemiesGroup3" instance=ExtResource("4_fijtr")]
+position = Vector2(-497.87234, -427.65958)
+scale = Vector2(2.8, 2.8)
+
+[node name="GoldenCarp4" parent="EnemiesGroup3" instance=ExtResource("4_fijtr")]
+position = Vector2(361.70212, -431.9149)
+scale = Vector2(2.8, 2.8)
+
+[node name="CrayFish" parent="EnemiesGroup3" instance=ExtResource("3_nfuyt")]
+position = Vector2(-251.06383, -438.29788)
+scale = Vector2(2.8, 2.8)
+
+[node name="CrayFish2" parent="EnemiesGroup3" instance=ExtResource("3_nfuyt")]
+position = Vector2(144.68085, -436.17017)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel5" parent="EnemiesGroup3" instance=ExtResource("5_weyyq")]
+position = Vector2(-129.78723, -431.9149)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel6" parent="EnemiesGroup3" instance=ExtResource("5_weyyq")]
+position = Vector2(46.80851, -434.04254)
+scale = Vector2(2.8, 2.8)
+
+[node name="SerpentEel7" parent="EnemiesGroup3" instance=ExtResource("5_weyyq")]
+position = Vector2(6.3829775, -238.29787)
+scale = Vector2(2.8, 2.8)

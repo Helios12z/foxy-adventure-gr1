@@ -250,7 +250,7 @@ position = Vector2(31, -337)
 texture = ExtResource("25_o5blt")
 
 [node name="ParallaxLayerSmallCloud2" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2(250, -289)
+position = Vector2(248, -365)
 motion_mirroring = Vector2(400, 0)
 script = ExtResource("22_7800m")
 
@@ -627,9 +627,9 @@ vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="."]
 offset_left = 3783.0
-offset_top = -593.0
+offset_top = -552.0
 offset_right = 4778.0
-offset_bottom = -500.0
+offset_bottom = -459.0
 theme_override_fonts/font = ExtResource("33_mvfqg")
 theme_override_font_sizes/font_size = 38
 text = "Foxy can climb walls, 
