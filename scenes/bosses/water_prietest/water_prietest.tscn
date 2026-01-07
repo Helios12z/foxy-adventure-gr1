@@ -1104,8 +1104,7 @@ volume_db = 5.0
 bus = &"SFX"
 
 [node name="Phase2Aura" type="PointLight2D" parent="."]
-visible = false
-position = Vector2(3.5, -5.000001)
+position = Vector2(15, -5)
 scale = Vector2(0.21875, 0.44335938)
 color = Color(0.2, 0.6, 1, 1)
 blend_mode = 2
