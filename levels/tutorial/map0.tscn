@@ -168,8 +168,8 @@ motion_scale = Vector2(0.001, 0.8)
 motion_mirroring = Vector2(767, 0)
 
 [node name="SkySprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
-position = Vector2(922, -162)
-scale = Vector2(69.375, 29.1015)
+position = Vector2(922, -455.188)
+scale = Vector2(69.375, 47.425747)
 texture = ExtResource("5_dook0")
 
 [node name="SeaSkySprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerBG"]
@@ -246,6 +246,35 @@ position = Vector2(814, -334)
 texture = ExtResource("25_o5blt")
 
 [node name="SmallCloud3" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerSmallCloud"]
+position = Vector2(31, -337)
+texture = ExtResource("25_o5blt")
+
+[node name="ParallaxLayerSmallCloud2" type="ParallaxLayer" parent="ParallaxBackground"]
+position = Vector2(250, -289)
+motion_mirroring = Vector2(400, 0)
+script = ExtResource("22_7800m")
+
+[node name="SmallCloud1" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerSmallCloud2"]
+position = Vector2(-301.5, -225)
+texture = ExtResource("23_ysycy")
+
+[node name="SmallCloud1" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerSmallCloud2/SmallCloud1"]
+position = Vector2(761, -3)
+texture = ExtResource("23_ysycy")
+
+[node name="SmallCloud2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerSmallCloud2"]
+position = Vector2(-127, -280)
+texture = ExtResource("24_h768a")
+
+[node name="SmallCloud2" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerSmallCloud2/SmallCloud2"]
+position = Vector2(806, 5)
+texture = ExtResource("24_h768a")
+
+[node name="SmallCloud4" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerSmallCloud2"]
+position = Vector2(814, -334)
+texture = ExtResource("25_o5blt")
+
+[node name="SmallCloud3" type="Sprite2D" parent="ParallaxBackground/ParallaxLayerSmallCloud2"]
 position = Vector2(31, -337)
 texture = ExtResource("25_o5blt")
 
