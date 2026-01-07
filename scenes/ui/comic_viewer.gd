@@ -59,8 +59,9 @@ func _ready() -> void:
 	if bgm:
 		_start_auto_play()
 		# Hide Next button when auto-playing, show it only on last page
+		# Modify: Next button always visible, serving as Skip button
 		if has_node("NextButton/Button"):
-			$NextButton/Button.visible = false
+			$NextButton/Button.visible = true
 
 func _start_auto_play() -> void:
 	_audio_player = AudioStreamPlayer.new()
@@ -134,9 +135,9 @@ func _smooth_transition_to_page(index: int) -> void:
 	_current_index = index
 	var next_tex = pages[index]
 	
-	# Show Next button on the last page (image 9, index 8)
-	if index == 8 and has_node("NextButton/Button"):
-		$NextButton/Button.visible = true
+	# Modify: Next button is always visible now
+	# if index == 8 and has_node("NextButton/Button"):
+	# 	$NextButton/Button.visible = true
 	
 	# Start sea waves ambient from image 2 (index 1)
 	if index == 1 and not _sea_waves_player:
@@ -272,12 +273,9 @@ func _smooth_transition_to_page(index: int) -> void:
 	)
 
 func _on_next_pressed() -> void:
-	_current_index += 1
-	if _current_index >= pages.size():
-		finished.emit()
-		_close_and_resume()
-		return
-	_update_page()
+	# Modify: Next button now acts as Skip button
+	finished.emit()
+	_close_and_resume()
 
 func _update_page() -> void:
 	if not has_node("PageTexture"):

@@ -36,6 +36,10 @@ func _ready() -> void:
 	else:
 		_setup_boss_alive_state()
 		_setup_cutscene()
+
+	# Show health potion tutorial after 0.8s
+	await get_tree().create_timer(0.8).timeout
+	_show_health_potion_tutorial()
 func _process(delta: float) -> void:
 	if GameManager.player.health <= 0:
 		GameManager.inventory_system.heal_potions = 3
@@ -224,3 +228,23 @@ func _setup_cutscene() -> void:
 	print("[Level] Cutscene setup complete - Boss at: ", boss.global_position)
 	print("[Level] Trigger area at: ", trigger_area.global_position)
 	print("[Level] Trigger size: ", shape.size)
+	
+func _show_health_potion_tutorial() -> void:
+	if not is_inside_tree():
+		return
+		
+	var tutorial_popup = preload("res://levels/tutorial/signpost_details/health_potion_tutorial_popup.tscn").instantiate()
+	var canvas_layer = get_node_or_null("CanvasLayer")
+	if canvas_layer:
+		canvas_layer.add_child(tutorial_popup)
+	else:
+		add_child(tutorial_popup)
+		
+	if tutorial_popup.has_method("show_popup"):
+		tutorial_popup.show_popup()
+	else:
+		tutorial_popup.visible = true
+		
+	# Ensure it covers the whole screen
+	if tutorial_popup is Control:
+		tutorial_popup.set_anchors_preset(Control.PRESET_FULL_RECT)
