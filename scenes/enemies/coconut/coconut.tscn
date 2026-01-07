@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cyqop2sl0gftf"]
+[gd_scene load_steps=26 format=3 uid="uid://cyqop2sl0gftf"]
 
 [ext_resource type="Script" uid="uid://c7svbdeksnvcq" path="res://scenes/enemies/coconut/coconut.gd" id="1_o8oxm"]
 [ext_resource type="Texture2D" uid="uid://cfjqimu0avs5v" path="res://asset/enemy/coconut/coconut_warrior_attack1.png" id="2_co5e5"]

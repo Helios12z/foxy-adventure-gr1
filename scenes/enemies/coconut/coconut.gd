@@ -9,6 +9,7 @@ extends EnemyCharacter
 @onready var hurt_area = $Direction/HurtArea2D
 @onready var shoot_point: Marker2D = $Direction/ShootPoint
 @onready var hit_collision_shape_2d: CollisionShape2D = $Direction/HitArea2D/CollisionShape2D
+@onready var hurt_collision_shape_2d: CollisionShape2D = $Direction/HurtArea2D/CollisionShape2D
 
 func _ready() -> void:
 	max_health = minion_health

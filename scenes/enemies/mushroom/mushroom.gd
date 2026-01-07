@@ -84,10 +84,24 @@ func _start_blink_effect() -> void:
 func _explode() -> void:
 	# Hide mushroom sprite (but keep collision for now)
 	animated_sprite_2d.visible = false
+	velocity = Vector2.ZERO
+
+	# Reparent explosion effect to current scene so it doesn't move with mushroom
+	var current_scene = get_tree().current_scene
+	if explode_effect.get_parent():
+		explode_effect.get_parent().remove_child(explode_effect)
+	current_scene.add_child(explode_effect)
+	explode_effect.global_position = global_position
 
 	# Enable explosion hit area
 	explode_hit_area.monitoring = true
 	explode_hit_area.monitorable = true
+
+	# Reparent explode hit area too
+	if explode_hit_area.get_parent():
+		explode_hit_area.get_parent().remove_child(explode_hit_area)
+	current_scene.add_child(explode_hit_area)
+	explode_hit_area.global_position = global_position
 
 	# Show and play explode effect
 	explode_effect.visible = true
@@ -103,6 +117,12 @@ func _on_explode_finished() -> void:
 	$CollisionShape2D.disabled = true
 	explode_hit_area.monitoring = false
 	explode_hit_area.monitorable = false
+
+	# Clean up explosion effect and hit area (they were reparented)
+	if is_instance_valid(explode_effect):
+		explode_effect.queue_free()
+	if is_instance_valid(explode_hit_area):
+		explode_hit_area.queue_free()
 
 	# Queue mushroom for deletion
 	queue_free()

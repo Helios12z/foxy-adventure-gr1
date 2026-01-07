@@ -78,6 +78,7 @@ func get_content_for_transition(from_scene: String, to_scene: String) -> Diction
 		# Process the content to get actual image paths
 		var processed_content = transition_content.duplicate()
 		processed_content["images"] = _get_images_for_content(transition_key)
+		processed_content["content_key"] = transition_key  # Add content_key for preloaded images
 
 		return processed_content
 
@@ -94,12 +95,14 @@ func get_content_for_scene(scene_path: String) -> Dictionary:
 		# Process the content to get actual image paths
 		var processed_content = area_content.duplicate()
 		processed_content.images = _get_images_for_content(content_key)
+		processed_content["content_key"] = content_key  # Add content_key for preloaded images
 
 		return processed_content
 
 	# Return default content if no specific content found
 	var default_content = loading_config.default_content.duplicate()
 	default_content["images"] = _get_default_images()
+	default_content["content_key"] = "island"  # Default to island for preloaded images
 	return default_content
 
 func _get_transition_key(from_scene: String, to_scene: String) -> String:
