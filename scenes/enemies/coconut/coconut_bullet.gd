@@ -6,6 +6,7 @@ extends RigidBody2D
 @onready var hit_area: HitArea2D = $HitArea2D
 
 var _timer: float = 0.0
+var _has_hit_wall: bool = false
 
 func _ready() -> void:
 	hit_area.damage = damage
@@ -17,6 +18,11 @@ func _physics_process(delta: float) -> void:
 	_timer += delta
 	if _timer >= lifetime:
 		queue_free()
+
+	# Check if bullet has stopped moving (likely hit wall)
+	if not _has_hit_wall and linear_velocity.length() < 10.0:
+		_has_hit_wall = true
+		gravity_scale = 1.0
 
 func _on_hit(_area: Area2D) -> void:
 	queue_free()
