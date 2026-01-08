@@ -29,11 +29,23 @@ func _ready() -> void:
 	if show_tutorial_on_start and not _tutorial_shown:
 		_show_first_tutorial()
 
+	# Ensure all AudioStreamPlayers in the scene loop (Fix for Web/itch.io)
+	for child in get_children():
+		if child is AudioStreamPlayer or child is AudioStreamPlayer2D:
+			# Check if it has a stream and (optional but safe) bus is Music or SFX/Ambient
+			if child.stream:
+				# Force connection to ensure loop
+				if not child.finished.is_connected(child.play):
+					child.finished.connect(child.play)
+				# Ensure it's playing if it was set to autoplay but stopped or failed
+				if child.autoplay and not child.playing:
+					child.play()
+
 func _show_first_tutorial() -> void:
 	_tutorial_shown = true
 	
 	# Đợi loading screen biến mất hoàn toàn và scene sẵn sàng
-	await get_tree().create_timer(1.5, true, false, true).timeout
+	await get_tree().create_timer(2.2, true, false, true).timeout
 	
 	var tutorial_manager = get_node_or_null("/root/TutorialManager")
 	if tutorial_manager == null:

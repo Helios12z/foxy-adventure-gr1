@@ -60,6 +60,14 @@ func _ready() -> void:
 		# If already shown, just play ambient music
 		_set_ambient_music_playing(true)
 
+	# Ensure ambient music loops on Web/itch.io
+	for node_name in ["Music2", "Music3"]:
+		if has_node(node_name):
+			var p = get_node(node_name)
+			if p is AudioStreamPlayer and not p.finished.is_connected(p.play):
+				p.finished.connect(p.play)
+
+
 	# Only handle portal/door spawning, NOT auto-respawn
 	# Defeat screen will handle respawning now
 	if not GameManager.respawn_at_portal():

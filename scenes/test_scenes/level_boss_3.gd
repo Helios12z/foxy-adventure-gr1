@@ -53,6 +53,16 @@ func _ready() -> void:
 			print("[Boss3 Level] Fading out Door node after arrival")
 			_fade_entrance_door(door_node)
 
+	# Ensure all AudioStreamPlayers in the scene loop (Fix for Web/itch.io)
+	for child in get_children():
+		if child is AudioStreamPlayer or child is AudioStreamPlayer2D:
+			if child.stream:
+				# Force connection to ensure loop
+				if not child.finished.is_connected(child.play):
+					child.finished.connect(child.play)
+				if child.autoplay and not child.playing:
+					child.play()
+
 func _process(delta: float) -> void:
 	if GameManager.player.health <= 0:
 		GameManager.inventory_system.heal_potions = 3

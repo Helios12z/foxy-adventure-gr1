@@ -28,6 +28,16 @@ func _ready() -> void:
 	# Ensure music loops
 	music_player.finished.connect(music_player.play)
 
+	# Ensure any other AudioStreamPlayers in the scene loop (Fix for Web/itch.io)
+	for child in get_children():
+		if child is AudioStreamPlayer or child is AudioStreamPlayer2D:
+			# Skip the one we just made if it's already connected (safe check)
+			if child.stream:
+				if not child.finished.is_connected(child.play):
+					child.finished.connect(child.play)
+				if child.autoplay and not child.playing:
+					child.play()
+
 func lock_camera_limit(limit_x: int) -> void:
 	if GameManager.player and GameManager.player.has_node("Camera2D"):
 		var cam = GameManager.player.get_node("Camera2D")
