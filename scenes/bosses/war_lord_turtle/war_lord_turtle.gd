@@ -91,9 +91,15 @@ func _ready() -> void:
 	_update_level_bounds_from_markers()
 
 	fsm = FSM.new(self, $States, $States/Idle)
-	
+
 	emit_signal("health_changed", health, max_health)
-	
+
+	# Ensure phase music loops on Web/itch.io
+	if not phase_1.finished.is_connected(phase_1.play):
+		phase_1.finished.connect(phase_1.play)
+	if not phase_2.finished.is_connected(phase_2.play):
+		phase_2.finished.connect(phase_2.play)
+
 	if not phase_2_intro.finished.is_connected(_on_phase2_intro_finished):
 		phase_2_intro.finished.connect(_on_phase2_intro_finished)
 

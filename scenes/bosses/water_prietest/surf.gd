@@ -6,7 +6,7 @@ func _enter() -> void:
 func _update(delta: float) -> void:
 	var p = obj.get_player()
 	var attack_table = [
-		[fsm.states.atk_1, 0.1],
+		[fsm.states.atk_1, 0.2],
 		[fsm.states.atk_super, 0.4],
 		[fsm.states.atk_3, 0.7],
 		[fsm.states.atk_2, 0.95],

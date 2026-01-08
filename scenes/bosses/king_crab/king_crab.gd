@@ -121,18 +121,24 @@ func _ready() -> void:
 	gravity = king_crab_gravity
 	direction=-1
 	_next_direction=-1
-	
+
 	super._ready()
 	if is_sleeping: fsm = FSM.new(self, $States, $States/Sleep)
 	else: fsm = FSM.new(self, $States, $States/Idle)
 	hit_area_2d.damage = spike_damage
 	hit_collision_default_pos = hit_collision_shape_2d.position
-	
+
 	# Đảm bảo tắt contact damage của body
 	hit_collision_shape_2d.set_deferred("disabled", true)
-	
+
 	emit_signal("health_changed", health, max_health)
-	
+
+	# Ensure phase music loops on Web/itch.io
+	if not phase_1.finished.is_connected(phase_1.play):
+		phase_1.finished.connect(phase_1.play)
+	if not phase_2.finished.is_connected(phase_2.play):
+		phase_2.finished.connect(phase_2.play)
+
 	if phase_2_intro and not phase_2_intro.finished.is_connected(_on_phase2_intro_finished):
 		phase_2_intro.finished.connect(_on_phase2_intro_finished)
 	

@@ -86,7 +86,6 @@ var target_jump_marker: JumpMarker2D = null
 @onready var roll: AudioStreamPlayer2D = $Sound/Roll
 @onready var defend: AudioStreamPlayer2D = $Sound/Defend
 @onready var phase_2_talk: AudioStreamPlayer2D = $Sound/Phase2Talk
-@onready var phase_2_aura: PointLight2D = $Phase2Aura
 
 var seen_player: bool = false
 var _flash_tw: Tween
@@ -94,7 +93,6 @@ var in_phase2: bool = false
 var _recent_damage_times: PackedFloat32Array = []
 var level_bounds: Rect2
 var in_dialogue: bool = false
-var _aura_tw: Tween
 var phase2_min_y: float = 0.0  # Minimum Y position for phase 2 (lowest floating platform)
 
 func _ready() -> void:
@@ -105,7 +103,7 @@ func _ready() -> void:
 	health = max_health
 
 	super._ready()
-	
+
 	atk_1_hit_area_2d.damage = atk1_damage
 	atk_2_hit_area_2d.damage = atk2_damage
 	atk_2_hit_area_2d_2.damage = atk2_damage
@@ -116,7 +114,13 @@ func _ready() -> void:
 	_update_level_bounds_from_markers()
 	_init_jump_markers()
 	_disable_hit_collisionshape()
-	
+
+	# Ensure phase music loops on Web/itch.io
+	if not phase_1.finished.is_connected(phase_1.play):
+		phase_1.finished.connect(phase_1.play)
+	if not phase_2.finished.is_connected(phase_2.play):
+		phase_2.finished.connect(phase_2.play)
+
 	phase_2_intro.finished.connect(_on_phase_2_intro_finished)
 
 	fsm = FSM.new(self, $States, $States/Idle)
@@ -193,7 +197,6 @@ func _on_hurt_area_2d_hurt(_dir: Vector2, damage: int) -> void:
 
 	if health <= 0.0:
 		if fsm and fsm.current_state != fsm.states.dead:
-			_hide_phase2_aura()
 			emit_signal("boss_died")
 			fsm.change_state(fsm.states.dead)
 			GameManager.mark_boss_defeated()
@@ -505,61 +508,10 @@ func _finish_phase2_transition() -> void:
 	phase_1.stop()
 	phase_2_intro.play()
 
-	# Show and animate phase 2 aura
-	_show_phase2_aura()
-
 	# Calculate phase 2 minimum Y to prevent boss from falling below floating platforms
 	_calculate_phase2_min_y()
 
-func _show_phase2_aura() -> void:
-	if not phase_2_aura:
-		return
 
-	phase_2_aura.visible = true
-	_start_aura_animation()
-
-func _hide_phase2_aura() -> void:
-	if not phase_2_aura:
-		return
-
-	phase_2_aura.visible = false
-	if _aura_tw and is_instance_valid(_aura_tw):
-		_aura_tw.kill()
-		_aura_tw = null
-
-func _start_aura_animation() -> void:
-	if not phase_2_aura:
-		return
-
-	if _aura_tw and is_instance_valid(_aura_tw):
-		_aura_tw.kill()
-
-	_aura_tw = create_tween().set_loops().set_parallel()
-
-	# Pulse the energy
-	_aura_tw.tween_method(_set_aura_energy, 0.8, 1.5, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
-	_aura_tw.tween_method(_set_aura_energy, 1.5, 0.8, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_delay(1.5)
-
-	# Pulse the scale slightly
-	var base_scale = phase_2_aura.scale
-	_aura_tw.tween_property(phase_2_aura, "scale", base_scale * 1.2, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
-	_aura_tw.tween_property(phase_2_aura, "scale", base_scale, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_delay(1.5)
-
-	# Pulse the color hue slightly for shimmering effect
-	_aura_tw.tween_method(_set_aura_color_hue, 0.55, 0.6, 2.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
-	_aura_tw.tween_method(_set_aura_color_hue, 0.6, 0.55, 2.0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_delay(2.0)
-
-func _set_aura_energy(energy: float) -> void:
-	if phase_2_aura:
-		phase_2_aura.energy = energy
-
-func _set_aura_color_hue(hue: float) -> void:
-	if phase_2_aura:
-		var color = phase_2_aura.color
-		# Keep saturation and value, just change hue
-		color.h = hue
-		phase_2_aura.color = color
-		
 func _get_boss_platform_controller() -> Node:
 	var stage = GameManager.current_stage
 	if stage == null:

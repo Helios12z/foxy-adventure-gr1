@@ -60,6 +60,11 @@ func _start_explosion_warning() -> void:
 	# Stop movement
 	velocity = Vector2.ZERO
 
+	# Disable hurt collision so player can't interrupt explosion
+	if hurt_area:
+		hurt_area.set_deferred("monitoring", false)
+		hurt_area.set_deferred("monitorable", false)
+
 	# Start red blinking effect
 	_start_blink_effect()
 
