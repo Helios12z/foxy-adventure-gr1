@@ -158,16 +158,14 @@ func _show_dialogue() -> void:
 	# Mark cutscene as seen
 	Dialogic.VAR.set("KingCrabCutsceneSeen", true)
 
-	# Start Dialogic timeline
-	# Start Dialogic timeline with PRELOADED RESOURCE (Safe for Web/Export)
-	# Using verify ensures the resource exists at compile time
-	var timeline_resource = preload("res://timelines/king_crab_awakening.dtl")
-	var layout = Dialogic.start(timeline_resource)
-	
+	# Start Dialogic timeline with string reference (compatible with web export)
+	# Using the same pattern as water_fairy_entrance_cutscene.gd
+	var layout = Dialogic.start("king_crab_awakening")
+
 	if layout:
 		Dialogic.timeline_ended.connect(_on_dialogue_ended)
 	else:
-		push_error("Failed to start dialogue 'king_crab_awakening'. Skipping.")
+		push_error("Failed to start dialogue 'king_crab_awakening'. Skipping cutscene.")
 		_on_dialogue_ended()
 
 func _on_dialogue_ended() -> void:
