@@ -28,6 +28,9 @@ func _ready() -> void:
 		GameManager.respawn_at_checkpoint()
 
 	ambient.play()
+	# Ensure ambient music loops on Web/itch.io
+	if not ambient.finished.is_connected(ambient.play):
+		ambient.finished.connect(ambient.play)
 
 	var boss_defeated := GameManager.is_boss_defeated()
 

@@ -16,6 +16,17 @@ func _ready() -> void:
 	# Defeat screen will handle respawning now
 	# Handle portal/door spawning first
 	if not GameManager.respawn_at_portal():
-		# If no portal target, try to respawn at checkpoint
 		print("[Map2] No portal target, attempting checkpoint respawn...")
 		GameManager.respawn_at_checkpoint()
+
+	# Ensure all AudioStreamPlayers in the scene loop (Fix for Web/itch.io)
+	for child in get_children():
+		if child is AudioStreamPlayer or child is AudioStreamPlayer2D:
+			# Check if it has a stream
+			if child.stream:
+				# Force connection to ensure loop
+				if not child.finished.is_connected(child.play):
+					child.finished.connect(child.play)
+				# Ensure it's playing if it was set to autoplay but stopped or failed
+				if child.autoplay and not child.playing:
+					child.play()
