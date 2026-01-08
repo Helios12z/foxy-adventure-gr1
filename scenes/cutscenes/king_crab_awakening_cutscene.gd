@@ -159,9 +159,8 @@ func _show_dialogue() -> void:
 	Dialogic.VAR.set("KingCrabCutsceneSeen", true)
 
 	# Start Dialogic timeline
-	# Start Dialogic timeline with PRELOADED RESOURCE (Safe for Web/Export)
-	# Using verify ensures the resource exists at compile time
-	var timeline_resource = preload("res://timelines/king_crab_awakening.dtl")
+	# Using load() instead of preload() because this script is loaded dynamically at runtime
+	var timeline_resource = load("res://timelines/king_crab_awakening.dtl")
 	var layout = Dialogic.start(timeline_resource)
 	
 	if layout:
