@@ -11,6 +11,8 @@ extends Node2D
 var _player_detector: Area2D = null
 var _player_in_area: Node = null  # Track player currently in detector area
 var _check_timer: Timer = null
+var _stability_time: float = 0.0  # Track how long player has been standing stably
+const STABILITY_THRESHOLD: float = 0.4  # Player must stand stably for 0.4 seconds
 
 # Static variable shared across all platform instances
 static var _camera_triggered: bool = false
@@ -106,7 +108,7 @@ func _setup_player_detector() -> void:
 
 	# Create a timer to check if player is standing on platform
 	_check_timer = Timer.new()
-	_check_timer.wait_time = 0.1
+	_check_timer.wait_time = 0.05  # Faster check rate for web compatibility (was 0.1)
 	_check_timer.one_shot = false
 	_check_timer.timeout.connect(_check_player_standing)
 	add_child(_check_timer)
@@ -131,6 +133,7 @@ func _on_player_exited_area(body: Node) -> void:
 	if body == _player_in_area:
 		_player_in_area = null
 		_check_timer.stop()
+		_stability_time = 0.0  # Reset stability counter
 		print("[UpwardPlatform] Player exited detector on platform %s" % name)
 
 
@@ -139,13 +142,50 @@ func _check_player_standing() -> void:
 	if not _player_in_area or not is_instance_valid(_player_in_area):
 		_check_timer.stop()
 		_player_in_area = null
+		_stability_time = 0.0  # Reset stability counter
 		return
 
-	# Check if player is on the floor
+	# Multi-condition check for better web compatibility
+	var is_standing = false
+
+	# Condition 1: Traditional is_on_floor check (works on native)
 	if "is_on_floor" in _player_in_area and _player_in_area.is_on_floor():
-		print("[UpwardPlatform] Player confirmed standing on platform %s!" % name)
-		_check_timer.stop()
-		_trigger_platform_event()
+		is_standing = true
+
+	# Condition 2: Velocity check (reliable on web)
+	# If player's Y velocity is small and they're in the area, they've landed
+	if "velocity" in _player_in_area:
+		var vel_y = _player_in_area.velocity.y
+		# Player is standing if falling velocity is very small (between -50 and +50)
+		if abs(vel_y) < 50.0:
+			is_standing = true
+
+	# Condition 3: Position check (extra reliability for web)
+	# Check if player's bottom is within a few pixels of platform's top
+	if collision_shape and collision_shape.shape is RectangleShape2D:
+		var platform_top_y = static_body.global_position.y + collision_shape.position.y - (collision_shape.shape as RectangleShape2D).size.y / 2.0
+		var player_bottom_y = _player_in_area.global_position.y
+		var distance_to_platform = player_bottom_y - platform_top_y
+
+		# If player is within 20 pixels above the platform surface, consider them standing
+		if distance_to_platform >= -5.0 and distance_to_platform <= 20.0:
+			is_standing = true
+
+	# Track stability over time
+	if is_standing:
+		_stability_time += _check_timer.wait_time
+		print("[UpwardPlatform] Player standing stably on %s (%.2f/%.2f sec)" % [name, _stability_time, STABILITY_THRESHOLD])
+
+		# Only trigger after player has been standing stably for the threshold duration
+		if _stability_time >= STABILITY_THRESHOLD:
+			print("[UpwardPlatform] Player CONFIRMED stably standing on platform %s!" % name)
+			_check_timer.stop()
+			_trigger_platform_event()
+	else:
+		# Player is not standing stably, reset the counter
+		if _stability_time > 0.0:
+			print("[UpwardPlatform] Player lost stability, resetting counter")
+		_stability_time = 0.0
 
 
 func _trigger_platform_event() -> void:
