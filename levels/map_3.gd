@@ -27,3 +27,29 @@ func _ready() -> void:
 	music_player.play()
 	# Ensure music loops
 	music_player.finished.connect(music_player.play)
+
+func lock_camera_limit(limit_x: int) -> void:
+	if GameManager.player and GameManager.player.has_node("Camera2D"):
+		var cam = GameManager.player.get_node("Camera2D")
+		cam.limit_right = limit_x
+		print("[Map3] Locked camera limit to: ", limit_x)
+
+func unlock_camera_limit() -> void:
+	if GameManager.player and GameManager.player.has_node("Camera2D"):
+		var cam = GameManager.player.get_node("Camera2D")
+		var current = cam.limit_right
+		
+		# If already unlocked, ignore
+		if current >= 10000000: return
+		
+		# Enable limit smoothing for internal engine smoothness
+		if "limit_smoothed" in cam:
+			cam.limit_smoothed = true
+		
+		var tw = create_tween()
+		# Use CUBIC + EASE_IN_OUT for maximum smoothness (start slow, end slow)
+		# 3.0 seconds duration provides a cinematic "opening" feel
+		tw.tween_property(cam, "limit_right", current + 4000, 3.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+		tw.tween_callback(func(): cam.limit_right = 10000000)
+		
+		print("[Map3] Unlocking camera limit smoothly (CUBIC/IN_OUT) from ", current)
