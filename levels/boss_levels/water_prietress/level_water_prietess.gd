@@ -358,9 +358,6 @@ func _setup_boss_alive_state() -> void:
 	if not boss.start_fight.is_connected(_on_boss_start_fight):
 		boss.start_fight.connect(_on_boss_start_fight)
 
-	if not boss.into_phase2.is_connected(_on_boss_into_phase2):
-		boss.into_phase2.connect(_on_boss_into_phase2)
-
 func _place_boss_idle_in_background() -> void:
 	if boss_bg_marker:
 		var target_global := boss_bg_marker.global_position

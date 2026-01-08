@@ -458,10 +458,6 @@ func _keep_inside_room_and_avoid_fall() -> void:
 
 	# Phase 2: Check if boss has fallen below the lowest floating platform
 	if in_phase2 and phase2_min_y > 0.0 and pos.y > phase2_min_y:
-		# Don't recover if already in jumpstate or roll
-		if fsm.current_state == fsm.states.jumpstate or fsm.current_state == fsm.states.roll:
-			return
-
 		# Find nearest safe floating platform marker
 		var safe_markers: Array[JumpMarker2D] = []
 		for marker in jump_markers:
@@ -469,12 +465,9 @@ func _keep_inside_room_and_avoid_fall() -> void:
 				safe_markers.append(marker)
 
 		if not safe_markers.is_empty():
-			# Boss has fallen below threshold, force recovery
-			if is_on_floor() and can_roll and roll_cooldown_timer <= 0.0:
-				fsm.change_state(fsm.states.roll)
-				start_roll_cooldown()
-			else:
-				fsm.change_state(fsm.states.jumpstate)
+			# Boss has fallen below threshold, force recovery immediately
+			# Even if currently rolling or jumping, we need to recover now
+			fsm.change_state(fsm.states.jumpstate)
 
 func _start_phase2_transition() -> void:
 	if _phase2_transition_running:
