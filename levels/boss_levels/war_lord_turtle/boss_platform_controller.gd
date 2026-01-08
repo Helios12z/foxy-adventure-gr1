@@ -22,6 +22,8 @@ var _floating_start_pos: Vector2
 var _player_base_gravity: float = 0.0
 var _player_rise_tween: Tween = null
 var _player_offset_above_platform: float = 80.0  # Distance player stays above platform
+var _player_float_tween: Tween = null
+var _player_float_base_y: float = 0.0
 
 func _ready() -> void:
 	assert(rect_platform != null)
@@ -101,8 +103,15 @@ func start_phase2_platforms() -> void:
 			0.5
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-		# Step 2: After player lift complete, wait 0.75s then start platform rise
+		# Store the base Y position for floating effect
+		_player_float_base_y = player_target_y
+
+		# Step 2: After player lift complete, start floating bob effect
 		lift_tween.finished.connect(func():
+			# Start the gentle bobbing effect
+			_start_player_float_bob(player)
+
+			# Wait 0.75s then start platform rise
 			await get_tree().create_timer(0.75).timeout
 
 			# Step 3: Platform rises (player stays at same height in anti-gravity)
@@ -119,6 +128,7 @@ func start_phase2_platforms() -> void:
 				if crack_sfx:
 					crack_sfx.stop()
 				# Step 4: Platform rise complete - restore everything
+				_stop_player_float_bob()
 				_restore_player_gravity(player)
 				_set_platform_collision_with_player(floating_platform, true)
 				player.set_can_move(true)
@@ -176,6 +186,41 @@ func _restore_player_gravity(player: Player) -> void:
 	# Restore both gravity and base_gravity to original value
 	player.gravity = _player_base_gravity
 	player._base_gravity = _player_base_gravity
+
+func _start_player_float_bob(player: Player) -> void:
+	# Stop any existing float tween
+	if is_instance_valid(_player_float_tween):
+		_player_float_tween.kill()
+
+	# Create a looping up-down bobbing effect
+	_player_float_tween = create_tween()
+	_player_float_tween.set_loops()
+	_player_float_tween.set_parallel(false)
+
+	var bob_amount := 5.0  # Bob up and down by 5 pixels
+	var bob_duration := 1.0  # Complete one up-down cycle in 1 second
+
+	# Bob up
+	_player_float_tween.tween_property(
+		player,
+		"global_position:y",
+		_player_float_base_y - bob_amount,
+		bob_duration * 0.5
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	# Bob down
+	_player_float_tween.tween_property(
+		player,
+		"global_position:y",
+		_player_float_base_y + bob_amount,
+		bob_duration * 0.5
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func _stop_player_float_bob() -> void:
+	# Stop the floating bob effect
+	if is_instance_valid(_player_float_tween):
+		_player_float_tween.kill()
+		_player_float_tween = null
 
 func return_platform_after_boss_dead() -> void:
 	if _returned:
