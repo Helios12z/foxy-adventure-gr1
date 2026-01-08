@@ -412,23 +412,10 @@ func _setup_boss_defeated_state() -> void:
 			var anim := chest.get_node("AnimatedSprite2D") as AnimatedSprite2D
 			if chest_opened:
 				anim.play("open")
-				
-func _on_boss_into_phase2() -> void:
-	# Show blue glowing aura during phase 2
-	if boss and boss.has_node("Phase2Aura"):
-		var aura = boss.get_node("Phase2Aura")
-		if aura is PointLight2D:
-			aura.visible = true
-
-			# Create a subtle pulsing effect for the aura
-			var tween = create_tween()
-			tween.set_loops()
-			tween.tween_property(aura, "energy", 1.5, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
-			tween.tween_property(aura, "energy", 0.8, 1.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 
 func _setup_cutscene() -> void:
-	# Load the cutscene script
-	var cutscene_script = load("res://scenes/cutscenes/water_priestess_awakening_cutscene.gd")
+	# Load the cutscene script (using preload ensures it's included in Web exports)
+	var cutscene_script = preload("res://scenes/cutscenes/water_priestess_awakening_cutscene.gd")
 	if not cutscene_script:
 		print("[Level] Failed to load cutscene script")
 		return
