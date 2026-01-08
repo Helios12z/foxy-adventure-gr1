@@ -103,7 +103,7 @@ func _ready() -> void:
 	health = max_health
 
 	super._ready()
-	
+
 	atk_1_hit_area_2d.damage = atk1_damage
 	atk_2_hit_area_2d.damage = atk2_damage
 	atk_2_hit_area_2d_2.damage = atk2_damage
@@ -114,7 +114,13 @@ func _ready() -> void:
 	_update_level_bounds_from_markers()
 	_init_jump_markers()
 	_disable_hit_collisionshape()
-	
+
+	# Ensure phase music loops on Web/itch.io
+	if not phase_1.finished.is_connected(phase_1.play):
+		phase_1.finished.connect(phase_1.play)
+	if not phase_2.finished.is_connected(phase_2.play):
+		phase_2.finished.connect(phase_2.play)
+
 	phase_2_intro.finished.connect(_on_phase_2_intro_finished)
 
 	fsm = FSM.new(self, $States, $States/Idle)
