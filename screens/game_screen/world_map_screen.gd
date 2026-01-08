@@ -67,8 +67,12 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	# Cheat code: Unlock all maps (Shift + 7)
-	if event is InputEventKey and event.pressed and event.keycode == KEY_7 and event.shift_pressed:
-		_unlock_all_content_cheat()
+	# Web export fix: Check physical_keycode (location) and KEY_AMPERSAND (Shift+7 on some browsers)
+	if event is InputEventKey and event.pressed:
+		if (event.physical_keycode == KEY_7 or event.keycode == KEY_7) and event.shift_pressed:
+			_unlock_all_content_cheat()
+		elif event.keycode == KEY_AMPERSAND: # Some browsers send '&' directly for Shift+7
+			_unlock_all_content_cheat()
 
 func _unlock_all_content_cheat() -> void:
 	print("CHEAT ACTIVATED: Unlocking all maps and checkpoints!")
