@@ -65,6 +65,28 @@ func _ready() -> void:
 	# Play loading music in background
 	_setup_loading_music()
 
+func _input(event: InputEvent) -> void:
+	# Cheat code: Unlock all maps (Shift + 7)
+	if event is InputEventKey and event.pressed and event.keycode == KEY_7 and event.shift_pressed:
+		_unlock_all_content_cheat()
+
+func _unlock_all_content_cheat() -> void:
+	print("CHEAT ACTIVATED: Unlocking all maps and checkpoints!")
+	
+	# 1. Unlock all stages (1 to 9)
+	var all_stages = []
+	for i in range(1, 10):
+		all_stages.append(i)
+	
+	GameManager.checkpoint_data["completed_stages"] = all_stages
+	print("Cheat: Set completed_stages to: ", all_stages)
+	
+	# 2. Save immediately so it persists in itch.io / web local storage
+	GameManager.save_checkpoint_data()
+	
+	# 3. Refresh UI
+	update_all_stages()
+
 func cleanup_overlay_screens() -> void:
 	# Remove any Victory/Defeat screens that might still be in the scene tree
 	var root = get_tree().root

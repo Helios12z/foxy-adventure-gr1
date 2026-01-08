@@ -580,7 +580,7 @@ position = Vector2(119, -101)
 shape = SubResource("RectangleShape2D_vaqrb")
 
 [node name="Checkpoint2" parent="." instance=ExtResource("42_715bu")]
-position = Vector2(3014, -523)
+position = Vector2(3133, -522)
 
 [node name="DoubleJumpTutorial" parent="." instance=ExtResource("43_scw3o")]
 position = Vector2(2319, 27)
