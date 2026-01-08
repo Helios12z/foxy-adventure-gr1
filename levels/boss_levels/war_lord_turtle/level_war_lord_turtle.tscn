@@ -121,6 +121,7 @@ max_health = 100
 
 [node name="WarLordTurtle" parent="World" node_paths=PackedStringArray("bound_point_a", "bound_point_b") instance=ExtResource("2_7dedx")]
 position = Vector2(652, 541)
+max_health_boss = 3000
 phase2_threshold_ratio = 0.68
 bound_point_a = NodePath("../RoomBoundPointA")
 bound_point_b = NodePath("../RoomBoundPointB")
