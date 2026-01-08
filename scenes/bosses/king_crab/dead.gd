@@ -64,8 +64,15 @@ func _start_death_dialogue() -> void:
 		player.set_can_move(false)
 
 	# Start the death dialogue timeline
-	Dialogic.start("king_crab_death")
-	Dialogic.timeline_ended.connect(_on_dialogue_finished)
+	# Start the death dialogue timeline with PRELOADED RESOURCE (Safe for Web/Export)
+	var timeline_resource = preload("res://timelines/king_crab_death.dtl")
+	var layout = Dialogic.start(timeline_resource)
+	
+	if layout:
+		Dialogic.timeline_ended.connect(_on_dialogue_finished)
+	else:
+		push_error("Failed to start dialogue 'king_crab_death'. Skipping.")
+		_on_dialogue_finished()
 
 
 func _on_dialogue_finished() -> void:

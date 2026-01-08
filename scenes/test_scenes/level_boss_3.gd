@@ -40,8 +40,8 @@ func _ready() -> void:
 	_setup_boss_alive_state()
 	_setup_camera_for_boss3()
 
-	# Show health potion tutorial after 0.8s
-	await get_tree().create_timer(0.8).timeout
+	# Show health potion tutorial after 2.2s (wait for loading screen to fade)
+	await get_tree().create_timer(2.2).timeout
 	_show_health_potion_tutorial()
 
 	# Fade out the Door node AFTER scene is fully loaded and visible
