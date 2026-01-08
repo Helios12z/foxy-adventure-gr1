@@ -2,6 +2,7 @@ extends Node2D
 
 const APPEAR_SHADER = preload("res://resources/effects/gold_ash_dissolve.gdshader")
 const APPEAR_SOUND_STREAM = preload("res://asset/sounds/king_crab_sound/cast.mp3")
+const VISUAL_ARROW_SCENE = preload("res://scenes/ui/direction_arrow.tscn")
 
 @onready var column_left: Node2D = $ColumnLeft
 @onready var column_right: Node2D = $ColumnRight
@@ -168,6 +169,9 @@ func _end_sequence() -> void:
 	if GameManager.current_stage and GameManager.current_stage.has_method("unlock_camera_limit"):
 		GameManager.current_stage.unlock_camera_limit()
 		print("[PlatformBoss02] Camera Unlocked")
+		
+		var arrow = VISUAL_ARROW_SCENE.instantiate()
+		add_child(arrow)
 
 # --- Helpers ---
 
