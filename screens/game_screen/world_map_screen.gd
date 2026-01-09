@@ -66,12 +66,14 @@ func _ready() -> void:
 	_setup_loading_music()
 
 func _input(event: InputEvent) -> void:
-	# Cheat code: Unlock all maps (Shift + 7)
-	# Web export fix: Check physical_keycode (location) and KEY_AMPERSAND (Shift+7 on some browsers)
-	if event is InputEventKey and event.pressed:
-		if (event.physical_keycode == KEY_7 or event.keycode == KEY_7) and event.shift_pressed:
-			_unlock_all_content_cheat()
-		elif event.keycode == KEY_AMPERSAND: # Some browsers send '&' directly for Shift+7
+	# Cheat code: Unlock all maps (Press '7' or usage of 'unlock_all_map' action)
+	if event.is_action_pressed("unlock_all_map"):
+		_unlock_all_content_cheat()
+		return
+
+	# Fallback: Direct check for key '7' (Web compatibility)
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.physical_keycode == KEY_7 or event.keycode == KEY_7:
 			_unlock_all_content_cheat()
 
 func _unlock_all_content_cheat() -> void:
