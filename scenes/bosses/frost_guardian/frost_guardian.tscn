@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dilgpsot8r5g4" path="res://scenes/bosses/frost_guardian/frost_guardian_bullet.tscn" id="2_kl8se"]
 [ext_resource type="Texture2D" uid="uid://ct43bqdy1nsl6" path="res://asset/frost_guardian/death/death_16.png" id="2_o2ttx"]
 [ext_resource type="Shader" uid="uid://dwdcbl0ygqftj" path="res://scenes/enemies/shaders/king_crab_blink.gdshader" id="2_rqn72"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="3_1ja7m"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="3_1ja7m"]
 [ext_resource type="Texture2D" uid="uid://depfcrcqrp8x2" path="res://asset/frost_guardian/death/death_15.png" id="3_2wq5o"]
 [ext_resource type="Texture2D" uid="uid://cwd2lncjqecik" path="res://asset/frost_guardian/death/death_14.png" id="4_85mvy"]
 [ext_resource type="Texture2D" uid="uid://djyab0d2quqwy" path="res://asset/foxy/foxy/effects/hit_particle/frost_guardian_hit_particle.png" id="4_aa2tg"]
@@ -329,7 +329,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2wq5o"]
-size = Vector2(43, 91)
+size = Vector2(27, 19)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_85mvy"]
 size = Vector2(64, 73)
@@ -371,7 +371,7 @@ script = ExtResource("55_o2ttx")
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]
-position = Vector2(2.5, 0.5)
+position = Vector2(-3.5, -36.5)
 shape = SubResource("RectangleShape2D_2wq5o")
 debug_color = Color(0.6567817, 0.39437354, 0.8541276, 0.41960785)
 
