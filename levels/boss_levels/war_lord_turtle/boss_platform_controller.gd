@@ -94,13 +94,13 @@ func start_phase2_platforms() -> void:
 		var lift_distance := rise_height + 80.0
 		var player_target_y := player.global_position.y - lift_distance
 
-		# Step 1: Lift player up (0.5 seconds)
+		# Step 1: Lift player up (3.0 seconds - slower, more cinematic)
 		var lift_tween := create_tween()
 		lift_tween.tween_property(
 			player,
 			"global_position:y",
 			player_target_y,
-			0.5
+			3.0
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 		# Store the base Y position for floating effect
