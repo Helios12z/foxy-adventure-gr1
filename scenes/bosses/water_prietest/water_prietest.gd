@@ -488,7 +488,14 @@ func _start_phase2_transition() -> void:
 	tw.tween_interval(0.6)
 	tw.tween_callback(Callable(self, "_finish_phase2_transition"))
 
+	# Ensure tween is killed to prevent memory leaks and potential issues on web
+	tw.finished.connect(func(): tw.kill(), CONNECT_ONE_SHOT)
+
 func _finish_phase2_transition() -> void:
+	# Prevent multiple calls
+	if in_phase2:
+		return
+
 	Engine.time_scale = 1.0
 
 	phase_2_talk.play()
