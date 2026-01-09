@@ -204,8 +204,14 @@ func _destroy_rect_platform_with_cracking() -> void:
 		if camera:
 			camera.camera_shake(1.0, 24)
 
-		# Wait for cracking animation to complete
-		await cracking_effect.animation_finished
+		# Wait for cracking animation to complete with timeout safeguard for web builds
+		var timeout_timer := get_tree().create_timer(3.0)
+		var animation_finished := false
+
+		cracking_effect.animation_finished.connect(func(): animation_finished = true, CONNECT_ONE_SHOT)
+
+		while not animation_finished and not timeout_timer.timeout:
+			await get_tree().process_frame
 
 	# Hide the cracking effect
 	if cracking_effect:

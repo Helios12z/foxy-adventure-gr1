@@ -5,12 +5,10 @@ var _flash_duration: float = 0.4
 var _total_duration: float = 1.2  
 
 func _enter() -> void:
-	obj.change_animation("hurt")  
+	obj.change_animation("hurt")
 	_transition_timer = 0.0
 
 	obj.velocity = Vector2.ZERO
-
-	obj._start_phase2_transition()
 
 func _update(delta: float) -> void:
 	_transition_timer += delta
