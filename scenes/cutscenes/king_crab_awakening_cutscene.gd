@@ -159,14 +159,10 @@ func _show_dialogue() -> void:
 	Dialogic.VAR.set("KingCrabCutsceneSeen", true)
 
 	# Start Dialogic timeline with string reference (compatible with web export)
-	# Using the same pattern as water_fairy_entrance_cutscene.gd
-	var layout = Dialogic.start("king_crab_awakening")
-
-	if layout:
-		Dialogic.timeline_ended.connect(_on_dialogue_ended)
-	else:
-		push_error("Failed to start dialogue 'king_crab_awakening'. Skipping cutscene.")
-		_on_dialogue_ended()
+	# CRITICAL: Connect signal BEFORE starting dialog to avoid race condition on web exports
+	# Using the exact same pattern as water_fairy_entrance_cutscene.gd
+	Dialogic.timeline_ended.connect(_on_dialogue_ended)
+	Dialogic.start("king_crab_awakening")
 
 func _on_dialogue_ended() -> void:
 	# Disconnect signal
