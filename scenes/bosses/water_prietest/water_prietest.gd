@@ -85,7 +85,6 @@ var target_jump_marker: JumpMarker2D = null
 @onready var jump_sound: AudioStreamPlayer2D = $Sound/Jump
 @onready var roll: AudioStreamPlayer2D = $Sound/Roll
 @onready var defend: AudioStreamPlayer2D = $Sound/Defend
-@onready var phase_2_talk: AudioStreamPlayer2D = $Sound/Phase2Talk
 
 var seen_player: bool = false
 var _flash_tw: Tween
@@ -497,8 +496,6 @@ func _finish_phase2_transition() -> void:
 		return
 
 	Engine.time_scale = 1.0
-
-	phase_2_talk.play()
 
 	in_phase2 = true
 	_phase2_transition_running = false

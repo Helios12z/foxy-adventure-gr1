@@ -158,17 +158,11 @@ func _show_dialogue() -> void:
 	# Mark cutscene as seen
 	Dialogic.VAR.set("KingCrabCutsceneSeen", true)
 
-	# Start Dialogic timeline with string reference (compatible with web export)
-	# CRITICAL: Connect signal BEFORE starting dialog to avoid race condition on web exports
-	# Using the exact same pattern as water_fairy_entrance_cutscene.gd
-	Dialogic.timeline_ended.connect(_on_dialogue_ended)
-	Dialogic.start("king_crab_awakening")
+	# Skip dialog - content has been merged into king_crab_death dialog
+	# Directly end cutscene
+	_on_dialogue_ended()
 
 func _on_dialogue_ended() -> void:
-	# Disconnect signal
-	if Dialogic.timeline_ended.is_connected(_on_dialogue_ended):
-		Dialogic.timeline_ended.disconnect(_on_dialogue_ended)
-
 	# End cutscene
 	_end_cutscene()
 
