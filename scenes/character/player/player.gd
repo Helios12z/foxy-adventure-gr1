@@ -457,11 +457,11 @@ func _on_invulnerable_timeout() -> void:
 		for child in dir.get_children():
 			if child is AnimatedSprite2D:
 				child.visible = false
+	if blink_timer:
+		blink_timer.stop()
 	if animated_sprite:
 		animated_sprite.visible = true
 		animated_sprite.modulate.a = 1.0
-	if blink_timer:
-		blink_timer.stop()
 
 # Dash gating helpers
 func can_dash() -> bool:

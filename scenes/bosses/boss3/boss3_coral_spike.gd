@@ -1,7 +1,7 @@
 extends Node2D
 ## Boss 3 Coral Spike - teleports player to last platform on hit
 
-@export var damage: float = 20.0
+@export var damage: float = 7.0
 
 @onready var hit_area: HitArea2D = $HitArea2D
 

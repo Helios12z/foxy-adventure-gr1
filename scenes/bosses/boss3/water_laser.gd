@@ -15,7 +15,7 @@ var attack_sound: AudioStreamPlayer = null
 
 var current_state: State = State.PREPARE
 var laser_length: float = 1200.0  # How far the laser reaches
-var damage: float = 15.0
+var damage: float = 12.0
 var damage_cooldown: float = 0.0  # Prevent multiple hits per frame
 var last_damaged_time: float = 0.0
 var _prepare_sound_played: bool = false  # Track if prepare sound was played

@@ -713,8 +713,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("53_e0w0y")
-text = "
-When you want to see tutorial again, press the \"?\" button in the corner of the screen"
+text = "Defeat the enemies and collect as much gold as possible to unlock skills."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

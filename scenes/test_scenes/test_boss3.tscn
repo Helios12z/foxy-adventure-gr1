@@ -306,6 +306,11 @@ vertical_alignment = 1
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("14_keb00")]
 
 [node name="CoinAndKeyContainer" parent="CanvasLayer" instance=ExtResource("15_br80k")]
+offset_left = -145.99997
+offset_top = 21.0
+offset_right = 154.0
+offset_bottom = 51.0
+scale = Vector2(1.2, 1.2)
 
 [node name="WaterballMarkers" type="Node2D" parent="."]
 

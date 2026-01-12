@@ -91,7 +91,7 @@ collision_layer = 8
 script = ExtResource("1_sx7rj")
 coin_drop_count = 4
 movement_speed = 100.0
-attack_damage = 20
+attack_damage = 10
 max_health = 75
 metadata/_custom_type_script = "uid://bowmvuxm14ds4"
 
@@ -122,7 +122,7 @@ shape = SubResource("CapsuleShape2D_buft8")
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("3_g6qhf")
-damage = 20
+damage = 10
 metadata/_custom_type_script = "uid://bss631ltk5rcm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/HitArea2D"]

@@ -8,7 +8,7 @@ extends Node2D
 @onready var rising_sound: AudioStreamPlayer = $WaterColumnRisingSound
 @onready var break_sound: AudioStreamPlayer = $WaterColumnBreakSound
 
-@export var damage: int = 20  # Damage to player on contact
+@export var damage: int = 10  # Damage to player on contact
 @export var max_health: int = 4  # Takes 4 hits to break
 @export var prepare_duration: float = 1.0  # Warning time before column rises
 @export var rise_duration: float = 0.8  # Time for upward animation

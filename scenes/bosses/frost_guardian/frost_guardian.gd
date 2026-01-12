@@ -6,8 +6,8 @@ signal start_appearing
 
 @export var range_attack_windup_time: float = 2.25
 @export var boss_health: int = 650
-@export var boss_attack_damage: int = 40
-@export var boss_spike_damage: int = 20
+@export var boss_attack_damage: int = 10
+@export var boss_spike_damage: int = 5
 @export var boss_speed: float = 40.0
 @export var bullet_scene: PackedScene
 

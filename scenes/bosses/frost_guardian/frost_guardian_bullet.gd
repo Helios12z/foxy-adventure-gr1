@@ -2,7 +2,7 @@ extends EnemyCharacter
 
 @export var bullet_speed: float = 300.0
 @export var max_range: float = 320.0
-@export var bullet_damage: int = 30
+@export var bullet_damage: int = 15
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
 

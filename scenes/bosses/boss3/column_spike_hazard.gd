@@ -2,7 +2,7 @@ extends Area2D
 ## Smart hazard for ColumnSpike
 ## Damages player on first touch, then re-damages if they're still inside after invulnerability expires
 
-@export var damage: float = 20.0
+@export var damage: float = 7.0
 
 var _overlapping_hurt_areas: Array[Area2D] = []
 var _last_invulnerable_state: Dictionary = {}  # Track invulnerability state per hurt area
