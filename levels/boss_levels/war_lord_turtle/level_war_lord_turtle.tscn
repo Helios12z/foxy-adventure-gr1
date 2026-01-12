@@ -115,6 +115,8 @@ triggers_victory_screen = true
 [node name="Player" parent="World" instance=ExtResource("3_3dsvl")]
 position = Vector2(-317, 535)
 has_blade = true
+can_hover = true
+has_fire_gem = true
 susanoo_level = 3
 room_level = 3
 max_health = 100

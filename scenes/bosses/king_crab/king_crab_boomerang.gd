@@ -5,7 +5,7 @@ signal hit_player
 
 @export var speed: float = 400.0
 @export var max_range: float = 800.0
-@export var spike_damage: int = 50
+@export var spike_damage: int = 10
 @export var rotation_speed: float = 720.0  
 @export var return_stop_radius: float = 10.0
 

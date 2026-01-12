@@ -4,7 +4,7 @@ signal returned
 
 @export var speed: float = 300.0
 @export var max_range: float = 320.0
-@export var spike_damage: int = 30
+@export var spike_damage: int = 10
 @export var return_stop_radius: float = 6.0
 
 @onready var hit_area_2d: HitArea2D = $Direction/HitArea2D
