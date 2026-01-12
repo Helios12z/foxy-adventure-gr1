@@ -32,15 +32,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_skillscript")
-susanoo_level_2_cost = 50
-susanoo_level_3_cost = 150
+susanoo_level_2_cost = 20
+susanoo_level_3_cost = 50
 room_level_2_description = "Room Skill 2
 HP Recovery
 "
-room_level_2_cost = 70
+room_level_2_cost = 30
 room_level_3_description = "Room Skill 3
 Invulnerable"
-room_level_3_cost = 210
+room_level_3_cost = 70
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 custom_minimum_size = Vector2(160, 96)

@@ -6,20 +6,20 @@ extends Control
 
 @export_group("Susanoo Skill Level 2")
 @export_multiline var susanoo_level_2_description: String = "Susanoo Level 2\nUnlock Shield"
-@export var susanoo_level_2_cost: int = 100
+@export var susanoo_level_2_cost: int = 20
 
 @export_group("Susanoo Skill Level 3")
 @export_multiline var susanoo_level_3_description: String = "Susanoo Level 3\nUnlock Meteor"
-@export var susanoo_level_3_cost: int = 200
+@export var susanoo_level_3_cost: int = 50
 
 @export_group("Room Skill Level 1")
 @export_multiline var room_level_1_description: String = "Room Skill 1\nDefault"
 @export_group("Room Skill Level 2")
 @export_multiline var room_level_2_description: String = "Room Skill 2\nUnlock Bubble"
-@export var room_level_2_cost: int = 150
+@export var room_level_2_cost: int = 30
 @export_group("Room Skill Level 3")
 @export_multiline var room_level_3_description: String = "Room Skill 3\nUnlock Prison"
-@export var room_level_3_cost: int = 300
+@export var room_level_3_cost: int = 70
 
 @onready var skill_room: Control = $NinePatchRect/SkillRoom
 
@@ -166,17 +166,16 @@ func _update_susanoo_tree(current_level: int, current_gold: int) -> void:
 	else:
 		susanoo_lvl2_icon.hide()
 		susanoo_lvl2_overlay.show()
+		# Always show cost for level 2
+		susanoo_lvl2_cost.show()
+		susanoo_lvl2_coin.show()
 		if current_level == 1:
-			susanoo_lvl2_cost.show()
-			susanoo_lvl2_coin.show()
 			if current_gold >= susanoo_level_2_cost:
 				susanoo_lvl2_btn.show()
 			else:
 				susanoo_lvl2_btn.hide()
 		else:
 			susanoo_lvl2_btn.hide()
-			susanoo_lvl2_cost.hide()
-			susanoo_lvl2_coin.hide()
 
 	# Level 3 State
 	if current_level >= 3:
@@ -188,17 +187,16 @@ func _update_susanoo_tree(current_level: int, current_gold: int) -> void:
 	else:
 		susanoo_lvl3_icon.hide()
 		susanoo_lvl3_overlay.show()
+		# Always show cost for level 3
+		susanoo_lvl3_cost.show()
+		susanoo_lvl3_coin.show()
 		if current_level == 2:
-			susanoo_lvl3_cost.show()
-			susanoo_lvl3_coin.show()
 			if current_gold >= susanoo_level_3_cost:
 				susanoo_lvl3_btn.show()
 			else:
 				susanoo_lvl3_btn.hide()
 		else:
 			susanoo_lvl3_btn.hide()
-			susanoo_lvl3_cost.hide()
-			susanoo_lvl3_coin.hide()
 
 func _update_room_tree(current_level: int, current_gold: int) -> void:
 	# Level 1
@@ -219,17 +217,16 @@ func _update_room_tree(current_level: int, current_gold: int) -> void:
 	else:
 		room_lvl2_icon.hide()
 		room_lvl2_overlay.show()
+		# Always show cost for level 2
+		room_lvl2_cost.show()
+		room_lvl2_coin.show()
 		if current_level == 1:
-			room_lvl2_cost.show()
-			room_lvl2_coin.show()
 			if current_gold >= room_level_2_cost:
 				room_lvl2_btn.show()
 			else:
 				room_lvl2_btn.hide()
 		else:
 			room_lvl2_btn.hide()
-			room_lvl2_cost.hide()
-			room_lvl2_coin.hide()
 
 	# Level 3
 	if current_level >= 3:
@@ -241,17 +238,16 @@ func _update_room_tree(current_level: int, current_gold: int) -> void:
 	else:
 		room_lvl3_icon.hide()
 		room_lvl3_overlay.show()
+		# Always show cost for level 3
+		room_lvl3_cost.show()
+		room_lvl3_coin.show()
 		if current_level == 2:
-			room_lvl3_cost.show()
-			room_lvl3_coin.show()
 			if current_gold >= room_level_3_cost:
 				room_lvl3_btn.show()
 			else:
 				room_lvl3_btn.hide()
 		else:
 			room_lvl3_btn.hide()
-			room_lvl3_cost.hide()
-			room_lvl3_coin.hide()
 
 func _on_close_pressed() -> void:
 	get_tree().paused = false
