@@ -3,7 +3,7 @@ extends Node2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hit_area: HitArea2D = $HitArea2D
 
-@export var damage: int = 40
+@export var damage: int = 10
 @export var move_speed: float = 200.0
 @export var lifetime: float = 10.0
 

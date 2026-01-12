@@ -6,10 +6,10 @@ signal into_phase2
 signal start_fight
 
 @export var roll_peak_height: float = 30.0
-@export var atk1_damage: int = 25
-@export var atk2_damage: int = 32
-@export var atk3_damage: int = 40
-@export var atk_super_damage: int = 45
+@export var atk1_damage: int = 15
+@export var atk2_damage: int = 17
+@export var atk3_damage: int = 20
+@export var atk_super_damage: int = 25
 @export var max_health_boss: int = 1000
 @export var boss_jump_speed: float = 500.0     
 @export var attack_range: float = 140.0

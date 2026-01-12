@@ -4,7 +4,7 @@ extends Node2D
 @onready var hit_area: HitArea2D = $HitArea2D
 @onready var move_sound: AudioStreamPlayer = $WaterBallMoveSound
 
-@export var damage: int = 30
+@export var damage: int = 10
 @export var idle_duration: float = 1.0  # How long to idle before moving
 @export var move_speed: float = 300.0   # Speed when moving across screen
 @export var max_speed: float = 600.0    # Maximum speed when accelerating

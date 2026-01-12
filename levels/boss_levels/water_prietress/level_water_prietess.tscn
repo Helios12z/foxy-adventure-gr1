@@ -563,6 +563,11 @@ vertical_alignment = 1
 [node name="HUD" parent="CanvasLayer" instance=ExtResource("13_7sno5")]
 
 [node name="CoinAndKeyContainer" parent="CanvasLayer" instance=ExtResource("14_y1l7a")]
+offset_left = -142.0
+offset_top = 15.0
+offset_right = 158.0
+offset_bottom = 45.0
+scale = Vector2(1.2, 1.2)
 
 [node name="Sound" type="Node2D" parent="."]
 
