@@ -449,6 +449,7 @@ position = Vector2(518, 515)
 [node name="Player" parent="World" instance=ExtResource("2_wc5ch")]
 position = Vector2(-200, 575)
 has_blade = true
+can_hover = true
 has_fire_gem = true
 has_water_room_gem = true
 max_health = 100

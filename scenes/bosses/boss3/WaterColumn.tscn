@@ -76,7 +76,7 @@ collision_layer = 8
 collision_mask = 4
 monitorable = true
 script = ExtResource("4_hit")
-damage = 20
+damage = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea2D"]
 position = Vector2(-3.5, -59.5)

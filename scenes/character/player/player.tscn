@@ -56,9 +56,9 @@
 [ext_resource type="Script" uid="uid://bigmb1fqtlce0" path="res://scenes/character/player/states/dash_diagonal.gd" id="45_dashdiag"]
 [ext_resource type="Script" uid="uid://bdb4rp0xqby5i" path="res://scenes/character/player/states/susanoo.gd" id="46_susanoo"]
 [ext_resource type="Script" uid="uid://dpwira2jef5n4" path="res://scenes/character/player/states/water_paw.gd" id="47_waterpaw"]
-[ext_resource type="PackedScene" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
+[ext_resource type="PackedScene" uid="uid://cqwx8d5k7n3ym" path="res://scenes/effects/HitParticleEffect.tscn" id="48_hitparticle"]
 [ext_resource type="AudioStream" uid="uid://dqva3yvclwb47" path="res://asset/sounds/heal_sound.mp3" id="61_3pj2o"]
-[ext_resource type="Script" path="res://scenes/character/player/states/throw_blade.gd" id="62_throwblade"]
+[ext_resource type="Script" uid="uid://c2v03gx2sigpx" path="res://scenes/character/player/states/throw_blade.gd" id="62_throwblade"]
 [ext_resource type="AudioStream" uid="uid://bbejbi11pynm5" path="res://asset/foxy/foxy/giant_foxy/giant_attack.mp3" id="63_giantattack"]
 [ext_resource type="AudioStream" uid="uid://b0ok7bw43c2rr" path="res://asset/foxy/foxy/giant_foxy/transform_sound.mp3" id="64_transform"]
 
@@ -348,7 +348,7 @@ one_shot = true
 one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="." groups=["Camera"]]
-position = Vector2(0, -55)
+position = Vector2(1, -114)
 offset = Vector2(0, 100)
 zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
