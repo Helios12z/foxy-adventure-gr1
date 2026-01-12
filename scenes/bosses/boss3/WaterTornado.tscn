@@ -49,7 +49,7 @@ animations = [{
 
 [node name="WaterTornado" type="Node2D" groups=["bullet_enemy"]]
 script = ExtResource("1_rxh2g")
-damage = 35
+damage = 18
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-5, -51)

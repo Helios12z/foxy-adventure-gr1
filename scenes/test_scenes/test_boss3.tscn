@@ -53,6 +53,10 @@ size = Vector2(993.234, 62.78346)
 [node name="TestBoss3" type="Node2D"]
 script = ExtResource("1_aeh5d")
 
+[node name="Door" parent="." instance=ExtResource("31_u6av4")]
+position = Vector2(0, 24)
+is_cross_scene = true
+
 [node name="Teleport" parent="." instance=ExtResource("2_u6av4")]
 position = Vector2(301, -293)
 scale = Vector2(0.1, 0.1)
@@ -85,7 +89,10 @@ scale = Vector2(0.838379, 0.818848)
 [node name="Player" parent="." instance=ExtResource("2_imhqq")]
 position = Vector2(40, -76)
 has_blade = true
+can_hover = true
+has_fire_gem = true
 has_water_paw_gem = true
+has_water_room_gem = true
 susanoo_level = 3
 room_level = 3
 max_health = 100
@@ -490,10 +497,6 @@ parameters/looping = true
 
 [node name="IntroBossPhase3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("30_dotdf")
-
-[node name="Door" parent="." instance=ExtResource("31_u6av4")]
-position = Vector2(0, 24)
-is_cross_scene = true
 
 [node name="Smile" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("33_dotdf")

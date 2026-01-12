@@ -271,14 +271,6 @@ scale = Vector2(1.8, 1.8)
 position = Vector2(-4641.249, 926.2498)
 scale = Vector2(1.8, 1.8)
 
-[node name="SerpentEel8" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(8359.999, 352.49997)
-scale = Vector2(1.8, 1.8)
-
-[node name="GoldenCarp6" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(8087.4985, 114.99998)
-scale = Vector2(1.8, 1.8)
-
 [node name="Teleport3" parent="." instance=ExtResource("21_2g2fv")]
 position = Vector2(10207.5, 463.75)
 scale = Vector2(0.5, 0.5)
@@ -428,12 +420,6 @@ position = Vector2(7893, 193)
 [node name="SerpentEel40" parent="." instance=ExtResource("7_j6y88")]
 position = Vector2(7887, 179)
 
-[node name="SerpentEel41" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(8308, 117)
-
-[node name="SerpentEel42" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(8207, 115)
-
 [node name="SerpentEel43" parent="." instance=ExtResource("7_j6y88")]
 position = Vector2(8181, 231)
 
@@ -445,9 +431,6 @@ position = Vector2(8005, 289)
 
 [node name="CrayFish25" parent="." instance=ExtResource("16_m3c0n")]
 position = Vector2(8443, 292)
-
-[node name="SerpentEel46" parent="." instance=ExtResource("7_j6y88")]
-position = Vector2(8405, 516)
 
 [node name="SerpentEel47" parent="." instance=ExtResource("7_j6y88")]
 position = Vector2(8161, 510)
@@ -484,9 +467,6 @@ position = Vector2(8886, 556)
 
 [node name="GoldenCarp32" parent="." instance=ExtResource("17_d0h85")]
 position = Vector2(8075, 347)
-
-[node name="GoldenCarp33" parent="." instance=ExtResource("17_d0h85")]
-position = Vector2(8295, 348)
 
 [node name="PearlFairy12" parent="." instance=ExtResource("8_ws0ms")]
 position = Vector2(9292, 372)
